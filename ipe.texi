@@ -1,0 +1,4049 @@
+\input texinfo @c -*-texinfo-*-
+@c ----------------------------------------------------------------------
+@c 
+@c NAME 
+@c ipe.texi
+@c 
+@c PURPOSE
+@c This file is a GNU 'texinfo' file
+@c (https://www.gnu.org/software/texinfo) used to document the
+@c 'Insert Pair Edit' (ipe) Emacs (https://www.gnu.org/software/emacs)
+@c package.
+@c
+@c AUTHOR
+@c Brian Kavanagh
+@c 
+@c ----------------------------------------------------------------------
+
+@settitle Insert Pair Edit (ipe) Help 1.0
+
+@c **********************************************************************
+@c Copyright - TODO Check this for GNU... 
+@c **********************************************************************
+
+@copying
+Copyright @copyright{} 2023 Brian Kavanagh
+@end copying
+
+@c **********************************************************************
+@titlepage
+@c **********************************************************************
+@title Insert Pair Edit (ipe) Help 1.0
+@subtitle A GNU Emacs Package.
+@author Brian Kavanagh
+@page
+
+@c **********************************************************************
+@c Copyright Page.
+@c **********************************************************************
+
+@page
+@vskip 0pt plus 1filll
+@insertcopying
+@end titlepage
+
+@c **********************************************************************
+@contents
+@c **********************************************************************
+
+@c **********************************************************************
+@c Top Node
+@c **********************************************************************
+
+@ifnottex
+@node Top
+@top Insert Pair Edit (ipe)
+
+This documentation describes the 'Insert Pair Edit' (ipe)
+@strong{Emacs} package.
+
+@end ifnottex
+
+@menu
+* Overview::                     An overview of the 'Insert Pair Edit' (ipe) package.
+* Installation::                 How to install the 'Insert Pair Edit' (ipe) package.
+* Basic Usage::                  The `insert-pair-edit' command.
+* Basic Mode Key Bindings::      Basic `ipe-edit-mode' key bindings.
+* Other Major Commands::         Other major `insert-pair-edit-*' commands. 
+* Customization::                The `ipe' customization group.
+* Other ipe-edit-mode Commands:: Other `ipe-edit-mode' commands.
+* Other Features::               Other `insert-pair-edit' / `ipe-edit-mode' features.
+* Development::                  Documentation for developers.
+* Index::                        Complete index.
+@end menu
+
+@c ----------------------------------------------------------------------
+@node Overview
+@c ----------------------------------------------------------------------
+@chapter Overview
+@cindex Overview
+
+At it's simplest, the 'Insert Pair Edit' (ipe) package is an
+@strong{Emacs} package that just supplies a command,
+@command{insert-pair-edit}.  This command can be used to position and
+insert two pieces of text into an @strong{Emacs} buffer: an @sc{OPEN}
+string, and a @sc{CLOSE} string. (Or, as it is named within this
+package, a `@sc{PAIR}'.)
+
+For example, the @command{insert-pair-edit} command can be used to
+position and insert an open parenthesis '(', and, a close parenthesis
+')', around a given piece of text.
+
+The particular @sc{PAIR} to be inserted by the
+@command{insert-pair-edit} command is identified by a customizable
+@sc{MNEMONIC}, (usually a single character) which is entered into the
+@strong{Emacs} @emph{minibuffer} after running the
+@command{insert-pair-edit} command, at the ``Insert Pair: '' prompt,
+
+Once identified by the @sc{MNEMONIC}, this @sc{PAIR} is displayed
+within the current buffer (as overlays) around a @emph{lexical unit}
+surrounding POINT, and these overlays can then be moved about the
+buffer (using a set of pre-configured movement keys) to visually
+define the position at which the @sc{PAIR} is to be inserted into the
+buffer.
+
+The @sc{MNEMONIC} and the text used for its associated @sc{OPEN} and
+@sc{CLOSE} strings are customizable, can be @emph{mode-dependent}, and
+offer options to: 
+
+@itemize @bullet
+@item
+Define the @emph{lexical unit} used for initial positioning and movement.
+@item
+Update / Delete / Replace @emph{existing} @sc{PAIR}s.
+@item
+Edit the text enclosed within the @sc{PAIR}.
+@item
+Search for similar @sc{PAIR}s.
+@item
+Handle the editing / movement of multiple @sc{PAIR}s at once.
+@item
+Escape specific enclosing strings.
+@item
+Indent intervening lines.
+@item
+Insert prefix strings (@sc{INFIX}es) at the beginning of intervening
+lines.
+@item
+Re-position @sc{POINT} and @sc{MARK} on insert.
+@end itemize
+
+@menu
+* Expected Usage::
+@end menu
+
+@c ---------------------------------------------------------------------
+@node Expected Usage
+@c ---------------------------------------------------------------------
+
+@section Expected Usage
+@cindex Expected Usage
+
+One target use for the functionality supplied by the 'Insert Pair
+Edit' (ipe) package is @emph{marking up} text.
+
+For example:
+
+@itemize @bullet
+@item  
+Binding a set of HTML opening and closing tags:
+
+@example
+e.g.
+  @sc{MNEMONIC}: "1"  @sc{OPEN}: "<h1>"     @sc{CLOSE}: "</h1>"
+  @sc{MNEMONIC}: "e"  @sc{OPEN}: "<em>"     @sc{CLOSE}: "</em>"
+  @sc{MNEMONIC}: "s"  @sc{OPEN}: "<strong>" @sc{CLOSE}: "</strong>"
+  etc...
+@end example
+
+to a @command{html-mode}, and using the @command{insert-pair-edit}
+command to add / edit these tags around existing text within a
+@code{.html} file. 
+
+@item
+Binding a set of opening and closing strings representing @emph{markdown}:
+
+@example
+e.g.
+  @sc{MNEMONIC}: "1"  @sc{OPEN}: "#"   @sc{CLOSE}: "#"
+  @sc{MNEMONIC}: "*"  @sc{OPEN}: "**"  @sc{CLOSE}: "**"
+  @sc{MNEMONIC}: "_"  @sc{OPEN}: "_"   @sc{CLOSE}: "_"
+  etc...
+@end example
+
+to a @command{markdown-mode}, and using the @command{insert-pair-edit}
+to add / edit these tags around existing text within a @code{.md}
+file.
+@end itemize
+
+Another target use for this functionality is the addition of paired
+programming constructs within a programming mode: 
+
+For example:
+
+@itemize @bullet
+@item
+Binding language specific paired quotes / keywords / comments:
+
+@example
+e.g.
+  @sc{MNEMONIC}: "/"  @sc{OPEN}: "/*"   @sc{CLOSE}: "*/"   @sc{INFIX}: "**"
+  @sc{MNEMONIC}: "d"  @sc{OPEN}: "/**"  @sc{CLOSE}: " */"  @sc{INFIX}: " * "
+  @sc{MNEMONIC}: ";"  @sc{OPEN}: "// "  @sc{CLOSE}: ""     @sc{INFIX}: "// "
+  etc...
+@end example
+
+and using the @command{insert-pair-edit} command to accelerate the
+process of writing in the given language. 
+@end itemize
+
+@c ----------------------------------------------------------------------
+@node Installation
+@c ----------------------------------------------------------------------
+@chapter Installation
+@cindex Installation
+
+To install the 'Insert Pair Edit' (ipe) package, download 
+@command{insert-pair-edit} from: 
+
+@url{http://github.com/brians.emacs/insert-pair-edit}
+
+Add the following to your @code{.emacs} file:
+
+@example
+(add-to-list 'load-path "<path-to-ipe-download-dir>") 
+(require 'insert-pair-edit)
+@end example
+
+Add your preferred key-binding for the @command{insert-pair-edit}
+command. 
+
+For example, to bind @command{insert-pair-edit} to @key{META} +
+@key{(}:
+
+@example
+(global-set-key (kbd "M-(") 'insert-pair-edit)        
+@end example
+
+To configure the package:
+
+@itemize @bullet
+@item
+Run the command:
+
+@example
+@key{M-x} customize-group @key{RET}
+@end example
+
+And when prompted for a group via:
+
+@example
+Customize-Group:
+@end example
+
+Enter:
+
+@example
+@code{ipe}
+@end  example
+
+@item
+Or, select the:
+
+@example
+- Edit >
+  ...
+  - Pairs >
+    ...
+    - Options
+@end example
+
+menu option
+@end itemize
+
+Customize the @command{insert-pair-edit} package according to your
+preferences. (@xref{Customization})
+
+@c ----------------------------------------------------------------------
+@node Basic Usage
+@c ----------------------------------------------------------------------
+@chapter Basic Usage
+@cindex Basic Usage
+
+The functionality supplied @command{insert-pair-edit} package can be
+accessed in two main ways, using the @command{insert-pair-edit} command,
+or, using the @code{Edit} -> @code{Pairs} menu.
+
+@menu
+* Running insert-pair-edit::
+* The 'Edit' -> 'Pairs' menu::
+@end menu
+
+@c ----------------------------------------------------------------------
+@node Running insert-pair-edit
+@c ----------------------------------------------------------------------
+@section Running @command{insert-pair-edit}
+@cindex Running insert-pair-edit
+
+@example
+@key{M-(} - (Suggested Binding)
+@end example
+
+Running @command{insert-pair-edit} (via a pre-configured key-binding)
+(e.g. @key{M-(}) will prompt the User (using the @emph{minibuffer})
+with the string:
+  
+@code{Insert Pair: }
+
+At this prompt, the User can then enter one of a set of @sc{MNEMONIC}s
+(@xref{Customization}.)  The set of available @sc{MNEMONIC}s will be
+visible using @emph{minibuffer} TAB completion.
+
+TAB completion will display prompts of the form:
+
+@example
+'MNEMONIC1' - Insert Opening 'OPEN1' and Closing 'CLOSE1'
+'MNEMONIC2' - Insert Opening 'OPEN2' and Closing 'CLOSE2'
+'MNEMONIC3' - Insert Opening 'OPEN3' and Closing 'CLOSE3'
+...
+@end example
+
+Entering a valid @sc{MNEMONIC} will then cause a @sc{PAIR} of overlays
+(@xref{Display Customization}) to be added to the current buffer (at
+positions around @sc{POINT}) for both the desired @sc{OPEN} and
+@sc{CLOSE} string.
+
+For example, assuming that:
+
+@itemize @bullet
+@item
+The @command{insert-pair-edit} command has been bound to the suggested
+@key{M-(} binding;
+@item
+The @key{(} @sc{MNEMONIC} is bound to the @sc{PAIR} @key{(} @key{)},
+and; 
+@item
+The buffer contains the following text:
+
+@example
+The quick brown |fox jumps over the lazy dog.
+@end example
+
+(Where the @key{|} character represents the current position of
+@sc{POINT}.)
+@end itemize
+
+Then, inserting a @sc{PAIR} using the following keystrokes:
+
+@example
+@key{M-(} @key{(}
+@end example
+
+Will add the @key{(} @key{)} @sc{PAIR} around ``fox'', resulting in
+the buffer:
+
+@example
+The quick brown (|fox) jumps over the lazy dog.
+@end example
+
+(Where the @key{(} @key{)} strings are overlays that can be moved by
+the @command{ipe-edit-mode} key-bindings (@xref{Basic Movement}))
+
+The initial position of the @sc{OPEN} and @sc{CLOSE} overlays will be
+determined by the @emph{lexical unit} associated with the @sc{PAIR}
+(either: character, word, line or list.)  This can be set when
+customizing the definition of the @sc{PAIR}. (@xref{Movement Units})
+
+Once the overlays have been initially positioned, the
+@command{insert-pair-edit} command will activate the
+@command{ipe-edit-mode} minor-mode to allow these overlays to be
+further adjusted.
+
+@menu
+* ipe-edit-mode::
+* Other `insert-pair-edit-*' commands::
+@end menu
+
+@c ----------------------------------------------------------------------
+@node ipe-edit-mode
+@c ----------------------------------------------------------------------
+@subsection ipe-edit-mode
+
+The @command{ipe-edit-mode} will set up a set of simple key bindings
+(@xref{Basic Mode Key Bindings}) to move the @sc{OPEN} and @sc{CLOSE}
+overlays of the @sc{PAIR} selected by one of the
+@command{insert-pair-edit} commands.  Movement is via a selected
+@emph{lexical unit}, either:
+
+@itemize @bullet
+@item
+``by characters''
+@item
+``by words''
+@item
+``by lines''
+@item
+``by lists''.
+@end itemize
+
+This ``movement mode'' can be changed. (@xref{Movement Units}.)
+
+The @command{ipe-edit-mode} will also set up a set of simple key
+bindings to either process or abort the insertion of this @sc{PAIR} of
+strings into the buffer. (@xref{Inserting and Aborting})
+
+Inserting or aborting the @sc{PAIR} will then remove all of the
+@command{ipe-edit-mode} key bindings, and return the User to the
+normal @strong{Emacs} mode for the given buffer.
+
+@c ----------------------------------------------------------------------
+@node Other `insert-pair-edit-*' commands
+@c ----------------------------------------------------------------------
+@subsection Other `insert-pair-edit-*' commands
+
+Prefixing the call to the @command{insert-pair-edit} command with one
+or more of the @strong{Emacs} @command{universal-argument} (Usually
+bound to @key{C-u} by default) can be used to modify the behaviour of
+the @command{insert-pair-edit} command.
+
+For example, if using the suggested @key{M-(} binding for
+@command{insert-pair-edit}, the following keystrokes can be used to
+invoke @emph{other} 'Insert Pair Edit' (ipe) commands:
+
+@table @w{}
+@item @key{C-u} @key{M-(}
+Update an existing @sc{PAIR}. (@xref{Updating PAIRs})
+
+(Command: @command{insert-pair-edit-update})
+
+@item @key{C-u} @key{C-u} @key{M-(}
+Delete an existing @sc{PAIR}. (@xref{Deleting PAIRs})
+
+(Command: @command{insert-pair-edit-delete})
+
+@item @key{C-u} @key{C-u} @key{C-u} @key{M-(}
+Replace an existing @sc{PAIR} with a @sc{REPLACEMENT
+PAIR}. (@xref{Replacing PAIRs})
+
+(Command: @command{insert-pair-edit-replace}) 
+@end table
+
+@c ----------------------------------------------------------------------
+@node The 'Edit' -> 'Pairs' menu
+@c ----------------------------------------------------------------------
+@section The 'Edit' -> 'Pairs' menu
+@cindex The 'Edit' -> 'Pairs' menu
+
+@example
+- Edit >
+  ...
+  - Pairs >
+    - Insert PAIR >
+      - 'OPEN' ... 'CLOSE'
+      - ...
+    - Update PAIR >
+      - 'OPEN' ... 'CLOSE'
+      - ...
+    - Delete PAIR >
+      - 'OPEN' ... 'CLOSE'
+      - ...
+    - Edit PAIR Definitions >
+      - ...
+    - Options
+    - Info
+    - Help
+@end example
+
+If running @strong{Emacs} in a graphical environment which supports
+menus, the @command{insert-pair-edit} package can add an extra
+@code{Pairs} menu item to the standard @strong{Emacs} @code{Edit} Menu.
+
+@strong{NOTE}: The 'Insert Pair Edit' (ipe) menu bar is enabled using the
+@option{ipe-menu-support-p} option.  (Default: @strong{t}))
+
+The set of @sc{PAIR}s listed under the @code{Insert PAIR} / @code{Update
+PAIR} / @code{Delete PAIR} sub-menus will change dynamically based upon
+the current buffer's @option{major-mode}.
+
+Selecting a menu item under @code{Insert PAIR} will insert the selected
+@sc{PAIR} into the current buffer around @sc{POINT}, and enter
+@command{ipe-edit-mode}.
+
+Selecting a menu item under @code{Update PAIR} will update the
+@emph{nearest} (@xref{Update Search Process}) @sc{PAIR} (of the given
+type) and enter @command{ipe-edit-mode}. 
+
+Selecting a menu item under @code{Delete PAIR} will delete the
+@emph{nearest} (@xref{Update Search Process}) @sc{PAIR} (of the given
+type) and remain in the current @strong{Emacs} mode. 
+
+@c ----------------------------------------------------------------------
+@node Basic Mode Key Bindings
+@c ----------------------------------------------------------------------
+@chapter Basic Mode Key Bindings
+@cindex Basic Mode Key Bindings
+
+The following sections describe the basic key bindings (and associated
+commands) active when the @command{ipe-edit-mode} is activated.
+
+@menu
+* Basic Movement::          Keys to move OPEN and CLOSE overlays.
+* Basic Movement Options::  Alternate movement keys.
+* Inserting and Aborting::  Keys to exit @command{ipe-edit-mode}.
+* Movement Units::          Keys to change OPEN and CLOSE movement.
+* Changing PAIRs::          Keys to change OPEN and CLOSE strings.
+* Mouse Movement::          Movement enacted by mouse actions.
+@end menu
+
+@c ----------------------------------------------------------------------
+@node Basic Movement
+@c ----------------------------------------------------------------------
+@section Basic Movement
+@cindex Basic Movement 
+
+Once @command{ipe-edit-mode} is activated, the @sc{OPEN} and @sc{CLOSE}
+overlays of a @sc{PAIR} can be moved about the buffer.  By default, this
+is expected to be achieved using a set of @emph{twelve}
+key-bindings. @emph{Six} that control the direction of movement of the
+@sc{OPEN} overlay, and @emph{six} that control the direction of movement
+of the @sc{CLOSE} overlay.
+
+These basic movement key bindings can be configured using the
+customization option, @option{ipe-edit-movement-keyset}, which can be
+used to control which of a set of @emph{pre-canned} key bindings is
+activated when @command{ipe-edit-mode} is active, or, can be used to
+set up a @emph{user-defined} set of bindings.
+
+By default, @option{ipe-edit-movement-keyset} is set to activate the
+following key bindings, which are similar to those normally used for
+standard @strong{Emacs} character and word movement.
+
+@cindex Basic Movement (Modifiers)
+
+@example
+            <C-p>                            <M-p>
+              ^                                ^
+              |                                |
+<C-a> <C-b>  OPEN  <M-f> <M-e>  <M-a> <M-b>  CLOSE  <C-f> <C-e>
+              |                                |
+              v                                v
+            <M-n>                            <C-n>
+@end example
+
+@table @w{}
+@item @key{C-a}
+Move @sc{OPEN} to the 'beginning' (Command: @command{ipe-edit--open-beg})
+@item @key{C-p}
+Move @sc{OPEN} 'up'               (Command: @command{ipe-edit--open-up})
+@item @key{C-b}
+Move @sc{OPEN} 'backward'         (Command: @command{ipe-edit--open-backward})
+@item @key{M-f}
+Move @sc{OPEN} 'forward'          (Command: @command{ipe-edit--open-forward})
+@item @key{M-n}
+Move @sc{OPEN} 'down'             (Command: @command{ipe-edit--open-down})
+@item @key{M-e}
+Move @sc{OPEN} to the 'end'       (Command: @command{ipe-edit--open-end})
+
+@item @key{M-a}
+Move @sc{CLOSE} to the 'beginning' (Command: @command{ipe-edit--close-beg})
+@item @key{M-p}
+Move @sc{CLOSE} 'up'               (Command: @command{ipe-edit--close-up})
+@item @key{M-b}
+Move @sc{CLOSE} 'backward'         (Command: @command{ipe-edit--close-backward})
+@item @key{C-f}
+Move @sc{CLOSE} 'forward'          (Command: @command{ipe-edit--close-forward})
+@item @key{C-n}
+Move @sc{CLOSE} 'down'             (Command: @command{ipe-edit--close-down})
+@item @key{C-e}
+Move @sc{CLOSE} to the 'end'       (Command: @command{ipe-edit--close-end})
+@end table
+
+The amount each command moves its overlay is dependent upon the current
+``movement mode'', which is controlled using the @var{ipe--movement}
+variable.
+
+By default, @var{ipe--movement} is set to @code{word}, which means that
+the keys for the forward (@command{ipe-edit--open-forward} /
+@command{ipe-edit--close-forward}) and backward
+(@command{ipe-edit--open-backward} / @command{ipe-edit--close-backward})
+commands will move the @sc{OPEN} and @sc{CLOSE} overlays forward and
+backward ``by words'', and, up and down ``by lines''.
+
+@c ----------------------------------------------------------------------
+@node Basic Movement Options
+@c ----------------------------------------------------------------------
+@section Basic Movement Options
+
+The set of @emph{movement} key bindings that are active within
+@command{ipe-edit-mode}, can be changed using the customizable option
+@option{ipe-edit-movement-keyset}.
+
+To configure this option, run the command:
+
+@example
+@key{M-x} customize-variable @key{RET} ipe-edit-movement-keyset @key{RET}
+@end example
+
+This option allows for the definition of either one or more pre-canned
+``keysets'' (@emph{Alphabetic}, @emph{Arrows}, @emph{Modifiers},
+@emph{WASD}, @emph{VI}) to be toggled on and off independently, or, for
+a ``user defined'' keyset to be installed.
+
+(i.e. If using the pre-canned keyset, it is possible to activate both
+the @emph{Alphabetic} and the @emph{Arrows} options, and be able to move
+the @sc{OPEN} and @sc{CLOSE} overlays using both the alphabetic and
+arrows keys, or, the User can simply define the own preferred movement
+key bindings and use those instead.)
+
+@menu
+* Basic Movement (Alphabetic)::
+* Basic Movement (Arrows)::
+* Basic Movement (WASD)::
+* Basic Movement (VI)::
+* Basic Movement (Custom)::
+@end menu
+
+@c ----------------------------------------------------------------------
+@node Basic Movement (Alphabetic)
+@c ----------------------------------------------------------------------
+@subsection Alphabetic
+@cindex Basic Movement (Alphabetic)
+
+If the @option{ipe-edit-movement-keyset} option includes the
+@emph{Alphabetic} flag, then, when in @command{ipe-edit-mode}, the basic
+movement of the @sc{OPEN} and @sc{CLOSE} overlays is controlled by the
+same set of key bindings as the standard @strong{Emacs} character
+movement keys, but without the keyboard modifiers.
+
+@example
+        <p>                    <P>
+         ^                      ^
+         |                      |
+<a> <b> OPEN <F> <E>  <A> <B> CLOSE <f> <e>
+         |                      |
+         v                      v
+        <N>                    <n>
+@end example
+
+@table @w{}
+@item @key{a}
+Move @sc{OPEN} to the 'beginning' (Command: @command{ipe-edit--open-beg})
+@item @key{p}
+Move @sc{OPEN} 'up'               (Command: @command{ipe-edit--open-up})
+@item @key{b}
+Move @sc{OPEN} 'backward'         (Command: @command{ipe-edit--open-backward})
+@item @key{F}
+Move @sc{OPEN} 'forward'          (Command: @command{ipe-edit--open-forward})
+@item @key{N}
+Move @sc{OPEN} 'down'             (Command: @command{ipe-edit--open-down})
+@item @key{E}
+Move @sc{OPEN} to the 'end'       (Command: @command{ipe-edit--open-end})
+
+@item @key{A}
+Move @sc{CLOSE} to the 'beginning' (Command: @command{ipe-edit--close-beg})
+@item @key{P}
+Move @sc{CLOSE} 'up'               (Command: @command{ipe-edit--close-up})
+@item @key{B}
+Move @sc{CLOSE} 'backward'         (Command: @command{ipe-edit--close-backward})
+@item @key{f}
+Move @sc{CLOSE} 'forward'          (Command: @command{ipe-edit--close-forward})
+@item @key{n}
+Move @sc{CLOSE} 'down'             (Command: @command{ipe-edit--close-down})
+@item @key{e}
+Move @sc{CLOSE} to the 'end'       (Command: @command{ipe-edit--close-end})
+@end table
+
+@c ----------------------------------------------------------------------
+@node Basic Movement (Arrows)
+@c ----------------------------------------------------------------------
+@subsection Arrows
+@cindex Basic Movement (Arrows)
+
+If the @option{ipe-edit-movement-keyset} option includes the @emph{Arrows}
+flag, then, when in @command{ipe-edit-mode}, the basic movement of the
+@sc{OPEN} and @sc{CLOSE} overlays is controlled by the arrows keys
+(@key{up}, @key{left}, @key{right}, @key{down}), the @key{home} and
+@key{end} keys, and the @key{CTRL} modifier.
+
+@example
+              <up>                                      <C-up>
+               ^                                          ^
+               |                                          |
+<home> <left> OPEN <C-right> <C-end>  <C-home> <C-left> CLOSE <right> <end>
+               |                                          |
+               v                                          v
+            <C-down>                                    <down>
+@end example
+
+@table @w{}
+@item @key{home}
+Move @sc{OPEN} to the 'beginning' (Command: @command{ipe-edit--open-beg})
+@item @key{up}
+Move @sc{OPEN} 'up'               (Command: @command{ipe-edit--open-up})
+@item @key{left}
+Move @sc{OPEN} 'backward'         (Command: @command{ipe-edit--open-backward})
+@item @key{C-right}
+Move @sc{OPEN} 'forward'          (Command: @command{ipe-edit--open-forward})
+@item @key{C-down}
+Move @sc{OPEN} 'down'             (Command: @command{ipe-edit--open-down})
+@item @key{C-end}
+Move @sc{OPEN} to the 'end'       (Command: @command{ipe-edit--open-end})
+
+@item @key{C-home}
+Move @sc{CLOSE} to the 'beginning' (Command: @command{ipe-edit--close-beg})
+@item @key{C-up}
+Move @sc{CLOSE} 'up'               (Command: @command{ipe-edit--close-up})
+@item @key{C-left}
+Move @sc{CLOSE} 'backward'         (Command: @command{ipe-edit--close-backward})
+@item @key{right}
+Move @sc{CLOSE} 'forward'          (Command: @command{ipe-edit--close-forward})
+@item @key{down}
+Move @sc{CLOSE} 'down'             (Command: @command{ipe-edit--close-down})
+@item @key{end}
+Move @sc{CLOSE} to the 'end'       (Command: @command{ipe-edit--close-end})
+@end table
+
+@c ----------------------------------------------------------------------
+@node Basic Movement (WASD)
+@c ----------------------------------------------------------------------
+@subsection WASD
+@cindex Basic Movement (WASD)
+
+If the @option{ipe-edit-movement-keyset} option includes the @emph{WASD}
+flag, then, when in @command{ipe-edit-mode}, the basic movement of the
+@sc{OPEN} and @sc{CLOSE} overlays is controlled by the (@key{q},
+@key{w}, @key{a}, @key{s}, @key{d}, @key{e}) keys and their uppercase
+counterparts.
+
+@example
+        <w>                    <W>
+         ^                      ^
+         |                      |
+<q> <a> OPEN <D> <E>  <Q> <A> CLOSE <d> <e>
+         |                      |
+         v                      v
+        <S>                    <s>
+@end example
+
+@table @w{}
+@item @key{q}
+Move @sc{OPEN} to the 'beginning' (Command: @command{ipe-edit--open-beg})
+@item @key{w}
+Move @sc{OPEN} 'up'               (Command: @command{ipe-edit--open-up})
+@item @key{a}
+Move @sc{OPEN} 'backward'         (Command: @command{ipe-edit--open-backward})
+@item @key{D}
+Move @sc{OPEN} 'forward'          (Command: @command{ipe-edit--open-forward})
+@item @key{S}
+Move @sc{OPEN} 'down'             (Command: @command{ipe-edit--open-down})
+@item @key{E}
+Move @sc{OPEN} to the 'end'       (Command: @command{ipe-edit--open-end})
+
+@item @key{Q}
+Move @sc{CLOSE} to the 'beginning' (Command: @command{ipe-edit--close-beg})
+@item @key{W}
+Move @sc{CLOSE} 'up'               (Command: @command{ipe-edit--close-up})
+@item @key{A}
+Move @sc{CLOSE} 'backward'         (Command: @command{ipe-edit--close-backward})
+@item @key{d}
+Move @sc{CLOSE} 'forward'          (Command: @command{ipe-edit--close-forward})
+@item @key{s}
+Move @sc{CLOSE} 'down'             (Command: @command{ipe-edit--close-down})
+@item @key{e}
+Move @sc{CLOSE} to the 'end'       (Command: @command{ipe-edit--close-end})
+@end table
+
+@c ----------------------------------------------------------------------
+@node Basic Movement (VI)
+@c ----------------------------------------------------------------------
+@subsection VI
+@cindex Basic Movement (VI)
+
+If the @option{ipe-edit-movement-keyset} option includes the @emph{VI}
+flag, then, when in @command{ipe-edit-mode}, the basic movement of the
+@sc{OPEN} and @sc{CLOSE} overlays is controlled by the VI basic
+character movement keys (@key{k}, @key{h}, @key{l}, @key{j}) and their
+uppercase counterparts, plus the VI start and end of line keys (@key{0},
+@key{$}), and the VI word movement keys (@key{B} and @key{W}) for the
+@command{ipe-edit--open-beg} / @command{ipe-edit--open-end} /
+@command{ipe-edit--close-beg} / @command{ipe-edit--close-end} commands.
+
+@example
+        <k>                    <K>
+         ^                      ^
+         |                      |
+<0> <h> OPEN <L> <B>  <W> <H> CLOSE <l> <$>
+         |                      |
+         v                      v
+        <J>                    <j>
+@end example
+
+@table @w{}
+@item @key{0}
+Move @sc{OPEN} to the 'beginning' (Command: @command{ipe-edit--open-beg})
+@item @key{k}
+Move @sc{OPEN} 'up'               (Command: @command{ipe-edit--open-up})
+@item @key{h}
+Move @sc{OPEN} 'backward'         (Command: @command{ipe-edit--open-backward})
+@item @key{L}
+Move @sc{OPEN} 'forward'          (Command: @command{ipe-edit--open-forward})
+@item @key{J}
+Move @sc{OPEN} 'down'             (Command: @command{ipe-edit--open-down})
+@item @key{B}
+Move @sc{OPEN} to the 'end'       (Command: @command{ipe-edit--open-end})
+
+@item @key{W}
+Move @sc{CLOSE} to the 'beginning' (Command: @command{ipe-edit--close-beg})
+@item @key{K}
+Move @sc{CLOSE} 'up'               (Command: @command{ipe-edit--close-up})
+@item @key{H}
+Move @sc{CLOSE} 'backward'         (Command: @command{ipe-edit--close-backward})
+@item @key{l}
+Move @sc{CLOSE} 'forward'          (Command: @command{ipe-edit--close-forward})
+@item @key{j}
+Move @sc{CLOSE} 'down'             (Command: @command{ipe-edit--close-down})
+@item @key{$}
+Move @sc{CLOSE} to the 'end'       (Command: @command{ipe-edit--close-end})
+@end table
+
+@c ----------------------------------------------------------------------
+@node Basic Movement (Custom)
+@c ----------------------------------------------------------------------
+@subsection Custom Movement Keyset
+@cindex Basic Movement (Custom)
+
+A ``user defined'' set of 'Insert Pair Edit' (ipe)
+@command{ipe-edit-mode} movement key bindings can be set using the
+customization option @option{ipe-edit--custom-movement-keyset}.
+
+To configure this option, run the command:
+
+@example
+@key{M-x} customize-variable @key{RET} ipe-edit--custom-movement-keyset @key{RET}
+@end example
+
+Or, select the @emph{'Insert Pair Edit' - Movement Keys: Custom Key
+Set} option from the @code{Edit} -> @code{Pairs} menu:
+
+@example
+- Edit > 
+  ... 
+  - Pairs > 
+    ... 
+    - Options 
+      ...
+      * 'Insert Pair Edit' - Movement Keys: Custom Key Set 
+@end example              
+
+menu option.
+
+@c ----------------------------------------------------------------------
+@node Inserting and Aborting
+@c ----------------------------------------------------------------------
+@section Inserting and Aborting
+@cindex Inserting and Aborting
+
+To exit @command{ipe-edit-mode}, the User either @emph{inserts} the
+@sc{PAIR}, or @emph{aborts}.
+
+@subsection Inserting
+@key{RET} (in @command{ipe-edit-mode})
+
+Once the @sc{OPEN} and @sc{CLOSE} overlays have been used to correctly
+position the @sc{OPEN} and @sc{CLOSE} strings of an 'Insert Pair Edit'
+(ipe) @sc{PAIR} within the buffer, they can be inserted into the
+buffer using the command: @command{ipe-edit--insert-pair}.
+
+@defun ipe-edit--insert-pair
+This command will insert the @sc{OPEN} and @sc{CLOSE} strings of an
+'Insert Pair Edit' (ipe) @sc{PAIR} into the buffer, exit the
+@command{ipe-edit-mode}, and, restore all key bindings to normal.
+@end defun
+
+Other ``Insert And...'' commands are available. (@xref{Insert And... Commands})
+@subsection Aborting
+@key{C-g} (in @command{ipe-edit-mode})
+
+If it is not desirable to insert the @sc{OPEN} and @sc{CLOSE} strings
+represented by the overlays within @command{ipe-edit-mode}, the mode
+can be aborted using the command: @command{ipe-edit--abort}.
+
+@defun ipe-edit--abort
+This command will exit the @command{ipe-edit-mode} and restore all key
+bindings to normal, without inserting the @sc{OPEN} or @sc{CLOSE}
+strings into the buffer.
+@end defun
+
+@c ----------------------------------------------------------------------
+@node Movement Units
+@c ----------------------------------------------------------------------
+@section Movement Units
+@cindex Movement Units
+
+The @emph{default} movement unit for a given 'Insert Pair Edit' (ipe)
+@sc{PAIR} is ``by words'', however, each individual @sc{PAIR} can define
+its own @emph{initial movement} (@xref{Customization}.)
+
+Movement can be:
+
+@itemize @w{}
+@item
+``by characters''
+@item
+``by words''
+@item
+``by lines''
+@item
+``by lists''
+@end itemize
+
+In addition to each @sc{PAIR} defining its own @emph{initial movement},
+movement can be changed in @command{ipe-edit-mode} using the following
+commands, (Bound to the @key{m} prefix in @command{ipe-edit-mode} by
+default.)
+
+@itemize @w{}
+@item
+@key{m} @key{c} (in @command{ipe-edit-mode})
+
+@defun ipe-edit--movement-by-char 
+Changes the movement made by the @command{ipe-edit-mode} basic
+movement (@xref{Basic Movement}) commands to be ``by characters''.
+@end defun
+
+@item
+@key{m} @key{w} (in @command{ipe-edit-mode})
+
+@defun ipe-edit--movement-by-word
+Changes the movement made by the @command{ipe-edit-mode} basic
+movement (@xref{Basic Movement}) commands to be ``by words''.
+@end defun
+
+@item
+@key{m} @key{l} (in @command{ipe-edit-mode})
+@defun ipe-edit--movement-by-line
+Changes the movement made by the @command{ipe-edit-mode} basic
+movement (@xref{Basic Movement}) commands to be ``by lines''.
+(@xref{Line Movement})
+@end defun
+
+@item
+@key{m} @key{x} (in @command{ipe-edit-mode})
+
+@defun ipe-edit--movement-by-list
+Changes the movement made by the @command{ipe-edit-mode} basic
+movement (@xref{Basic Movement}) commands to be ``by lists''.
+(@xref{List Movement})
+@end defun
+@end itemize
+
+@c ----------------------------------------------------------------------
+@node Changing PAIRs
+@c ----------------------------------------------------------------------
+@section Changing PAIRs
+@cindex Changing PAIRs
+
+The text to be inserted by the @sc{OPEN} and @sc{CLOSE} overlays of an
+'Insert Pair Edit' (ipe) @sc{PAIR} can be changed on the fly.
+
+@key{(} (in @command{ipe-edit-mode})
+
+@defun ipe-edit--change-pair
+Prompts for a @sc{MNEMONIC} used to identify a @sc{PAIR} from the
+@command{customize}-able @var{ipe-pairs} /
+@var{ipe-mode-pairs} variables, and replaces the currently
+displayed strings within the @sc{OPEN} and @sc{CLOSE} overlays with
+the @sc{OPEN} and @sc{CLOSE} strings for the newly identified
+@sc{PAIR}. 
+@end defun
+
+For example, assuming that:
+
+@itemize @bullet
+@item
+The @command{insert-pair-edit} command has been bound to the suggested
+@key{M-(} binding;
+@item
+The @key{(} @sc{MNEMONIC} is bound to the @sc{PAIR} @key{(} @key{)};
+and 
+@item
+The @key{[} @sc{MNEMONIC} is bound to the @sc{PAIR} @key{[} @key{]}.
+@end itemize
+
+If you had originally used the keystrokes:
+
+@example
+@key{M-(} @key{(}
+@end example
+
+To insert a @key{(} @key{)} @sc{PAIR} into the buffer, you could
+change the this to a @key{[} @key{]} @sc{PAIR} after entering
+@command{ipe-edit-mode} by using the keystrokes:
+                        
+@example
+@key{(} @key{[}
+@end example
+
+This can be especially useful when @emph{Updating} @sc{PAIR}s, as a
+@sc{PAIR} with a given @sc{MNEMONIC} can be selected by using the
+keystrokes: 
+
+@example
+@key{M-u} @key{M-(} @emph{MNEMONIC}
+@end example
+
+And then changed to a new @sc{PAIR} using the keystrokes:
+
+@example
+@key{(} @emph{NEW-MNEMONIC}
+@end example
+
+@c ----------------------------------------------------------------------
+@node Mouse Movement
+@c ----------------------------------------------------------------------
+@section Mouse Movement
+@cindex Mouse Movement
+
+If enabled via the @option{ipe-mouse-support-p} option (Default:
+@strong{t}), 'Insert Pair Edit' (ipe) @sc{PAIR}s can be moved using the
+Mouse.
+
+@table @w{}
+@item @key{mouse-1} (in @command{ipe-edit-mode})
+Left clicking on a location within the buffer, will reposition the
+currently displayed @sc{OPEN} overlay to the start of the closest
+@emph{lexical unit}.
+
+(Command: @command{ipe-mouse--open})
+
+@item @key{mouse-2} (in @command{ipe-edit-mode})
+Clicking on a location within the buffer with the @emph{mouse-2}
+button, will reposition the currently displayed @sc{CLOSE} overlay to
+the end of the closest @emph{lexical unit}.
+ 
+(Command: @command{ipe-mouse--close})
+
+@item @key{drag-mouse-1} (in @command{ipe-edit-mode})
+Selecting a @emph{region} by left clicking, and dragging the mouse
+from one location to another, will position the @sc{OPEN} overlay at
+the @emph{lexical unit} closest to the start of the @emph{region}, and
+the @sc{CLOSE} overlay at the @emph{lexical unit} closest to the end
+of the @emph{region}.
+
+(Command: @command{ipe-mouse--drag})
+
+@item @key{wheel-up} / @key{wheel-down} (in @command{ipe-edit-mode})
+If available, mouse wheel actions can be used to move the @sc{OPEN}
+and @sc{CLOSE} overlays forward and backward.
+
+(Commands: @command{ipe-mouse--open-backward} /
+@command{ipe-mouse--close-forward})
+
+@item @key{C-wheel-up} / @key{C-wheel-down} (in @command{ipe-edit-mode})
+Holding the @key{CTRL} key while using the mouse wheel can be used to
+move the @sc{OPEN} and @sc{CLOSE} overlays in the opposite directions.
+
+(Commands: @command{ipe-mouse--open-forward} /
+@command{ipe-mouse--close-backward}) 
+
+@item @key{S-wheel-up} / @key{S-wheel-down} / @key{C-S-wheel-up} / @key{C-S-wheel-down} (in @command{ipe-edit-mode})
+Holding the @key{SHIFT} key while using the mouse wheel can be used to
+move the @sc{OPEN} and @sc{CLOSE} overlays using alternate
+movements (i.e. ``by-char'' regardless of the current @emph{Movement
+Mode})
+
+@w{                                          @*
+(Commands:                                   @*
+  @command{ipe-mouse--open-forward-alt} /    @*
+  @command{ipe-mouse--close-backward-alt} /  @*
+  @command{ipe-mouse--open-backward-alt} /   @*
+  @command{ipe-mouse--close-forward-alt}     @*
+)}
+
+@item @key{M-wheel-up} / @key{M-wheel-down} (in @command{ipe-edit-mode})
+Holding the @key{META} key while using the mouse wheel can be used to
+change the current ``movement mode``.
+
+(Commands: @command{ipe-mouse--next-movement} /
+@command{ipe-mouse--previous-movement})
+@end table
+
+@c ----------------------------------------------------------------------
+@node Other Major Commands
+@c ----------------------------------------------------------------------
+@section Other Major Insert-Pair-Edit Commands
+@cindex Other Major Insert-Pair-Edit Commands
+
+The following sections describe the other @emph{Major} 'Insert Pair
+Edit' (ipe) commands.
+
+@menu
+* Updating PAIRs::  Commands to update existing PAIRs.
+* Deleting PAIRs::  Commands to delete existing PAIRs.
+* Replacing PAIRs:: Commands to replace existing PAIRs.
+@end menu
+
+@node Updating PAIRs
+@subsection Updating PAIRs
+@cindex Updating PAIRs
+
+@example
+@key{C-u} @key{M-(} @emph{MNEMONIC}
+@end example
+
+The positions of existing @sc{PAIR}s within a buffer can be
+@emph{updated} by using the command:
+
+@defun insert-pair-edit-update
+This command updates the position of the @sc{OPEN} and @sc{CLOSE}
+strings of an 'Insert Pair Edit' (ipe) @sc{PAIR}.  The @sc{OPEN} and
+@sc{CLOSE} strings of the @sc{PAIR} are determined by: prompting for,
+and looking up, a @sc{MNEMONIC} in the @command{customize}-able
+@var{ipe-pairs} / @var{ipe-mode-pairs} variables.
+@end defun
+
+Calling the @command{insert-pair-edit-update} command will search the
+current buffer for a @sc{PAIR} which matches the @sc{OPEN} and
+@sc{CLOSE} strings for the given @sc{MNEMONIC}.  It will replace the
+@sc{OPEN} and @sc{CLOSE} strings with overlays, which can then be
+moved using the standard 'Insert Pair Edit' (ipe) @xref{Basic
+Movement} commands.
+
+This command can be also be invoked by invoking the
+`universal-argument' (Generally bound to @key{C-u}), before a call to
+@command{insert-pair-edit}.
+
+For example, assuming that:
+
+@itemize @bullet
+@item
+The @command{insert-pair-edit} command has been bound to the suggested
+@key{M-(} binding;
+@item
+The @key{(} @sc{MNEMONIC} is bound to the @sc{PAIR} @key{(} @key{)};
+@item
+The @emph{Modifiers} @command{ipe-edit-movement-keyset} has been
+enabled, and; 
+@item
+The buffer contains the following text:
+
+@example
+The quick brown (|fox) jumps over the lazy dog.
+@end example
+
+(@strong{Where}: The @key{|} character is used to represent the current
+position of @sc{POINT}.) 
+@end itemize
+
+To update the position of the @key{(} @key{)} @sc{PAIR} around ``fox''
+you would use the keystrokes:
+
+@example
+@key{C-u} @key{M-(} @key{(}
+@end example
+
+Which will call @command{insert-pair-edit-update}, select the
+@key{(} @key{)} @sc{PAIR} around ``fox'', and enter
+@command{ipe-edit-mode}. 
+
+To then move the existing parenthesis around ``fox'' to ``over'',
+you would then use the keystroke:
+
+@example
+@key{M-f}
+@end example
+
+Which will result in the buffer:
+
+@example
+The quick brown |fox (jumps) over the lazy dog.
+@end example
+
+To then insert the @key{(} @key{)} @sc{PAIR} into the buffer use the
+keystroke:
+
+@example
+@key{RET}
+@end example
+
+@strong{NOTE}: The @command{insert-pair-edit-update} command will
+search for the @emph{nearest} (@xref{Update Search Process}) @sc{PAIR}
+to @sc{POINT}.  The direction of the search is determined by the
+option @option{ipe-update-forward-first}.
+
+@c ----------------------------------------------------------------------
+@node Deleting PAIRs
+@c ----------------------------------------------------------------------
+@subsection Deleting PAIRs
+@cindex Deleting PAIRs
+
+@example
+@key{C-u} @key{C-u} @key{M-(} @emph{MNEMONIC}
+@end example
+
+Existing @sc{PAIR}s within a buffer can be @emph{deleted} by using the
+command: 
+
+@defun insert-pair-edit-delete
+This command deletes the @sc{OPEN} and @sc{CLOSE} strings of an 'Insert
+Pair Edit' (ipe) @sc{PAIR}.  The @sc{OPEN} and @sc{CLOSE} strings of the
+@sc{PAIR} are determined by: prompting for, and looking up, a
+@sc{MNEMONIC} in the @command{customize}-able @var{ipe-pairs} /
+@var{ipe-mode-pairs} variables.
+@end defun
+
+Calling the @command{insert-pair-edit-delete} command will search the
+current buffer for a @sc{PAIR} which matches the @sc{OPEN} and
+@sc{CLOSE} strings matching the given @sc{MNEMONIC}.  If a @sc{PAIR} is
+found, it will delete the @sc{OPEN} and @sc{CLOSE} strings.
+
+This command can be also be invoked by invoking two
+@command{universal-argument} (Generally bound to @key{C-u}) calls
+before a call to @command{insert-pair-edit}.
+
+For example, assuming that:
+
+@itemize @bullet
+@item
+The @command{insert-pair-edit} command has been bound to the suggested
+@key{M-(} binding;
+@item
+The @key{(} @sc{MNEMONIC} is bound to the @sc{PAIR} @key{(} @key{)},
+and; 
+@item 
+The buffer contains the following text:
+
+@example
+The quick brown (|fox) jumps over the lazy dog.
+@end example
+
+(@strong{Where}: the @key{|} character is used to represent the current
+position of @sc{POINT}.) 
+@end itemize
+
+To delete the parenthesis around ``fox'' you would use the keystrokes:
+
+@example
+@key{C-u} @key{C-u} @key{M-(} @key{(}
+@end example
+
+Which will result in the buffer:
+
+@example
+The quick brown |fox jumps over the lazy dog.
+@end example
+
+@sc{NOTE}: The @command{insert-pair-edit-delete} command will search
+for the @emph{nearest} (@xref{Update Search Process}) @sc{PAIR} to
+@sc{POINT}.  The direction of the search is determined by the
+@option{ipe-update-forward-first} option.
+
+@c ----------------------------------------------------------------------
+@node Replacing PAIRs
+@c ----------------------------------------------------------------------
+@subsection Replacing PAIRs
+@cindex Replacing PAIRs
+
+@example
+@key{C-u} @key{C-u} @key{C-u} @key{M-(} @emph{MNEMONIC}
+@end example
+
+An existing @sc{PAIR} within a buffer can be @emph{replaced} with the
+@sc{OPEN} and @sc{CLOSE} string of another @sc{PAIR} by using the
+command:
+
+@defun insert-pair-edit-replace
+This command replaces the @sc{OPEN} and @sc{CLOSE} strings of an 'Insert
+Pair Edit' (ipe) @sc{PAIR}.  The @sc{OPEN} and @sc{CLOSE} strings of the
+@sc{PAIR} to be replaced are determined by: prompting for, and looking
+up, a @sc{MNEMONIC} in the @command{customize}-able @var{ipe-pairs}
+/ @var{ipe-mode-pairs} variables.  The @sc{PAIR} specifying the replacement
+@sc{OPEN} and @sc{CLOSE} strings is also determined by prompting for,
+and looking up, a @sc{MNEMONIC} in the @command{customize}-able
+@var{ipe-pairs} / @var{ipe-mode-pairs} variables
+@end defun
+
+The @command{insert-pair-edit-replace} command will search the current
+buffer for a @sc{PAIR} which matches the @sc{OPEN} and @sc{CLOSE}
+strings matching the given @sc{MNEMONIC}.  If a @sc{PAIR} is found, it
+will replace the @sc{OPEN} and @sc{CLOSE} strings with overlays
+containing the new @sc{OPEN} and @sc{CLOSE} strings for the @sc{PAIR}
+identified by the second @sc{REPLACEMENT} @sc{MNEMONIC}.  These new
+@sc{OPEN} and @sc{CLOSE} strings can then be moved using the standard
+'Insert Pair Edit' (ipe) basic movement (@xref{Basic Movement})
+commands.
+
+This command can be also be invoked by invoking the
+@command{universal-argument} (Generally bound to @key{C-u}), three
+times before a call to @command{insert-pair-edit}.
+
+For example, assuming that:
+
+@itemize @bullet
+@item
+The @command{insert-pair-edit} command has been bound to the suggested
+@key{M-(} binding;
+@item
+The @key{(} @sc{MNEMONIC} is bound to the @sc{PAIR} @key{(} @key{)};
+@item
+The @key{[} @sc{MNEMONIC} is bound to the @sc{PAIR} @key{[} @key{]},
+and; 
+@item
+The buffer contains the following text:
+
+@example
+The quick brown (|fox) jumps over the lazy dog.
+@end example
+
+(@strong{Where}: The @key{|} character is used to represent the current
+position of @sc{POINT}.) 
+@end itemize
+
+To replace the @key{(} @key{)} @sc{PAIR} around ``fox'' with @key{[}
+@key{]}, you would use the keystrokes:
+
+@example
+@key{C-u} @key{C-u} @key{C-u} @key{M-(} @key{(} @key{[}
+@end example
+
+Which will result in the buffer:
+
+@example
+The quick brown [|fox] jumps over the lazy dog.
+@end example
+
+@sc{NOTE}: The @command{insert-pair-edit-replace} command will search
+for the @emph{nearest} (@xref{Update Search Process}) @sc{PAIR} to
+@sc{POINT}.  The direction of the search is determined by the
+@option{ipe-update-forward-first} option.
+
+@c ----------------------------------------------------------------------
+@node Customization
+@c ----------------------------------------------------------------------
+@chapter Customization
+@cindex Customization
+
+The set of @sc{PAIR}s that can be inserted, updated or deleted using the
+@command{insert-pair-edit} command is controlled by the:
+
+@itemize @w{}
+@item
+@var{ipe-pairs}
+@item
+@var{ipe-mode-pairs}
+@end itemize
+
+Variables.
+
+These variables can be used to define several different @emph{types}
+of @sc{PAIR}s (@xref{Types of PAIR Definition}.)
+
+These variables can be edited in a number of ways:
+
+@menu
+* Customization using 'customize'::
+* Customization using the 'Pairs' Menu::
+* Inline Customization:: 
+* Display Customization::
+@end menu
+
+@c ----------------------------------------------------------------------
+@node Types of PAIR Definition
+@c ----------------------------------------------------------------------
+@section Types of PAIR Definition
+@cindex Types of PAIR Definition
+
+There are four @emph{types} of 'Insert Pair Edit' (ipe) @sc{PAIR}
+definition: 
+
+@itemize @w{}
+@item
+@sc{Basic} - A simple @sc{PAIR} definition with just an @sc{OPEN}
+and @sc{CLOSE} string.
+@item
+@sc{Intermediate} - A more complex @sc{PAIR} definition which can
+have a predefined initial movement, an @sc{INFIX} string, escapes, and
+can be @emph{Auto-Inserted}.
+@item
+@sc{Advanced} - An even more complex @sc{PAIR} definition which
+can have all of the customization of an @sc{Intermediate}
+@sc{PAIR}, but with additional properties that define the position at
+which @sc{POINT} is placed when a @sc{PAIR} is inserted, a custom
+@emph{indentation} function, and a @emph{menu} definition.
+@item
+@sc{Custom Movement} - A @sc{PAIR} definition based upon a
+@emph{custom movement} function.  (See: @xref{Defining custom
+'ipe--movement' Functions}) 
+@end itemize
+
+Each customization option (Using `customize', Using the ``Edit'' menu,
+or @emph{inline}) offers options to select the @emph{type} of
+@sc{PAIR} that is to be @emph{added}, @emph{edited}, or
+@emph{deleted}.
+
+@c ----------------------------------------------------------------------
+@node Customization using 'customize'
+@c ----------------------------------------------------------------------
+@section Customization using 'customize'
+@cindex Customization using 'customize'
+
+To edit the global set of 'Insert Pair Edit' (ipe) @sc{PAIR}s using
+the @strong{Emacs} @command{customize} package, run the command:
+
+@example
+@key{M-x} customize-variable @key{RET} ipe-pairs @key{RET}
+@end example
+
+This will display a @command{custom-mode} buffer in which the values
+within the @var{ipe-pairs} variable can be edited using standard
+@strong{Emacs} @command{customize} widgets.  These widgets can be used
+to enter the four @emph{types} of @sc{PAIR}s (@xref{Types of PAIR
+Definition}) (Identified by the @strong{Emacs} @command{customize} 
+@sc{Value Menu}.) 
+
+To edit a @emph{Mode-Specific} set of @sc{PAIR}s using the
+@strong{Emacs} @command{customize} package, run the command:
+
+@example
+@key{M-x} customize-variable @key{RET} ipe-mode-pairs @key{RET}
+@end example
+
+This will display a @command{custom-mode} buffer in which the values
+within the @var{ipe-mode-pairs} variable can be edited using standard
+@strong{Emacs} @command{customize} widgets.  Each entry within the
+@var{ipe-mode-pairs} variable, associates a @emph{mode} with a set of
+@sc{PAIR} definitions.
+
+@c ----------------------------------------------------------------------
+@node Customization using the 'Pairs' Menu
+@c ----------------------------------------------------------------------
+@section Customization using the 'Pairs' Menu
+@cindex Customization using the 'Pairs' Menu
+
+@w{
+- Edit >                       @*
+  ...                          @*
+  - Pairs >                    @*
+    ...                        @*
+    - Edit PAIR Definitions >  @*
+      ...
+}
+
+If running in a graphical environment which supports a menu bar, (and
+the @strong{Emacs} @command{menu-bar-mode} has been enabled,) the
+'Insert Pair Edit' (ipe) package can be customized using the
+@strong{Emacs} menu bar.
+
+@strong{NOTE}: The 'Insert Pair Edit' (ipe) menu bar is enabled using the
+@option{ipe-menu-support-p} option. (Default: @strong{t})
+
+The @code{Edit Pair Definitions >} sub-menu contains a number of
+sub-menus which can be used to @emph{Add}, @emph{Modify} and
+@emph{Delete} 'Insert Pair Edit' (ipe) @sc{PAIR} definitions.
+
+@code{Edit Pair Definitions >} sub menus:
+
+@table @code
+@item Add PAIR Definition...
+Displays a Window in which the definition of a new @emph{Global}
+@sc{PAIR} can be edited using @strong{Emacs} widgets.
+
+@item Add Mode-Specific PAIR Definition...
+Prompts the user for a @var{major-mode}, and then displays a Window in
+which the definition of a new @emph{Mode-Specific} @sc{PAIR} can be
+edited using @strong{Emacs} widgets.
+
+@item Edit PAIR Definition
+Offers a sub-menu for each @emph{Global} @sc{PAIR}, which if selected,
+displays a Window in which the definition of the selected
+@emph{Global} @sc{PAIR} can be edited using @strong{Emacs} widgets.
+
+@item Edit Mode-Specific PAIR Definition
+Offers a sub-menu for each @emph{Mode-Specific} @sc{PAIR} (for the
+current @option{major-mode}), which if selected, displays a Window in
+which the definition of the selected @emph{Mode-Specific} @sc{PAIR}
+can be edited using @strong{Emacs} widgets. (This menu will only be
+enabled if there are existing @emph{Mode-Specific} @sc{PAIR}
+definitions for the current buffer's @option{major-mode}.)
+
+@item Edit MNEMONIC Definition...
+Prompts the User for an @sc{MNEMONIC} for an existing @emph{Global}
+@sc{PAIR} (using the @emph{minibuffer}), then prompts the User for a
+@sc{REPLACEMENT} mnemonic, and then changes the @sc{MNEMONIC} for the
+given @emph{Global} @sc{PAIR} to the given @sc{REPLACEMENT}
+@sc{MNEMONIC}. 
+
+@item Edit Mode-Specific MNEMONIC Definition...
+Prompts the User for an @sc{MNEMONIC} for an existing
+@emph{Mode-Specific} @sc{PAIR} (using the @emph{minibuffer}), then
+prompts the User for a @sc{REPLACEMENT} @sc{MNEMONIC}, and then
+changes the @sc{MNEMONIC} for the given @emph{Mode-Specific} @sc{PAIR}
+to the given @sc{REPLACEMENT} mnemonic.  (This menu will only be
+enabled if there are existing @emph{Mode-Specific} @sc{PAIR}
+definitions for the current buffer's @option{major-mode}.)
+
+@item Delete PAIR Definition
+Offers a sub-menu for each @emph{Global} @sc{PAIR}, which if selected,
+deletes the given @emph{Global} @sc{PAIR}.
+
+@item Delete Mode-Specific PAIR Definition
+Offers a sub-menu for each @emph{Mode-Specific} @sc{PAIR} (for the
+current @option{major-mode}), which if selected, deletes the given
+@emph{Mode-Specific} @sc{PAIR} from the current mode.  (This menu will
+only be enabled if there are existing @emph{Mode-Specific} @sc{PAIR}
+definitions for the current buffer's @option{major-mode}.)
+
+@item Delete PAIR Definition...
+Prompts the User for a @sc{MNEMONIC} for an existing @emph{Global}
+@sc{PAIR} (using the @emph{minibuffer}), and then deletes the selected
+@emph{Global} @sc{PAIR} definition from the @var{ipe-pairs} variable.
+
+@item Delete Mode-Specific PAIR Definition...
+Prompts the User for a @command{major-mode} and a @sc{MNEMONIC} for an
+existing @emph{Mode-Specific} @sc{PAIR} (using the @emph{minibuffer}),
+and then deletes the selected @emph{Mode-Specific} @sc{PAIR} from the
+@var{ipe-mode-pairs} variable.
+@end table
+
+@c ----------------------------------------------------------------------
+@node Inline Customization
+@c ----------------------------------------------------------------------
+@section Inline Customization
+@cindex Inline Customization
+
+'Insert Pair Edit' (ipe) @sc{PAIR} definitions can also be added /
+updated or deleted @emph{inline}, by using key bindings which execute 
+customization commands from within the @command{insert-pair-edit}
+@emph{minibuffer} prompt, or when within the @command{ipe-edit-mode}
+itself.
+
+Bindings are supplied for the following commands:
+
+@table @w
+@item @key{C-+} (at the @code{insert-pair-edit} prompt or in @command{ipe-edit-mode})
+Prompts the User (using the @command{minibuffer}) to create a new
+'Insert Pair Edit' (ipe) @sc{PAIR} definition for a given
+@sc{MNEMONIC}.
+
+(Command: @command{ipe-defn--edit-pair})
+
+@item @key{M-+} (at the @code{insert-pair-edit} prompt or in @command{ipe-edit-mode})
+Prompts the User (using the @command{minibuffer}) to create a new
+@emph{Mode-Specific} 'Insert Pair Edit' (ipe) @sc{PAIR} definition for
+a given @sc{MNEMONIC}.
+
+(Command: @command{ipe-defn--edit-mode-pair})
+
+@item @key{C-%} (at the @code{insert-pair-edit} prompt or in @command{ipe-edit-mode})
+Prompts the User (using the @command{minibuffer}) to change the
+@sc{MNEMONIC} for an existing 'Insert Pair Edit' (ipe) @sc{PAIR}.
+
+(Command: @command{ipe-defn--change-pair-mnemonic})
+
+@item @key{M-%} (at the @code{insert-pair-edit} prompt or in @command{ipe-edit-mode})
+Prompts the User (using the @command{minibuffer}) to change the
+@sc{MNEMONIC} for an existing @emph{Mode-Specific} 'Insert Pair Edit'
+(ipe) @sc{PAIR}.
+
+(Command: @command{ipe-defn--change-mode-pair-mnemonic})
+
+@item @key{C-*} (at the @code{insert-pair-edit} prompt or in @command{ipe-edit-mode})
+Prompts the User (using the @command{minibuffer}) to delete an
+existing 'Insert Pair Edit' (ipe) @sc{PAIR}.
+
+(Command: @command{ipe-defn--delete-pair})
+
+@item @key{M-*} (at the @code{insert-pair-edit} prompt or in @command{ipe-edit-mode})
+Prompts the User (using the @command{minibuffer}) to delete an
+existing @emph{Mode-Specific} 'Insert Pair Edit' (ipe) @sc{PAIR}.
+
+(Command: @command{ipe-defn--delete-mode-pair})
+@end table
+
+@menu
+* Inline Customization Prompts::
+@end menu
+
+@c ----------------------------------------------------------------------
+@node Inline Customization Prompts
+@c ----------------------------------------------------------------------
+@subsection Inline Customization Prompts
+
+When creating a new 'Insert Pair Edit' (ipe) @sc{PAIR} (or editing an
+existing @sc{PAIR}) using the @emph{Inline Customization} commands, the
+User will be prompted to enter the following information (using the
+@command{minibuffer}):
+
+@table @code
+@item Create new 'Insert Pair Edit' PAIR for - MNEMONIC:
+At this prompt, enter the (generally single character) @sc{MNEMONIC}
+that will be used at the @command{insert-pair-edit} prompt
+to identify the @sc{PAIR}. (@xref{Running insert-pair-edit}) 
+
+@item OPEN:
+At this prompt, enter the @sc{OPEN} string of the 'Insert Pair Edit'
+(ipe) @sc{PAIR} to be associated with the given @sc{MNEMONIC}.
+
+@item CLOSE:
+At this prompt, enter the @sc{CLOSE} string of the 'Insert Pair Edit'
+(ipe) @sc{PAIR} to be associated with the given @sc{MNEMONIC}.
+
+@item Set 'Intermediate' options?
+At this prompt, enter a @code{y} / @code{n} answer.  Entering @code{n}
+will complete the @sc{PAIR} definition and exit the
+@command{minibuffer}.
+
+@item Movement:
+At this prompt, enter either:
+
+@itemize @bullet
+@item characters
+@item words
+@item lines
+@item lists
+@end itemize
+
+This will define the @emph{Initial Movement} (@xref{Movement Units})
+of the @sc{PAIR} to be associated with the given @sc{MNEMONIC}.
+
+@item INFIX:
+If the @code{Movement:} is set to @code{lines}, the User will be
+prompted to enter an (optional) @command{INFIX}.  (@xref{Defining line
+PAIRs with an INFIX}.)  This may be left blank if no @command{INFIX} is
+desired for the @sc{PAIR} to be associated with @sc{MNEMONIC}.
+
+@item Include Escapes?
+At this prompt, enter a @code{y} / @code{n} answer.  Entering @code{y}
+will prompt the User to enter a list of @sc{ESCAPE} / @sc{REPLACEMENT}
+strings for the @sc{PAIR} to be associated with
+@sc{MNEMONIC}. (@xref{Escaping Text within a PAIR}.) This may be left
+blank if no @command{ESCAPEs} are desired for the @sc{PAIR} to be
+associated associated with @sc{MNEMONIC}.
+
+@item Escape Match Text:
+If the @code{Include Escapes?} is set to @code{y}, the @code{Escape
+Match Text:} prompt will be displayed.  At this prompt, enter 
+@sc{ESCAPE} text.  Matches to this substring found between the
+@sc{OPEN} and @sc{CLOSE} strings will be replaced with the text
+entered at the next prompt.  (To ignore escaping completely, or to
+exit the @code{Escape Match Text} input after entering multiple
+@sc{ESCAPE} / @sc{REPLACEMENT} strings, leave this prompt blank and
+press @key{RET}.)
+
+@item Escape Replacement Text:
+If the @code{Include Escapes?} is set to @code{y}, the @code{Escape
+Replacement Text:} prompt will be displayed after entering an ESCAPE
+within the @code{Escape Match Text} prompt.  At this prompt, enter the
+@sc{REPLACEMENT} text corresponding to the @sc{ESCAPE} text entered
+at the previous prompt.  Matches to the @sc{ESCAPE} text found between
+the @sc{OPEN} and @sc{CLOSE} strings will be replaced with this text.
+After entering the @sc{REPLACEMENT} string, the User will be returned
+to the @code{Escape Match Text:} prompt to enter further @sc{ESCAPEs}.
+
+@item Auto-Insert?
+At this prompt, enter a @code{y} / @code{n} answer.  Entering @code{y}
+will indicate that when this @sc{PAIR} is selected using the
+@command{insert-pair-edit} prompt, the @sc{OPEN} and @sc{CLOSE} strings
+will be instantly inserted into the buffer without entering
+@command{ipe-edit-mode}. (@xref{Auto Insertion})
+
+@item Set 'Advanced' options?
+At this prompt, enter a @code{y} / @code{n} answer.  Entering @code{n}
+will complete the @sc{PAIR} definition and exit the
+@command{minibuffer}.
+
+@item Move Point on Insert:
+At this prompt, enter either:
+
+@itemize @bullet
+@item close-beg
+@item close-end
+@item open-beg
+@item open-end
+@item resume
+@end itemize
+
+This will define the position at which @sc{POINT} is set when the
+@sc{PAIR} is inserted into the buffer (@xref{Positioning POINT and
+MARK}.)
+
+@item Indent Function:
+At this prompt, enter either:
+
+@itemize @bullet
+@item none
+@item current
+@item previous
+@end itemize
+
+Indicating the position at which to indent the @sc{PAIR} / intervening text
+for @sc{PAIRs} with an @emph{Initial Movement} of ``by lines''.
+
+@item Menu:
+At this prompt, enter a string indicating the location of the newly
+defined @sc{PAIR} within the @code{Pairs -> Edit} menu.  (Sub-menus can
+be defined by using a ``/'' character as a separator.)
+@end table
+
+@c ----------------------------------------------------------------------
+@node Display Customization
+@c ----------------------------------------------------------------------
+@section Display Customization
+
+The fonts and colours used by the overlays that display the position
+of the @sc{OPEN} and @sc{CLOSE} strings in @command{ipe-edit-mode} can
+be customized by:
+
+Using @command{customize-face} command for the following
+@strong{Emacs} @emph{faces}:
+
+@itemize @bullet
+@item
+@var{ipe-open-highlight}  - The face used by @sc{OPEN} overlay.
+
+It can be @command{customize}'d by running the command:
+
+@example
+@key{M-x} customize-face @key{RET} ipe-open-highlight @key{RET}
+@end example
+
+(By default, the @sc{OPEN} overlay will be displayed using the
+@var{highlight} face.)
+
+@item
+@var{ipe-close-highlight}  - The face used by the @sc{CLOSE} overlay. 
+
+It can be @command{customize}'d by running the command:
+
+@example
+@key{M-x} customize-face @key{RET} ipe-close-highlight @key{RET}
+@end example
+
+(By default, the @sc{CLOSE} overlay will be displayed using the
+@var{show-paren-match} face.)
+@end itemize
+
+Or by using the @strong{Emacs} menu option:
+@w{           @*
+              @*
+- Edit >      @*
+  ...         @*
+  - Pairs >   @*
+    ...       @*
+    - Options
+}
+
+And selecting @code{'Insert Pair Edit' - Display Options};
+
+Other faces used by the @command{ipe-edit-mode} are:
+      
+@itemize @bullet
+@item
+@var{ipe-escape-highlight} - The face used by the @sc{ESCAPE}
+overlays.
+
+(@xref{Escaping Text within a PAIR})
+
+@item
+@var{ipe-highlight-infix} - The Face used by the @sc{INFIX} overlays.
+
+(@xref{Defining line PAIRs with an INFIX}) 
+
+@item
+@var{ipe-empty-pair-highlight} - The face used to highlight EMPTY
+@sc{OPEN} / @sc{CLOSE} string positions.
+
+(@xref{PAIRs With Empty OPEN / CLOSE})
+@end itemize
+
+@c ----------------------------------------------------------------------
+@node Other ipe-edit-mode Commands
+@c ----------------------------------------------------------------------
+@chapter Other ipe-edit-mode Commands
+@cindex Other ipe-edit-mode Commands
+
+The following sections describe some of the other commands /
+key-bindings available within @command{ipe-edit-mode}.
+
+@menu
+* Insert And... Commands::
+* Edit CONTENTS Commands::
+* Next / Previous Commands::
+* Multiple PAIRs Commands::
+* Escaping Text within a PAIR::
+@end menu
+
+@c ----------------------------------------------------------------------
+@node Insert And... Commands
+@c ----------------------------------------------------------------------
+@section Insert And... Commands
+
+When in @command{ipe-edit-mode}, to perform an action on insert of a
+@sc{PAIR} (@xref{Inserting and Aborting}), the following
+keystrokes / commands can be used:
+
+@table @w
+@item @key{O} (in @command{ipe-edit-mode})
+Insert the current @sc{PAIR} at the given location and move
+@sc{POINT} to the start of the @sc{OPEN} string. (Ignoring the
+@emph{per-@sc{PAIR}} and default @code{ipe-set-mark-on-insert}
+settings.) 
+
+(Command: @command{ipe-edit--ia-goto-open})
+
+@item @key{C} (in @command{ipe-edit-mode})
+Insert the current @sc{PAIR} at the given location and move
+@sc{POINT} to the start of the @sc{CLOSE} string.  (Ignoring the
+@emph{per-@sc{PAIR}} and default @code{ipe-set-mark-on-insert}
+settings.) 
+
+(Command: @command{ipe-edit--ia-goto-close})
+
+@item @key{U} (in @command{ipe-edit-mode})
+Insert the current @sc{PAIR} at the given location and leave
+@sc{POINT} at its original location (Ignoring the @emph{per-@sc{PAIR}}
+and default @code{ipe-set-mark-on-insert} settings.)
+
+(Command: @command{ipe-edit--ia-resume})
+
+@item @key{Y} (in @command{ipe-edit-mode})
+Insert the current @sc{PAIR} and copy the text between the @sc{OPEN}
+and @sc{CLOSE} strings to the @emph{kill-ring}.
+
+(Command: @command{ipe-edit--ia-copy-text})
+
+@item @key{K} (in @command{ipe-edit-mode})
+Insert the current @sc{PAIR} and kill the text between the @sc{OPEN}
+and @sc{CLOSE} strings.
+
+(Command: @command{ipe-edit--ia-kill-text})
+@end table
+
+@c ----------------------------------------------------------------------
+@node Edit CONTENTS Commands
+@c ----------------------------------------------------------------------
+@section Edit CONTENTS Commands
+
+When in @command{ipe-edit-mode}, to edit the @emph{text} between the
+@sc{OPEN} and @sc{CLOSE} overlays (without exiting
+@command{ipe-edit-mode}), the following keystrokes / commands can be
+used:
+
+@table @w
+@item @key{C-k} (in @command{ipe-edit-mode})
+Kill the text between the @sc{OPEN} and @sc{CLOSE} overlays, and
+remain in @command{ipe-edit-mode}.
+
+(Command: @command{ipe-edit--contents-kill})
+
+@item @key{M-w} (in @command{ipe-edit-mode})
+Copy the text between the @sc{OPEN} and @sc{CLOSE} overlays to the
+@strong{Emacs} @emph{kill-ring}, and remain in
+@command{ipe-edit-mode}.
+
+(Command: @command{ipe-edit--contents-copy})
+
+@item @key{C-y} (in @command{ipe-edit-mode})
+Paste the last killed text between the @sc{OPEN} and @sc{CLOSE}
+overlays (replacing the existing text), and remain in
+@command{ipe-edit-mode}. 
+
+(Command: @command{ipe-edit--contents-yank})
+
+@item @key{%} (in @command{ipe-edit-mode})
+Prompt the User for replacement text, and replace the text between the
+@sc{OPEN} and @sc{CLOSE} overlays with the text entered by the User.
+
+(Command: @command{ipe-edit--contents-replace})
+
+@item @key{C-SPC} (in @command{ipe-edit-mode})
+Remove whitespace around the text between the @sc{OPEN} and @sc{CLOSE}
+overlays, and remain in @command{ipe-edit-mode}.
+
+(Command: @command{ipe-edit--contents-trim})
+
+@item @key{M-u} (in @command{ipe-edit-mode})
+Convert the text between the @sc{OPEN} and @sc{CLOSE} overlays to
+uppercase, and remain in @command{ipe-edit-mode}.
+
+(Command: @command{ipe-edit--contents-upcase})
+
+@item @key{M-c} (in @command{ipe-edit-mode})
+Capitalize the text between the @sc{OPEN} and @sc{CLOSE} overlays,
+and remain in @command{ipe-edit-mode}.
+
+(Command: (@command{ipe-edit--contents-capitalize}))
+
+@item @key{M-l} (in @command{ipe-edit-mode})
+Convert the text between the @sc{OPEN} and @sc{CLOSE} overlays to
+lowercase, and remain in @command{ipe-edit-mode}.
+
+(Command: (@command{ipe-edit--contents-downcase}))
+@end table
+
+@c ----------------------------------------------------------------------
+@node Next / Previous Commands
+@c ----------------------------------------------------------------------
+@section Next / Previous Commands
+
+@menu
+* Next / Previous PAIRs::
+* Next / Previous CONTENTS::
+* Next / Previous OPEN / CLOSE::
+@end menu
+
+@c ----------------------------------------------------------------------
+@node Next / Previous PAIRs
+@c ----------------------------------------------------------------------
+@subsection Next / Previous PAIRs
+
+To search for the next or previous @sc{PAIR} (while in
+@command{ipe-edit-mode}) use the commands: 
+
+@itemize @bullet
+
+@item @key{C-r} (in @command{ipe-edit-mode})
+
+(Command: @command{ipe-edit--update-previous-pair})
+
+@item @key{C-s} (in @command{ipe-edit-mode})
+
+(Command: @command{ipe-edit--update-next-pair})
+@end itemize
+
+These commands will search for the @emph{next} or @emph{previous}
+@sc{OPEN} and @sc{CLOSE} string, and, if found, insert the current
+@sc{PAIR}; create a new @sc{PAIR} of overlays over the next / previous
+@sc{PAIR}, and; remain in @command{ipe-edit-mode}, allowing the User
+to continue editing the new @sc{PAIR}.
+
+For example, assuming that:
+
+@itemize @bullet
+@item
+The @command{insert-pair-edit} command has been bound to the suggested
+@key{M-(} binding;
+@item
+The @key{(} @sc{MNEMONIC} is bound to the @sc{PAIR} @key{(} @key{)},
+and; 
+@item
+The buffer contains the following text:
+
+@example
+The (quick) brown (|fox) jumps (over) the lazy dog.
+@end example
+
+(Where the @key{|} character represents the current position of 
+@sc{POINT}.)
+@end itemize
+
+Then, updating a @sc{PAIR} using the following keystrokes:
+
+@example
+@key{M-(} @key{(}
+@end example
+
+Will enter @command{ipe-edit-mode} and edit the @key{(} @key{)}
+@sc{PAIR} around ``fox''. 
+
+Searching forward using the keystroke:
+
+@example
+@key{C-s}
+@end example
+
+Will edit the @key{(} @key{)} @sc{PAIR} around ``over''.
+
+Searching backward using the keystrokes:
+
+@example
+@key{C-r} @key{C-r}
+@end example
+
+Will edit the @key{(} @key{)} @sc{PAIR} around ``quick''.
+
+@c ----------------------------------------------------------------------
+@node Next / Previous CONTENTS
+@c ----------------------------------------------------------------------
+@subsection Next / Previous CONTENTS
+
+To create a new @sc{PAIR} around text which matches the @sc{CONTENTS}
+contained between the @sc{OPEN} and @sc{CLOSE} strings of an 'Insert
+Pair Edit' (ipe) @sc{PAIR} (while in @command{ipe-edit-mode}) use the
+commands:
+
+@itemize @bullet
+
+@item @key{M-r} (in @command{ipe-edit-mode})
+
+(Command: @command{ipe-edit--update-previous-contents})
+
+@item @key{M-s} (in @command{ipe-edit-mode})
+
+(Command: @command{ipe-edit--update-next-contents})
+@end itemize
+
+These commands will search for the @emph{next} or @emph{previous}
+piece of text which matches the text currently contained between the
+selected @sc{OPEN} and @sc{CLOSE} strings, and, if found, insert the
+current @sc{PAIR}; create a new @sc{PAIR} of overlays around the next
+/ previous piece of text, and; remain in @command{ipe-edit-mode},
+allowing the User to continue editing the new @sc{PAIR}.
+
+For example, assuming that:
+
+@itemize @bullet
+@item
+The @command{insert-pair-edit} command has been bound to the suggested
+@key{M-(} binding;
+@item
+The @key{(} @sc{MNEMONIC} is bound to the @sc{PAIR} @key{(} @key{)},
+and; 
+@item
+The buffer contains the following text:
+
+@example
+The Quick Brown Fox |Jumps Over (The) Lazy Dog.
+@end example
+
+(Where the @key{|} character represents the current position of 
+@sc{POINT}.)
+@end itemize
+
+Then, updating a @sc{PAIR} using the following keystrokes:
+
+@example
+@key{M-(} @key{(}
+@end example
+
+Will enter @command{ipe-edit-mode} and edit the @key{(} @key{)}
+@sc{PAIR} around the second ``The''. 
+
+Searching backward for the text ``The'' using the keystroke:
+
+@example
+@key{M-r}
+@end example
+
+Will insert the brackets around the second ``The'', and add a new
+@key{(} @key{)} @sc{PAIR} around the first ``The''. 
+
+Which will result in the buffer:
+
+@example
+(The) Quick Brown Fox |Jumps Over (The) Lazy Dog.
+@end example
+ 
+@c ----------------------------------------------------------------------
+@node Next / Previous OPEN / CLOSE
+@c ----------------------------------------------------------------------
+@subsection Next / Previous OPEN / CLOSE
+
+To change the matched location of either the @sc{OPEN} or @sc{CLOSE}
+string of an 'Insert Pair Edit' (ipe) @sc{PAIR} @emph{individually}
+(while in @command{ipe-edit-mode}) use the commands:
+
+@itemize @bullet
+@item @key{C-<} (in @command{ipe-edit-mode})
+
+(Command: @command{ipe-edit--update-previous-open})
+
+@item @key{M->} (in @command{ipe-edit-mode})
+
+(Command: @command{ipe-edit--update-next-open})
+
+@item @key{M-<} (in @command{ipe-edit-mode})
+
+(Command: @command{ipe-edit--update-previous-close})
+
+@item @key{C->} (in @command{ipe-edit-mode})
+
+(Command: @command{ipe-edit--update-next-close})
+@end itemize
+
+These commands will search for the @emph{next} or @emph{previous}
+@sc{OPEN} or @sc{CLOSE} string of an 'Insert Pair Edit' (ipe)
+@sc{PAIR}, and, if found, insert just the current @sc{OPEN} or
+@sc{CLOSE} string (without inserting its corresponding partner.)  The
+command will then create a new overlay over the next / previous
+@sc{OPEN} or @sc{CLOSE} and remain in @command{ipe-edit-mode},
+allowing the User to continue editing the new @sc{PAIR}.
+
+@strong{NOTE}: Searches for @sc{OPEN} and @sc{CLOSE} strings will be
+bounded by their corresponding partner string.  It will not be
+possible to select a @sc{CLOSE} before the currently selected
+@sc{OPEN}, or to select an @sc{OPEN} after the currently selected
+@sc{CLOSE}.
+
+For example, assuming that:
+
+@itemize @bullet
+@item
+The @command{insert-pair-edit} command has been bound to the suggested
+@key{M-(} binding;
+@item
+The @key{(} @sc{MNEMONIC} is bound to the @sc{PAIR} @key{(} @key{)},
+and; 
+@item
+The buffer contains the following text:
+
+@example
+The (quick) brown (|fox) jumps (over) the lazy dog.
+@end example
+
+(Where the @key{|} character represents the current position of
+@sc{POINT}.)
+@end itemize
+
+Then, updating a @sc{PAIR} using the following keystrokes:
+
+@example
+@key{M-(} @key{(}
+@end example
+
+Will enter @command{ipe-edit-mode} and edit the @key{(} @key{)}
+@sc{PAIR} around ``fox''. 
+
+Searching forward for the next @sc{CLOSE} using the keystroke:
+
+@example
+@key{C->}
+@end example
+
+Will edit the @key{(} @key{)} @sc{PAIR} around ``fox jumps over''.
+
+Searching backward for the previous @sc{OPEN} using the keystroke:
+
+@example
+@key{C-<}
+@end example
+
+Will edit the @key{(} @key{)} @sc{PAIR} around ``quick brown fox jumps
+over''.
+
+@c ----------------------------------------------------------------------
+@node Multiple PAIRs Commands
+@c ----------------------------------------------------------------------
+@section Multiple PAIRs Commands
+
+When in @command{ipe-edit-mode}, it is possible to edit multiple
+@sc{PAIR}s at once.  All basic @command{ipe-edit-mode} movement
+commands (@xref{Basic Movement}) will operate on all active
+@sc{PAIR}s, and all commands which edit the @sc{CONTENTS} of a
+@sc{PAIR} (@xref{Edit CONTENTS Commands}), will also operate
+on all active @sc{PAIR}s.
+
+Adding / removing multiple @sc{PAIR}s can be done in a number of
+different ways:
+
+@menu
+* Adding Multiple PAIRs using the Emacs Region::
+* Adding Multiple PAIRs using insert-pair-edit::
+* Adding Multiple PAIRs using Existing OPEN / CLOSE::
+* Adding Multiple PAIRs using PAIR CONTENT::
+* Removing PAIRs::
+@end menu
+
+@c ----------------------------------------------------------------------
+@node Adding Multiple PAIRs using the Emacs Region
+@c ----------------------------------------------------------------------
+@subsection Adding Multiple PAIRs using the Emacs Region
+
+If the @strong{Emacs} @emph{region} is @emph{active} when running one
+of the 'Insert Pair Edit' (ipe) commands:
+
+@itemize @bullet
+@item @command{insert-pair-edit-update}
+@item @command{insert-pair-edit-replace}
+@end itemize
+
+These commands will operate upon all @sc{PAIR}s found within the
+@emph{region}.  @sc{OPEN} and @sc{CLOSE} overlays will be created for
+each @sc{PAIR} found within the active @strong{Emacs} @emph{region}.
+
+For example, assuming that:
+
+@itemize @bullet
+@item
+The @command{insert-pair-edit} command has been bound to the suggested
+@key{M-(} binding;
+@item
+The @emph{Modifiers} @command{ipe-edit-movement-keyset} has been
+enabled; 
+@item
+The @key{(} @sc{MNEMONIC} is bound to the @sc{PAIR} @key{(} @key{)},
+and; 
+@item
+The buffer contains the following text:
+
+@example
+|The (quick) brown (fox) jumps (over) the lazy dog.@@
+@end example
+
+(Where the @key{|} character represents the current position of
+@sc{POINT}, and the @key{@@} character represents the current position
+of @sc{MARK} for an active @strong{Emacs} @emph{region}.)
+@end itemize
+
+Then, updating the set of @sc{PAIR}s using the following keystrokes:
+
+@example
+@key{C-u} @key{M-(} @key{(}
+@end example
+
+Will enter @command{ipe-edit-mode} and edit all three of the
+@key{(} @key{)} @sc{PAIR}s (around ``quick'', ``fox'' and ``over''):
+
+Moving the @sc{PAIR}s forward one word using the following keystroke:
+
+@example
+@key{M-f}
+@end example
+
+Which will result in the buffer:
+
+@example 
+|The quick (brown) fox (jumps) over (the) lazy dog.@@
+@end example
+
+@c ----------------------------------------------------------------------
+@node Adding Multiple PAIRs using insert-pair-edit
+@c ----------------------------------------------------------------------
+@subsection Adding Multiple PAIRs using insert-pair-edit
+
+The simplest way to add additional 'Insert Pair Edit' (ipe) @sc{PAIR}s
+when already in @command{ipe-edit-mode} is to re-run the
+@command{insert-pair-edit} command.  When already in
+@command{ipe-edit-mode} mode, re-running @command{insert-pair-edit}
+will insert another @sc{PAIR} (with the same @sc{OPEN} and @sc{CLOSE}
+strings as the active @sc{PAIR}) at @sc{POINT}.
+
+For example, assuming that:
+
+@itemize @bullet
+@item
+The @command{insert-pair-edit} command has been bound to the suggested
+@key{M-(} binding;
+@item
+The @emph{Modifiers} @command{ipe-edit-movement-keyset} has been
+enabled; 
+@item
+The @key{(} @sc{MNEMONIC} is bound to the @sc{PAIR} @key{(} @key{)},
+and; 
+@item
+The buffer contains the following text:
+
+@example
+The quick brown (|fox) jumps over the lazy dog.
+@end example
+
+(Where the @key{|} character represents the current position of
+@sc{POINT}.)
+@end itemize
+
+Then, updating a @sc{PAIR} using the following keystrokes:
+
+@example
+@key{M-(} @key{(}
+@end example
+
+Will enter @command{ipe-edit-mode} and edit the @key{(} @key{)}
+@sc{PAIR} around ``fox''. 
+
+Moving the @sc{PAIR} forward two words using the following keystrokes:
+
+@example
+@key{C-f} @key{C-f}
+@end example
+
+Which will result in the buffer:
+
+@example
+The quick brown |fox jumps (over) the lazy dog.
+@end example
+
+And then running @command{insert-pair-edit} again (without exiting
+@command{ipe-edit-mode}), using the keystroke:
+
+@example
+@key{M-(}
+@end example
+
+Will add a second @sc{PAIR} around ``fox'':
+
+Which will result in the buffer:
+
+@example
+The quick brown (|fox) jumps (over) the lazy dog.
+@end example
+
+Both of which can be moved one word forward using the keystroke:
+
+@example
+@key{C-f}
+@end example
+
+Which will result in the buffer:
+
+@example
+The quick brown |fox (jumps) over (the) lazy dog.
+@end example
+
+@c ----------------------------------------------------------------------
+@node Adding Multiple PAIRs using Existing OPEN / CLOSE
+@c ----------------------------------------------------------------------
+@subsection Adding Multiple PAIRs using Existing OPEN / CLOSE
+
+Additional 'Insert Pair Edit' (ipe) @sc{PAIR}s from can be added
+within @command{ipe-edit-mode} by searching the buffer for existing
+text which matches the @sc{OPEN} and @sc{CLOSE} strings of the
+currently active @sc{PAIR}.  This can be useful when @emph{marking up}
+a common set of existing @sc{PAIR}s.
+
+Keystrokes / commands are supplied in @command{ipe-edit-mode} to:
+
+@table @w
+@item @key{s} (in @command{ipe-edit-mode})
+Search forward (from the end of the current @sc{CLOSE} overlay) for
+matches to the current @sc{OPEN} and @sc{CLOSE} strings, and, if they
+exist, delete them from the buffer and replace them with a new 'Insert
+Pair Edit' (ipe) @sc{PAIR}.
+
+(Command: @command{ipe-edit--add-next-pair})
+
+@item @key{r} (in @command{ipe-edit-mode})
+Search backward (from the start of the current @sc{OPEN} overlay) for
+matches to the current @sc{OPEN} and @sc{CLOSE} strings, and, if they
+exist, delete them from the buffer and replace them with a new
+'Insert Pair Edit' (ipe) @sc{PAIR}.
+
+(Command: @command{ipe-edit--add-previous-pair})
+@end table
+
+For example, assuming that:
+
+@itemize @bullet
+@item
+The @command{insert-pair-edit} command has been bound to the suggested
+@key{M-(} binding;
+@item
+The @emph{Modifiers} @command{ipe-edit-movement-keyset} has been
+enabled; 
+@item
+The @key{(} @sc{MNEMONIC} is bound to the @sc{PAIR} @key{(} @key{)};
+@item
+The @key{[} @sc{MNEMONIC} is bound to the @sc{PAIR} @key{[} @key{]},
+and; 
+@item
+The buffer contains the following text:
+
+@example
+The (quick) brown (|fox) jumps (over) the lazy dog.
+@end example
+
+(Where the @key{|} character represents the current position of
+@sc{POINT}.)
+@end itemize
+
+Then, updating a @sc{PAIR} using the following keystrokes:
+
+@example
+@key{M-(} @key{(}
+@end example
+
+Will enter @command{ipe-edit-mode} and edit the @key{(} @key{)}
+@sc{PAIR} around the ``fox''.
+
+Searching forward for another @key{(} @key{)} @sc{PAIR} can be
+achieved using the following keystroke:
+
+@example
+@key{s} 
+@end example
+
+Which will result in the @sc{PAIR} around ``over'' being added as a
+second 'Insert Pair Edit' (ipe) @sc{PAIR}.
+
+Searching backward for another @key{(} @key{)} @sc{PAIR} can be
+achieved using the following keystroke:
+
+@example
+@key{r} 
+@end example
+
+Which will result in the @sc{PAIR} around ``quick'' being added as a
+third 'Insert Pair Edit' (ipe) @sc{PAIR}.
+
+These three @sc{PAIR}s can then be edited as one by the
+@command{ipe-edit-mode} commands.
+
+For example, to change all of the @sc{PAIR}s from
+@key{(} @key{)} @sc{PAIR}s, to @key{[} @key{]} @sc{PAIR}s, you would
+enter the keystrokes:
+
+@example
+@key{(} @key{[}
+@end example
+
+Which will result in the buffer:
+
+@example
+The [quick] brown [|fox] jumps [over] the lazy dog.
+@end example
+
+@c ----------------------------------------------------------------------
+@node Adding Multiple PAIRs using PAIR CONTENT
+@c ----------------------------------------------------------------------
+@subsection Adding Multiple PAIRs using PAIR CONTENT
+
+Additional 'Insert Pair Edit' (ipe) @sc{PAIR}s can be added
+within @command{ipe-edit-mode} by searching the buffer for existing
+text which matches the text between @sc{OPEN} and @sc{CLOSE} strings
+of the currently active @sc{PAIR}.  This can be useful when
+@emph{marking up} the same word / phrase with a common @sc{PAIR}.
+
+Keystrokes / commands are supplied in @command{ipe-edit-mode} to:
+
+@table @w
+@item @key{S} (in @command{ipe-edit-mode})
+Search forward (from the end of the current @sc{CLOSE} overlay) for
+matches to the text between the current @sc{OPEN} and @sc{CLOSE}
+strings, and, if it exists, add a new 'Insert Pair Edit' (ipe)
+@sc{PAIR} around the text.
+
+(Command: @command{ipe-edit--add-next-contents})
+
+@item @key{R} (in @command{ipe-edit-mode})
+Search backward (from the start of the current @sc{OPEN} overlay) for
+matches to the text between the current @sc{OPEN} and @sc{CLOSE}
+strings, and, if it exists, add a new 'Insert Pair Edit' (ipe)
+@sc{PAIR} around the text.
+
+(Command: @command{ipe-edit--add-previous-contents})
+@end table
+
+For example, assuming that:
+
+@itemize @bullet
+@item
+The @command{insert-pair-edit} command has been bound to the suggested
+@key{M-(} binding;
+@item
+The @emph{Modifiers} @command{ipe-edit-movement-keyset} has been
+enabled; 
+@item
+The @key{(} @sc{MNEMONIC} is bound to the @sc{PAIR} @key{(} @key{)};
+@item
+The @key{[} @sc{MNEMONIC} is bound to the @sc{PAIR} @key{[} @key{]},
+and; 
+@item
+The buffer contains the following text:
+
+@example
+The quick brown fox jumps over the lazy dog.
+The quick brown (|fox) jumps over the lazy dog.
+The quick brown fox jumps over the lazy dog.
+@end example
+
+(Where the @key{|} character represents the current position of
+@sc{POINT}.)
+@end itemize
+
+Then, updating a @sc{PAIR} using the following keystrokes:
+
+@example
+@key{M-(} @key{(}
+@end example
+
+Will enter @command{ipe-edit-mode} and edit the @key{(} @key{)}
+@sc{PAIR} around the middle ``fox''.
+
+Searching forward for another match to the string ``fox'' can be
+achieved using the following keystroke:
+
+@example
+@key{S} 
+@end example
+
+Which will result in a new @sc{PAIR} being added around ``fox''  on
+the third line.
+
+Which will result in the buffer:
+
+@example
+The quick brown fox jumps over the lazy dog.a
+The quick brown (|fox) jumps over the lazy dog.
+The quick brown (fox) jumps over the lazy dog.
+@end example
+
+Searching backward for another ``fox'' string can be achieved using
+the following keystroke:
+
+@example
+@key{R} 
+@end example
+
+Which will result in a new @sc{PAIR} being added around ``fox'' on the
+first line.
+
+Which will result in the buffer:
+
+@example
+The quick brown (fox) jumps over the lazy dog.
+The quick brown (|fox) jumps over the lazy dog.
+The quick brown (fox) jumps over the lazy dog.
+@end example
+
+These three @sc{PAIR}s can then be edited as one by the
+@command{ipe-edit-mode} commands.
+
+For example, To change all of the @sc{PAIR}s from @key{(} @key{)}
+@sc{PAIR}s, to @key{[} @key{]} @sc{PAIR}s, use the following
+keystrokes:
+
+@example
+@key{(} @key{[}
+@end example
+
+Which will result in the buffer:
+
+@example
+The quick brown [fox] jumps over the lazy dog.
+The quick brown [|fox] jumps over the lazy dog.
+The quick brown [fox] jumps over the lazy dog.
+@end example
+
+@c ----------------------------------------------------------------------
+@node Removing PAIRs
+@c ----------------------------------------------------------------------
+@subsection Removing PAIRs
+
+To remove a @sc{PAIR} when using @command{ipe-edit-mode} to edit
+multiple @sc{PAIR}s at once, the following keystrokes / commands are
+supplied:
+
+@table @w
+@item @key{C-d} (in @command{ipe-edit-mode})
+Remove the first 'Insert Pair Edit' (ipe) @sc{OPEN} and @sc{CLOSE}
+overlay.  If there are no remaining @sc{PAIR}s after the first
+@sc{PAIR} has been removed, it will exit @command{ipe-edit-mode}.
+
+(Command: @command{ipe-edit--delete-first-pair})
+
+@item @key{DEL} (in @command{ipe-edit-mode})
+Remove the last 'Insert Pair Edit' (ipe) @sc{OPEN} and @sc{CLOSE}
+overlay.  If there are no remaining @sc{PAIR}s after the last
+@sc{PAIR} has been removed, it will exit @command{ipe-edit-mode}.
+
+(Command: @command{ipe-edit--delete-last-pair})
+@end table
+
+@strong{NOTE}: Mouse click / drag commands (@xref{Mouse Movement})
+will always remove all but one @sc{PAIR}. 
+
+@c ----------------------------------------------------------------------
+@node Escaping Text within a PAIR
+@c ----------------------------------------------------------------------
+@section Escaping Text within a PAIR
+
+@emph{Intermediate} and @emph{Advanced} (@xref{Types of PAIR
+Definition}) 'Insert Pair Edit' (ipe) @sc{PAIR}s can define
+@sc{ESCAPE} strings.
+
+When present between an @sc{OPEN} and @sc{CLOSE} overlay within
+@command{ipe-edit-mode}, @sc{ESCAPE} strings will be @emph{replaced}
+with overlays displaying a @sc{REPLACEMENT} string.  These
+@sc{REPLACEMENT} strings will also be inserted into the buffer if the
+@sc{PAIR} is inserted into the buffer using the
+@command{ipe-edit--insert-pair} command.
+
+This can be useful when using the 'Insert Pair Edit' (ipe) library to
+insert @sc{PAIR}s of ``quotes''.
+
+@sc{REPLACEMENT} strings will be displayed using the
+@var{ipe-escape-highlight} face.
+
+For example, if an 'Insert Pair Edit' (ipe) @sc{PAIR} was defined with:
+
+@itemize @bullet
+@item
+A @sc{MNEMONIC} @key{'};
+@item
+@key{'} as its @sc{OPEN} string, and;
+@item
+@key{'} as its @sc{CLOSE} string.
+@end itemize
+
+The User could define an @sc{ESCAPE} for the @sc{PAIR} which replaced
+internal @key{'} strings between the @sc{OPEN} and @sc{CLOSE} string
+with @key{\'} (backslash + quote) strings, thus allowing internal
+quote strings to be distinguished from the outer @sc{PAIR} of quotes.
+
+For example, assuming that:
+
+@itemize @bullet
+@item
+The @command{insert-pair-edit} command has been bound to the suggested
+@key{M-(} binding;
+@item
+The @emph{Modifiers} @command{ipe-edit-movement-keyset} has been
+enabled; 
+@item
+The @key{'} @sc{MNEMONIC} is bound to the @sc{PAIR} @key{'} @key{'};
+@item
+The @emph{ESCAPES} for the @key{'} @sc{MNEMONIC} have been defined
+as:
+@w{         @*
+            @*
+    ' -> \' @*
+    \ -> \\ @*
+}
+
+and;
+@item
+The buffer contains the following text:
+
+@example
+The quick brown '|fox' jumps over the lazy dog.
+@end example
+
+(Where the @key{|} character represents the current position of 
+@sc{POINT}.)
+@end itemize
+
+Then, inserting a @sc{PAIR} using the following keystrokes:
+
+@example
+@key{M-(} @key{'}
+@end example
+
+And then moving the @sc{OPEN} backward and the @sc{CLOSE} forward
+using the following keystrokes:
+
+@example
+@key{C-b} @key{C-f}
+@end example
+
+Will position the @key{'} characters around the phrase ``brown fox
+jumps'', and @sc{ESCAPE} the @key{'} characters around ``fox'', by 
+replacing them with @key{\'} @sc{REPLACEMENTs}.
+
+Which will result in the buffer:
+
+@example
+The quick 'brown \'fox\' jumps' over the lazy dog.
+@end example
+
+@strong{NOTE}: The 'Insert Pair Edit' (ipe) @emph{Update} commands
+(@xref{Updating Existing PAIRs}) recognise @sc{ESCAPE} strings, and
+adjust their matching algorithms accordingly.
+
+@c ----------------------------------------------------------------------
+@node Other Features
+@c ----------------------------------------------------------------------
+@chapter Other Features
+@cindex Other Features
+
+The following sections describe the more advanced features (and
+associated commands / key-bindings) of the 'Insert Pair Edit' (ipe)
+package.
+
+@menu
+* Line Movement::
+* List Movement::
+* Defining line PAIRs with an INFIX::
+* Auto Insertion::
+* Positioning POINT and MARK::
+* PAIRs With Empty OPEN / CLOSE::
+* Updating Existing PAIRs::
+@end menu
+
+@c ----------------------------------------------------------------------
+@node Line Movement
+@c ----------------------------------------------------------------------
+@section Line Movement
+
+@emph{Intermediate} and @emph{Advanced} (@xref{Types of PAIR
+Definition}) 'Insert Pair Edit' (ipe) @sc{PAIR}s can be defined with
+an @emph{Initial Movement} of ``by lines''.  (The User can also change the
+current movement lexical unit @emph{on-the-fly} within
+@command{ipe-edit-mode} to ``by lines'' using the
+@command{ipe-edit--movement-by-line} command. (@xref{Movement Units}))
+
+The behaviour of the basic movement (@xref{Basic Movement}) commands
+is modified for @sc{PAIR}s with a ``by lines'' movement type.
+
+The @emph{up} and @emph{down} commands:
+
+@itemize @bullet
+@item @command{ipe-edit--open-up}
+@item @command{ipe-edit--open-down}
+@item @command{ipe-edit--close-up}
+@item @command{ipe-edit--close-down}
+@end itemize 
+
+operate as per other movement modes (``by characters'', ``by words''.)
+
+However, the other basic movement commands are re-bound to have
+different behaviour:
+
+@menu
+* Line Movement - Forward / Backward::
+* Line Movement - Beginning / End::
+@end menu
+
+@c ----------------------------------------------------------------------
+@node Line Movement - Forward / Backward
+@c ----------------------------------------------------------------------
+@subsection Line Movement - Forward / Backward
+
+The Forward / Backward basic movement (@xref{Basic Movement}) of
+'Insert Pair Edit' (ipe) @sc{PAIRs} with an @emph{Initial Movement} of
+``by lines'' is modified from the standard pattern used by the ``by
+characters'' / ``by words'' movements. 
+
+The:
+
+@itemize @bullet
+@item @command{ipe-edit--open-forward}
+@item @command{ipe-edit--open-backward}
+@item @command{ipe-edit--close-forward}
+@item @command{ipe-edit--close-backward}
+@end itemize 
+
+commands, are re-bound so that instead of moving the @sc{OPEN} and
+@sc{CLOSE} overlays, they are used to insert whitespace at the
+beginning of each intervening line between the @sc{OPEN} and
+@sc{CLOSE} overlays.
+
+For example, assuming that:
+
+@itemize @bullet
+@item
+The @command{insert-pair-edit} command has been bound to the suggested
+@key{M-(} binding;
+@item
+The @emph{Modifiers} @command{ipe-edit-movement-keyset} has been
+enabled; 
+@item
+The @key{@lbracechar{}} @sc{MNEMONIC} is bound to the @sc{PAIR}
+@key{@lbracechar{}} and @key{@rbracechar{}};
+@item
+The @emph{Initial Movement} for the @key{@lbracechar{}} @sc{MNEMONIC}
+is ``by lines'', and;
+@item
+The buffer contains the following text:
+
+@example
+@lbracechar{}
+The quick brown fox jumps over the lazy dog.
+The quick brown fox jumps over the lazy dog.
+The quick brown fox jumps over the lazy dog.
+@rbracechar{}
+@end example
+@end itemize
+
+To indent the lines between the @key{@lbracechar{}} and
+@key{@rbracechar{}} in the following text by two spaces you would used
+the keystrokes: 
+
+@example
+@key{C-u} @key{M-(} @key{@lbracechar{}}
+@end example
+
+Which will edit the @key{@lbracechar{}} @key{@rbracechar{}} @sc{PAIR} and
+enter @command{ipe-edit-mode}.
+
+You would then use the keystrokes:
+
+@example
+@key{C-f} @key{C-f}
+@end example
+
+To indent the text between the @key{@lbracechar{}} @key{@rbracechar{}}
+by two spaces. 
+
+Which will result in the buffer:
+
+@example
+@lbracechar{}
+  The quick brown fox jumps over the lazy dog.
+  The quick brown fox jumps over the lazy dog.
+  The quick brown fox jumps over the lazy dog.
+@rbracechar{}
+@end example
+
+To remove the indent of the text between the @key{@lbracechar{}}
+@key{@rbracechar{}}, you would use the keystrokes:
+
+@example
+@key{M-b} @key{M-b}
+@end example
+
+Which will result in the buffer:
+
+@example
+@lbracechar{}
+The quick brown fox jumps over the lazy dog.
+The quick brown fox jumps over the lazy dog.
+The quick brown fox jumps over the lazy dog.
+@rbracechar{}
+@end example
+
+@c ----------------------------------------------------------------------
+@node Line Movement - Beginning / End
+@c ----------------------------------------------------------------------
+@section Line Movement - Beginning / End
+
+The Beginning / End basic movement (@xref{Basic Movement}) of
+'Insert Pair Edit' (ipe) @sc{PAIRs} with an @emph{Initial Movement} of
+``by lines'' is modified from the standard pattern used by the ``by
+characters'' / ``by words'' movements.
+
+The:
+
+@itemize @bullet
+@item @command{ipe-edit--open-beg}
+@item @command{ipe-edit--open-end}
+@item @command{ipe-edit--close-beg}
+@item @command{ipe-edit--close-end}
+@end itemize 
+
+commands, are re-bound so that instead of moving the @sc{OPEN} and
+@sc{CLOSE} overlays to beginning / end of a line, they are instead
+used to @emph{toggle} the insertion of an empty line before / after
+the @sc{OPEN} / @sc{CLOSE} overlay. 
+
+For example, assuming that:
+
+@itemize @bullet
+@item
+The @command{insert-pair-edit} command has been bound to the suggested
+@key{M-(} binding;
+@item
+The @emph{Modifiers} @command{ipe-edit-movement-keyset} has been
+enabled; 
+@item
+The @key{@lbracechar{}} @sc{MNEMONIC} is bound to the @sc{PAIR}
+@key{@lbracechar{}} and @key{@rbracechar{}};
+@item
+The @emph{Initial Movement} for the @key{@lbracechar{}} @sc{MNEMONIC}
+is ``by lines'', and;
+@item
+The buffer contains the following text:
+
+@example
+The quick brown fox jumps over the lazy dog.
+@lbracechar{}The quick brown fox jumps over the lazy dog.@rbracechar{}
+The quick brown fox jumps over the lazy dog.
+@end example
+@end itemize
+
+To add extra empty lines before and after the @key{@lbracechar{}} and
+@key{@rbracechar{}}, you would first use the keystrokes:
+
+@example
+@key{C-u} @key{M-(} @key{@lbracechar{}}
+@end example
+
+Which will update the existing @key{@lbracechar{}} @key{@rbracechar{}}
+@sc{PAIR}, and enter @command{ipe-edit-mode}.
+
+You would then use the keystrokes:
+
+@example
+@key{C-a}
+@end example
+
+Which will add an empty line before the @sc{OPEN} overlay.
+
+Which will result in the buffer:
+
+@example
+The quick brown fox jumps over the lazy dog.
+@lbracechar{}
+The quick brown fox jumps over the lazy dog.@rbracechar{}
+The quick brown fox jumps over the lazy dog.
+@end example
+
+And you would then use the keystrokes:
+
+@example
+@key{C-e}
+@end example
+
+To add an empty line after the @sc{CLOSE} overlay.
+
+Which will result in the buffer:
+
+@example
+The quick brown fox jumps over the lazy dog.
+@lbracechar{}
+The quick brown fox jumps over the lazy dog.
+@rbracechar{}
+The quick brown fox jumps over the lazy dog.
+@end example
+
+These empty lines can be removed by the @command{ipe-edit--open-end} /
+@command{ipe-edit--close-beg} commands, using the keystrokes:
+
+@example
+@key{M-a} @key{M-e}
+@end example
+
+Which will result in the buffer:
+
+@example
+The quick brown fox jumps over the lazy dog.
+@lbracechar{}The quick brown fox jumps over the lazy dog.@rbracechar{}
+The quick brown fox jumps over the lazy dog.
+@end example
+
+@c ----------------------------------------------------------------------
+@node List Movement
+@c ----------------------------------------------------------------------
+@section List Movement
+
+@emph{Intermediate} and @emph{Advanced} (@xref{Types of PAIR
+Definition}) 'Insert Pair Edit' (ipe) @sc{PAIR}s can be defined with
+an @emph{Initial Movement} of ``by lists''.  (The User can also
+change the current movement lexical unit @emph{on-the-fly} within
+@command{ipe-edit-mode} to ``by lists'' using the
+@command{ipe-edit--movement-by-list} command. (@xref{Movement Units}))
+
+The behaviour of the basic movement (@xref{Basic Movement}) commands
+is modified for @sc{PAIR}s with a ``by lists'' movement type.
+
+@menu
+* List Movement - Forward / Backward::
+* List Movement - Up / Down::
+* List Movement - Beginning / End::
+@end menu
+
+@c ----------------------------------------------------------------------
+@node List Movement - Forward / Backward
+@c ----------------------------------------------------------------------
+@subsection List Movement - Forward / Backward
+
+The Forward / Backward basic movement (@xref{Basic Movement}) of 'Insert
+Pair Edit' (ipe) @sc{PAIRs} with an @emph{Initial Movement} of ``by
+lists'' is modified from the standard pattern used by the ``by
+characters'' / ``by words'' movements.
+
+The:
+
+@itemize @bullet
+@item @command{ipe-edit--open-forward}
+@item @command{ipe-edit--open-backward}
+@item @command{ipe-edit--close-forward}
+@item @command{ipe-edit--close-backward}
+@end itemize 
+
+commands, are re-bound so that instead of moving the @sc{OPEN} and
+@sc{CLOSE} overlays forward / backward over text, they instead
+move as per the @strong{Emacs} @command{forward-list} /
+@command{backward-list} commands.
+
+For example, assuming that:
+
+@itemize @bullet
+@item
+The @command{insert-pair-edit} command has been bound to the suggested
+@key{M-(} binding;
+@item
+The @emph{Modifiers} @command{ipe-edit-movement-keyset} has been
+enabled; 
+@item
+The @key{[} @sc{MNEMONIC} is bound to the @sc{PAIR} @key{[} @key{]};
+@item
+The @emph{Initial Movement} for the @key{[} @sc{MNEMONIC}
+is ``by lists'', and;
+@item
+The buffer contains the following text:
+
+@example
+([(a b c)](d e f)(g h i))
+@end example
+@end itemize
+
+To edit the @key{[} @key{]} @sc{PAIR}, you would enter the keystrokes:
+
+@example
+@key{M-(} @key{[}
+@end example
+
+Which will edit the @key{[} @key{]} @sc{PAIR} around ``(a b c)'', and
+enter @command{ipe-edit-mode}.
+
+Then, to move the @emph{closing} @key{]} around ``(a b c)''
+@emph{forward}, you would use the keystroke:
+
+@example
+@key{C-f}
+@end example
+
+Which will move the @key{]} forward ``by list''.
+
+Which will result in the buffer:
+
+@example
+([(a b c)(d e f)](g h i))
+@end example
+
+Then, to move the @emph{opening} square bracket around ``(a b c)(d e
+f)'' @emph{forward}, you would use the keystroke:
+
+@example
+@key{M-f}
+@end example
+
+Which will move the @key{[} forward ``by list''.
+
+Which will result in the buffer:
+
+@example
+((a b c)[(d e f)](g h i))
+@end example
+
+@c ----------------------------------------------------------------------
+@node List Movement - Up / Down
+@c ----------------------------------------------------------------------
+@subsection List Movement - Up / Down
+
+The Up / Down basic movement (@xref{Basic Movement}) of 'Insert Pair
+Edit' (ipe) @sc{PAIRs} with an @emph{Initial Movement} of ``by lists''
+is modified from the standard pattern used by the ``by characters'' /
+``by words'' movements.
+
+The:
+
+@itemize @bullet
+@item @command{ipe-edit--open-up}
+@item @command{ipe-edit--open-down}
+@item @command{ipe-edit--close-up}
+@item @command{ipe-edit--close-down}
+@end itemize 
+
+commands, are re-bound so that instead of moving the @sc{OPEN} and
+@sc{CLOSE} overlays up / down lines of text, they instead
+move as per the @strong{Emacs} @command{up-list} / @command{down-list}
+commands.
+
+For example, assuming that:
+
+@itemize @bullet
+@item
+The @command{insert-pair-edit} command has been bound to the suggested
+@key{M-(} binding;
+@item
+The @emph{Modifiers} @command{ipe-edit-movement-keyset} has been
+enabled; 
+@item
+The @key{[} @sc{MNEMONIC} is bound to the @sc{PAIR} @key{[} @key{]};
+@item
+The @emph{Initial Movement} for the @key{[} @sc{MNEMONIC}
+is ``by lists'', and;
+@item
+The buffer contains the following text:
+
+@example
+([(a b c)](d e f)(g h i))
+@end example
+@end itemize
+
+To edit the @key{[} @key{]} @sc{PAIR}, you would enter the keystrokes:
+
+@example
+@key{M-(} @key{[}
+@end example
+
+Which will edit the @key{[} @key{]} @sc{PAIR} around ``(a b c)'', and
+enter @command{ipe-edit-mode}.
+
+Then, to move the @key{[} @key{]} @sc{PAIR} around ``(a b c)''
+@emph{up}, you would use the keystroke:
+
+@example
+@key{C-p}
+@end example
+
+Which will move the @key{[} @key{]} @sc{PAIR} up ``by list''.
+
+Which will result in the buffer:
+
+@example
+[((a b c)(d e f)(g h i))]
+@end example
+
+Then, to move the @key{[} @key{]} @sc{PAIR} around the entire buffer
+back @emph{down}, you would use the keystroke:
+
+@example
+@key{M-n}
+@end example
+
+Which will move the @key{[} @key{]} @sc{PAIR} down ``by list''.
+
+Which will result in the buffer:
+
+@example
+([(a b c)(d e f)(g h i)])
+@end example
+
+To move the @key{[} @key{]} @sc{PAIR} now around the ``(a b c)(d e
+f)(g h i)'' further @emph{down}, you would used the keystroke:
+
+@example
+@key{M-n}
+@end example
+
+Which will move the @key{[} @key{]} @sc{PAIR} down ``by list''.
+
+Which will result in the buffer:
+
+@example
+(([a b c])(d e f)(g h i))
+@end example
+
+@c ----------------------------------------------------------------------
+@node List Movement - Beginning / End
+@c ----------------------------------------------------------------------
+@subsection List Movement - Beginning / End
+
+The Beginning / End basic movement (@xref{Basic Movement}) of 'Insert
+Pair Edit' (ipe) @sc{PAIRs} with an @emph{Initial Movement} of ``by
+lists'' is modified from the standard pattern used by the ``by
+characters'' / ``by words'' movements.
+
+The:
+
+@itemize @bullet
+@item @command{ipe-edit--open-beg}
+@item @command{ipe-edit--open-end}
+@item @command{ipe-edit--close-beg}
+@item @command{ipe-edit--close-end}
+@end itemize 
+
+commands, are re-bound so that instead of moving the @sc{OPEN} and
+@sc{CLOSE} overlays to the beginning / end of lines, they instead
+move as per the @strong{Emacs} @command{beginning-of-defun} /
+@command{end-of-defun} commands.
+
+For example, assuming that:
+
+@itemize @bullet
+@item
+The @command{insert-pair-edit} command has been bound to the suggested
+@key{M-(} binding;
+@item
+The @emph{Modifiers} @command{ipe-edit-movement-keyset} has been
+enabled; 
+@item
+The @key{(} @sc{MNEMONIC} is bound to the @sc{PAIR} @key{(} @key{)};
+@item
+The @key{[} @sc{MNEMONIC} is bound to the @sc{PAIR} @key{[} @key{]};
+@item
+The @emph{Initial Movement} for the @key{[} @sc{MNEMONIC}
+is ``by lists'', and;
+@item
+The buffer contains the following text:
+
+@example
+((a b c)(d [e] f)(g h i))
+@end example
+@end itemize
+
+To edit the @key{[} @key{]} @sc{PAIR}, you would enter the keystrokes:
+
+@example
+@key{M-(} @key{[}
+@end example
+
+Which will edit the @key{[} @key{]} around ``e'', and enter
+@command{ipe-edit-mode}. 
+
+Then, to move the @key{[} @key{]} @sc{PAIR} around ``e'' to the
+@emph{beginning}, you would use the keystroke:
+
+@example
+@key{C-a}
+@end example
+
+Which will result in the buffer:
+
+@example
+[]((a b c)(d e f)(g h i))
+@end example
+
+Then, to move the @key{[} @key{]} @sc{PAIR} to the @emph{end}, you
+would use the keystroke:
+
+@example
+@key{C-e}
+@end example
+
+Which will result in the buffer:
+
+@example
+((a b c)(d e f)(g h i))[]
+@end example
+
+@c ----------------------------------------------------------------------
+@node Defining line PAIRs with an INFIX
+@c ----------------------------------------------------------------------
+@section Defining line PAIRs with an INFIX
+
+@emph{Intermediate} and @emph{Advanced} (@xref{Types of PAIR
+Definition}) 'Insert Pair Edit' (ipe) @sc{PAIR}s that are defined with
+an @emph{Initial Movement} of ``by lines'' can also define an @sc{INFIX}.
+
+This @sc{INFIX} will be inserted at the start of each intervening line
+between the @sc{OPEN} and @sc{CLOSE} overlays.
+
+The @emph{indent} (@xref{Line Movement}) commands:
+
+@itemize @bullet
+@item @command{ipe-edit--open-forward}
+@item @command{ipe-edit--open-backward}
+@item @command{ipe-edit--close-forward}
+@item @command{ipe-edit--close-backward}
+@end itemize 
+
+Can be used to add indentation both @emph{before} and @emph{after} the
+@sc{INFIX}.
+
+For example, assuming that:
+
+@itemize @bullet
+@item
+The @command{insert-pair-edit} command has been bound to the suggested
+@key{M-(} binding;
+@item
+The @emph{Modifiers} @command{ipe-edit-movement-keyset} has been
+enabled; 
+@item
+The @key{/} @sc{MNEMONIC} is bound to the @sc{PAIR} @key{/* } @key{
+*/}; 
+@item
+The @emph{Initial Movement} for the @key{/} @sc{MNEMONIC} is `by
+line';
+@item
+The @sc{INFIX} for the @key{/} @sc{PAIR} is @key{ **}, and;
+@item
+The current buffer contains the following text:
+
+@example
+The quick brown fox jumps over the lazy dog.
+The quick brown fox jumps over the lazy dog.
+The quick brown |fox jumps over the lazy dog.
+The quick brown fox jumps over the lazy dog.
+The quick brown fox jumps over the lazy dog.
+@end example
+@end itemize
+
+To insert and indent C-style comments around the text, you would enter
+the keystrokes:
+
+@example
+@key{C-u} @key{M-(} @key{/}
+@end example
+
+Which will insert a @code{/*} @code{*/} @sc{PAIR} around the
+middle line, and enter @command{ipe-edit-mode}.
+
+Which will result in the buffer:
+
+@example
+The quick brown fox jumps over the lazy dog.
+The quick brown fox jumps over the lazy dog.
+/* The quick brown |fox jumps over the lazy dog. */
+The quick brown fox jumps over the lazy dog.
+The quick brown fox jumps over the lazy dog.
+@end example
+
+And then, to move the @sc{OPEN} overlay up a line, and the @sc{CLOSE}
+overlay down a line, you would enter the keystrokes:
+
+@example
+@key{C-n} @key{C-p}
+@end example
+
+Which will result in the buffer:
+
+@example
+The quick brown fox jumps over the lazy dog.
+/* The quick brown fox jumps over the lazy dog.
+** The quick brown |fox jumps over the lazy dog.
+** The quick brown fox jumps over the lazy dog. */
+The quick brown fox jumps over the lazy dog.
+@end example
+
+To then indent the comment two spaces, you would enter the keystrokes: 
+
+@key{C-b} @key{C-b}
+
+Which will result in the buffer:
+
+@example
+The quick brown fox jumps over the lazy dog.
+  /* The quick brown fox jumps over the lazy dog.
+  ** The quick brown fox jumps over the lazy dog.
+  ** The quick brown fox jumps over the lazy dog. */
+The quick brown fox jumps over the lazy dog.
+@end example
+
+And then, to indent the text after the comment two spaces, you would
+enter the keystrokes: 
+
+@example
+@key{C-f} @key{C-f}
+@end example
+
+Which will result in the buffer:
+
+@example
+The quick brown fox jumps over the lazy dog.
+  /*   The quick brown fox jumps over the lazy dog.
+  **   The quick brown fox jumps over the lazy dog.
+  **   The quick brown fox jumps over the lazy dog. */
+The quick brown fox jumps over the lazy dog.
+@end example
+
+@c ----------------------------------------------------------------------
+@node Auto Insertion
+@c ----------------------------------------------------------------------
+@section Auto Insertion
+
+@emph{Intermediate} and @emph{Advanced} (@xref{Types of PAIR
+Definition}) 'Insert Pair Edit' (ipe) @sc{PAIR}s can be defined
+with an @emph{Auto-Insert} flag equal to @code{y}.
+
+Running @command{insert-pair-edit} and entering the @sc{MNEMONIC} for
+a @sc{PAIR} with an @emph{Auto-Insert} equal to @code{y}, will
+instantly insert the @sc{OPEN} and @sc{CLOSE} strings for the given
+@sc{PAIR} without entering @command{ipe-edit-mode}.  (This can be used
+to offer behaviour similar to the standard @strong{Emacs}
+@command{insert-parentheses}, but for different @sc{PAIR}s.)
+
+@sc{PAIR}s with an @emph{Auto-Insert} equal to @code{y} will still
+honour the @emph{Initial Movement} @sc{PAIR} option, so inserting a
+@sc{PAIR} of this type with:
+
+@itemize
+@item An @emph{Initial Movement} equal to @code{character}
+
+Will insert a @sc{PAIR} around @sc{POINT}.
+
+@item An @emph{Initial Movement} equal to @code{word}
+
+Will insert a @sc{PAIR} around the nearest word.
+
+@item An @emph{Initial Movement} equal to @code{line}
+
+Will insert a @sc{PAIR} around the current line.
+@end itemize
+
+To @emph{edit} a @sc{PAIR} with an @emph{Auto-Insert} equal to @code{y},
+execute the command @command{insert-pair-edit-update} using the
+keystrokes:
+
+@example
+@key{C-u} @key{M-(} @emph{MNEMONIC}
+@end example
+
+After the @sc{PAIR} has been inserted.
+
+@c ----------------------------------------------------------------------
+@node Positioning POINT and MARK
+@c ----------------------------------------------------------------------
+@section Positioning POINT and MARK
+
+The position at which @sc{POINT} (the @strong{Emacs} cursor) is placed
+on insert of an 'Insert Pair Edit' (ipe) @sc{PAIR} is controlled by:
+
+@defopt ipe--move-point-on-insert
+This option is consulted when inserting (@xref{Inserting and
+Aborting}) an 'Insert Pair Edit' (ipe) @sc{PAIR} into the buffer.
+
+If @strong{nil}, @sc{POINT} will remain at the position it was when
+the @sc{PAIR} was first inserted.
+
+If @strong{non-nil}, this option is expected to be one of the
+following values:
+
+@itemize @bullet
+@item resume 
+- @sc{POINT} will remain at its original position before the @sc{PAIR}
+was inserted. 
+@item open-beg 
+- @sc{POINT} will be moved to the beginning of the @sc{OPEN} string.
+@item open-end 
+- @sc{POINT} will be moved to the end of the @sc{OPEN} string.
+@item close-beg 
+- @sc{POINT} will be moved to the beginning of the @sc{CLOSE} string.
+@item close-end 
+- @sc{POINT} will be moved to the end of the @sc{CLOSE} string.
+@end itemize
+@end defopt
+
+The position at which the @strong{Emacs} @sc{MARK} is placed on insert
+of a @sc{PAIR} controlled by:
+
+@defopt ipe-set-mark-on-insert
+This option is consulted when inserting (@xref{Inserting and
+Aborting}) an 'Insert Pair Edit' (ipe) @sc{PAIR} into the buffer.
+
+If @strong{nil}, @sc{MARK} will not be set.
+
+If @strong{non}-nil, @sc{MARK}, this option is expected to be one of
+the following values:
+
+@itemize @bullet
+@item open-beg
+- @sc{MARK} will be set to the beginning of the @sc{OPEN} string.
+@item open-end
+- @sc{MARK} will be set to the end of the @sc{OPEN} string.
+@item close-beg
+- @sc{MARK} will be set to the beginning of the @sc{CLOSE} string.
+@item close-end
+- @sc{MARK} will be set to the end of the @sc{CLOSE} string.
+@end itemize
+@end defopt
+
+@emph{Intermediate} and @emph{Advanced} (@xref{Types of PAIR
+Definition}) 'Insert Pair Edit' (ipe) @sc{PAIR}s can define the position
+at which to place @sc{POINT} on @emph{insert} of the @sc{PAIR} into the
+buffer 'per-@sc{PAIR}'.
+
+@c ----------------------------------------------------------------------
+@node PAIRs With Empty OPEN / CLOSE
+@c ----------------------------------------------------------------------
+@section PAIRs With Empty OPEN / CLOSE
+
+'Insert Pair Edit' (ipe) @sc{PAIR}s can be defined with an @emph{empty}
+@sc{OPEN} or @sc{CLOSE} string.
+
+The position of an @emph{empty} @sc{OPEN} or @sc{CLOSE} string will
+still be maintained within @command{ipe-edit-mode}, and can be moved
+about the buffer using the @command{ipe-edit-mode} movement keys
+(@xref{Basic Movement}.)  Empty @sc{OPEN} and @sc{CLOSE} strings can be
+ used to delimit operations which act upon the @sc{CONTENTS} of a
+@sc{PAIR} (@xref{Edit CONTENTS Commands}.) 
+
+The position of an empty @sc{OPEN} or @sc{CLOSE} string is displayed
+within @command{ipe-edit-mode} by overlays containing:
+
+@defopt ipe-empty-open-string
+(Default: @code{(})
+@end defopt
+
+@defopt ipe-empty-close-string
+(Default: @code{)})
+@end defopt
+
+These overlays are highlighted using the @emph{face}:
+
+@defopt ipe-empty-pair-highlight
+(Default: @code{warning})
+@end defopt
+
+The @command{ipe-empty-open-string} / @command{ipe-empty-close-string}
+strings are @emph{not} inserted into the buffer by
+@command{ipe-edit--insert-pair}.
+
+@c ----------------------------------------------------------------------
+@node Updating Existing PAIRs
+@c ----------------------------------------------------------------------
+@section Updating Existing PAIRs
+
+In addition to inserting @sc{PAIR}s, the 'Insert Pair Edit' (ipe)
+package also offers a number of commands to @emph{update} the
+@sc{PAIR}s which already exist within an @strong{Emacs} buffer.
+
+@itemize @bullet
+@item
+@xref{Updating PAIRs}
+@item
+@xref{Deleting PAIRs}
+@item
+@xref{Replacing PAIRs}
+@end itemize
+
+The following sub-sections describe some of the more advanced features
+of these commands, and some of the options used to update @sc{PAIRs}
+when within @command{ipe-edit-mode}.
+
+@menu
+* Update Search Process::
+* Update PAIR Matching::
+* Updates on a Region::
+@end menu
+
+@c ----------------------------------------------------------------------
+@node Update Search Process
+@c ----------------------------------------------------------------------
+@subsection Update Search Process
+
+The @sc{PAIR}s updated by the 'Insert Pair Edit' (ipe) commands:
+
+@itemize @bullet
+@item @command{insert-pair-edit-update} (@xref{Updating PAIRs});
+@item @command{insert-pair-edit-delete} (@xref{Deleting PAIRs}), and;
+@item @command{insert-pair-edit-replace} (@xref{Replacing PAIRs}.)
+@end itemize
+
+All locate the @sc{PAIR}s to be updated by searching for the
+@emph{nearest} @sc{PAIR} (or, if the @emph{region} is active, for all
+the @sc{PAIR}s within the @emph{region}.)
+
+The direction of the search is determined by the
+@option{ipe-update-forward-first} option.  (Default: @strong{nil})
+
+@defopt{ipe-update-forward-first}
+
+If nil, the @sc{PAIR} to be updated by any of the
+@emph{insert-pair-edit-*} commands will be searched for by:
+
+@itemize @bullet
+@item
+Searching backward from @sc{POINT} for an @sc{OPEN} string, then:
+@item
+Searching @emph{forward} from the @sc{OPEN} string for a @emph{matching}
+@sc{CLOSE} string, or;
+@item
+If no @sc{OPEN} string is found by searching @emph{backward}, by
+searching @emph{forward} from @sc{POINT} for an @sc{OPEN} string, then:
+@item
+Searching @emph{forward} from the @sc{OPEN} string for a @emph{matching}
+@sc{CLOSE} string.
+@end itemize
+
+If non-nil, the @sc{PAIR} to be updated by the previous set of commands
+will first be searched for by:
+
+@itemize @bullet
+@item
+Searching @emph{forward} from @sc{POINT} for an @sc{OPEN} string, then:
+@item
+Searching @emph{forward} from the @sc{OPEN} string for a
+@emph{matching} @sc{CLOSE} string, or;
+@item
+If no @sc{OPEN} string is found by searching @emph{forward}, by
+searching @emph{backward} from @sc{POINT} for an @sc{OPEN} string, then:
+@item
+Searching @emph{forward} from the @sc{OPEN} string for a @emph{matching}
+@sc{CLOSE} string.
+@end itemize
+@end defopt
+
+@c ----------------------------------------------------------------------
+@node Update PAIR Matching
+@c ----------------------------------------------------------------------
+@subsection Update PAIR Matching
+
+The @sc{PAIR}s selected by the 'Insert Pair Edit' (ipe) commands are
+@emph{matched}, thus allowing the @sc{OPEN} and @sc{CLOSE} strings of
+a @sc{PAIR} to be nested.  Searching forward / backward for @sc{PAIR}s
+(@xref{Update Search Process}) will attempt to match the
+@emph{corresponding} @sc{OPEN} and @sc{CLOSE} strings.
+
+For example, assuming that:
+
+@itemize @bullet
+@item
+The @command{insert-pair-edit} command has been bound to the suggested
+@key{M-(} binding;
+@item
+The @key{(} @sc{MNEMONIC} is bound to the @sc{PAIR} @key{(} @key{)};
+@item
+The @key{[} @sc{MNEMONIC} is bound to the @sc{PAIR} @key{[} @key{]},
+and; 
+@item
+The buffer contains the following text:
+
+@example
+The (quick (|brown (fox) jumps) over) the lazy dog.
+@end example
+
+(Where the @key{|} character represents the current position of
+@sc{POINT}.)
+@end itemize
+
+Then, to update the @key{(} @key{)} @sc{PAIR} you would enter the
+keystrokes: 
+
+@example
+@key{C-u} @key{M-(} @key{(}
+@end example
+
+Which will match the @sc{PAIR} around the text ``brown fox jumps''.
+(Because the @key{(} @key{)} @sc{PAIR} around ``fox'' is @emph{nested}
+within the outer @sc{PAIR} around ``brown fox jumps''.)
+
+Changing the @sc{PAIR} using the keystrokes:
+
+@example
+@key{(} @key{[}
+@end example
+
+Which will result in the buffer:
+
+@example
+The (quick [|brown (fox) jumps] over) the lazy dog.
+@end example
+
+@c ----------------------------------------------------------------------
+@node Updates on a Region
+@c ----------------------------------------------------------------------
+@subsection Updates on Region
+
+If the @strong{Emacs} @emph{region} is active, running any of the 'Insert
+Pair Edit' (ipe) commands:
+
+@itemize @bullet
+@item @command{insert-pair-edit-update}
+@item @command{insert-pair-edit-delete}
+@item @command{insert-pair-edit-replace}
+@end itemize
+
+Will act upon all of the @sc{PAIR}s within the @emph{region}.  This
+will allow multiple @sc{PAIR}s to be edited at once.
+
+(@xref{Multiple PAIRs Commands}.)
+
+For example, assuming that:
+
+@itemize @bullet
+@item
+The @command{insert-pair-edit} command has been bound to the suggested
+@key{M-(} binding;
+@item
+The @key{(} @sc{MNEMONIC} is bound to the @sc{PAIR} @key{(} @key{)},
+and; 
+@item
+The buffer contains the following text:
+
+@example
+The quick (brown) fox jumps (over) the lazy dog.
+|The quick (brown) fox jumps (over) the lazy dog.
+The quick (brown) fox jumps (over) the lazy dog.@@
+@end example
+
+(Where the @key{|} character represents the current position of
+@sc{POINT}, and the @key{@@} key represents the current position of
+@sc{MARK} for an active @strong{Emacs} @emph{region}.)
+@end itemize
+
+Then, deleting a @sc{PAIR} using the following keystrokes:
+
+@example
+@key{C-u} @key{C-u} @key{M-(} @key{(}
+@end example
+
+Will delete all of the @key{(} @key{)} @sc{PAIR}s between @sc{POINT} and
+@sc{MARK}.
+
+Which will result in the buffer:
+
+@example
+The quick (brown) fox jumps (over) the lazy dog.
+|The quick brown fox jumps over the lazy dog.
+The quick brown fox jumps over the lazy dog.@@
+@end example
+
+@c ----------------------------------------------------------------------
+@node Development
+@c ----------------------------------------------------------------------
+@chapter Development
+@cindex Development
+
+@menu
+* Creating 'ipe-mode-pairs' PAIRs using Emacs Lisp::
+* Binding MNEMONICs to Keys::
+* Defining custom 'ipe--movement' Functions::
+* Adding 'ipe' ERTs (Emacs Regression Tests)::
+@end menu
+
+@c ----------------------------------------------------------------------
+@node Creating 'ipe-mode-pairs' PAIRs using Emacs Lisp
+@c ----------------------------------------------------------------------
+@section Creating 'ipe-mode-pairs' PAIRs using Emacs Lisp
+
+The 'Insert Pair Edit' (ipe) package is specifically designed to cater
+for @emph{Mode-Specific} @sc{PAIR} bindings.  Several
+@emph{Mode-Specific} bindings come bundled with the 'Insert Pair Edit'
+(ipe) package:
+
+@itemize @bullet
+@item texinfo-mode - (@code{ipe-textinfo-mode.el})
+@item c-mode - (@code{ipe-c-mode.el})
+@item html-mode - (@code{ipe-html-mode.el})
+@item mhtml-mode - (@code{ipe-html-mode.el})
+@item markdown-mode - (@code{ipe-markdown-mode.el})
+@end itemize
+
+These bindings are automatically activated whenever one of the 'Insert
+Pair Edit' (ipe) commands is invoked within a buffer with the given
+@option{major-mode}.
+
+While bindings for @emph{Major Modes} can be added dynamically using
+the 'Insert Pair Edit' customization options (@xref{Customization}),
+they can also be added using @strong{Emacs Lisp}.  This may be a more
+desirable option for Users wanting to supply 'Insert Pair Edit'
+(ipe) @sc{PAIR}s for their own @strong{Emacs} @option{major-mode}.
+
+To add new 'Insert Pair Edit' (ipe) @sc{PAIR} bindings for a new
+@strong{Emacs} @option{major-mode} using @strong{Emacs Lisp}, use the
+following functions (available from the @code{ipe-custom.el} /
+@code{ipe.el} libraries.)
+
+@itemize @bullet
+@item @code{ipe-custom--pair-list-get}
+@item @code{ipe-mode-pairs-add}
+@end itemize
+
+@defun ipe-custom--pair-list-get DEFN
+Converts a list (@code{DEFN}) describing a set of 'Insert Pair Edit'
+(ipe) @sc{PAIR}s into the format used by the @strong{Emacs}
+@code{customize} widgets.
+
+The list to be converted is expected to a list of @code{PAIR
+DEFINITIONS} of the form: 
+
+@example
+  (MNEMONIC OPEN CLOSE)
+or
+  (MNEMONIC OPEN CLOSE (PLIST))
+@end example
+
+Where:
+
+@itemize @bullet
+@item @code{MNEMONIC}
+Is a string input into the minibuffer by the User after calling
+@code{insert-pair-edit} to indicate which @sc{OPEN} and @sc{CLOSE}
+strings are to be inserted.
+@item @code{OPEN}
+Is a string placed at the beginning of a lexical unit, and
+then moved by the 'Insert Pair Edit' commands.
+@item @code{CLOSE}
+Is a string placed at the end of a lexical unit, and then
+moved by the 'Insert Pair Edit' commands.
+@item @code{PLIST}
+Is a property list specifying a set of optional @emph{Advanced}
+options that can be included to specify extra configuration passed to
+@emph{specialised} movement functions. (see:
+@code{ipe-move-by-movements})  
+
+Known PLIST properties are:
+
+@example
+:movement        MOVEMENT
+:infix           INFIX
+:escapes         ESCAPES
+:auto-insert     AUTO-INSERT
+:move-point      MOVE-POINT
+:indent-function INDENT-FUNCTION
+:menu            MENU
+@end example
+
+@itemize -
+@item MOVEMENT
+The initial lexical unit indicating the type of movements made by the
+'Insert Pair Edit' commands. (pre-defined values: 'char, 'word, 'line,
+'list; default: 'word.)
+@item INFIX
+A string added to the front of lines between the @sc{OPEN} and
+@sc{CLOSE} @sc{PAIR} when @command{MOVEMENT} = 'line.
+@item ESCAPES
+Is a list of pairs of strings.  Each pair of strings (@sc{MATCH}
+@sc{REPLACE}) represents an escape sequence.  Each @sc{MATCH} between
+@sc{OPEN} and @sc{CLOSE} will be replaced by @sc{REPLACE}.
+@item AUTO-INSERT
+If non-nil, will cause the @command{insert-pair-edit} function to
+automatically insert the @sc{PAIR} without entering
+@command{ipe-edit-mode}.
+@item MOVE-POINT
+Indicates where to move @emph{POINT} when a new @sc{PAIR} is inserted.
+This is a @sc{PAIR}-specific override to the global
+@var{ipe-move-point-on-insert} setting, and takes the same values
+('resume, 'open-beg, 'open-end, 'close-beg, 'close-end)
+@item INDENT-FUNCTION
+is either @strong{nil}, or a function used to indent the @sc{OPEN} and
+@sc{CLOSE} strings.
+@item MENU
+Is a forward slash ('/') separated string of the names of the menus
+under which the @sc{PAIR} is displayed within the @strong{Emacs}
+'Insert Pair Edit' menus.
+@end itemize
+@end itemize
+@end defun
+
+@defun ipe-mode-pairs-add MODE DEFN
+Adds a binding for the @sc{PAIR} definition list (@code{DEFN}) to the
+@var{ipe-mode-pairs} variable for the given @code{MODE}.
+@end defun
+
+For example, for a fictional @code{xxx-mode}, to create a set of
+@emph{Mode Specific} `ipe' @sc{PAIR} Definitions, create a new file, 
+@code{ipe-xxx-mode.el}, and add the following @strong{Emacs Lisp}:
+
+@example
+;;; ipe-xxx-mode.el --- Insert Pair Edit - xxx-mode definitions
+
+(require 'ipe-custom)
+(require 'ipe)
+
+; Create a new 'Insert Pair Edit' mode-specific PAIRs variable
+; 'ipe-xxx-pairs' which maps:
+;
+;   o => <open> / <close>
+;   - => -      / -
+;   ; => ;      / ;       (with a ';' INFIX)
+;
+(defcustom
+  ipe-xxx-pairs
+  (ipe-custom--pair-list-get
+  '(("o" "<open>" "<close>")
+    ("-" "-"      "-"       :movement char)
+    (";" ";"      ";"       :movement line :infix ";")))
+  "'insert-pair-edit' customizations for 'xxx-mode'."
+  :group 'ipe-mode-pairs
+  :tag   "'Insert Pair Edit' - xxx-mode PAIRs"
+  :link  '(function-link insert-pair-edit)
+  :set   'ipe-custom-pair-list-set
+  :get   'ipe-custom-pair-list-get
+  :type  '(ipe-custom-pair-list
+	   :tag "PAIRs used by 'insert-pair-edit' in 'xxx-mode'."))
+
+; Activate the new 'ipe-xxx-pairs' whenever in 'xxx-mode'.
+(ipe-mode-pairs-add 'xxx-mode 'ipe-xxx-pairs)
+
+(provide 'ipe-xxx-mode)
+@end example
+
+@c ----------------------------------------------------------------------
+@node Binding MNEMONICs to Keys
+@c ----------------------------------------------------------------------
+@section Binding MNEMONICs to Keys
+
+To bind an 'Insert Pair Edit' (ipe) PAIR directly to the key
+representing its @sc{MNEMONIC} (so that typing the @sc{MNEMONIC}
+inserts the @sc{PAIR}) use the function:
+
+@defun insert-pair-edit-cmd
+@end defun
+
+For example:
+
+@example
+(local-set-key "(" 'insert-pair-edit-cmd)
+@end example
+
+This will bind the @key{(} key to the 'Insert Pair Edit' (ipe)
+@sc{MNEMONIC} @key{(}.  Typing @key{(} within a buffer where this has
+been set will insert the @sc{PAIR} associated with the @key{(}
+@sc{MNEMONIC}, and enter @command{ipe-edit-mode}.
+
+If the @sc{PAIR} definition for the given @sc{MNEMONIC} has an
+@emph{Auto-Insert} flag set to @code{y}, this can be used to
+automatically enter matched @sc{PAIRs} every time the @sc{OPEN} key
+for the @sc{PAIR} is pressed.  (Without entering @command{ipe-edit-mode}.)
+
+@c ----------------------------------------------------------------------
+@node Defining custom 'ipe--movement' Functions
+@c ----------------------------------------------------------------------
+@section Defining custom 'ipe--movement Functions
+
+The movements (@code{character}, @code{word}, @code{line},
+@code{list}) supplied within @command{ipe-edit-mode} are
+@emph{pluggable}.
+
+They are defined by entries within:
+
+@defvar ipe-move-by-movements
+
+This is a @emph{list} of 4-tuples:
+
+@example
+(SYMBOL MOVE-BY-FUNCTION POS-SET-FUNCTION DESCRIPTION)
+@end example
+
+@itemize @bullet
+@item @strong{SYMBOL} is the identifier defining the type of movement.
+
+@item @strong{MOVE-BY-FUNCTION}
+
+Is a function that returns the position of the @sc{OPEN} and @sc{CLOSE}
+strings for a given @emph{lexical unit} movement mode.  It should have a
+signature of the form:
+
+@example
+(MOVE-BY-FUNCTION DEFN N SIDE ACTION POS OTHER UNITS PUSH)
+@end example
+
+Where:
+
+@itemize -
+@item DEFN
+- Is the definition of the @sc{PAIR} from @var{ipe-pairs}.
+@item N
+- Is the position of the @sc{PAIR} in @var{ipe--pair-pos-list}.
+@item SIDE
+- Is either @code{'open} or @code{'close}.
+@item ACTION
+- Is either @code{'init}, @code{'beg}, @code{'up}, @code{'backward},
+@code{'forward}, @code{'down}, @code{'end}, or @code{'reset}.
+@item POS
+- Is the position from which the movement begins.
+@item OTHER
+- Is the position of the other member of the @sc{PAIR}.
+@item UNITS
+- Are the number of units to move.
+@item PUSH
+- Indicates that this is a @emph{push} move from the other member of
+the @sc{PAIR}. 
+@end itemize
+
+It should return the position to which the given part of the @sc{PAIR}
+(@code{'open} or @code{'close}) is set when the given movement command
+(@code{'beg}, @code{'up}, @code{'down}, @code{'backward},
+@code{'forward}, @code{'end}) is entered by the User.
+
+If @code{POS} is nil, movement should be calculated from @code{POINT}. 
+
+@item POS-SET-FUNCTION
+
+Is an (optional) function that is called whenever
+@command{ipe--pos-property-set} is called to perform movement specific
+updates to the @command{ipe--pair-pos-list} state variable.  It should
+have a signature of the form:
+
+@example
+(POS-SET-FUNCTION N)
+@end example
+
+Where:
+
+@itemize -
+@item N
+Is the position of the @sc{PAIR} in @command{ipe--pair-pos-list} for
+which a @command{ipe--pos-property-set} call has just been made.
+@end itemize
+
+@item DESCRIPTION
+Is the text output to the echo area to describe the movement.
+@end itemize
+@end defvar
+
+To create a new @emph{movement}:
+
+@itemize @bullet
+@item
+Create a new @emph{move-by} function.
+@item
+Add a new entry to @var{ipe-move-by-movements} variable.
+@item
+Add a new binding to the @var{ipe-edit-mode-movement-map} for new
+movement mode.
+@end itemize
+
+@c ----------------------------------------------------------------------
+@node Adding 'ipe' ERTs (Emacs Regression Tests)
+@c ----------------------------------------------------------------------
+@section Adding 'ipe' ERT (Emacs Regression Tests)
+
+Regression tests (Using the @strong{Emacs} @sc{ERT} (@emph{Emacs
+Regression Test})) package can be defined using the @sc{Emacs} macro:   
+
+@defmac ipe-test-def-kbd NAME PARAM DOC CUSTOM SETUP BUFFER-TEXT EXPECTED KEYSTROKES &optional TEARDOWN)
+
+Customized version of @command{ert-deftest} for ‘ipe’ unit testing.
+
+This macro will define an ERT test, which runs a set of keyboard
+commands, KEYSTROKES, against the BUFFER-TEXT within a temporary
+buffer, and compares the resulting text in the buffer after the
+commands have been run, to the EXPECTED result.
+
+For this test, the @command{insert-pair-edit} will be bound to @key{M-(}.
+
+@itemize @bullet
+@item @code{NAME}
+The name of the ‘ert’ test.  This will be prefixed with ’ipe-test--’. 
+@item @code{PARAM}
+Placeholder - for future ERT extensibility.
+@item @code{DOC}
+Documentation string for the ‘ert-deftest’ definition.
+@item @code{CUSTOM}
+List of ’ipe’ customizations for the test.
+@item @code{SETUP}
+Commands used to initialize the temporary test buffer.
+@item @code{BUFFER-TEXT}
+Starting text within the temporary buffer.
+@item @code{EXPECTED}
+Expected text within the temporary buffer after test completion.
+@item @code{KEYSTROKES}
+A string representing the keystrokes to be executed as user input
+against the temporary buffer.  (This should be in a format that can be
+parsed by the @command{kbd} command.)
+@item @code{TEARDOWN}
+Commands used to clean up the temporary test buffer.
+@end itemize
+@end defmac
+
+@example
+(setq ipe-test-xxx-options
+      '((ipe-edit--movement-keysets '(modifiers))
+        (ipe-pairs                  '(("(" "(" ")" (:movement char))
+                                      ("[" "[" "]"))))
+
+(ipe-test-def-kbd xxx-test ()
+  "Test `insert-pair-edit'"
+  ipe-test-xxx-options
+  nil
+  "|The quick brown fox jumps over the lazy dog."
+  "(|)The quick brown fox jumps over the lazy dog."
+  "M-( ( RET")
+@end example
+
+@menu
+* Running 'ipe' ERTs (Emacs Regression Tests)::
+@end menu
+
+@c ----------------------------------------------------------------------
+@node Running 'ipe' ERTs (Emacs Regression Tests)
+@c ----------------------------------------------------------------------
+@subsection Running 'ipe' ERTs (Emacs Regression Tests)
+
+To run @emph{Emacs Regression Test}s defined by the
+@command{ipe-test-def-kbd} macro, the following convenience functions
+are supplied:
+
+@defun ipe-test-run
+
+An interactive function to run an @strong{ERT} test that has prefix
+@command{ipe-test--}. 
+
+Prompt for the name of an @command{ipe-test-def} or
+@command{ipe-test-def-kbd} test to be run, and run it.  The input
+PATTERN is a regular expression that will match the NAMEs of the tests
+to be run. 
+@end defun
+
+@defun ipe-test-run-all
+
+An interactive function to run all of the @strong{ERT} test cases that
+start with @command{ipe-test--}. 
+
+This interactive function runs all of the tests created using the 
+@command{ipe-test-def} or @command{ipe-test-def-kbd} macros.
+@end defun
+
+@c ----------------------------------------------------------------------
+@node Index
+@c ----------------------------------------------------------------------
+@unnumbered Index
+@printindex cp
+
+@c ----------------------------------------------------------------------
+@bye

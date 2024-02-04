@@ -1,0 +1,32 @@
+# **********************************************************************
+#
+# NAME
+# .gitignore
+#
+# PURPOSE
+# This file is used by the git (https://git-scm.com) source control
+# system.
+#
+# It specifies the patterns of files within the currect directory
+# heirarchy that are not to be included in the git source control
+# system. 
+#
+# The format of this file is described by:
+#
+#     https://git-scm.com/docs/gitignore
+#
+# **********************************************************************
+
+# **********************************************************************
+# Ignore all compile elisp files.
+# **********************************************************************
+
+**/*.elc
+
+# **********************************************************************
+# Ignore all Emacs back-up files.
+# **********************************************************************
+
+**/*~
+
+# **********************************************************************

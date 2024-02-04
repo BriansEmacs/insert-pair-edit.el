@@ -1,0 +1,50 @@
+;; -------------------------------------------------------------------
+;;; TODO:
+;;
+;; BUGS
+;; - Updates with Comments @c with no CLOSE case problems.
+;; - Fix indent function for indent init.
+;; - Fix cursor position for 'line indent.
+;; - Fix face highlighting for toggled open + infix.
+;;
+;; FEATURES
+;; - Question Delete PAIR.
+;; - Highlight Delete PAIR.
+;; - Add C-mouse-1 / C-mouse-2 actions (add / remove multiple PAIRs)
+;;
+;; STYLE
+;; - Move ipe--set-point out of ipe-edit--abort.
+;; - Check save-excursion usage.
+;; - Address TODO's.
+;;
+;; STRETCH
+;; - Add update regular expressions.
+;;
+;; TESTING
+;; - Add extra tests for 'indention functions.
+;; - Add tests for search forward first on update.
+;; - Search for Emacs code coverage tool.
+;;
+;; DOCUMENTATION
+;; - Create README.md
+;; - Check documentation consistency.
+;; - Check licensing / copyright headers.
+;; - Check standard formats for .texi files.
+;; - Record screen cast.
+;; - Create GIF / Logo.
+;;
+;; BUILD
+;; - Check XEmacs compatibility.
+;; - Check 24.4+ compatibility.
+;; - Check < 24.4 graceful degradation.
+;; - Check elisp conventions / other linters.
+;;
+;; RELEASE
+;; - Line-by-Line code check.
+;; - Check differences between ELPA / MELPA.
+;;
+;; LINT
+;; - ~/.emacs.d/my/packages/ipe/lint.sh
+;;
+;; OTHER
+;; - makeinfo ipe.texi
