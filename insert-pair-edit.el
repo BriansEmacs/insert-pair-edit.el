@@ -160,11 +160,10 @@ also be by characters, lines, or lists (depending on the
 		       (ipe-edit--read-mnemonic "With PAIR: "))))
 
   (ipe--undo-start)
+
+  (setq ipe--mnemonic replace)
+  (ipe--movement-set (ipe--pair-movement-initial (ipe--pair)))
   (ipe-updt--delete-find-pairs mnemonic t)
-
-  (setq ipe--mnemonic replace
-	ipe--movement (ipe--pair-movement-initial (ipe--pair)))
-
   (ipe--pair-pos-redisplay)
 
   (if (= (ipe--pos-count) 0)
@@ -325,9 +324,11 @@ With REPLACE specifying the MNEMONIC of the replacement PAIR."
     (when (> (ipe--pos-count) 0)
       (ipe--undo-start)
       (ipe-edit-mode t)
+
       (when (or (not ipe--mnemonic)
 		(string= ipe--mnemonic "")
 		(ipe--pair-property (ipe--pair) :auto-insert))
+
 	(ipe-edit--insert-pair))))
 
    ;; Update

@@ -1727,20 +1727,20 @@ Using a 'word PAIR with multiple-cursors."
     "The quick brown fox !jumps}}} over the lazy dog.")
   "C-u C-u C-u M-( 4 5 RET")
 
-;; FIXME - Cursors should be after new OPEN.
-					;(ipe-test-def-kbd mc-missing-close-to-open-replace ()
-					;  "Test `insert-pair-edit-replace' with a missing CLOSE with active region.
-					;
-					;Using a 'word PAIR with multiple-cursors."
-					;  ipe-test-mc-missing-options
-					;  nil
-					;  '("@The quick brown fox jumps}}} over the lazy dog."
-					;    "The quick brown fox jumps}}} over the lazy dog."
-					;    "The quick brown fox jumps}}} over the lazy dog.|")
-					;  '("{{{|The quick brown fox jumps{{{! over the lazy dog."
-					;    "The quick brown fox jumps{{{! over the lazy dog."
-					;    "The quick brown fox jumps over the lazy dog.")
-					;  "C-u C-u C-u M-( 5 4 RET")
+;;; FIXME - Cursors should be after new OPEN.
+;;(ipe-test-def-kbd mc-missing-close-to-open-replace ()
+;;  "Test `insert-pair-edit-replace' with a missing CLOSE with active region.
+;;
+;;Using a 'word PAIR with multiple-cursors."
+;;  ipe-test-mc-missing-options
+;;  nil
+;;  '("@The quick brown fox jumps}}} over the lazy dog."
+;;    "The quick brown fox jumps}}} over the lazy dog."
+;;    "The quick brown fox jumps}}} over the lazy dog.|")
+;;  '("{{{|The quick brown fox jumps{{{! over the lazy dog."
+;;    "The quick brown fox jumps{{{! over the lazy dog."
+;;    "The quick brown fox jumps over the lazy dog.")
+;;  "C-u C-u C-u M-( 5 4 RET")
 
 (ipe-test-def-kbd mc-missing-both-multiple ()
   "Test `insert-pair-edit-delete' with multiple-cursors.

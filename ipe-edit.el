@@ -1535,18 +1535,18 @@ With a prefix ARG, search for the `ARG'th OPEN and CLOSE."
 
   (interactive "P")
   (when (ipe-edit--mode-check)
-    (let* ((units        (ipe--arg-units arg))
-	   (n            (ipe--pos-count))
-	   (beg          (ipe--pos-close (1- n)))
-	   (pair         (ipe--pair))
-	   (open         (ipe--pair-open-string  pair))
-	   (infix        (ipe--pair-infix-string pair))
-	   (escapes      (ipe--pair-escapes      pair))
-	   (close        (ipe--pair-close-string pair))
-	   (pos-pair     (ipe-updt--next-pair beg open infix close escapes
-					      (point-max) units))
-	   (open-offset  (ipe--pos-property (1- n) :open-offset))
-	   (close-offset (ipe--pos-property (1- n) :close-offset)))
+    (let* ((units       (ipe--arg-units arg))
+	   (n           (ipe--pos-count))
+	   (beg         (ipe--pos-close (1- n)))
+	   (pair        (ipe--pair))
+	   (open        (ipe--pair-open-string  pair))
+	   (infix       (ipe--pair-infix-string pair))
+	   (escapes     (ipe--pair-escapes      pair))
+	   (close       (ipe--pair-close-string pair))
+	   (pos-pair    (ipe-updt--next-pair beg open infix close escapes
+					     (point-max) units))
+	   (point-open  (ipe--pos-property (1- n) :point-open))
+	   (point-close (ipe--pos-property (1- n) :point-close)))
 
       (if pos-pair
 	  (save-excursion
@@ -1560,11 +1560,11 @@ With a prefix ARG, search for the `ARG'th OPEN and CLOSE."
 				   (- (ipe--pos-point (1- n))
 				      (ipe--pos-open (1- n))))))
 
-	    (ipe--pos-property-set n :open-offset open-offset)
+	    (ipe--pos-property-set n :point-open point-open)
 
-	    (when (numberp close-offset)
+	    (when (numberp point-close)
 	      (ipe--pos-point        n (ipe--pos-close n))
-	      (ipe--pos-property-set n :close-offset close-offset))
+	      (ipe--pos-property-set n :point-close point-close))
 
 	    (ipe-edit--redisplay))
 
@@ -1586,25 +1586,25 @@ With a prefix ARG, search for the `ARG'th OPEN and CLOSE backward."
 
   (interactive "P")
   (when (ipe-edit--mode-check)
-    (let* ((units        (ipe--arg-units arg))
-	   (n            (ipe--pos-count))
-	   (beg          (ipe--pos-open 0))
-	   (end          (ipe--pos-close 0))
-	   (pair         (ipe--pair))
-	   (open         (ipe--pair-open-string  pair))
-	   (infix        (ipe--pair-infix-string pair))
-	   (escapes      (ipe--pair-escapes      pair))
-	   (close        (ipe--pair-close-string pair))
-	   (pos-pair     (ipe-updt--previous-pair beg
-						  open
-						  infix
-						  close
-						  escapes
-						  (point-min)
-						  (if (string= open close) end nil)
-						  units))
-	   (open-offset  (ipe--pos-property 0 :open-offset))
-	   (close-offset (ipe--pos-property 0 :close-offset)))
+    (let* ((units       (ipe--arg-units arg))
+	   (n           (ipe--pos-count))
+	   (beg         (ipe--pos-open 0))
+	   (end         (ipe--pos-close 0))
+	   (pair        (ipe--pair))
+	   (open        (ipe--pair-open-string  pair))
+	   (infix       (ipe--pair-infix-string pair))
+	   (escapes     (ipe--pair-escapes      pair))
+	   (close       (ipe--pair-close-string pair))
+	   (pos-pair    (ipe-updt--previous-pair beg
+						 open
+						 infix
+						 close
+						 escapes
+						 (point-min)
+						 (if (string= open close) end nil)
+						 units))
+	   (point-open  (ipe--pos-property 0 :point-open))
+	   (point-close (ipe--pos-property 0 :point-close)))
 
       (if pos-pair
 	  (save-excursion
@@ -1616,10 +1616,10 @@ With a prefix ARG, search for the `ARG'th OPEN and CLOSE backward."
 			      (+ (ipe--pos-open n)
 				 (- (ipe--pos-point (1- n))
 				    (ipe--pos-open (1- n))))))
-	    (ipe--pos-property-set n :open-offset open-offset)
-	    (when (numberp close-offset)
+	    (ipe--pos-property-set n :point-open point-open)
+	    (when (numberp point-close)
 	      (ipe--pos-point n (ipe--pos-close n))
-	      (ipe--pos-property-set n :close-offset close-offset))
+	      (ipe--pos-property-set n :point-close point-close))
 	    (ipe-edit--redisplay))
 
 	(message "Could not find %s"
@@ -1639,13 +1639,13 @@ With a prefix ARG, search for the `ARG'th matching contents."
 
   (interactive "P")
   (when (ipe-edit--mode-check)
-    (let* ((units        (ipe--arg-units arg))
-	   (n            (1- (ipe--pos-count)))
-	   (new          (ipe--pos-count))
-	   (substring    (buffer-substring (ipe--pos-open n)
-					   (ipe--pos-close n)))
-	   (open-offset  (ipe--pos-property n :open-offset))
-	   (close-offset (ipe--pos-property n :close-offset)))
+    (let* ((units       (ipe--arg-units arg))
+	   (n           (1- (ipe--pos-count)))
+	   (new         (ipe--pos-count))
+	   (substring   (buffer-substring (ipe--pos-open n)
+					  (ipe--pos-close n)))
+	   (point-open  (ipe--pos-property n :point-open))
+	   (point-close (ipe--pos-property n :point-close)))
 
       (save-excursion
 	(goto-char (ipe--pos-close n))
@@ -1655,9 +1655,9 @@ With a prefix ARG, search for the `ARG'th matching contents."
 	      (ipe--pos-close-set    new (match-end 0))
 	      (ipe--pos-point        new (match-beginning 0))
 	      (ipe--pos-property-set new
-				     :initial-n    new
-				     :open-offset  open-offset
-				     :close-offset close-offset)
+				     :initial-n   new
+				     :point-open  point-open
+				     :point-close point-close)
 	      (ipe-edit--redisplay))
 
 	  (message "Could not find string '%s'" substring))))))
@@ -1676,13 +1676,13 @@ With a prefix ARG, search for the `ARG'th matching contents."
 
   (interactive "P")
   (when (ipe-edit--mode-check)
-    (let* ((units        (ipe--arg-units arg))
-	   (n            (1- (ipe--pos-count)))
-	   (new          (ipe--pos-count))
-	   (substring    (buffer-substring (ipe--pos-open n)
-					   (ipe--pos-close n)))
-	   (open-offset  (ipe--pos-property n :open-offset))
-	   (close-offset (ipe--pos-property n :close-offset)))
+    (let* ((units       (ipe--arg-units arg))
+	   (n           (1- (ipe--pos-count)))
+	   (new         (ipe--pos-count))
+	   (substring   (buffer-substring (ipe--pos-open n)
+					  (ipe--pos-close n)))
+	   (point-open  (ipe--pos-property n :point-open))
+	   (point-close (ipe--pos-property n :point-close)))
       (save-excursion
 	(goto-char (ipe--pos-open 0))
 	(if (search-backward substring nil t units)
@@ -1691,9 +1691,9 @@ With a prefix ARG, search for the `ARG'th matching contents."
 	      (ipe--pos-close-set    new (match-end 0))
 	      (ipe--pos-point        new (match-beginning 0))
 	      (ipe--pos-property-set new
-				     :initial-n    new
-				     :open-offset  open-offset
-				     :close-offset close-offset)
+				     :initial-n   new
+				     :point-open  point-open
+				     :point-close point-close)
 	      (ipe-edit--redisplay))
 
 	  (message "Could not find string '%s'" substring))))))
@@ -2449,7 +2449,7 @@ existing keybindings for other `ipe-edit-mode' commands.
 
 The underlying format of this variable is either:
 
-- A 5-tuple containing five position dependant boolean flags:
+- A 5-tuple containing five position dependent boolean flags:
 
   1 - If non-nil, turn on `'Modifiers'
   2 - If non-nil, turn on `'Alphabetic'

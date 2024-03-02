@@ -6,7 +6,7 @@
 ;; Created: 28 June, 2020
 ;; Version: 2023.12.30
 ;; Package: ipe
-;; Package-Requires: ((emacs "24.3"))
+;; Package-Requires: ((emacs "26.1"))
 ;; Keywords: convenience, tools
 ;; Homepage: http://github.com/brians.emacs/insert-pair-edit
 
@@ -727,12 +727,6 @@ Where:
   * :close-list - The offsets within the :close string at which
     different parts of PAIRS are located when more than one PAIR is
     display by the one CLOSE overlay.)
-  * :close-offset - The position of POINT within a PAIR when
-    POINT = POS-CLOSE.
-    . `'before' means that POINT is before the CLOSE string.
-    . A number, N, means that POINT is within the CLOSE string, offset
-      N characters from the starting character of the CLOSE string.
-    . `'after' means that POINT is after the CLOSE string.
   * :infix - The current infix string (This may differ from the PAIR
     definition, as it may include leading / trailing whitespace added
     by movement commands.)
@@ -742,17 +736,23 @@ Where:
     `ipe--pair-pos-list' is normalized.)
   * :inserted-p - A flag indicating whether or not the current PAIR
     has been inserted into the buffer.  (Used by `ipe--set-point'.)
-  * :ipe-point - The position of POINT for this PAIR.  (This is
-    updated by `ipe--pos-insert' / `ipe--pos-delete' functions to
-    maintain the position of POINT even when characters are inserted
-    before the current PAIR.)
   * :open - The value to be displayed by the OPEN overlay.  (This may
     contain multiple concatenated OPEN / CLOSE strings if one overlay
     is being used to display multiple parts of one or more PAIRS.)
   * :open-list - The offsets within the :open string at which
     different parts of PAIRS are located when more than one PAIR is
-    displayed by the one OPEN overlay.)
-  * :open-offset - The position of POINT within a PAIR when
+    displayed by the one OPEN overlay.
+  * :point - The position of POINT for this PAIR.  (This is
+    updated by `ipe--pos-insert' / `ipe--pos-delete' functions to
+    maintain the position of POINT even when characters are inserted
+    before the current PAIR.)
+  * :point-close - The position of POINT within a PAIR when
+    POINT = POS-CLOSE.
+    . `'before' means that POINT is before the CLOSE string.
+    . A number, N, means that POINT is within the CLOSE string, offset
+      N characters from the starting character of the CLOSE string.
+    . `'after' means that POINT is after the CLOSE string.
+  * :point-open - The position of POINT within a PAIR when
     POINT = POS-OPEN.
     . `'before' means that POINT is before the OPEN string.
     . A number, N, means that POINT is within the OPEN string, offset
@@ -809,8 +809,19 @@ string when the `ipe' PAIR definition includes an :escapes property.")
   "A function called by the `ipe--pos-property-set' function.
 
 This function is used by the ipe-move-by-* functions to update
-dependant properties within the `ipe--pair-pos-list' when
-`ipe--pos-property-set' is called.")
+dependent properties within the `ipe--pair-pos-list' when
+`ipe--pos-property-set' is called.
+
+It is expected to be of the form:
+
+   (lambda (n &optional pname value))
+
+Where:
+
+- N is the current entry within `ipe--pair-pos-list' for which the
+  property is being set.
+- PNAME is the name of the property.
+- VALUE is the value to which the property is set.")
 
 ;; -------------------------------------------------------------------
 ;;;; Internal Constants.
@@ -1476,6 +1487,14 @@ Defaulting to movement by 'words'."
 
     move-by))
 
+(defun ipe--movement-set (movement)
+  "Set the value of `ipe--movement' to MOVEMENT."
+
+  (setq ipe--movement
+	movement
+	ipe--pos-property-set-callback
+	(caddr (assoc movement ipe-move-by-movements))))
+
 ;; -------------------------------------------------------------------
 ;;;; Undo Processing.
 ;; -------------------------------------------------------------------
@@ -1491,10 +1510,10 @@ If not already set, saves the current `buffer-undo-list' position in
     (activate-change-group ipe--undo-handle)))
 
 (defun ipe--undo-accept ()
-  "Accept the current set of changes made by `ipe'.
+  "Accept the current change set made by `ipe'.
 
 Amalgamates the changes made while in `ipe-edit-mode' into a single
-'undo'."
+`undo'."
 
   (when ipe--undo-handle
     (undo-amalgamate-change-group ipe--undo-handle)
@@ -1504,7 +1523,7 @@ Amalgamates the changes made while in `ipe-edit-mode' into a single
     (setq ipe--undo-handle nil)))
 
 (defun ipe--undo-abort ()
-  "Abort the current set of changes made by `ipe'.
+  "Abort the current change set made by `ipe'.
 
 Reverts the buffer back to the undo state saved by `ipe--undo-start'."
 
@@ -1567,24 +1586,36 @@ within `ipe--pair-pos-list', add empty PAIR Positions to
 
   (let* ((pair-pos-list (ipe--list-pad ipe--pair-pos-list (1+ n)))
 	 (pair-pos      (nth n pair-pos-list))
+	 (properties    args)
 	 (alist         (caddr pair-pos))
 	 (new-alist     alist)
 	 (pname)
 	 (value))
 
-    (while args
-      (setq pname     (car  args)
-	    value     (cadr args)
-	    new-alist (ipe--alist-update new-alist pname value)
-	    args      (cddr args)))
+    (while properties
+      (setq pname      (car  properties)
+	    value      (cadr properties)
+	    new-alist  (ipe--alist-update new-alist pname value)
+	    properties (cddr properties)))
 
     (setcar (nthcdr n pair-pos-list)
 	    (list (car pair-pos) (cadr pair-pos) new-alist))
 
     (setq ipe--pair-pos-list pair-pos-list)
 
-    (when (functionp ipe--pos-property-set-callback)
-      (funcall ipe--pos-property-set-callback n))))
+    ;; Call the property call back for each property.
+    (setq properties args)
+
+    (while properties
+      (setq pname      (car  properties)
+	    value      (cadr properties)
+	    properties (cddr properties))
+
+      (when (functionp ipe--pos-property-set-callback)
+	(funcall ipe--pos-property-set-callback
+		 n
+		 pname
+		 value)))))
 
 (defun ipe--pos-open (n)
   "Return the `N'th Insert Pair Edit (ipe) OPEN Position.
@@ -1738,13 +1769,13 @@ The returned string is highlighted with `ipe-infix-highlight'."
 	      'face 'ipe-infix-highlight))
 
 (defun ipe--pos-point (n &optional pos)
-  "Return :ipe-point property for the `N'th PAIR Position.
+  "Return :point property for the `N'th PAIR Position.
 
-If POS, return the original value, and set :ipe-point to POS."
+If POS, return the original value, and set :point to POS."
 
-  (let ((ipe-point (ipe--pos-property n :ipe-point)))
+  (let ((ipe-point (ipe--pos-property n :point)))
     (when pos
-      (ipe--pos-property-set n :ipe-point pos))
+      (ipe--pos-property-set n :point pos))
     ipe-point))
 
 (defun ipe--pos-overlap (n)
@@ -1800,15 +1831,15 @@ within the `ipe--pair-pos-list' to account for the shift in positions
 caused by inserting string at POINT.
 
 If POS-POINT is non-nil, it is expected to indicate how to adjust the
-:ipe-point position when POINT = IPE-POINT.
+:point position when POINT = IPE-POINT.
 
 - `'before' means that the string is to be inserted before the
-  IPE-POINT and the value of :ipe-point should be changed.
+  IPE-POINT and the value of :point should be changed.
 - a number N means that the string to be inserted will contain
-  IPE-POINT, and that the value of the :ipe-point property should be
+  IPE-POINT, and that the value of the :point property should be
   offset by N from the insertion point.
 - `'after' means that the string is to be inserted after the IPE-POINT
-  and the value of :ipe-point should NOT be changed.
+  and the value of :point should NOT be changed.
 
 Return the number of characters inserted."
 
@@ -1828,11 +1859,11 @@ Return the number of characters inserted."
 	(when (< point pos-close)
 	  (ipe--pos-close-set n (+ pos-close inserted)))
 
-	;; If inserting before :ipe-point, adjust :ipe-point.
+	;; If inserting before :point, adjust :point.
 	(when (and (integerp ipe-point) (< point ipe-point))
 	  (ipe--pos-point n (+ ipe-point inserted)))
 
-	;; If inserting at :ipe-point, special behaviour.
+	;; If inserting at :point, special behaviour.
 	(when (and (integerp ipe-point) (equal point ipe-point))
 	  (cond
 	   ;; Insertion is before point, adjust.
@@ -1879,7 +1910,7 @@ Return the number of characters deleted."
 				  beg
 				(- pos-close deleted))))
 
-	;; If deleting before :ipe-point, adjust the :ipe-point.
+	;; If deleting before :point, adjust the :point.
 	(when (and (integerp ipe-point) (> ipe-point beg))
 	  (ipe--pos-point n (if (< ipe-point end)
 				beg
@@ -1945,7 +1976,7 @@ replaced.)"
 	    (when (<= (point) pos-close)
 	      (ipe--pos-close-set n (+ pos-close inserted)))
 
-	    ;; If inserting at :ipe-point, special behaviour.
+	    ;; If inserting at :point, special behaviour.
 	    (if (and (integerp ipe-point) (<= (point) ipe-point))
 		(ipe--pos-point n (+ ipe-point inserted)))))
 
@@ -1960,16 +1991,16 @@ This inserts the text displayed by an OVERLAY into the buffer.
 Insertions / deletions take into account the current
 `ipe--pair-pos-list' positions.
 
-POS-POINT is expected to indicate how to adjust the :ipe-point
+POS-POINT is expected to indicate how to adjust the :point
 position when POINT = IPE-POINT.
 
 - `'before' means that the text is to be inserted before the IPE-POINT
-  and the value of :ipe-point should be changed.
+  and the value of :point should be changed.
 - a number N means that the text to be inserted will contain
-  IPE-POINT, and that the value of :ipe-point property should be
+  IPE-POINT, and that the value of :point property should be
   offset by N from the insertion point.
 - `'after' means that the text is to be inserted after the IPE-POINT
-  and the value of :ipe-point should NOT be changed.
+  and the value of :point should NOT be changed.
 
 Return the number of characters inserted."
 
@@ -2191,9 +2222,9 @@ by searching backwards ARG lexical units from POS."
 
   (let ((pair (ipe--pair)))
     (ipe--pos-open-set n (ipe--open-init-pos n pos arg))
-    (unless (ipe--pos-property n :open-offset)
+    (unless (ipe--pos-property n :point-open)
       (ipe--pos-property-set n
-			     :open-offset
+			     :point-open
 			     (length (ipe--pair-open-string pair))))))
 
 (defun ipe--open-hide (n)
@@ -2832,7 +2863,7 @@ The position of POINT is determined by the value of either:
 - The PAIR property :move-point;
 - The variable `ipe-move-point-on-insert';
 - The previous position of POINT (stored within the `N'th PAIR
-  positional property :ipe-point.)
+  positional property :point.)
 
 The possible values of :move-point and `ipe-move-point-on-insert'
 are:
@@ -2857,28 +2888,28 @@ If both :move-point and `ipe-move-point-on-insert' are nil, the
 original position of POINT is used by consulting the `N'th PAIR's
 positional properties:
 
-- :ipe-point - The position of POINT when command: `ipe-edit-mode' was
+- :point - The position of POINT when command: `ipe-edit-mode' was
   activated.
 - :inserted-p - A flag indicating whether or not the OPEN and CLOSE
   strings have already been inserted.
-- :open-offset - A numeric value, indicating that POINT was originally
+- :point-open - A numeric value, indicating that POINT was originally
   *within* the OPEN string at the given position.
-- :close-offset - A numeric value, indicating that POINT was
+- :point-close - A numeric value, indicating that POINT was
   originally *within* the CLOSE st string at the given position."
 
-  (let* ((len-open     (length (ipe--pos-open-insert n)))
-	 (len-close    (length (ipe--pos-close-insert n)))
-	 (pair         (ipe--pair))
-	 (move-point   (if (ipe--pair-property-p pair :move-point)
-			   (ipe--pair-property pair :move-point)
-			 ipe-move-point-on-insert))
-	 (pos-open     (ipe--pos-open n))
-	 (pos-close    (ipe--pos-close n))
-	 (point        (ipe--pos-point n))
-	 (inserted-p   (ipe--pos-property n :inserted-p))
-	 (open-offset  (ipe--pos-property n :open-offset))
-	 (open-list    (ipe--pos-property n :open-list))
-	 (close-offset (ipe--pos-property n :close-offset)))
+  (let* ((len-open    (length (ipe--pos-open-insert n)))
+	 (len-close   (length (ipe--pos-close-insert n)))
+	 (pair        (ipe--pair))
+	 (move-point  (if (ipe--pair-property-p pair :move-point)
+			  (ipe--pair-property pair :move-point)
+			ipe-move-point-on-insert))
+	 (pos-open    (ipe--pos-open  n))
+	 (pos-close   (ipe--pos-close n))
+	 (point       (ipe--pos-point n))
+	 (inserted-p  (ipe--pos-property n :inserted-p))
+	 (point-open  (ipe--pos-property n :point-open))
+	 (point-close (ipe--pos-property n :point-close))
+	 (open-list   (ipe--pos-property n :open-list)))
 
     (unless move-point
       (setq move-point ipe-move-point-on-insert))
@@ -2906,46 +2937,46 @@ positional properties:
 	   ((and inserted-p (integerp move-point) (<= move-point 0) pos-open)
 	    (+ pos-close (- move-point)))
 
-	   ;; Position when :ipe-point = POS-OPEN.
+	   ;; Position when :point = POS-OPEN.
 	   ((and inserted-p
 		 (equal point pos-open)
-		 (equal open-offset 'before))
+		 (equal point-open 'before))
 
 	    point)
 
 	   ((and inserted-p
 		 (equal point pos-open)
-		 (equal open-offset 'after))
+		 (equal point-open 'after))
 	    (+ point (or (car open-list) len-open)))
 
 	   ((and inserted-p
 		 (equal point pos-open)
-		 (integerp open-offset))
-	    (+ point (min open-offset len-open)))
+		 (integerp point-open))
+	    (+ point (min point-open len-open)))
 
 	   ((equal point pos-open)
 	    point)
 
-	   ;; Position when :ipe-point = POS-CLOSE.
+	   ;; Position when :point = POS-CLOSE.
 	   ((and inserted-p
 		 (equal point pos-close)
-		 (equal close-offset 'before))
+		 (equal point-close 'before))
 
 	    point)
 
 	   ((and inserted-p
 		 (equal point pos-close)
-		 (equal close-offset 'after))
+		 (equal point-close 'after))
 
 	    (+ point len-close))
 
-	   ((and inserted-p (equal point pos-close) (integerp close-offset))
-	    (+ point (min close-offset len-close)))
+	   ((and inserted-p (equal point pos-close) (integerp point-close))
+	    (+ point (min point-close len-close)))
 
 	   ((and (equal point pos-close))
 	    point)
 
-	   ;; Default, :ipe-point.
+	   ;; Default, :point.
 	   (t point)))
 
     (when (integerp point)
@@ -2975,7 +3006,8 @@ The initial position is determined lexical units derived from POS and
 
   ;; Set the current movement from the PAIR definition.
   (let ((pair (ipe--pair)))
-    (setq ipe--movement (ipe--pair-movement-initial pair))
+
+    (ipe--movement-set (ipe--pair-movement-initial pair))
 
     ;; Record the initial position within the `ipe--pair-pos-list'.
     (unless (ipe--pos-property n :initial-n)
@@ -3010,9 +3042,9 @@ at the start of the buffer without the use of `ipe--insert-overlay'."
   (dotimes (n (ipe--pos-count))
     (let ((open  (ipe--pos-open-insert n))
 	  (close (ipe--pos-close-insert n)))
-      (ipe--pos-insert open (ipe--pos-property n :open-offset))
+      (ipe--pos-insert open (ipe--pos-property n :point-open))
       (ipe--pos-close-set n (+ (ipe--pos-close n) (length open)))
-      (ipe--pos-insert close (ipe--pos-property n :close-offset))
+      (ipe--pos-insert close (ipe--pos-property n :point-close))
       (ipe--pos-property-set n :inserted-p t)))
 
   (dotimes (n (ipe--pos-count))
@@ -3099,21 +3131,21 @@ Return the number of characters inserted into the buffer."
 
       (ipe--pos-property-set n :close-list nil)
 
-      ;; If :ipe-point at the eob, more special behaviour.
+      ;; If :point at the eob, more special behaviour.
       (when (and (equal (ipe--pos-point n) (point-max))
 		 (>= (ipe--pos-close n)
 		     (- (point-max) (length (ipe--pos-close-insert n)))))
 	(let* ((ipe-point    (ipe--pos-point n))
-	       (open-offset  (ipe--pos-property n :open-offset))
-	       (close-offset (ipe--pos-property n :close-offset))
+	       (point-open   (ipe--pos-property n :point-open))
+	       (point-close  (ipe--pos-property n :point-close))
 	       (len-open     (length (ipe--pos-open-insert n)))
 	       (len-close    (length (ipe--pos-close-insert n)))
-	       (offset       (if (integerp open-offset)
+	       (offset       (if (integerp point-open)
 				 (+ (- ipe-point len-close len-open)
-				    open-offset)
-			       (if (integerp close-offset)
+				    point-open)
+			       (if (integerp point-close)
 				   (+ (- ipe-point len-close)
-				      close-offset)
+				      point-close)
 				 (- ipe-point len-close)))))
 	  (ipe--pos-point n offset)))
 
@@ -3324,23 +3356,24 @@ so that they correctly align with the current lexical unit boundaries.
 This will also output a notification describing the new movement to
 the echo area for the user."
 
-  (setq ipe--movement movement)
+  (when (not (equal ipe--movement movement))
+    (setq ipe--movement movement)
 
-  (let ((move-by (ipe--move-by-function))
-	(pair    (ipe--pair)))
+    (let ((move-by (ipe--move-by-function))
+	  (pair    (ipe--pair)))
+
+      (dotimes (n (ipe--pos-count))
+	(funcall move-by pair n 'open  'reset 0 0 0)
+	(funcall move-by pair n 'close 'reset 0 0 0)))
+
+    (setq ipe--pos-property-set-callback
+	  (caddr (assoc ipe--movement ipe-move-by-movements)))
 
     (dotimes (n (ipe--pos-count))
-      (funcall move-by pair n 'open  'reset 0 0 0)
-      (funcall move-by pair n 'close 'reset 0 0 0)))
-
-  (setq ipe--pos-property-set-callback
-	(caddr (assoc ipe--movement ipe-move-by-movements)))
-
-  (dotimes (n (ipe--pos-count))
-    (ipe--open-init  n (ipe--pos-open n) 0)
-    (ipe--close-init n (ipe--pos-close n) 0)
-    (when (functionp ipe--pos-property-set-callback)
-      (funcall ipe--pos-property-set-callback n)))
+      (ipe--open-init  n (ipe--pos-open n) 0)
+      (ipe--close-init n (ipe--pos-close n) 0)
+      (when (functionp ipe--pos-property-set-callback)
+	(funcall ipe--pos-property-set-callback n))))
 
   (ipe--pair-pos-redisplay)
   (message (concat "'Insert Pair Edit' movement is now by '"

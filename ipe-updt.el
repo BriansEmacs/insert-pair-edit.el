@@ -174,13 +174,12 @@ string, or nil, if no OPEN string is found."
   the accessible portion of the buffer.
 
 Return either the start of the previous line containing INFIX, or
-POS if no line starting with INFIX was found."
+nil if no line starting with INFIX was found."
   (save-excursion
-    (goto-char (ipe--eol pos))
-    (or (re-search-backward (concat "^ *" (regexp-quote infix))
-			    bound
-			    t)
-	pos)))
+    (goto-char (+ pos (length infix)))
+    (re-search-backward (concat "^ *" (regexp-quote infix))
+			bound
+			t)))
 
 (defun ipe-updt--previous-infix-beg (pos infix close &optional bound)
   "Return the bound of lines before POS starting with INFIX.
@@ -191,15 +190,26 @@ POS if no line starting with INFIX was found."
 - BOUND is the limit of the search, if nil, search to the beginning of
   the accessible portion of the buffer.
 
-If no INFIX is found within the line containing POS, return POS."
-  (if (zerop (length infix))
-      pos
+This function will first search backward from POS for any line
+containing an INFIX string (optionally preceded by whitespace).  If it
+finds one, it will then search line-by-line from this point for the
+`first' line in the group of continuous lines which contains a INFIX
+string (optionally preceded by whitespace).  It will then return the
+position within the buffer at which this `first' INFIX in the block of
+INFIX'es is located.
 
-    (let* ((infix-beg  (ipe-updt--previous-infix pos infix bound))
-	   (infix-prev (ipe--infix-pos infix-beg infix)))
+If no INFIX is found in a line before POS, return POS."
+
+  (let* ((infix-beg  (ipe-updt--previous-infix pos infix bound))
+	 (infix-prev))
+
+    (if (not infix-beg)
+	pos
 
       (save-excursion
 	(goto-char infix-beg)
+
+	(setq infix-prev (ipe--infix-pos infix-beg infix))
 
 	;; While the current line contains an INFIX.
 	(while (and infix-prev
@@ -207,13 +217,16 @@ If no INFIX is found within the line containing POS, return POS."
 			(>= (point) bound))
 		    (not (bobp)))
 
+	  ;; Assume the current line is the start of the 'block'.
+	  (setq infix-beg infix-prev)
+
+	  ;; Goto the previous line.
 	  (forward-line -1)
 
-	  ;; Save the previous line's INFIX position.
-	  (setq infix-beg  infix-prev
-		infix-prev (ipe--infix-pos (point) infix))
+	  ;; Search for another INFIX on the previous line.
+	  (setq infix-prev (ipe--infix-pos (point) infix))
 
-	  ;; If the current line also contains a CLOSE, we have gone
+	  ;; If the previous line also contains a CLOSE, we have gone
 	  ;; too far back.
 	  (when (and infix-prev
 		     (ipe--to-eol-contains (+ infix-prev (length infix))
@@ -1220,38 +1233,39 @@ Return the number of characters deleted from the buffer."
 
     ;; Check if we need to set up an IPE PAIR.
     (when set-pair-p
-      (ipe--pos-open-set     i beg-open)
-      (ipe--pos-close-set    i beg-close)
-      (ipe--pos-point        i
-			     (if (or (region-active-p)
-				     (and (<= beg-open pos)
-					  (<  pos end-open)))
-				 pos-open
-			       (if (and (<= beg-close pos)
-					(<  pos pos-close))
-				   pos-close
-				 (if (>= pos (point-max))
-				     'eob
-				   pos))))
+      (ipe--pos-open-set  i beg-open)
+      (ipe--pos-close-set i beg-close)
+      (ipe--pos-point     i
+			  (if (or (region-active-p)
+				  (and (<= beg-open pos)
+				       (<  pos end-open)))
+			      pos-open
+			    (if (and (<= beg-close pos)
+				     (<  pos pos-close))
+				pos-close
+			      (if (>= pos (point-max))
+				  'eob
+				pos))))
 
-      ;; TODO: Move indent-1 / indent-2 to "ipe-line".
       (ipe--pos-property-set i
 			     :initial-n    i
+			     :point-open
+			     (ipe--pos-location pos
+						beg-open
+						end-open)
+			     :point-close
+			     (ipe--pos-location pos
+						beg-close
+						pos-close)
+
+			     ;; TODO: Move indent-1 / indent-2 to "ipe-line".
 			     :indent-1     (nth 0 indents)
+			     :open-toggle  (nth 2 indents)
 			     :indent-2     (if (or (nth 2 indents)
 						   (= len-open 0))
 					       (nth 4 indents)
 					     (nth 1 indents))
-			     :open-toggle  (nth 2 indents)
-			     :open-offset
-			     (ipe--pos-location pos
-						beg-open
-						end-open)
-			     :close-toggle (nth 7 indents)
-			     :close-offset
-			     (ipe--pos-location pos
-						beg-close
-						pos-close)))
+			     :close-toggle (nth 7 indents)))
 
     ;; Delete OPEN + indents.
     (unless (zerop len-open)

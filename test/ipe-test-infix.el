@@ -493,7 +493,7 @@ Using a 'line (+ :infix) PAIR."
   ipe-test-infix-options
   nil
   "|The quick brown fox jumps over the lazy dog."
-  " <!--| The quick brown fox jumps over the lazy dog.  -->"
+  " <!-- |The quick brown fox jumps over the lazy dog.  -->"
   "M-( < C-b RET")
 
 (ipe-test-def-kbd infix-open-backward-blank ()

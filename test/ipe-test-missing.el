@@ -159,27 +159,27 @@ Cursor within CLOSE."
   "The quick brown {{{fox |jumps over the lazy dog."
   "C-u C-u C-u M-( 5 4 RET")
 
-;; FIXME - OPEN is placed @cursor.
-;(ipe-test-def-kbd missing-close-to-open-replace-4 ()
-;  "Test `insert-pair-edit-replace' with a missing CLOSE -> missing OPEN.
-;
-;Cursor before CLOSE."
-;  ipe-test-missing-options
-;  nil
-;  "The quick brown fox |jumps over}}} the lazy dog."
-;  "The quick brown fox |jumps {{{over the lazy dog."
-;  "C-u C-u C-u M-( 5 4 RET")
+;;; FIXME - OPEN is placed @cursor.
+;;(ipe-test-def-kbd missing-close-to-open-replace-4 ()
+;;  "Test `insert-pair-edit-replace' with a missing CLOSE -> missing OPEN.
+;;
+;;Cursor before CLOSE."
+;;  ipe-test-missing-options
+;;  nil
+;;  "The quick brown fox |jumps over}}} the lazy dog."
+;;  "The quick brown fox |jumps {{{over the lazy dog."
+;;  "C-u C-u C-u M-( 5 4 RET")
 
-;; FIXME - OPEN is placed @cursor.
-;(ipe-test-def-kbd missing-close-to-open-replace-5 ()
-;  "Test `insert-pair-edit-replace' with a missing CLOSE -> missing OPEN.
-;
-;Cursor before CLOSE; CLOSE at end of buffer."
-;  ipe-test-missing-options
-;  nil
-;  "The quick brown fox |jumps over the lazy dog.}}}"
-;  "The quick brown fox |jumps over the lazy {{{dog."
-;  "C-u C-u C-u M-( 5 4 RET")
+;;; FIXME - OPEN is placed @cursor.
+;;(ipe-test-def-kbd missing-close-to-open-replace-5 ()
+;;  "Test `insert-pair-edit-replace' with a missing CLOSE -> missing OPEN.
+;;
+;;Cursor before CLOSE; CLOSE at end of buffer."
+;;  ipe-test-missing-options
+;;  nil
+;;  "The quick brown fox |jumps over the lazy dog.}}}"
+;;  "The quick brown fox |jumps over the lazy {{{dog."
+;;  "C-u C-u C-u M-( 5 4 RET")
 
 (ipe-test-def-kbd missing-close-delete-1 ()
   "Test `insert-pair-edit-delete' with only an OPEN string.

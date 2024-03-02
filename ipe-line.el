@@ -156,25 +156,29 @@ following positional properties:
 
     (ipe--pos-property-set n :close close)))
 
-(defun ipe-line--set (n)
-  "Set the `ipe' position properties for the `N'th PAIR.
+(defun ipe-line--inserted (n)
+  "Adjusts :point when the `N'th line PAIR is inserted.
 
-Updates the position properties for the :open, :infix, and :close
-strings used to display the `N'th PAIR when `ipe-movement' eq `'line'.
+This function updates the :point property for the `N'th
+`ipe--pair-pos-list' entry upon insert of a `'line' PAIR.
 
-The :open, :infix, and :close properties are updated based upon the
-current values of the following positional properties:
+:point needs to be adjusted for `'line' PAIRs to account for the
+offset created by the :indent-1 property."
 
-  * :indent-1 - A number which specifies the amount of whitespace to
-    add before :infix.
-  * :indent-2 - A number which specifies the amount of whitespace to
-    add after :infix.
-  * :open-toggle - If eq t, adds a newline after the :open string.
-  * :close-toggle - If eq t, adds a newline before the :close string."
-  (let ((ipe--pos-property-set-callback nil))
-    (ipe-line--open-set n)
-    (ipe-line--infix-set n)
-    (ipe-line--close-set n)))
+  (let ((pos-open   (ipe--pos-open n))
+	(indent-1   (ipe--pos-property n :indent-1))
+	(point      (ipe--pos-property n :point))
+	(point-open (ipe--pos-property n :point-open)))
+
+    (when (and indent-1 (> indent-1 0))
+      (ipe--pos-open-set n (+ pos-open indent-1))
+      (ipe--pos-property-set n :open nil)
+
+      (when (equal pos-open point)
+	(when (numberp point-open)
+	  (ipe--pos-property-set n :point (+ point indent-1)))
+	(when (equal point-open 'after)
+	  (ipe--pos-property-set n :point (+ point indent-1)))))))
 
 (defun ipe-line--unset (n)
   "Remove the `ipe' position properties for the `N'th PAIR.
@@ -189,13 +193,70 @@ The following positional properties are removed:
   * :open-toggle
   * :close-toggle"
   (ipe--pos-property-set n
+			 :open         nil
+			 :infix        nil
+			 :close        nil
 			 :indent-1     nil
 			 :indent-2     nil
 			 :open-toggle  nil
-			 :close-toggle nil
-			 :open         nil
-			 :infix        nil
-			 :close        nil))
+			 :close-toggle nil))
+
+(defun ipe-line--set (n &optional pname value)
+  "Set the `ipe' position properties for the `N'th PAIR.
+
+This function acts as the `movement callback' for the `'line'
+movement.
+
+- N is the current entry within `ipe--pair-pos-list' for which the
+  property is being set.
+- PNAME is the name of the property.
+- VALUE is the value to which the property is set.
+
+This function will update the position properties for the :open,
+:infix, and :close strings that are used to display the `N'th PAIR
+when `ipe-movement' eq `'line'.
+
+The :open, :infix, and :close properties are updated based upon the
+current values of the following positional properties:
+
+  * :indent-1 - A number which specifies the amount of whitespace to
+    add before :infix.
+  * :indent-2 - A number which specifies the amount of whitespace to
+    add after :infix.
+  * :open-toggle - If eq t, adds a newline after the :open string.
+  * :close-toggle - If eq t, adds a newline before the :close string."
+
+  (let ((ipe--pos-property-set-callback nil))
+
+    (cond ((or (equal pname :open)
+	       (equal pname :open-toggle))
+	   (ipe-line--open-set n))
+
+	  ((equal pname :infix)
+	   (ipe-line--infix-set n))
+
+	  ((or (equal pname :close)
+	       (equal pname :close-toggle))
+	   (ipe-line--close-set n))
+
+	  ((equal pname :indent-1)
+	   (ipe-line--open-set n)
+	   (ipe-line--infix-set n)
+	   (ipe-line--close-set n))
+
+	  ((equal pname :indent-2)
+	   (ipe-line--open-set  n)
+	   (ipe-line--infix-set n))
+
+	  ((equal pname :inserted-p)
+	   (ipe-line--inserted n))
+
+	  ((not pname)
+	   (ipe-line--unset n)))))
+
+;; -------------------------------------------------------------------
+;;;; Line Movement Functions.
+;; -------------------------------------------------------------------
 
 (defun ipe-line--open-beg (n)
   "Start action for `ipe' OPEN string in `'line' movement.
@@ -316,7 +377,7 @@ to add a newline to the start of the CLOSE string.
     (ipe--pos-property-set n :close-toggle t)))
 
 ;; -------------------------------------------------------------------
-;;;; move-by Functions.
+;;;; move-by Function.
 ;; -------------------------------------------------------------------
 
 (defun ipe-line--move-by (defn n side action pos other units
@@ -365,9 +426,6 @@ Movement is calculated from POINT."
 
        ((equal action 'end)
 	(ipe-line--open-end n))
-
-       ((equal action 'redisplay)
-	(ipe-line--set n))
 
        ((equal action 'reset)
 	(beginning-of-line)

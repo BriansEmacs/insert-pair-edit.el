@@ -1,4 +1,4 @@
-        EMACS_DIR=d:/Apps/Emacs/29.1/bin
+        EMACS_DIR=d:/Apps/Emacs/29.2.1/bin
             EMACS=${EMACS_DIR}/emacs.exe
       PACKAGE_DIR=`cygpath -ma ~/.emacs.d/packages/elpa`
 

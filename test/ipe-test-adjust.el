@@ -819,28 +819,28 @@ With toggled pre + post indented :infix = :open = :close."
     "The quick brown fox jumps over the lazy dog.")
   "C-u M-( ; C-s C-d")
 
-;; FIXME - Should not match second indents.
-;(ipe-test-def-kbd adjust-next-infix-12 ()
-;  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
-;
-;With region + :infix = :open = :close."
-;  ipe-test-adjust-options
-;  nil
-;  '("|;The quick brown fox jumps over the lazy dog."
-;    ";The quick brown fox jumps over the lazy dog."
-;    ";The quick brown fox jumps over the lazy dog.;@"
-;    ";The quick brown fox jumps over the lazy dog."
-;    ";The quick brown fox jumps over the lazy dog."
-;    ";The quick brown fox jumps over the lazy dog."
-;    ";The quick brown fox jumps over the lazy dog.")
-;  '("|;The quick brown fox jumps over the lazy dog."
-;    ";The quick brown fox jumps over the lazy dog."
-;    ";The quick brown fox jumps over the lazy dog.;"
-;    "The quick brown fox jumps over the lazy dog."
-;    ";The quick brown fox jumps over the lazy dog."
-;    ";The quick brown fox jumps over the lazy dog."
-;    ";The quick brown fox jumps over the lazy dog.")
-;  "C-u M-( ; C-s C-d")
+;;; FIXME - Should not match second indents.
+;;(ipe-test-def-kbd adjust-next-infix-12 ()
+;;  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+;;
+;;With region + :infix = :open = :close."
+;;  ipe-test-adjust-options
+;;  nil
+;;  '("|;The quick brown fox jumps over the lazy dog."
+;;    ";The quick brown fox jumps over the lazy dog."
+;;    ";The quick brown fox jumps over the lazy dog.;@"
+;;    ";The quick brown fox jumps over the lazy dog."
+;;    ";The quick brown fox jumps over the lazy dog."
+;;    ";The quick brown fox jumps over the lazy dog."
+;;    ";The quick brown fox jumps over the lazy dog.")
+;;  '("|;The quick brown fox jumps over the lazy dog."
+;;    ";The quick brown fox jumps over the lazy dog."
+;;    ";The quick brown fox jumps over the lazy dog.;"
+;;    "The quick brown fox jumps over the lazy dog."
+;;    ";The quick brown fox jumps over the lazy dog."
+;;    ";The quick brown fox jumps over the lazy dog."
+;;    ";The quick brown fox jumps over the lazy dog.")
+;;  "C-u M-( ; C-s C-d")
 
 (ipe-test-def-kbd adjust-next-infix-13 ()
   "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
@@ -977,28 +977,27 @@ With region + :infix = :open."
     "The quick brown fox jumps over the lazy dog.")
   "C-u M-( 1 C-s C-d")
 
-;; FIXME - deletes extra characters from OPEN line.
-;(ipe-test-def-kbd adjust-next-infix-19 ()
-;  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
-;
-;With :infix = :open. No next."
-;  ipe-test-adjust-options
-;  nil
-;  '("The quick brown fox jumps over the lazy dog."
-;    "The quick brown fox jumps over the lazy dog."
-;    "The quick brown fox jumps over the lazy dog."
-;    "The quick brown fox jumps over the lazy dog."
-;    "   ;   The quick brown fox jumps over the lazy dog."
-;    "   ;   The quick brown fox |jumps over the lazy dog."
-;    "   ;   The quick brown fox jumps over the lazy dog.")
-;  '("The quick brown fox jumps over the lazy dog."
-;    "The quick brown fox jumps over the lazy dog."
-;    "The quick brown fox jumps over the lazy dog."
-;    "The quick brown fox jumps over the lazy dog."
-;    "The quick brown fox |jumps over the lazy dog."
-;    "The quick brown fox jumps over the lazy dog."
-;    "The quick brown fox jumps over the lazy dog.")
-;  "C-u M-( 1 C-s C-d")
+(ipe-test-def-kbd adjust-next-infix-19 ()
+  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+
+With :infix = :open. No next."
+  ipe-test-adjust-options
+  nil
+  '("The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "   ;   The quick brown fox jumps over the lazy dog."
+    "   ;   The quick brown fox |jumps over the lazy dog."
+    "   ;   The quick brown fox jumps over the lazy dog.")
+  '("The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox |jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog.")
+  "C-u M-( 1 C-s C-d")
 
 (ipe-test-def-kbd adjust-next-infix-20 ()
   "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
@@ -1463,28 +1462,28 @@ With toggled pre+post indented :infix = :open = :close."
     "    ;    The quick brown fox jumps over the lazy dog.;")
   "C-u M-( ; C-r C-d")
 
-;; FIXME - Delete extra characters before cursor.
-;(ipe-test-def-kbd adjust-previous-infix-12 ()
-;  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
-;
-;With region + :infix = :open = :close."
-;  ipe-test-adjust-options
-;  nil
-;  '(";The quick brown fox jumps over the lazy dog."
-;    ";The quick brown fox jumps over the lazy dog."
-;    ";The quick brown fox jumps over the lazy dog."
-;    "|;The quick brown fox jumps over the lazy dog."
-;    ";The quick brown fox jumps over the lazy dog."
-;    ";The quick brown fox jumps over the lazy dog."
-;    ";The quick brown fox jumps over the lazy dog.@")
-;  '("The quick brown fox jumps over the lazy dog."
-;    "The quick brown fox jumps over the lazy dog."
-;    "The quick brown fox jumps over the lazy dog."
-;    "|;The quick brown fox jumps over the lazy dog."
-;    ";The quick brown fox jumps over the lazy dog."
-;    ";The quick brown fox jumps over the lazy dog."
-;    ";The quick brown fox jumps over the lazy dog.")
-;  "C-u M-( ; C-r C-d")
+;;; FIXME - Delete extra characters before cursor.
+;;(ipe-test-def-kbd adjust-previous-infix-12 ()
+;;  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+;;
+;;With region + :infix = :open = :close."
+;;  ipe-test-adjust-options
+;;  nil
+;;  '(";The quick brown fox jumps over the lazy dog."
+;;    ";The quick brown fox jumps over the lazy dog."
+;;    ";The quick brown fox jumps over the lazy dog."
+;;    "|;The quick brown fox jumps over the lazy dog."
+;;    ";The quick brown fox jumps over the lazy dog."
+;;    ";The quick brown fox jumps over the lazy dog."
+;;    ";The quick brown fox jumps over the lazy dog.@")
+;;  '("The quick brown fox jumps over the lazy dog."
+;;    "The quick brown fox jumps over the lazy dog."
+;;    "The quick brown fox jumps over the lazy dog."
+;;    "|;The quick brown fox jumps over the lazy dog."
+;;    ";The quick brown fox jumps over the lazy dog."
+;;    ";The quick brown fox jumps over the lazy dog."
+;;    ";The quick brown fox jumps over the lazy dog.")
+;;  "C-u M-( ; C-r C-d")
 
 (ipe-test-def-kbd adjust-previous-infix-13 ()
   "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
@@ -1621,28 +1620,27 @@ With region + :infix = :open."
     ";The quick brown fox jumps over the lazy dog.")
   "C-u M-( 1 C-r C-d")
 
-;; FIXME
-;; (ipe-test-def-kbd adjust-previous-infix-19 ()
-;;   "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
-;;
-;; With :infix = :open. No previous."
-;;   ipe-test-adjust-options
-;;   nil
-;;   '("   ;   The quick brown fox jumps over the lazy dog."
-;;     "   ;   The quick brown fox |jumps over the lazy dog."
-;;     "   ;   The quick brown fox jumps over the lazy dog."
-;;     "The quick brown fox jumps over the lazy dog."
-;;     "The quick brown fox jumps over the lazy dog."
-;;     "The quick brown fox jumps over the lazy dog."
-;;     "The quick brown fox jumps over the lazy dog.@")
-;;   '("The quick brown fox jumps over the lazy dog."
-;;     "The quick brown fox |jumps over the lazy dog."
-;;     "The quick brown fox jumps over the lazy dog."
-;;     "The quick brown fox jumps over the lazy dog."
-;;     "The quick brown fox jumps over the lazy dog."
-;;     "The quick brown fox jumps over the lazy dog."
-;;     "The quick brown fox jumps over the lazy dog.")
-;;   "C-u M-( 1 C-r C-d")
+(ipe-test-def-kbd adjust-previous-infix-19 ()
+  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+
+With :infix = :open. No previous."
+  ipe-test-adjust-options
+  nil
+  '("   ;   The quick brown fox jumps over the lazy dog."
+    "   ;   The quick brown fox |jumps over the lazy dog."
+    "   ;   The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog.")
+  '("The quick brown fox jumps over the lazy dog."
+    "The quick brown fox |jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog.")
+  "C-u M-( 1 C-r C-d")
 
 (ipe-test-def-kbd adjust-previous-infix-20 ()
   "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
