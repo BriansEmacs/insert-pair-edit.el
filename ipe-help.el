@@ -695,6 +695,80 @@ Or, use one the following key bindings:
   :supertype 'help-xref
   'help-function 'ipe-help--info)
 
+;; -------------------------------------------------------------------
+
+(defface ipe-help--logo-face
+  '((t (
+	:height 400
+	:weight bold)))
+  "The face used to display the \"Insert Pair Edit (ipe)\" logo."
+
+  :group 'ipe-display
+  :tag   "Insert Pair Edit (Faces) - Logo face."
+  :link  '(function-link insert-pair-edit)
+  :link  '(function-link ipe-edit-mode))
+
+(defun ipe-help-logo ()
+  "Display the \"Insert Pair Edit (ipe)\" logo."
+
+  (interactive)
+  (let* ((logo-buffer  (get-buffer-create "**ipe-logo**"))
+	 (logo         "Insert Pair Edit (ipe)")
+	 (cursor-color (face-attribute 'cursor :background))
+	 (delay 0.5)
+	 (time 0))
+
+    (switch-to-buffer logo-buffer)
+    (buffer-face-set 'ipe--logo-face)
+    (blink-cursor-mode 0)
+    (set-cursor-color "grey10")
+
+    (setq-local ipe-pairs '(("(" "(" ")")
+			    ("[" "[" "]")
+			    ("{" "{" "}")
+			    ("\"" "\"" "\"")
+			    ("'" "'" "'"))
+		ipe-mode-pairs nil)
+
+    (delete-region (point-min) (point-max))
+
+    (insert "\n\n\n\n")
+    (insert logo)
+
+    (center-paragraph)
+    (goto-char (point-max))
+
+    (dolist (command
+	     (list
+	      '(insert-pair-edit-update "(")
+	      '(ipe-edit--close-backward nil)
+	      '(ipe-edit--close-backward nil)
+	      '(ipe-edit--close-backward nil)
+	      '(ipe-edit--change-pair "[")
+	      '(ipe-edit--close-forward nil)
+	      '(ipe-edit--close-forward nil)
+	      '(ipe-edit--close-forward nil)
+	      '(ipe-edit--close-backward nil)
+	      '(ipe-edit--open-forward nil)
+	      '(ipe-edit--close-backward nil)
+	      '(ipe-edit--change-pair "{")
+	      '(ipe-edit--change-pair "\"")
+	      '(ipe-edit--change-pair "'")
+	      '(ipe-edit--change-pair ")")
+	      '(ipe-edit--contents-upcase)
+	      '(ipe-edit--contents-downcase)
+	      '(ipe-edit--contents-capitalize)
+	      '(ipe-edit--open-forward nil)
+	      '(ipe-edit--open-forward nil)
+	      '(ipe-edit--abort)))
+
+      (run-at-time (setq time (+ time delay))
+		   0
+		   'apply
+		   command))
+
+    (set-cursor-color cursor-color)))
+
 (provide 'ipe-help)
 
 ;;; ipe-help.el ends here

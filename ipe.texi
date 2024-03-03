@@ -1071,7 +1071,7 @@ change the current ``movement mode``.
 @c ----------------------------------------------------------------------
 @node Other Major Commands
 @c ----------------------------------------------------------------------
-@section Other Major Insert-Pair-Edit Commands
+@chapter Other Major Insert-Pair-Edit Commands
 @cindex Other Major Insert-Pair-Edit Commands
 
 The following sections describe the other @emph{Major} 'Insert Pair
@@ -1084,7 +1084,7 @@ Edit' (ipe) commands.
 @end menu
 
 @node Updating PAIRs
-@subsection Updating PAIRs
+@section Updating PAIRs
 @cindex Updating PAIRs
 
 @example
@@ -1174,7 +1174,7 @@ option @option{ipe-update-forward-first}.
 @c ----------------------------------------------------------------------
 @node Deleting PAIRs
 @c ----------------------------------------------------------------------
-@subsection Deleting PAIRs
+@section Deleting PAIRs
 @cindex Deleting PAIRs
 
 @example
@@ -1241,7 +1241,7 @@ for the @emph{nearest} (@xref{Update Search Process}) @sc{PAIR} to
 @c ----------------------------------------------------------------------
 @node Replacing PAIRs
 @c ----------------------------------------------------------------------
-@subsection Replacing PAIRs
+@section Replacing PAIRs
 @cindex Replacing PAIRs
 
 @example
@@ -1341,6 +1341,7 @@ of @sc{PAIR}s (@xref{Types of PAIR Definition}.)
 These variables can be edited in a number of ways:
 
 @menu
+* Types of PAIR Definition::
 * Customization using 'customize'::
 * Customization using the 'Pairs' Menu::
 * Inline Customization:: 
@@ -2793,7 +2794,7 @@ The quick brown fox jumps over the lazy dog.
 @c ----------------------------------------------------------------------
 @node Line Movement - Beginning / End
 @c ----------------------------------------------------------------------
-@section Line Movement - Beginning / End
+@subsection Line Movement - Beginning / End
 
 The Beginning / End basic movement (@xref{Basic Movement}) of
 'Insert Pair Edit' (ipe) @sc{PAIRs} with an @emph{Initial Movement} of

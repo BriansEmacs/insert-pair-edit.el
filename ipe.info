@@ -1,4 +1,4 @@
-This is ipe.info, produced by makeinfo version 7.0.3 from ipe.texi.
+This is ipe.info, produced by makeinfo version 7.1 from ipe.texi.
 
 Copyright © 2023 Brian Kavanagh
 
@@ -8,19 +8,19 @@ File: ipe.info,  Node: Top,  Next: Overview,  Up: (dir)
 Insert Pair Edit (ipe)
 **********************
 
-This documentation describes the ’Insert Pair Edit’ (ipe) *Emacs*
+This documentation describes the 'Insert Pair Edit' (ipe) *Emacs*
 package.
 
 * Menu:
 
-* Overview::                     An overview of the ’Insert Pair Edit’ (ipe) package.
-* Installation::                 How to install the ’Insert Pair Edit’ (ipe) package.
-* Basic Usage::                  The ‘insert-pair-edit’ command.
-* Basic Mode Key Bindings::      Basic ‘ipe-edit-mode’ key bindings.
-* Other Major Commands::         Other major ‘insert-pair-edit-*’ commands.
-* Customization::                The ‘ipe’ customization group.
-* Other ipe-edit-mode Commands:: Other ‘ipe-edit-mode’ commands.
-* Other Features::               Other ‘insert-pair-edit’ / ‘ipe-edit-mode’ features.
+* Overview::                     An overview of the 'Insert Pair Edit' (ipe) package.
+* Installation::                 How to install the 'Insert Pair Edit' (ipe) package.
+* Basic Usage::                  The 'insert-pair-edit' command.
+* Basic Mode Key Bindings::      Basic 'ipe-edit-mode' key bindings.
+* Other Major Commands::         Other major 'insert-pair-edit-*' commands.
+* Customization::                The 'ipe' customization group.
+* Other ipe-edit-mode Commands:: Other 'ipe-edit-mode' commands.
+* Other Features::               Other 'insert-pair-edit' / 'ipe-edit-mode' features.
 * Development::                  Documentation for developers.
 * Index::                        Complete index.
 
@@ -30,26 +30,26 @@ File: ipe.info,  Node: Overview,  Next: Installation,  Prev: Top,  Up: Top
 1 Overview
 **********
 
-At it’s simplest, the ’Insert Pair Edit’ (ipe) package is an *Emacs*
-package that just supplies a command, ‘insert-pair-edit’, that can be
-used to position and insert two pieces of text into an *Emacs* buffer:
-an OPEN string, and a CLOSE string.  (Or, as it is named within this
-package, a ‘PAIR’.)
+At it's simplest, the 'Insert Pair Edit' (ipe) package is an *Emacs*
+package that just supplies a command, ‘insert-pair-edit’.  This command
+can be used to position and insert two pieces of text into an *Emacs*
+buffer: an OPEN string, and a CLOSE string.  (Or, as it is named within
+this package, a 'PAIR'.)
 
    For example, the ‘insert-pair-edit’ command can be used to position
-and insert an open parenthesis ’(’, and, a close parenthesis ’)’, around
+and insert an open parenthesis '(', and, a close parenthesis ')', around
 a given piece of text.
 
-   The PAIR to be inserted is identified by a customizable MNEMONIC,
-usually a single character, which is entered into the *Emacs*
-_minibuffer_ at the “Insert Pair: ” prompt, after running the
-‘insert-pair-edit’ command.
+   The particular PAIR to be inserted by the ‘insert-pair-edit’ command
+is identified by a customizable MNEMONIC, (usually a single character)
+which is entered into the *Emacs* _minibuffer_ after running the
+‘insert-pair-edit’ command, at the "Insert Pair: " prompt,
 
-   Once identified by the MNEMONIC, this PAIR is inserted (as overlays)
-around a _lexical unit_ surrounding POINT, and these overlays can then
-be moved about the buffer (using a set of pre-configured movement keys)
-to visually define the position at which the PAIR is to be inserted into
-the buffer.
+   Once identified by the MNEMONIC, this PAIR is displayed within the
+current buffer (as overlays) around a _lexical unit_ surrounding POINT,
+and these overlays can then be moved about the buffer (using a set of
+pre-configured movement keys) to visually define the position at which
+the PAIR is to be inserted into the buffer.
 
    The MNEMONIC and the text used for its associated OPEN and CLOSE
 strings are customizable, can be _mode-dependent_, and offer options to:
@@ -58,7 +58,7 @@ strings are customizable, can be _mode-dependent_, and offer options to:
      movement.
    • Update / Delete / Replace _existing_ PAIRs.
    • Edit the text enclosed within the PAIR.
-   • Search for similar PAIRS.
+   • Search for similar PAIRs.
    • Handle the editing / movement of multiple PAIRs at once.
    • Escape specific enclosing strings.
    • Indent intervening lines.
@@ -76,7 +76,7 @@ File: ipe.info,  Node: Expected Usage,  Up: Overview
 1.1 Expected Usage
 ==================
 
-One target use for the functionality supplied by the ’Insert Pair Edit’
+One target use for the functionality supplied by the 'Insert Pair Edit'
 (ipe) package is _marking up_ text.
 
    For example:
@@ -92,8 +92,7 @@ One target use for the functionality supplied by the ’Insert Pair Edit’
      to a ‘html-mode’, and using the ‘insert-pair-edit’ command to add /
      edit these tags around existing text within a ‘.html’ file.
 
-   • 
-     Binding a set of opening and closing strings representing
+   • Binding a set of opening and closing strings representing
      _markdown_:
 
           e.g.
@@ -127,7 +126,7 @@ File: ipe.info,  Node: Installation,  Next: Basic Usage,  Prev: Overview,  Up: T
 2 Installation
 **************
 
-To install the ’Insert Pair Edit’ (ipe) package, download
+To install the 'Insert Pair Edit' (ipe) package, download
 ‘insert-pair-edit’ from:
 
    <http://github.com/brians.emacs/insert-pair-edit>
@@ -217,7 +216,7 @@ around POINT) for both the desired OPEN and CLOSE string.
 
    • The ‘insert-pair-edit’ command has been bound to the suggested
      <M-(> binding;
-   • The <(> MNEMONIC is bound to the PAIR <(> and <)>, and;
+   • The <(> MNEMONIC is bound to the PAIR <(> <)>, and;
    • The buffer contains the following text:
 
           The quick brown |fox jumps over the lazy dog.
@@ -228,7 +227,7 @@ around POINT) for both the desired OPEN and CLOSE string.
 
      <M-(> <(>
 
-   Will add the <(> <)> PAIRs around “fox”, resulting in the buffer:
+   Will add the <(> <)> PAIR around "fox", resulting in the buffer:
 
      The quick brown (|fox) jumps over the lazy dog.
 
@@ -237,11 +236,12 @@ around POINT) for both the desired OPEN and CLOSE string.
 
    The initial position of the OPEN and CLOSE overlays will be
 determined by the _lexical unit_ associated with the PAIR (either:
-character, word, line or list.)  This can be set when setting up the
+character, word, line or list.)  This can be set when customizing the
 definition of the PAIR. (*Note Movement Units::)
 
    Once the overlays have been initially positioned, the
-‘insert-pair-edit’ command will activate the ‘ipe-edit-mode’ minor-mode.
+‘insert-pair-edit’ command will activate the ‘ipe-edit-mode’ minor-mode
+to allow these overlays to be further adjusted.
 
 * Menu:
 
@@ -259,16 +259,16 @@ Basic Mode Key Bindings::) to move the OPEN and CLOSE overlays of the
 PAIR selected by one of the ‘insert-pair-edit’ commands.  Movement is
 via a selected _lexical unit_, either:
 
-   • “by characters”
-   • “by words”
-   • “by lines”
-   • “by lists”.
+   • "by characters"
+   • "by words"
+   • "by lines"
+   • "by lists".
 
-   The movement mode can be changed.  (*Note Movement Units::.)
+   This "movement mode" can be changed.  (*Note Movement Units::.)
 
    The ‘ipe-edit-mode’ will also set up a set of simple key bindings to
-process or abort the insertion of this PAIR of strings into the buffer.
-(*Note Inserting and Aborting::)
+either process or abort the insertion of this PAIR of strings into the
+buffer.  (*Note Inserting and Aborting::)
 
    Inserting or aborting the PAIR will then remove all of the
 ‘ipe-edit-mode’ key bindings, and return the User to the normal *Emacs*
@@ -277,7 +277,7 @@ mode for the given buffer.
 
 File: ipe.info,  Node: Other `insert-pair-edit-*' commands,  Prev: ipe-edit-mode,  Up: Running insert-pair-edit
 
-3.1.2 Other ‘insert-pair-edit-*’ commands
+3.1.2 Other 'insert-pair-edit-*' commands
 -----------------------------------------
 
 Prefixing the call to the ‘insert-pair-edit’ command with one or more of
@@ -286,7 +286,7 @@ be used to modify the behaviour of the ‘insert-pair-edit’ command.
 
    For example, if using the suggested <M-(> binding for
 ‘insert-pair-edit’, the following keystrokes can be used to invoke
-_other_ ’Insert Pair Edit’ (ipe) commands:
+_other_ 'Insert Pair Edit' (ipe) commands:
 
 <C-u> <M-(>
      Update an existing PAIR. (*Note Updating PAIRs::)
@@ -307,7 +307,7 @@ _other_ ’Insert Pair Edit’ (ipe) commands:
 
 File: ipe.info,  Node: The 'Edit' -> 'Pairs' menu,  Prev: Running insert-pair-edit,  Up: Basic Usage
 
-3.2 The ’Edit’ -> ’Pairs’ menu
+3.2 The 'Edit' -> 'Pairs' menu
 ==============================
 
      - Edit >
@@ -332,12 +332,12 @@ File: ipe.info,  Node: The 'Edit' -> 'Pairs' menu,  Prev: Running insert-pair-ed
 the ‘insert-pair-edit’ package can add an extra ‘Pairs’ menu item to the
 standard *Emacs* ‘Edit’ Menu.
 
-   *NOTE*: The ’Insert Pair Edit’ (ipe) menu bar is enabled using the
+   *NOTE*: The 'Insert Pair Edit' (ipe) menu bar is enabled using the
 ‘ipe-menu-support-p’ option.  (Default: *t*))
 
    The set of PAIRs listed under the ‘Insert PAIR’ / ‘Update PAIR’ /
 ‘Delete PAIR’ sub-menus will change dynamically based upon the current
-buffer’s ‘major-mode’.
+buffer's ‘major-mode’.
 
    Selecting a menu item under ‘Insert PAIR’ will insert the selected
 PAIR into the current buffer around POINT, and enter ‘ipe-edit-mode’.
@@ -351,7 +351,7 @@ PAIR into the current buffer around POINT, and enter ‘ipe-edit-mode’.
 the current *Emacs* mode.
 
 
-File: ipe.info,  Node: Basic Mode Key Bindings,  Next: Customization,  Prev: Basic Usage,  Up: Top
+File: ipe.info,  Node: Basic Mode Key Bindings,  Next: Other Major Commands,  Prev: Basic Usage,  Up: Top
 
 4 Basic Mode Key Bindings
 *************************
@@ -399,40 +399,40 @@ standard *Emacs* character and word movement.
                  <M-n>                            <C-n>
 
 <C-a>
-     Move OPEN to the ’beginning’ (Command: ‘ipe-edit--open-beg’)
+     Move OPEN to the 'beginning' (Command: ‘ipe-edit--open-beg’)
 <C-p>
-     Move OPEN ’up’ (Command: ‘ipe-edit--open-up’)
+     Move OPEN 'up' (Command: ‘ipe-edit--open-up’)
 <C-b>
-     Move OPEN ’backward’ (Command: ‘ipe-edit--open-backward’)
+     Move OPEN 'backward' (Command: ‘ipe-edit--open-backward’)
 <M-f>
-     Move OPEN ’forward’ (Command: ‘ipe-edit--open-forward’)
+     Move OPEN 'forward' (Command: ‘ipe-edit--open-forward’)
 <M-n>
-     Move OPEN ’down’ (Command: ‘ipe-edit--open-down’)
+     Move OPEN 'down' (Command: ‘ipe-edit--open-down’)
 <M-e>
-     Move OPEN to the ’end’ (Command: ‘ipe-edit--open-end’)
+     Move OPEN to the 'end' (Command: ‘ipe-edit--open-end’)
 
 <M-a>
-     Move CLOSE to the ’beginning’ (Command: ‘ipe-edit--close-beg’)
+     Move CLOSE to the 'beginning' (Command: ‘ipe-edit--close-beg’)
 <M-p>
-     Move CLOSE ’up’ (Command: ‘ipe-edit--close-up’)
+     Move CLOSE 'up' (Command: ‘ipe-edit--close-up’)
 <M-b>
-     Move CLOSE ’backward’ (Command: ‘ipe-edit--close-backward’)
+     Move CLOSE 'backward' (Command: ‘ipe-edit--close-backward’)
 <C-f>
-     Move CLOSE ’forward’ (Command: ‘ipe-edit--close-forward’)
+     Move CLOSE 'forward' (Command: ‘ipe-edit--close-forward’)
 <C-n>
-     Move CLOSE ’down’ (Command: ‘ipe-edit--close-down’)
+     Move CLOSE 'down' (Command: ‘ipe-edit--close-down’)
 <C-e>
-     Move CLOSE to the ’end’ (Command: ‘ipe-edit--close-end’)
+     Move CLOSE to the 'end' (Command: ‘ipe-edit--close-end’)
 
    The amount each command moves its overlay is dependent upon the
-current “movement mode”, which is controlled using the IPE–MOVEMENT
+current "movement mode", which is controlled using the IPE-MOVEMENT
 variable.
 
-   By default, IPE–MOVEMENT is set to ‘word’, which means that the keys
+   By default, IPE-MOVEMENT is set to ‘word’, which means that the keys
 for the forward (‘ipe-edit--open-forward’ / ‘ipe-edit--close-forward’)
 and backward (‘ipe-edit--open-backward’ / ‘ipe-edit--close-backward’)
-commands will move the OPEN and CLOSE overlays forward and backward “by
-words”, and, up and down “by lines”.
+commands will move the OPEN and CLOSE overlays forward and backward "by
+words", and, up and down "by lines".
 
 
 File: ipe.info,  Node: Basic Movement Options,  Next: Inserting and Aborting,  Prev: Basic Movement,  Up: Basic Mode Key Bindings
@@ -449,15 +449,15 @@ The set of _movement_ key bindings that are active within
      <M-x> customize-variable <RET> ipe-edit-movement-keyset <RET>
 
    This option allows for the definition of either one or more
-pre-canned “keysets” (_Alphabetic_, _Arrows_, _Modifiers_, _WASD_, _VI_)
-to be toggled on and off independently, or, for a “user defined” keyset
+pre-canned "keysets" (_Alphabetic_, _Arrows_, _Modifiers_, _WASD_, _VI_)
+to be toggled on and off independently, or, for a "user defined" keyset
 to be installed.
 
    (i.e.  If using the pre-canned keyset, it is possible to activate
 both the _Alphabetic_ and the _Arrows_ options, and be able to move the
 OPEN and CLOSE overlays using both the alphabetic and arrows keys, or,
 the User can simply define the own preferred movement key bindings and
-use those.)
+use those instead.)
 
 * Menu:
 
@@ -487,30 +487,30 @@ overlays is controlled by the same set of key bindings as the standard
              <N>                    <n>
 
 <a>
-     Move OPEN to the ’beginning’ (Command: ‘ipe-edit--open-beg’)
+     Move OPEN to the 'beginning' (Command: ‘ipe-edit--open-beg’)
 <p>
-     Move OPEN ’up’ (Command: ‘ipe-edit--open-up’)
+     Move OPEN 'up' (Command: ‘ipe-edit--open-up’)
 <b>
-     Move OPEN ’backward’ (Command: ‘ipe-edit--open-backward’)
+     Move OPEN 'backward' (Command: ‘ipe-edit--open-backward’)
 <F>
-     Move OPEN ’forward’ (Command: ‘ipe-edit--open-forward’)
+     Move OPEN 'forward' (Command: ‘ipe-edit--open-forward’)
 <N>
-     Move OPEN ’down’ (Command: ‘ipe-edit--open-down’)
+     Move OPEN 'down' (Command: ‘ipe-edit--open-down’)
 <E>
-     Move OPEN to the ’end’ (Command: ‘ipe-edit--open-end’)
+     Move OPEN to the 'end' (Command: ‘ipe-edit--open-end’)
 
 <A>
-     Move CLOSE to the ’beginning’ (Command: ‘ipe-edit--close-beg’)
+     Move CLOSE to the 'beginning' (Command: ‘ipe-edit--close-beg’)
 <P>
-     Move CLOSE ’up’ (Command: ‘ipe-edit--close-up’)
+     Move CLOSE 'up' (Command: ‘ipe-edit--close-up’)
 <B>
-     Move CLOSE ’backward’ (Command: ‘ipe-edit--close-backward’)
+     Move CLOSE 'backward' (Command: ‘ipe-edit--close-backward’)
 <f>
-     Move CLOSE ’forward’ (Command: ‘ipe-edit--close-forward’)
+     Move CLOSE 'forward' (Command: ‘ipe-edit--close-forward’)
 <n>
-     Move CLOSE ’down’ (Command: ‘ipe-edit--close-down’)
+     Move CLOSE 'down' (Command: ‘ipe-edit--close-down’)
 <e>
-     Move CLOSE to the ’end’ (Command: ‘ipe-edit--close-end’)
+     Move CLOSE to the 'end' (Command: ‘ipe-edit--close-end’)
 
 
 File: ipe.info,  Node: Basic Movement (Arrows),  Next: Basic Movement (WASD),  Prev: Basic Movement (Alphabetic),  Up: Basic Movement Options
@@ -532,30 +532,30 @@ overlays is controlled by the arrows keys (<up>, <left>, <right>,
                  <C-down>                                    <down>
 
 <home>
-     Move OPEN to the ’beginning’ (Command: ‘ipe-edit--open-beg’)
+     Move OPEN to the 'beginning' (Command: ‘ipe-edit--open-beg’)
 <up>
-     Move OPEN ’up’ (Command: ‘ipe-edit--open-up’)
+     Move OPEN 'up' (Command: ‘ipe-edit--open-up’)
 <left>
-     Move OPEN ’backward’ (Command: ‘ipe-edit--open-backward’)
+     Move OPEN 'backward' (Command: ‘ipe-edit--open-backward’)
 <C-right>
-     Move OPEN ’forward’ (Command: ‘ipe-edit--open-forward’)
+     Move OPEN 'forward' (Command: ‘ipe-edit--open-forward’)
 <C-down>
-     Move OPEN ’down’ (Command: ‘ipe-edit--open-down’)
+     Move OPEN 'down' (Command: ‘ipe-edit--open-down’)
 <C-end>
-     Move OPEN to the ’end’ (Command: ‘ipe-edit--open-end’)
+     Move OPEN to the 'end' (Command: ‘ipe-edit--open-end’)
 
 <C-home>
-     Move CLOSE to the ’beginning’ (Command: ‘ipe-edit--close-beg’)
+     Move CLOSE to the 'beginning' (Command: ‘ipe-edit--close-beg’)
 <C-up>
-     Move CLOSE ’up’ (Command: ‘ipe-edit--close-up’)
+     Move CLOSE 'up' (Command: ‘ipe-edit--close-up’)
 <C-left>
-     Move CLOSE ’backward’ (Command: ‘ipe-edit--close-backward’)
+     Move CLOSE 'backward' (Command: ‘ipe-edit--close-backward’)
 <right>
-     Move CLOSE ’forward’ (Command: ‘ipe-edit--close-forward’)
+     Move CLOSE 'forward' (Command: ‘ipe-edit--close-forward’)
 <down>
-     Move CLOSE ’down’ (Command: ‘ipe-edit--close-down’)
+     Move CLOSE 'down' (Command: ‘ipe-edit--close-down’)
 <end>
-     Move CLOSE to the ’end’ (Command: ‘ipe-edit--close-end’)
+     Move CLOSE to the 'end' (Command: ‘ipe-edit--close-end’)
 
 
 File: ipe.info,  Node: Basic Movement (WASD),  Next: Basic Movement (VI),  Prev: Basic Movement (Arrows),  Up: Basic Movement Options
@@ -577,30 +577,30 @@ their uppercase counterparts.
              <S>                    <s>
 
 <q>
-     Move OPEN to the ’beginning’ (Command: ‘ipe-edit--open-beg’)
+     Move OPEN to the 'beginning' (Command: ‘ipe-edit--open-beg’)
 <w>
-     Move OPEN ’up’ (Command: ‘ipe-edit--open-up’)
+     Move OPEN 'up' (Command: ‘ipe-edit--open-up’)
 <a>
-     Move OPEN ’backward’ (Command: ‘ipe-edit--open-backward’)
+     Move OPEN 'backward' (Command: ‘ipe-edit--open-backward’)
 <D>
-     Move OPEN ’forward’ (Command: ‘ipe-edit--open-forward’)
+     Move OPEN 'forward' (Command: ‘ipe-edit--open-forward’)
 <S>
-     Move OPEN ’down’ (Command: ‘ipe-edit--open-down’)
+     Move OPEN 'down' (Command: ‘ipe-edit--open-down’)
 <E>
-     Move OPEN to the ’end’ (Command: ‘ipe-edit--open-end’)
+     Move OPEN to the 'end' (Command: ‘ipe-edit--open-end’)
 
 <Q>
-     Move CLOSE to the ’beginning’ (Command: ‘ipe-edit--close-beg’)
+     Move CLOSE to the 'beginning' (Command: ‘ipe-edit--close-beg’)
 <W>
-     Move CLOSE ’up’ (Command: ‘ipe-edit--close-up’)
+     Move CLOSE 'up' (Command: ‘ipe-edit--close-up’)
 <A>
-     Move CLOSE ’backward’ (Command: ‘ipe-edit--close-backward’)
+     Move CLOSE 'backward' (Command: ‘ipe-edit--close-backward’)
 <d>
-     Move CLOSE ’forward’ (Command: ‘ipe-edit--close-forward’)
+     Move CLOSE 'forward' (Command: ‘ipe-edit--close-forward’)
 <s>
-     Move CLOSE ’down’ (Command: ‘ipe-edit--close-down’)
+     Move CLOSE 'down' (Command: ‘ipe-edit--close-down’)
 <e>
-     Move CLOSE to the ’end’ (Command: ‘ipe-edit--close-end’)
+     Move CLOSE to the 'end' (Command: ‘ipe-edit--close-end’)
 
 
 File: ipe.info,  Node: Basic Movement (VI),  Next: Basic Movement (Custom),  Prev: Basic Movement (WASD),  Up: Basic Movement Options
@@ -625,30 +625,30 @@ for the ‘ipe-edit--open-beg’ / ‘ipe-edit--open-end’ /
              <J>                    <j>
 
 <0>
-     Move OPEN to the ’beginning’ (Command: ‘ipe-edit--open-beg’)
+     Move OPEN to the 'beginning' (Command: ‘ipe-edit--open-beg’)
 <k>
-     Move OPEN ’up’ (Command: ‘ipe-edit--open-up’)
+     Move OPEN 'up' (Command: ‘ipe-edit--open-up’)
 <h>
-     Move OPEN ’backward’ (Command: ‘ipe-edit--open-backward’)
+     Move OPEN 'backward' (Command: ‘ipe-edit--open-backward’)
 <L>
-     Move OPEN ’forward’ (Command: ‘ipe-edit--open-forward’)
+     Move OPEN 'forward' (Command: ‘ipe-edit--open-forward’)
 <J>
-     Move OPEN ’down’ (Command: ‘ipe-edit--open-down’)
+     Move OPEN 'down' (Command: ‘ipe-edit--open-down’)
 <B>
-     Move OPEN to the ’end’ (Command: ‘ipe-edit--open-end’)
+     Move OPEN to the 'end' (Command: ‘ipe-edit--open-end’)
 
 <W>
-     Move CLOSE to the ’beginning’ (Command: ‘ipe-edit--close-beg’)
+     Move CLOSE to the 'beginning' (Command: ‘ipe-edit--close-beg’)
 <K>
-     Move CLOSE ’up’ (Command: ‘ipe-edit--close-up’)
+     Move CLOSE 'up' (Command: ‘ipe-edit--close-up’)
 <H>
-     Move CLOSE ’backward’ (Command: ‘ipe-edit--close-backward’)
+     Move CLOSE 'backward' (Command: ‘ipe-edit--close-backward’)
 <l>
-     Move CLOSE ’forward’ (Command: ‘ipe-edit--close-forward’)
+     Move CLOSE 'forward' (Command: ‘ipe-edit--close-forward’)
 <j>
-     Move CLOSE ’down’ (Command: ‘ipe-edit--close-down’)
+     Move CLOSE 'down' (Command: ‘ipe-edit--close-down’)
 <$>
-     Move CLOSE to the ’end’ (Command: ‘ipe-edit--close-end’)
+     Move CLOSE to the 'end' (Command: ‘ipe-edit--close-end’)
 
 
 File: ipe.info,  Node: Basic Movement (Custom),  Prev: Basic Movement (VI),  Up: Basic Movement Options
@@ -656,7 +656,7 @@ File: ipe.info,  Node: Basic Movement (Custom),  Prev: Basic Movement (VI),  Up:
 4.2.5 Custom Movement Keyset
 ----------------------------
 
-A “user defined” set of ’Insert Pair Edit’ (ipe) ‘ipe-edit-mode’
+A "user defined" set of 'Insert Pair Edit' (ipe) ‘ipe-edit-mode’
 movement key bindings can be set using the customization option
 ‘ipe-edit--custom-movement-keyset’.
 
@@ -664,7 +664,7 @@ movement key bindings can be set using the customization option
 
      <M-x> customize-variable <RET> ipe-edit--custom-movement-keyset <RET>
 
-   Or, select the _’Insert Pair Edit’ - Movement Keys: Custom Key Set_
+   Or, select the _'Insert Pair Edit' - Movement Keys: Custom Key Set_
 option from the ‘Edit’ -> ‘Pairs’ menu:
 
      - Edit >
@@ -692,16 +692,16 @@ _aborts_.
 <RET> (in ‘ipe-edit-mode’)
 
    Once the OPEN and CLOSE overlays have been used to correctly position
-the OPEN and CLOSE strings of an ’Insert Pair Edit’ (ipe) PAIR within
+the OPEN and CLOSE strings of an 'Insert Pair Edit' (ipe) PAIR within
 the buffer, they can be inserted into the buffer using the command:
 ‘ipe-edit--insert-pair’.
 
  -- Function: ipe-edit--insert-pair
-     This command will insert the OPEN and CLOSE strings of an ’Insert
-     Pair Edit’ (ipe) PAIR into the buffer, exit the ‘ipe-edit-mode’,
+     This command will insert the OPEN and CLOSE strings of an 'Insert
+     Pair Edit' (ipe) PAIR into the buffer, exit the ‘ipe-edit-mode’,
      and, restore all key bindings to normal.
 
-   Other “Insert And...” commands are available.  (*Note Insert And...
+   Other "Insert And..."  commands are available.  (*Note Insert And...
 Commands::)
 
 4.3.2 Aborting
@@ -724,16 +724,16 @@ File: ipe.info,  Node: Movement Units,  Next: Changing PAIRs,  Prev: Inserting a
 4.4 Movement Units
 ==================
 
-The _default_ movement unit for a given ’Insert Pair Edit’ (ipe) PAIR is
-“by words”, however, each individual PAIR can define its own _initial
+The _default_ movement unit for a given 'Insert Pair Edit' (ipe) PAIR is
+"by words", however, each individual PAIR can define its own _initial
 movement_ (*Note Customization::.)
 
    Movement can be:
 
-     “by characters”
-     “by words”
-     “by lines”
-     “by lists”
+     "by characters"
+     "by words"
+     "by lines"
+     "by lists"
 
    In addition to each PAIR defining its own _initial movement_,
 movement can be changed in ‘ipe-edit-mode’ using the following commands,
@@ -743,26 +743,26 @@ movement can be changed in ‘ipe-edit-mode’ using the following commands,
 
       -- Function: ipe-edit--movement-by-char
           Changes the movement made by the ‘ipe-edit-mode’ basic
-          movement (*Note Basic Movement::) commands to be “by
-          characters”.
+          movement (*Note Basic Movement::) commands to be "by
+          characters".
 
      <m> <w> (in ‘ipe-edit-mode’)
 
       -- Function: ipe-edit--movement-by-word
           Changes the movement made by the ‘ipe-edit-mode’ basic
-          movement (*Note Basic Movement::) commands to be “by words”.
+          movement (*Note Basic Movement::) commands to be "by words".
 
      <m> <l> (in ‘ipe-edit-mode’)
       -- Function: ipe-edit--movement-by-line
           Changes the movement made by the ‘ipe-edit-mode’ basic
-          movement (*Note Basic Movement::) commands to be “by lines”.
+          movement (*Note Basic Movement::) commands to be "by lines".
           (*Note Line Movement::)
 
      <m> <x> (in ‘ipe-edit-mode’)
 
       -- Function: ipe-edit--movement-by-list
           Changes the movement made by the ‘ipe-edit-mode’ basic
-          movement (*Note Basic Movement::) commands to be “by lists”.
+          movement (*Note Basic Movement::) commands to be "by lists".
           (*Note List Movement::)
 
 
@@ -771,8 +771,8 @@ File: ipe.info,  Node: Changing PAIRs,  Next: Mouse Movement,  Prev: Movement Un
 4.5 Changing PAIRs
 ==================
 
-The text to be inserted by the OPEN and CLOSE overlays of an ’Insert
-Pair Edit’ (ipe) PAIR can be changed on the fly.
+The text to be inserted by the OPEN and CLOSE overlays of an 'Insert
+Pair Edit' (ipe) PAIR can be changed on the fly.
 
    <(> (in ‘ipe-edit-mode’)
 
@@ -786,8 +786,8 @@ Pair Edit’ (ipe) PAIR can be changed on the fly.
 
    • The ‘insert-pair-edit’ command has been bound to the suggested
      <M-(> binding;
-   • The <(> MNEMONIC is bound to the PAIR <(> and <)>; and
-   • The <[> MNEMONIC is bound to the PAIR <[> and <]>.
+   • The <(> MNEMONIC is bound to the PAIR <(> <)>; and
+   • The <[> MNEMONIC is bound to the PAIR <[> <]>.
 
    If you had originally used the keystrokes:
 
@@ -809,13 +809,13 @@ given MNEMONIC can be selected by using the keystrokes:
      <(> _NEW-MNEMONIC_
 
 
-File: ipe.info,  Node: Mouse Movement,  Next: Other Major Commands,  Prev: Changing PAIRs,  Up: Basic Mode Key Bindings
+File: ipe.info,  Node: Mouse Movement,  Prev: Changing PAIRs,  Up: Basic Mode Key Bindings
 
 4.6 Mouse Movement
 ==================
 
-If enabled via the ‘ipe-mouse-support-p’ option (Default: *t*), ’Insert
-Pair Edit’ (ipe) PAIRs can be moved using the Mouse.
+If enabled via the ‘ipe-mouse-support-p’ option (Default: *t*), 'Insert
+Pair Edit' (ipe) PAIRs can be moved using the Mouse.
 
 <mouse-1> (in ‘ipe-edit-mode’)
      Left clicking on a location within the buffer, will reposition the
@@ -853,32 +853,31 @@ Pair Edit’ (ipe) PAIRs can be moved using the Mouse.
 
 <S-wheel-up> / <S-wheel-down> / <C-S-wheel-up> / <C-S-wheel-down> (in ‘ipe-edit-mode’)
      Holding the <SHIFT> key while using the mouse wheel can be used to
-     move the OPEN and CLOSE overlays in using alternate movements (i.e.
-     “by-char” regardless of the current _Movement Mode_)
+     move the OPEN and CLOSE overlays using alternate movements (i.e.
+     "by-char" regardless of the current _Movement Mode_)
 
-                                               
-      (Commands:                                   
-        ‘ipe-mouse--open-forward-alt’ /    
-        ‘ipe-mouse--close-backward-alt’ /  
-        ‘ipe-mouse--open-backward-alt’ /   
-        ‘ipe-mouse--close-forward-alt’     
-      )                                            
       
+      (Commands: 
+      ‘ipe-mouse--open-forward-alt’ / 
+      ‘ipe-mouse--close-backward-alt’ / 
+      ‘ipe-mouse--open-backward-alt’ / 
+      ‘ipe-mouse--close-forward-alt’ 
+      )
 
 <M-wheel-up> / <M-wheel-down> (in ‘ipe-edit-mode’)
      Holding the <META> key while using the mouse wheel can be used to
-     change the current “movement mode“.
+     change the current "movement mode".
 
      (Commands: ‘ipe-mouse--next-movement’ /
      ‘ipe-mouse--previous-movement’)
 
 
-File: ipe.info,  Node: Other Major Commands,  Next: Customization,  Prev: Mouse Movement,  Up: Basic Mode Key Bindings
+File: ipe.info,  Node: Other Major Commands,  Next: Customization,  Prev: Basic Mode Key Bindings,  Up: Top
 
-4.7 Other Major Insert-Pair-Edit Commands
-=========================================
+5 Other Major Insert-Pair-Edit Commands
+***************************************
 
-The following sections describe the other _Major_ ’Insert Pair Edit’
+The following sections describe the other _Major_ 'Insert Pair Edit'
 (ipe) commands.
 
 * Menu:
@@ -890,8 +889,8 @@ The following sections describe the other _Major_ ’Insert Pair Edit’
 
 File: ipe.info,  Node: Updating PAIRs,  Next: Deleting PAIRs,  Up: Other Major Commands
 
-4.7.1 Updating PAIRs
---------------------
+5.1 Updating PAIRs
+==================
 
      <C-u> <M-(> _MNEMONIC_
 
@@ -900,25 +899,25 @@ using the command:
 
  -- Function: insert-pair-edit-update
      This command updates the position of the OPEN and CLOSE strings of
-     an ’Insert Pair Edit’ (ipe) PAIR. The OPEN and CLOSE strings of the
+     an 'Insert Pair Edit' (ipe) PAIR. The OPEN and CLOSE strings of the
      PAIR are determined by: prompting for, and looking up, a MNEMONIC
      in the ‘customize’-able IPE-PAIRS / IPE-MODE-PAIRS variables.
 
    Calling the ‘insert-pair-edit-update’ command will search the current
 buffer for a PAIR which matches the OPEN and CLOSE strings for the given
 MNEMONIC. It will replace the OPEN and CLOSE strings with overlays,
-which can then be moved using the standard ’Insert Pair Edit’ (ipe)
+which can then be moved using the standard 'Insert Pair Edit' (ipe)
 *Note Basic Movement:: commands.
 
    This command can be also be invoked by invoking the
-‘universal-argument’ (Generally bound to <C-u>), before a call to
+'universal-argument' (Generally bound to <C-u>), before a call to
 ‘insert-pair-edit’.
 
    For example, assuming that:
 
    • The ‘insert-pair-edit’ command has been bound to the suggested
      <M-(> binding;
-   • The <(> MNEMONIC is bound to the PAIR <(> and <)>;
+   • The <(> MNEMONIC is bound to the PAIR <(> <)>;
    • The _Modifiers_ ‘ipe-edit-movement-keyset’ has been enabled, and;
    • The buffer contains the following text:
 
@@ -927,15 +926,15 @@ which can then be moved using the standard ’Insert Pair Edit’ (ipe)
      (*Where*: The <|> character is used to represent the current
      position of POINT.)
 
-   To update the position of the <(> <)> PAIR around “fox” you would use
+   To update the position of the <(> <)> PAIR around "fox" you would use
 the keystrokes:
 
      <C-u> <M-(> <(>
 
    Which will call ‘insert-pair-edit-update’, select the <(> <)> PAIR
-around “fox”, and enter ‘ipe-edit-mode’.
+around "fox", and enter ‘ipe-edit-mode’.
 
-   To then move the existing parenthesis around “fox” to “over”, you
+   To then move the existing parenthesis around "fox" to "over", you
 would then use the keystroke:
 
      <M-f>
@@ -955,16 +954,16 @@ of the search is determined by the option ‘ipe-update-forward-first’.
 
 File: ipe.info,  Node: Deleting PAIRs,  Next: Replacing PAIRs,  Prev: Updating PAIRs,  Up: Other Major Commands
 
-4.7.2 Deleting PAIRs
---------------------
+5.2 Deleting PAIRs
+==================
 
      <C-u> <C-u> <M-(> _MNEMONIC_
 
    Existing PAIRs within a buffer can be _deleted_ by using the command:
 
  -- Function: insert-pair-edit-delete
-     This command deletes the OPEN and CLOSE strings of an ’Insert Pair
-     Edit’ (ipe) PAIR. The OPEN and CLOSE strings of the PAIR are
+     This command deletes the OPEN and CLOSE strings of an 'Insert Pair
+     Edit' (ipe) PAIR. The OPEN and CLOSE strings of the PAIR are
      determined by: prompting for, and looking up, a MNEMONIC in the
      ‘customize’-able IPE-PAIRS / IPE-MODE-PAIRS variables.
 
@@ -981,7 +980,7 @@ strings.
 
    • The ‘insert-pair-edit’ command has been bound to the suggested
      <M-(> binding;
-   • The <(> MNEMONIC is bound to the PAIR <(> and <)>, and;
+   • The <(> MNEMONIC is bound to the PAIR <(> <)>, and;
    • The buffer contains the following text:
 
           The quick brown (|fox) jumps over the lazy dog.
@@ -989,7 +988,7 @@ strings.
      (*Where*: the <|> character is used to represent the current
      position of POINT.)
 
-   To delete the parenthesis around “fox” you would use the keystrokes:
+   To delete the parenthesis around "fox" you would use the keystrokes:
 
      <C-u> <C-u> <M-(> <(>
 
@@ -1004,8 +1003,8 @@ of the search is determined by the ‘ipe-update-forward-first’ option.
 
 File: ipe.info,  Node: Replacing PAIRs,  Prev: Deleting PAIRs,  Up: Other Major Commands
 
-4.7.3 Replacing PAIRs
----------------------
+5.3 Replacing PAIRs
+===================
 
      <C-u> <C-u> <C-u> <M-(> _MNEMONIC_
 
@@ -1013,8 +1012,8 @@ File: ipe.info,  Node: Replacing PAIRs,  Prev: Deleting PAIRs,  Up: Other Major 
 CLOSE string of another PAIR by using the command:
 
  -- Function: insert-pair-edit-replace
-     This command replaces the OPEN and CLOSE strings of an ’Insert Pair
-     Edit’ (ipe) PAIR. The OPEN and CLOSE strings of the PAIR to be
+     This command replaces the OPEN and CLOSE strings of an 'Insert Pair
+     Edit' (ipe) PAIR. The OPEN and CLOSE strings of the PAIR to be
      replaced are determined by: prompting for, and looking up, a
      MNEMONIC in the ‘customize’-able IPE-PAIRS / IPE-MODE-PAIRS
      variables.  The PAIR specifying the replacement OPEN and CLOSE
@@ -1027,7 +1026,7 @@ for a PAIR which matches the OPEN and CLOSE strings matching the given
 MNEMONIC. If a PAIR is found, it will replace the OPEN and CLOSE strings
 with overlays containing the new OPEN and CLOSE strings for the PAIR
 identified by the second REPLACEMENT MNEMONIC. These new OPEN and CLOSE
-strings can then be moved using the standard ’Insert Pair Edit’ (ipe)
+strings can then be moved using the standard 'Insert Pair Edit' (ipe)
 basic movement (*Note Basic Movement::) commands.
 
    This command can be also be invoked by invoking the
@@ -1038,16 +1037,16 @@ call to ‘insert-pair-edit’.
 
    • The ‘insert-pair-edit’ command has been bound to the suggested
      <M-(> binding;
-   • The <(> MNEMONIC is bound to the PAIR <(> and <)>;
-   • The <[> MNEMONIC is bound to the PAIR <[> and <]>, and;
-   • The buffer containers the following text:
+   • The <(> MNEMONIC is bound to the PAIR <(> <)>;
+   • The <[> MNEMONIC is bound to the PAIR <[> <]>, and;
+   • The buffer contains the following text:
 
           The quick brown (|fox) jumps over the lazy dog.
 
      (*Where*: The <|> character is used to represent the current
      position of POINT.)
 
-   To replace the <(> <)> PAIR around “fox” with <[> <]>, you would use
+   To replace the <(> <)> PAIR around "fox" with <[> <]>, you would use
 the keystrokes:
 
      <C-u> <C-u> <C-u> <M-(> <(> <[>
@@ -1061,9 +1060,9 @@ _nearest_ (*Note Update Search Process::) PAIR to POINT. The direction
 of the search is determined by the ‘ipe-update-forward-first’ option.
 
 
-File: ipe.info,  Node: Customization,  Next: Other ipe-edit-mode Commands,  Prev: Basic Mode Key Bindings,  Up: Top
+File: ipe.info,  Node: Customization,  Next: Other ipe-edit-mode Commands,  Prev: Other Major Commands,  Up: Top
 
-5 Customization
+6 Customization
 ***************
 
 The set of PAIRs that can be inserted, updated or deleted using the
@@ -1081,6 +1080,7 @@ PAIRs (*Note Types of PAIR Definition::.)
 
 * Menu:
 
+* Types of PAIR Definition::
 * Customization using 'customize'::
 * Customization using the 'Pairs' Menu::
 * Inline Customization::
@@ -1089,10 +1089,10 @@ PAIRs (*Note Types of PAIR Definition::.)
 
 File: ipe.info,  Node: Types of PAIR Definition,  Next: Customization using 'customize',  Up: Customization
 
-5.1 Types of PAIR Definition
+6.1 Types of PAIR Definition
 ============================
 
-There are four _types_ of ’Insert Pair Edit’ (ipe) PAIR definition:
+There are four _types_ of 'Insert Pair Edit' (ipe) PAIR definition:
 
      BASIC - A simple PAIR definition with just an OPEN and CLOSE
      string.
@@ -1107,17 +1107,17 @@ There are four _types_ of ’Insert Pair Edit’ (ipe) PAIR definition:
      CUSTOM MOVEMENT - A PAIR definition based upon a _custom movement_
      function.  (See: *Note Defining custom 'ipe--movement' Functions::)
 
-   Each customization option (Using ‘customize’, Using the “Edit” menu,
+   Each customization option (Using 'customize', Using the "Edit" menu,
 or _inline_) offers options to select the _type_ of PAIR that is to be
 _added_, _edited_, or _deleted_.
 
 
 File: ipe.info,  Node: Customization using 'customize',  Next: Customization using the 'Pairs' Menu,  Prev: Types of PAIR Definition,  Up: Customization
 
-5.2 Customization using ’customize’
+6.2 Customization using 'customize'
 ===================================
 
-To edit the global set of ’Insert Pair Edit’ (ipe) PAIRs using the
+To edit the global set of 'Insert Pair Edit' (ipe) PAIRs using the
 *Emacs* ‘customize’ package, run the command:
 
      <M-x> customize-variable <RET> ipe-pairs <RET>
@@ -1141,25 +1141,25 @@ associates a _mode_ with a set of PAIR definitions.
 
 File: ipe.info,  Node: Customization using the 'Pairs' Menu,  Next: Inline Customization,  Prev: Customization using 'customize',  Up: Customization
 
-5.3 Customization using the ’Pairs’ Menu
+6.3 Customization using the 'Pairs' Menu
 ========================================
 
- - Edit >                       
-   ...                          
-   - Pairs >                    
-     ...                        
-     - Edit PAIR Definitions >  
-       ... 
+ - Edit > 
+ ...  
+  - Pairs > 
+ ...  
+  - Edit PAIR Definitions > 
+ ...  
 
    If running in a graphical environment which supports a menu bar, (and
-the *Emacs* ‘menu-bar-mode’ has been enabled,) the ’Insert Pair Edit’
+the *Emacs* ‘menu-bar-mode’ has been enabled,) the 'Insert Pair Edit'
 (ipe) package can be customized using the *Emacs* menu bar.
 
-   *NOTE*: The ’Insert Pair Edit’ (ipe) menu bar is enabled using the
+   *NOTE*: The 'Insert Pair Edit' (ipe) menu bar is enabled using the
 ‘ipe-menu-support-p’ option.  (Default: *t*)
 
    The ‘Edit Pair Definitions >’ sub-menu contains a number of sub-menus
-which can be used to _Add_, _Modify_ and _Delete_ ’Insert Pair Edit’
+which can be used to _Add_, _Modify_ and _Delete_ 'Insert Pair Edit'
 (ipe) PAIR definitions.
 
    ‘Edit Pair Definitions >’ sub menus:
@@ -1183,7 +1183,7 @@ which can be used to _Add_, _Modify_ and _Delete_ ’Insert Pair Edit’
      ‘major-mode’), which if selected, displays a Window in which the
      definition of the selected _Mode-Specific_ PAIR can be edited using
      *Emacs* widgets.  (This menu will only be enabled if there are
-     existing _Mode-Specific_ PAIR definitions for the current buffer’s
+     existing _Mode-Specific_ PAIR definitions for the current buffer's
      ‘major-mode’.)
 
 ‘Edit MNEMONIC Definition...’
@@ -1198,7 +1198,7 @@ which can be used to _Add_, _Modify_ and _Delete_ ’Insert Pair Edit’
      REPLACEMENT MNEMONIC, and then changes the MNEMONIC for the given
      _Mode-Specific_ PAIR to the given REPLACEMENT mnemonic.  (This menu
      will only be enabled if there are existing _Mode-Specific_ PAIR
-     definitions for the current buffer’s ‘major-mode’.)
+     definitions for the current buffer's ‘major-mode’.)
 
 ‘Delete PAIR Definition’
      Offers a sub-menu for each _Global_ PAIR, which if selected,
@@ -1209,7 +1209,7 @@ which can be used to _Add_, _Modify_ and _Delete_ ’Insert Pair Edit’
      ‘major-mode’), which if selected, deletes the given _Mode-Specific_
      PAIR from the current mode.  (This menu will only be enabled if
      there are existing _Mode-Specific_ PAIR definitions for the current
-     buffer’s ‘major-mode’.)
+     buffer's ‘major-mode’.)
 
 ‘Delete PAIR Definition...’
      Prompts the User for a MNEMONIC for an existing _Global_ PAIR
@@ -1224,10 +1224,10 @@ which can be used to _Add_, _Modify_ and _Delete_ ’Insert Pair Edit’
 
 File: ipe.info,  Node: Inline Customization,  Next: Display Customization,  Prev: Customization using the 'Pairs' Menu,  Up: Customization
 
-5.4 Inline Customization
+6.4 Inline Customization
 ========================
 
-’Insert Pair Edit’ (ipe) PAIR definitions can also be added / updated or
+'Insert Pair Edit' (ipe) PAIR definitions can also be added / updated or
 deleted _inline_, by using key bindings which execute customization
 commands from within the ‘insert-pair-edit’ _minibuffer_ prompt, or when
 within the ‘ipe-edit-mode’ itself.
@@ -1235,39 +1235,39 @@ within the ‘ipe-edit-mode’ itself.
    Bindings are supplied for the following commands:
 
 <C-+> (at the ‘insert-pair-edit’ prompt or in ‘ipe-edit-mode’)
-     Prompts the User (using the ‘minibuffer’) to create a new ’Insert
-     Pair Edit’ (ipe) PAIR definition for a given MNEMONIC.
+     Prompts the User (using the ‘minibuffer’) to create a new 'Insert
+     Pair Edit' (ipe) PAIR definition for a given MNEMONIC.
 
      (Command: ‘ipe-defn--edit-pair’)
 
 <M-+> (at the ‘insert-pair-edit’ prompt or in ‘ipe-edit-mode’)
      Prompts the User (using the ‘minibuffer’) to create a new
-     _Mode-Specific_ ’Insert Pair Edit’ (ipe) PAIR definition for a
+     _Mode-Specific_ 'Insert Pair Edit' (ipe) PAIR definition for a
      given MNEMONIC.
 
      (Command: ‘ipe-defn--edit-mode-pair’)
 
 <C-%> (at the ‘insert-pair-edit’ prompt or in ‘ipe-edit-mode’)
      Prompts the User (using the ‘minibuffer’) to change the MNEMONIC
-     for an existing ’Insert Pair Edit’ (ipe) PAIR.
+     for an existing 'Insert Pair Edit' (ipe) PAIR.
 
      (Command: ‘ipe-defn--change-pair-mnemonic’)
 
 <M-%> (at the ‘insert-pair-edit’ prompt or in ‘ipe-edit-mode’)
      Prompts the User (using the ‘minibuffer’) to change the MNEMONIC
-     for an existing _Mode-Specific_ ’Insert Pair Edit’ (ipe) PAIR.
+     for an existing _Mode-Specific_ 'Insert Pair Edit' (ipe) PAIR.
 
      (Command: ‘ipe-defn--change-mode-pair-mnemonic’)
 
 <C-*> (at the ‘insert-pair-edit’ prompt or in ‘ipe-edit-mode’)
      Prompts the User (using the ‘minibuffer’) to delete an existing
-     ’Insert Pair Edit’ (ipe) PAIR.
+     'Insert Pair Edit' (ipe) PAIR.
 
      (Command: ‘ipe-defn--delete-pair’)
 
 <M-*> (at the ‘insert-pair-edit’ prompt or in ‘ipe-edit-mode’)
      Prompts the User (using the ‘minibuffer’) to delete an existing
-     _Mode-Specific_ ’Insert Pair Edit’ (ipe) PAIR.
+     _Mode-Specific_ 'Insert Pair Edit' (ipe) PAIR.
 
      (Command: ‘ipe-defn--delete-mode-pair’)
 
@@ -1278,10 +1278,10 @@ within the ‘ipe-edit-mode’ itself.
 
 File: ipe.info,  Node: Inline Customization Prompts,  Up: Inline Customization
 
-5.4.1 Inline Customization Prompts
+6.4.1 Inline Customization Prompts
 ----------------------------------
 
-When creating a new ’Insert Pair Edit’ (ipe) PAIR (or editing an
+When creating a new 'Insert Pair Edit' (ipe) PAIR (or editing an
 existing PAIR) using the _Inline Customization_ commands, the User will
 be prompted to enter the following information (using the ‘minibuffer’):
 
@@ -1291,11 +1291,11 @@ be prompted to enter the following information (using the ‘minibuffer’):
      PAIR. (*Note Running insert-pair-edit::)
 
 ‘OPEN:’
-     At this prompt, enter the OPEN string of the ’Insert Pair Edit’
+     At this prompt, enter the OPEN string of the 'Insert Pair Edit'
      (ipe) PAIR to be associated with the given MNEMONIC.
 
 ‘CLOSE:’
-     At this prompt, enter the CLOSE string of the ’Insert Pair Edit’
+     At this prompt, enter the CLOSE string of the 'Insert Pair Edit'
      (ipe) PAIR to be associated with the given MNEMONIC.
 
 ‘Set 'Intermediate' options?’
@@ -1376,17 +1376,17 @@ be prompted to enter the following information (using the ‘minibuffer’):
         • previous
 
      Indicating the position at which to indent the PAIR / intervening
-     text for PAIRS with an _Initial Movement_ of “by lines”.
+     text for PAIRS with an _Initial Movement_ of "by lines".
 
 ‘Menu:’
      At this prompt, enter a string indicating the location of the newly
      defined PAIR within the ‘Pairs -> Edit’ menu.  (Sub-menus can be
-     defined by using a “/” character as a separator.)
+     defined by using a "/" character as a separator.)
 
 
 File: ipe.info,  Node: Display Customization,  Prev: Inline Customization,  Up: Customization
 
-5.5 Display Customization
+6.5 Display Customization
 =========================
 
 The fonts and colours used by the overlays that display the position of
@@ -1396,7 +1396,7 @@ the OPEN and CLOSE strings in ‘ipe-edit-mode’ can be customized by:
 
    • IPE-OPEN-HIGHLIGHT - The face used by OPEN overlay.
 
-     It can be ‘customize’’d by running the command:
+     It can be ‘customize’'d by running the command:
 
           <M-x> customize-face <RET> ipe-open-highlight <RET>
 
@@ -1405,20 +1405,20 @@ the OPEN and CLOSE strings in ‘ipe-edit-mode’ can be customized by:
 
    • IPE-CLOSE-HIGHLIGHT - The face used by the CLOSE overlay.
 
-     It can be ‘customize’’d by running the command:
+     It can be ‘customize’'d by running the command:
 
           <M-x> customize-face <RET> ipe-close-highlight <RET>
 
      (By default, the CLOSE overlay will be displayed using the
      SHOW-PAREN-MATCH face.)
 
-   Or by using the *Emacs* menu option:            
-               
- - Edit >      
-   ...         
-   - Pairs >   
-     ...       
-     - Options 
+   Or by using the *Emacs* menu option:  
+ 
+ - Edit > 
+ ...  
+  - Pairs > 
+ ...  
+  - Options 
 
    And selecting ‘'Insert Pair Edit' - Display Options’;
 
@@ -1440,7 +1440,7 @@ the OPEN and CLOSE strings in ‘ipe-edit-mode’ can be customized by:
 
 File: ipe.info,  Node: Other ipe-edit-mode Commands,  Next: Other Features,  Prev: Customization,  Up: Top
 
-6 Other ipe-edit-mode Commands
+7 Other ipe-edit-mode Commands
 ******************************
 
 The following sections describe some of the other commands /
@@ -1457,7 +1457,7 @@ key-bindings available within ‘ipe-edit-mode’.
 
 File: ipe.info,  Node: Insert And... Commands,  Next: Edit CONTENTS Commands,  Up: Other ipe-edit-mode Commands
 
-6.1 Insert And... Commands
+7.1 Insert And... Commands
 ==========================
 
 When in ‘ipe-edit-mode’, to perform an action on insert of a PAIR (*Note
@@ -1500,7 +1500,7 @@ used:
 
 File: ipe.info,  Node: Edit CONTENTS Commands,  Next: Next / Previous Commands,  Prev: Insert And... Commands,  Up: Other ipe-edit-mode Commands
 
-6.2 Edit CONTENTS Commands
+7.2 Edit CONTENTS Commands
 ==========================
 
 When in ‘ipe-edit-mode’, to edit the _text_ between the OPEN and CLOSE
@@ -1558,7 +1558,7 @@ commands can be used:
 
 File: ipe.info,  Node: Next / Previous Commands,  Next: Multiple PAIRs Commands,  Prev: Edit CONTENTS Commands,  Up: Other ipe-edit-mode Commands
 
-6.3 Next / Previous Commands
+7.3 Next / Previous Commands
 ============================
 
 * Menu:
@@ -1570,7 +1570,7 @@ File: ipe.info,  Node: Next / Previous Commands,  Next: Multiple PAIRs Commands,
 
 File: ipe.info,  Node: Next / Previous PAIRs,  Next: Next / Previous CONTENTS,  Up: Next / Previous Commands
 
-6.3.1 Next / Previous PAIRs
+7.3.1 Next / Previous PAIRs
 ---------------------------
 
 To search for the next or previous PAIR (while in ‘ipe-edit-mode’) use
@@ -1593,7 +1593,7 @@ of overlays over the next / previous PAIR, and; remain in
 
    • The ‘insert-pair-edit’ command has been bound to the suggested
      <M-(> binding;
-   • The <(> MNEMONIC is bound to the PAIR <(> and <)>, and;
+   • The <(> MNEMONIC is bound to the PAIR <(> <)>, and;
    • The buffer contains the following text:
 
           The (quick) brown (|fox) jumps (over) the lazy dog.
@@ -1604,28 +1604,28 @@ of overlays over the next / previous PAIR, and; remain in
 
      <M-(> <(>
 
-   Will enter ‘ipe-edit-mode’ and edit the <(> <)> PAIR around “fox”.
+   Will enter ‘ipe-edit-mode’ and edit the <(> <)> PAIR around "fox".
 
    Searching forward using the keystroke:
 
      <C-s>
 
-   Will edit the <(> <)> PAIR around “over”.
+   Will edit the <(> <)> PAIR around "over".
 
    Searching backward using the keystrokes:
 
      <C-r> <C-r>
 
-   Will edit the <(> <)> PAIR around “quick”.
+   Will edit the <(> <)> PAIR around "quick".
 
 
 File: ipe.info,  Node: Next / Previous CONTENTS,  Next: Next / Previous OPEN / CLOSE,  Prev: Next / Previous PAIRs,  Up: Next / Previous Commands
 
-6.3.2 Next / Previous CONTENTS
+7.3.2 Next / Previous CONTENTS
 ------------------------------
 
 To create a new PAIR around text which matches the CONTENTS contained
-between the OPEN and CLOSE strings of an ’Insert Pair Edit’ (ipe) PAIR
+between the OPEN and CLOSE strings of an 'Insert Pair Edit' (ipe) PAIR
 (while in ‘ipe-edit-mode’) use the commands:
 
    • <M-r> (in ‘ipe-edit-mode’)
@@ -1646,7 +1646,7 @@ of overlays around the next / previous piece of text, and; remain in
 
    • The ‘insert-pair-edit’ command has been bound to the suggested
      <M-(> binding;
-   • The <(> MNEMONIC is bound to the PAIR <(> and <)>, and;
+   • The <(> MNEMONIC is bound to the PAIR <(> <)>, and;
    • The buffer contains the following text:
 
           The Quick Brown Fox |Jumps Over (The) Lazy Dog.
@@ -1658,14 +1658,14 @@ of overlays around the next / previous piece of text, and; remain in
      <M-(> <(>
 
    Will enter ‘ipe-edit-mode’ and edit the <(> <)> PAIR around the
-second “The”.
+second "The".
 
-   Searching backward for the text “The” using the keystroke:
+   Searching backward for the text "The" using the keystroke:
 
      <M-r>
 
-   Will insert the brackets around the second “The”, and add a new <(>
-<)> PAIR around the first “The”.
+   Will insert the brackets around the second "The", and add a new <(>
+<)> PAIR around the first "The".
 
    Which will result in the buffer:
 
@@ -1674,11 +1674,11 @@ second “The”.
 
 File: ipe.info,  Node: Next / Previous OPEN / CLOSE,  Prev: Next / Previous CONTENTS,  Up: Next / Previous Commands
 
-6.3.3 Next / Previous OPEN / CLOSE
+7.3.3 Next / Previous OPEN / CLOSE
 ----------------------------------
 
 To change the matched location of either the OPEN or CLOSE string of an
-’Insert Pair Edit’ (ipe) PAIR _individually_ (while in ‘ipe-edit-mode’)
+'Insert Pair Edit' (ipe) PAIR _individually_ (while in ‘ipe-edit-mode’)
 use the commands:
 
    • <C-<> (in ‘ipe-edit-mode’)
@@ -1698,7 +1698,7 @@ use the commands:
      (Command: ‘ipe-edit--update-next-close’)
 
    These commands will search for the _next_ or _previous_ OPEN or CLOSE
-string of an ’Insert Pair Edit’ (ipe) PAIR, and, if found, insert just
+string of an 'Insert Pair Edit' (ipe) PAIR, and, if found, insert just
 the current OPEN or CLOSE string (without inserting its corresponding
 partner.)  The command will then create a new overlay over the next /
 previous OPEN or CLOSE and remain in ‘ipe-edit-mode’, allowing the User
@@ -1713,7 +1713,7 @@ currently selected CLOSE.
 
    • The ‘insert-pair-edit’ command has been bound to the suggested
      <M-(> binding;
-   • The <(> MNEMONIC is bound to the PAIR <(> and <)>, and;
+   • The <(> MNEMONIC is bound to the PAIR <(> <)>, and;
    • The buffer contains the following text:
 
           The (quick) brown (|fox) jumps (over) the lazy dog.
@@ -1724,24 +1724,24 @@ currently selected CLOSE.
 
      <M-(> <(>
 
-   Will enter ‘ipe-edit-mode’ and edit the <(> <)> PAIR around “fox”.
+   Will enter ‘ipe-edit-mode’ and edit the <(> <)> PAIR around "fox".
 
    Searching forward for the next CLOSE using the keystroke:
 
      <C->>
 
-   Will edit the <(> <)> PAIR around “fox jumps over”.
+   Will edit the <(> <)> PAIR around "fox jumps over".
 
    Searching backward for the previous OPEN using the keystroke:
 
      <C-<>
 
-   Will edit the <(> <)> PAIR around “quick brown fox jumps over”.
+   Will edit the <(> <)> PAIR around "quick brown fox jumps over".
 
 
 File: ipe.info,  Node: Multiple PAIRs Commands,  Next: Escaping Text within a PAIR,  Prev: Next / Previous Commands,  Up: Other ipe-edit-mode Commands
 
-6.4 Multiple PAIRs Commands
+7.4 Multiple PAIRs Commands
 ===========================
 
 When in ‘ipe-edit-mode’, it is possible to edit multiple PAIRs at once.
@@ -1764,11 +1764,11 @@ ways:
 
 File: ipe.info,  Node: Adding Multiple PAIRs using the Emacs Region,  Next: Adding Multiple PAIRs using insert-pair-edit,  Up: Multiple PAIRs Commands
 
-6.4.1 Adding Multiple PAIRs using the Emacs Region
+7.4.1 Adding Multiple PAIRs using the Emacs Region
 --------------------------------------------------
 
-If the *Emacs* _region_ is _active_ when running one of the ’Insert Pair
-Edit’ (ipe) commands:
+If the *Emacs* _region_ is _active_ when running one of the 'Insert Pair
+Edit' (ipe) commands:
 
    • ‘insert-pair-edit-update’
    • ‘insert-pair-edit-replace’
@@ -1782,7 +1782,7 @@ active *Emacs* _region_.
    • The ‘insert-pair-edit’ command has been bound to the suggested
      <M-(> binding;
    • The _Modifiers_ ‘ipe-edit-movement-keyset’ has been enabled;
-   • The <(> MNEMONIC is bound to the PAIR <(> and <)>, and;
+   • The <(> MNEMONIC is bound to the PAIR <(> <)>, and;
    • The buffer contains the following text:
 
           |The (quick) brown (fox) jumps (over) the lazy dog.@
@@ -1796,7 +1796,7 @@ active *Emacs* _region_.
      <C-u> <M-(> <(>
 
    Will enter ‘ipe-edit-mode’ and edit all three of the <(> <)> PAIRs
-(around “quick”, “fox” and “over”):
+(around "quick", "fox" and "over"):
 
    Moving the PAIRs forward one word using the following keystroke:
 
@@ -1809,10 +1809,10 @@ active *Emacs* _region_.
 
 File: ipe.info,  Node: Adding Multiple PAIRs using insert-pair-edit,  Next: Adding Multiple PAIRs using Existing OPEN / CLOSE,  Prev: Adding Multiple PAIRs using the Emacs Region,  Up: Multiple PAIRs Commands
 
-6.4.2 Adding Multiple PAIRs using insert-pair-edit
+7.4.2 Adding Multiple PAIRs using insert-pair-edit
 --------------------------------------------------
 
-The simplest way to add additional ’Insert Pair Edit’ (ipe) PAIRs when
+The simplest way to add additional 'Insert Pair Edit' (ipe) PAIRs when
 already in ‘ipe-edit-mode’ is to re-run the ‘insert-pair-edit’ command.
 When already in ‘ipe-edit-mode’ mode, re-running ‘insert-pair-edit’ will
 insert another PAIR (with the same OPEN and CLOSE strings as the active
@@ -1823,7 +1823,7 @@ PAIR) at POINT.
    • The ‘insert-pair-edit’ command has been bound to the suggested
      <M-(> binding;
    • The _Modifiers_ ‘ipe-edit-movement-keyset’ has been enabled;
-   • The <(> MNEMONIC is bound to the PAIR <(> and <)>, and;
+   • The <(> MNEMONIC is bound to the PAIR <(> <)>, and;
    • The buffer contains the following text:
 
           The quick brown (|fox) jumps over the lazy dog.
@@ -1834,7 +1834,7 @@ PAIR) at POINT.
 
      <M-(> <(>
 
-   Will enter ‘ipe-edit-mode’ and edit the <(> <)> PAIR around “fox”.
+   Will enter ‘ipe-edit-mode’ and edit the <(> <)> PAIR around "fox".
 
    Moving the PAIR forward two words using the following keystrokes:
 
@@ -1849,7 +1849,7 @@ PAIR) at POINT.
 
      <M-(>
 
-   Will add a second PAIR around “fox”:
+   Will add a second PAIR around "fox":
 
    Which will result in the buffer:
 
@@ -1866,10 +1866,10 @@ PAIR) at POINT.
 
 File: ipe.info,  Node: Adding Multiple PAIRs using Existing OPEN / CLOSE,  Next: Adding Multiple PAIRs using PAIR CONTENT,  Prev: Adding Multiple PAIRs using insert-pair-edit,  Up: Multiple PAIRs Commands
 
-6.4.3 Adding Multiple PAIRs using Existing OPEN / CLOSE
+7.4.3 Adding Multiple PAIRs using Existing OPEN / CLOSE
 -------------------------------------------------------
 
-Additional ’Insert Pair Edit’ (ipe) PAIRs from can be added within
+Additional 'Insert Pair Edit' (ipe) PAIRs from can be added within
 ‘ipe-edit-mode’ by searching the buffer for existing text which matches
 the OPEN and CLOSE strings of the currently active PAIR. This can be
 useful when _marking up_ a common set of existing PAIRs.
@@ -1879,16 +1879,16 @@ useful when _marking up_ a common set of existing PAIRs.
 <s> (in ‘ipe-edit-mode’)
      Search forward (from the end of the current CLOSE overlay) for
      matches to the current OPEN and CLOSE strings, and, if they exist,
-     delete them from the buffer and replace them with a new ’Insert
-     Pair Edit’ (ipe) PAIR.
+     delete them from the buffer and replace them with a new 'Insert
+     Pair Edit' (ipe) PAIR.
 
      (Command: ‘ipe-edit--add-next-pair’)
 
 <r> (in ‘ipe-edit-mode’)
      Search backward (from the start of the current OPEN overlay) for
      matches to the current OPEN and CLOSE strings, and, if they exist,
-     delete them from the buffer and replace them with a new ’Insert
-     Pair Edit’ (ipe) PAIR.
+     delete them from the buffer and replace them with a new 'Insert
+     Pair Edit' (ipe) PAIR.
 
      (Command: ‘ipe-edit--add-previous-pair’)
 
@@ -1897,8 +1897,8 @@ useful when _marking up_ a common set of existing PAIRs.
    • The ‘insert-pair-edit’ command has been bound to the suggested
      <M-(> binding;
    • The _Modifiers_ ‘ipe-edit-movement-keyset’ has been enabled;
-   • The <(> MNEMONIC is bound to the PAIR <(> and <)>;
-   • The <[> MNEMONIC is bound to the PAIR <[> and <]>, and;
+   • The <(> MNEMONIC is bound to the PAIR <(> <)>;
+   • The <[> MNEMONIC is bound to the PAIR <[> <]>, and;
    • The buffer contains the following text:
 
           The (quick) brown (|fox) jumps (over) the lazy dog.
@@ -1910,23 +1910,23 @@ useful when _marking up_ a common set of existing PAIRs.
      <M-(> <(>
 
    Will enter ‘ipe-edit-mode’ and edit the <(> <)> PAIR around the
-“fox”.
+"fox".
 
-   Searching forward for another <(> <)> the PAIR can be achieved using
-the following keystroke:
+   Searching forward for another <(> <)> PAIR can be achieved using the
+following keystroke:
 
      <s>
 
-   Which will result in the PAIR around “over” being added as a second
-’Insert Pair Edit’ (ipe) PAIR.
+   Which will result in the PAIR around "over" being added as a second
+'Insert Pair Edit' (ipe) PAIR.
 
-   Searching backward for another <(> <)> the PAIR can be achieved using
-the following keystroke:
+   Searching backward for another <(> <)> PAIR can be achieved using the
+following keystroke:
 
      <r>
 
-   Which will result in the PAIR around “quick” being added as a third
-’Insert Pair Edit’ (ipe) PAIR.
+   Which will result in the PAIR around "quick" being added as a third
+'Insert Pair Edit' (ipe) PAIR.
 
    These three PAIRs can then be edited as one by the ‘ipe-edit-mode’
 commands.
@@ -1943,10 +1943,10 @@ commands.
 
 File: ipe.info,  Node: Adding Multiple PAIRs using PAIR CONTENT,  Next: Removing PAIRs,  Prev: Adding Multiple PAIRs using Existing OPEN / CLOSE,  Up: Multiple PAIRs Commands
 
-6.4.4 Adding Multiple PAIRs using PAIR CONTENT
+7.4.4 Adding Multiple PAIRs using PAIR CONTENT
 ----------------------------------------------
 
-Additional ’Insert Pair Edit’ (ipe) PAIRs can be added within
+Additional 'Insert Pair Edit' (ipe) PAIRs can be added within
 ‘ipe-edit-mode’ by searching the buffer for existing text which matches
 the text between OPEN and CLOSE strings of the currently active PAIR.
 This can be useful when _marking up_ the same word / phrase with a
@@ -1957,7 +1957,7 @@ common PAIR.
 <S> (in ‘ipe-edit-mode’)
      Search forward (from the end of the current CLOSE overlay) for
      matches to the text between the current OPEN and CLOSE strings,
-     and, if it exists, add a new ’Insert Pair Edit’ (ipe) PAIR around
+     and, if it exists, add a new 'Insert Pair Edit' (ipe) PAIR around
      the text.
 
      (Command: ‘ipe-edit--add-next-contents’)
@@ -1965,7 +1965,7 @@ common PAIR.
 <R> (in ‘ipe-edit-mode’)
      Search backward (from the start of the current OPEN overlay) for
      matches to the text between the current OPEN and CLOSE strings,
-     and, if it exists, add a new ’Insert Pair Edit’ (ipe) PAIR around
+     and, if it exists, add a new 'Insert Pair Edit' (ipe) PAIR around
      the text.
 
      (Command: ‘ipe-edit--add-previous-contents’)
@@ -1975,8 +1975,8 @@ common PAIR.
    • The ‘insert-pair-edit’ command has been bound to the suggested
      <M-(> binding;
    • The _Modifiers_ ‘ipe-edit-movement-keyset’ has been enabled;
-   • The <(> MNEMONIC is bound to the PAIR <(> and <)>;
-   • The <[> MNEMONIC is bound to the PAIR <[> and <]>, and;
+   • The <(> MNEMONIC is bound to the PAIR <(> <)>;
+   • The <[> MNEMONIC is bound to the PAIR <[> <]>, and;
    • The buffer contains the following text:
 
           The quick brown fox jumps over the lazy dog.
@@ -1990,14 +1990,14 @@ common PAIR.
      <M-(> <(>
 
    Will enter ‘ipe-edit-mode’ and edit the <(> <)> PAIR around the
-middle “fox”.
+middle "fox".
 
-   Searching forward for another match to the string “fox” can be
+   Searching forward for another match to the string "fox" can be
 achieved using the following keystroke:
 
      <S>
 
-   Which will result in a new PAIR being added around “fox” on the third
+   Which will result in a new PAIR being added around "fox" on the third
 line.
 
    Which will result in the buffer:
@@ -2006,12 +2006,12 @@ line.
      The quick brown (|fox) jumps over the lazy dog.
      The quick brown (fox) jumps over the lazy dog.
 
-   Searching backward for another “fox” string can be achieved using the
+   Searching backward for another "fox" string can be achieved using the
 following keystroke:
 
      <R>
 
-   Which will result in a new PAIR being added around “fox” on the first
+   Which will result in a new PAIR being added around "fox" on the first
 line.
 
    Which will result in the buffer:
@@ -2037,21 +2037,21 @@ commands.
 
 File: ipe.info,  Node: Removing PAIRs,  Prev: Adding Multiple PAIRs using PAIR CONTENT,  Up: Multiple PAIRs Commands
 
-6.4.5 Removing PAIRs
+7.4.5 Removing PAIRs
 --------------------
 
 To remove a PAIR when using ‘ipe-edit-mode’ to edit multiple PAIRs at
 once, the following keystrokes / commands are supplied:
 
 <C-d> (in ‘ipe-edit-mode’)
-     Remove the first ’Insert Pair Edit’ (ipe) OPEN and CLOSE overlay.
+     Remove the first 'Insert Pair Edit' (ipe) OPEN and CLOSE overlay.
      If there are no remaining PAIRs after the first PAIR has been
      removed, it will exit ‘ipe-edit-mode’.
 
      (Command: ‘ipe-edit--delete-first-pair’)
 
 <DEL> (in ‘ipe-edit-mode’)
-     Remove the last ’Insert Pair Edit’ (ipe) OPEN and CLOSE overlay.
+     Remove the last 'Insert Pair Edit' (ipe) OPEN and CLOSE overlay.
      If there are no remaining PAIRs after the last PAIR has been
      removed, it will exit ‘ipe-edit-mode’.
 
@@ -2063,11 +2063,11 @@ always remove all but one PAIR.
 
 File: ipe.info,  Node: Escaping Text within a PAIR,  Prev: Multiple PAIRs Commands,  Up: Other ipe-edit-mode Commands
 
-6.5 Escaping Text within a PAIR
+7.5 Escaping Text within a PAIR
 ===============================
 
-_Intermediate_ and _Advanced_ (*Note Types of PAIR Definition::) ’Insert
-Pair Edit’ (ipe) PAIRs can define ESCAPE strings.
+_Intermediate_ and _Advanced_ (*Note Types of PAIR Definition::) 'Insert
+Pair Edit' (ipe) PAIRs can define ESCAPE strings.
 
    When present between an OPEN and CLOSE overlay within
 ‘ipe-edit-mode’, ESCAPE strings will be _replaced_ with overlays
@@ -2075,13 +2075,13 @@ displaying a REPLACEMENT string.  These REPLACEMENT strings will also be
 inserted into the buffer if the PAIR is inserted into the buffer using
 the ‘ipe-edit--insert-pair’ command.
 
-   This can be useful when using the ’Insert Pair Edit’ (ipe) library to
-insert PAIRs of “quotes”.
+   This can be useful when using the 'Insert Pair Edit' (ipe) library to
+insert PAIRs of "quotes".
 
    REPLACEMENT strings will be displayed using the IPE-ESCAPE-HIGHLIGHT
 face.
 
-   For example, if an ’Insert Pair Edit’ (ipe) PAIR was defined with:
+   For example, if an 'Insert Pair Edit' (ipe) PAIR was defined with:
 
    • A MNEMONIC <'>;
    • <'> as its OPEN string, and;
@@ -2097,11 +2097,11 @@ from the outer PAIR of quotes.
    • The ‘insert-pair-edit’ command has been bound to the suggested
      <M-(> binding;
    • The _Modifiers_ ‘ipe-edit-movement-keyset’ has been enabled;
-   • The <'> MNEMONIC is bound to the PAIR <'> and <'>;
-   • The _ESCAPES_ for the <'> MNEMONIC have been defined as:          
-                  
-          ’ -> \’ 
-          \ -> \\ 
+   • The <'> MNEMONIC is bound to the PAIR <'> <'>;
+   • The _ESCAPES_ for the <'> MNEMONIC have been defined as:  
+      
+      ' -> \' 
+      \ -> \\ 
       
 
      and;
@@ -2120,26 +2120,26 @@ following keystrokes:
 
      <C-b> <C-f>
 
-   Will position the <'> characters around the phrase “brown fox jumps”,
-and ESCAPE the <'> characters around “fox”, by replacing them with <\'>
+   Will position the <'> characters around the phrase "brown fox jumps",
+and ESCAPE the <'> characters around "fox", by replacing them with <\'>
 REPLACEMENTS.
 
    Which will result in the buffer:
 
      The quick 'brown \'fox\' jumps' over the lazy dog.
 
-   *NOTE*: The ’Insert Pair Edit’ (ipe) _Update_ commands (*Note
+   *NOTE*: The 'Insert Pair Edit' (ipe) _Update_ commands (*Note
 Updating Existing PAIRs::) recognise ESCAPE strings, and adjust their
 matching algorithms accordingly.
 
 
 File: ipe.info,  Node: Other Features,  Next: Development,  Prev: Other ipe-edit-mode Commands,  Up: Top
 
-7 Other Features
+8 Other Features
 ****************
 
 The following sections describe the more advanced features (and
-associated commands / key-bindings) of the ’Insert Pair Edit’ (ipe)
+associated commands / key-bindings) of the 'Insert Pair Edit' (ipe)
 package.
 
 * Menu:
@@ -2153,19 +2153,19 @@ package.
 * Updating Existing PAIRs::
 
 
-File: ipe.info,  Node: Line Movement,  Next: Line Movement - Beginning / End,  Up: Other Features
+File: ipe.info,  Node: Line Movement,  Next: List Movement,  Up: Other Features
 
-7.1 Line Movement
+8.1 Line Movement
 =================
 
-_Intermediate_ and _Advanced_ (*Note Types of PAIR Definition::) ’Insert
-Pair Edit’ (ipe) PAIRs can be defined with an _Initial Movement_ of “by
-lines”.  (The User can also change the current movement lexical unit
-_on-the-fly_ within ‘ipe-edit-mode’ to “by lines” using the
+_Intermediate_ and _Advanced_ (*Note Types of PAIR Definition::) 'Insert
+Pair Edit' (ipe) PAIRs can be defined with an _Initial Movement_ of "by
+lines".  (The User can also change the current movement lexical unit
+_on-the-fly_ within ‘ipe-edit-mode’ to "by lines" using the
 ‘ipe-edit--movement-by-line’ command.  (*Note Movement Units::))
 
    The behaviour of the basic movement (*Note Basic Movement::) commands
-is modified for PAIRs with a “by lines” movement type.
+is modified for PAIRs with a "by lines" movement type.
 
    The _up_ and _down_ commands:
 
@@ -2174,7 +2174,7 @@ is modified for PAIRs with a “by lines” movement type.
    • ‘ipe-edit--close-up’
    • ‘ipe-edit--close-down’
 
-   operate as per other movement modes (“by characters”, “by words”.)
+   operate as per other movement modes ("by characters", "by words".)
 
    However, the other basic movement commands are re-bound to have
 different behaviour:
@@ -2187,13 +2187,13 @@ different behaviour:
 
 File: ipe.info,  Node: Line Movement - Forward / Backward,  Next: Line Movement - Beginning / End,  Up: Line Movement
 
-7.1.1 Line Movement - Forward / Backward
+8.1.1 Line Movement - Forward / Backward
 ----------------------------------------
 
 The Forward / Backward basic movement (*Note Basic Movement::) of
-’Insert Pair Edit’ (ipe) PAIRS with an _Initial Movement_ of “by lines”
-is modified from the standard pattern used by the “by characters” / “by
-words” movements.
+'Insert Pair Edit' (ipe) PAIRS with an _Initial Movement_ of "by lines"
+is modified from the standard pattern used by the "by characters" / "by
+words" movements.
 
    The:
 
@@ -2212,7 +2212,7 @@ intervening line between the OPEN and CLOSE overlays.
      <M-(> binding;
    • The _Modifiers_ ‘ipe-edit-movement-keyset’ has been enabled;
    • The <{> MNEMONIC is bound to the PAIR <{> and <}>;
-   • The _Initial Movement_ for the <{> MNEMONIC is “by lines”, and;
+   • The _Initial Movement_ for the <{> MNEMONIC is "by lines", and;
    • The buffer contains the following text:
 
           {
@@ -2256,15 +2256,15 @@ the keystrokes:
      }
 
 
-File: ipe.info,  Node: Line Movement - Beginning / End,  Next: List Movement,  Prev: Line Movement,  Up: Other Features
+File: ipe.info,  Node: Line Movement - Beginning / End,  Prev: Line Movement - Forward / Backward,  Up: Line Movement
 
-7.2 Line Movement - Beginning / End
-===================================
+8.1.2 Line Movement - Beginning / End
+-------------------------------------
 
-The Beginning / End basic movement (*Note Basic Movement::) of ’Insert
-Pair Edit’ (ipe) PAIRS with an _Initial Movement_ of “by lines” is
-modified from the standard pattern used by the “by characters” / “by
-words” movements.
+The Beginning / End basic movement (*Note Basic Movement::) of 'Insert
+Pair Edit' (ipe) PAIRS with an _Initial Movement_ of "by lines" is
+modified from the standard pattern used by the "by characters" / "by
+words" movements.
 
    The:
 
@@ -2283,7 +2283,7 @@ the insertion of an empty line before / after the OPEN / CLOSE overlay.
      <M-(> binding;
    • The _Modifiers_ ‘ipe-edit-movement-keyset’ has been enabled;
    • The <{> MNEMONIC is bound to the PAIR <{> and <}>;
-   • The _Initial Movement_ for the <{> MNEMONIC is “by lines”, and;
+   • The _Initial Movement_ for the <{> MNEMONIC is "by lines", and;
    • The buffer contains the following text:
 
           The quick brown fox jumps over the lazy dog.
@@ -2337,19 +2337,19 @@ first use the keystrokes:
      The quick brown fox jumps over the lazy dog.
 
 
-File: ipe.info,  Node: List Movement,  Next: Defining line PAIRs with an INFIX,  Prev: Line Movement - Beginning / End,  Up: Other Features
+File: ipe.info,  Node: List Movement,  Next: Defining line PAIRs with an INFIX,  Prev: Line Movement,  Up: Other Features
 
-7.3 List Movement
+8.2 List Movement
 =================
 
-_Intermediate_ and _Advanced_ (*Note Types of PAIR Definition::) ’Insert
-Pair Edit’ (ipe) PAIRs can be defined with an _Initial Movement_ of “by
-lists”.  (The User can also change the current movement lexical unit
-_on-the-fly_ within ‘ipe-edit-mode’ to “by lists” using the
+_Intermediate_ and _Advanced_ (*Note Types of PAIR Definition::) 'Insert
+Pair Edit' (ipe) PAIRs can be defined with an _Initial Movement_ of "by
+lists".  (The User can also change the current movement lexical unit
+_on-the-fly_ within ‘ipe-edit-mode’ to "by lists" using the
 ‘ipe-edit--movement-by-list’ command.  (*Note Movement Units::))
 
    The behaviour of the basic movement (*Note Basic Movement::) commands
-is modified for PAIRs with a “by lists” movement type.
+is modified for PAIRs with a "by lists" movement type.
 
 * Menu:
 
@@ -2360,13 +2360,13 @@ is modified for PAIRs with a “by lists” movement type.
 
 File: ipe.info,  Node: List Movement - Forward / Backward,  Next: List Movement - Up / Down,  Up: List Movement
 
-7.3.1 List Movement - Forward / Backward
+8.2.1 List Movement - Forward / Backward
 ----------------------------------------
 
 The Forward / Backward basic movement (*Note Basic Movement::) of
-’Insert Pair Edit’ (ipe) PAIRS with an _Initial Movement_ of “by lists”
-is modified from the standard pattern used by the “by characters” / “by
-words” movements.
+'Insert Pair Edit' (ipe) PAIRS with an _Initial Movement_ of "by lists"
+is modified from the standard pattern used by the "by characters" / "by
+words" movements.
 
    The:
 
@@ -2376,17 +2376,16 @@ words” movements.
    • ‘ipe-edit--close-backward’
 
    commands, are re-bound so that instead of moving the OPEN and CLOSE
-overlays to forward / backward over text, they are instead move as per
-the *Emacs* ‘forward-list’ / ‘backward-list’ commands.
+overlays forward / backward over text, they instead move as per the
+*Emacs* ‘forward-list’ / ‘backward-list’ commands.
 
    For example, assuming that:
 
    • The ‘insert-pair-edit’ command has been bound to the suggested
      <M-(> binding;
    • The _Modifiers_ ‘ipe-edit-movement-keyset’ has been enabled;
-   • The <(> MNEMONIC is bound to the PAIR <(> and <)>;
-   • The <[> MNEMONIC is bound to the PAIR <[> and <]>;
-   • The _Initial Movement_ for the <[> MNEMONIC is “by lists”, and;
+   • The <[> MNEMONIC is bound to the PAIR <[> <]>;
+   • The _Initial Movement_ for the <[> MNEMONIC is "by lists", and;
    • The buffer contains the following text:
 
           ([(a b c)](d e f)(g h i))
@@ -2395,26 +2394,26 @@ the *Emacs* ‘forward-list’ / ‘backward-list’ commands.
 
      <M-(> <[>
 
-   Which will edit the <[> <]> PAIR around “(a b c)”, and enter
+   Which will edit the <[> <]> PAIR around "(a b c)", and enter
 ‘ipe-edit-mode’.
 
-   Then, to move the _closing_ <]> around “(a b c)” _forward_, you would
+   Then, to move the _closing_ <]> around "(a b c)" _forward_, you would
 use the keystroke:
 
      <C-f>
 
-   Which will move the <]> forward “by list”.
+   Which will move the <]> forward "by list".
 
    Which will result in the buffer:
 
      ([(a b c)(d e f)](g h i))
 
-   Then, to move the _opening_ square bracket around “(a b c)(d e f)”
+   Then, to move the _opening_ square bracket around "(a b c)(d e f)"
 _forward_, you would use the keystroke:
 
      <M-f>
 
-   Which will move the <[> forward “by list”.
+   Which will move the <[> forward "by list".
 
    Which will result in the buffer:
 
@@ -2423,12 +2422,12 @@ _forward_, you would use the keystroke:
 
 File: ipe.info,  Node: List Movement - Up / Down,  Next: List Movement - Beginning / End,  Prev: List Movement - Forward / Backward,  Up: List Movement
 
-7.3.2 List Movement - Up / Down
+8.2.2 List Movement - Up / Down
 -------------------------------
 
-The Up / Down basic movement (*Note Basic Movement::) of ’Insert Pair
-Edit’ (ipe) PAIRS with an _Initial Movement_ of “by lists” is modified
-from the standard pattern used by the “by characters” / “by words”
+The Up / Down basic movement (*Note Basic Movement::) of 'Insert Pair
+Edit' (ipe) PAIRS with an _Initial Movement_ of "by lists" is modified
+from the standard pattern used by the "by characters" / "by words"
 movements.
 
    The:
@@ -2439,17 +2438,16 @@ movements.
    • ‘ipe-edit--close-down’
 
    commands, are re-bound so that instead of moving the OPEN and CLOSE
-overlays to forward / backward over text, they are instead move as per
-the *Emacs* ‘up-list’ / ‘down-list’ commands.
+overlays up / down lines of text, they instead move as per the *Emacs*
+‘up-list’ / ‘down-list’ commands.
 
    For example, assuming that:
 
    • The ‘insert-pair-edit’ command has been bound to the suggested
      <M-(> binding;
    • The _Modifiers_ ‘ipe-edit-movement-keyset’ has been enabled;
-   • The <(> MNEMONIC is bound to the PAIR <(> and <)>;
-   • The <[> MNEMONIC is bound to the PAIR <[> and <]>;
-   • The _Initial Movement_ for the <[> MNEMONIC is “by lists”, and;
+   • The <[> MNEMONIC is bound to the PAIR <[> <]>;
+   • The _Initial Movement_ for the <[> MNEMONIC is "by lists", and;
    • The buffer contains the following text:
 
           ([(a b c)](d e f)(g h i))
@@ -2458,15 +2456,15 @@ the *Emacs* ‘up-list’ / ‘down-list’ commands.
 
      <M-(> <[>
 
-   Which will edit the <[> <]> PAIR around “(a b c)”, and enter
+   Which will edit the <[> <]> PAIR around "(a b c)", and enter
 ‘ipe-edit-mode’.
 
-   Then, to move the <[> <]> PAIR around “(a b c)” _up_, you would use
+   Then, to move the <[> <]> PAIR around "(a b c)" _up_, you would use
 the keystroke:
 
      <C-p>
 
-   Which will move the <[> <]> PAIR up “by list”.
+   Which will move the <[> <]> PAIR up "by list".
 
    Which will result in the buffer:
 
@@ -2477,18 +2475,18 @@ you would use the keystroke:
 
      <M-n>
 
-   Which will move the <[> <]> PAIR down “by list”.
+   Which will move the <[> <]> PAIR down "by list".
 
    Which will result in the buffer:
 
      ([(a b c)(d e f)(g h i)])
 
-   To move the <[> <]> PAIR now around the “(a b c)(d e f)(g h i)”
+   To move the <[> <]> PAIR now around the "(a b c)(d e f)(g h i)"
 further _down_, you would used the keystroke:
 
      <M-n>
 
-   Which will move the <[> <]> PAIR down “by list”.
+   Which will move the <[> <]> PAIR down "by list".
 
    Which will result in the buffer:
 
@@ -2497,13 +2495,13 @@ further _down_, you would used the keystroke:
 
 File: ipe.info,  Node: List Movement - Beginning / End,  Prev: List Movement - Up / Down,  Up: List Movement
 
-7.3.3 List Movement - Beginning / End
+8.2.3 List Movement - Beginning / End
 -------------------------------------
 
-The Beginning / End basic movement (*Note Basic Movement::) of ’Insert
-Pair Edit’ (ipe) PAIRS with an _Initial Movement_ of “by lists” is
-modified from the standard pattern used by the “by characters” / “by
-words” movements.
+The Beginning / End basic movement (*Note Basic Movement::) of 'Insert
+Pair Edit' (ipe) PAIRS with an _Initial Movement_ of "by lists" is
+modified from the standard pattern used by the "by characters" / "by
+words" movements.
 
    The:
 
@@ -2513,17 +2511,17 @@ words” movements.
    • ‘ipe-edit--close-end’
 
    commands, are re-bound so that instead of moving the OPEN and CLOSE
-overlays to forward / backward over text, they are instead move as per
-the *Emacs* ‘beginning-of-defun’ / ‘end-of-defun’ commands.
+overlays to the beginning / end of lines, they instead move as per the
+*Emacs* ‘beginning-of-defun’ / ‘end-of-defun’ commands.
 
    For example, assuming that:
 
    • The ‘insert-pair-edit’ command has been bound to the suggested
      <M-(> binding;
    • The _Modifiers_ ‘ipe-edit-movement-keyset’ has been enabled;
-   • The <(> MNEMONIC is bound to the PAIR <(> and <)>;
-   • The <[> MNEMONIC is bound to the PAIR <[> and <]>;
-   • The _Initial Movement_ for the <[> MNEMONIC is “by lists”, and;
+   • The <(> MNEMONIC is bound to the PAIR <(> <)>;
+   • The <[> MNEMONIC is bound to the PAIR <[> <]>;
+   • The _Initial Movement_ for the <[> MNEMONIC is "by lists", and;
    • The buffer contains the following text:
 
           ((a b c)(d [e] f)(g h i))
@@ -2532,9 +2530,9 @@ the *Emacs* ‘beginning-of-defun’ / ‘end-of-defun’ commands.
 
      <M-(> <[>
 
-   Which will edit the <[> <]> around “e”, and enter ‘ipe-edit-mode’.
+   Which will edit the <[> <]> around "e", and enter ‘ipe-edit-mode’.
 
-   Then, to move the <[> <]> PAIR around “e” to the _beginning_, you
+   Then, to move the <[> <]> PAIR around "e" to the _beginning_, you
 would use the keystroke:
 
      <C-a>
@@ -2555,12 +2553,12 @@ keystroke:
 
 File: ipe.info,  Node: Defining line PAIRs with an INFIX,  Next: Auto Insertion,  Prev: List Movement,  Up: Other Features
 
-7.4 Defining line PAIRs with an INFIX
+8.3 Defining line PAIRs with an INFIX
 =====================================
 
-_Intermediate_ and _Advanced_ (*Note Types of PAIR Definition::) ’Insert
-Pair Edit’ (ipe) PAIRs that are defined with an _Initial Movement_ of
-“by lines” can also define an INFIX.
+_Intermediate_ and _Advanced_ (*Note Types of PAIR Definition::) 'Insert
+Pair Edit' (ipe) PAIRs that are defined with an _Initial Movement_ of
+"by lines" can also define an INFIX.
 
    This INFIX will be inserted at the start of each intervening line
 between the OPEN and CLOSE overlays.
@@ -2579,13 +2577,15 @@ between the OPEN and CLOSE overlays.
    • The ‘insert-pair-edit’ command has been bound to the suggested
      <M-(> binding;
    • The _Modifiers_ ‘ipe-edit-movement-keyset’ has been enabled;
-   • The </> MNEMONIC is bound to the PAIR </* > and < */>;
-   • The _Initial Movement_ for the </> MNEMONIC is ‘by line’;
+   • The </> MNEMONIC is bound to the PAIR </* > < */>;
+   • The _Initial Movement_ for the </> MNEMONIC is 'by line';
    • The INFIX for the </> PAIR is < **>, and;
    • The current buffer contains the following text:
 
           The quick brown fox jumps over the lazy dog.
+          The quick brown fox jumps over the lazy dog.
           The quick brown |fox jumps over the lazy dog.
+          The quick brown fox jumps over the lazy dog.
           The quick brown fox jumps over the lazy dog.
 
    To insert and indent C-style comments around the text, you would
@@ -2599,7 +2599,9 @@ enter the keystrokes:
    Which will result in the buffer:
 
      The quick brown fox jumps over the lazy dog.
+     The quick brown fox jumps over the lazy dog.
      /* The quick brown |fox jumps over the lazy dog. */
+     The quick brown fox jumps over the lazy dog.
      The quick brown fox jumps over the lazy dog.
 
    And then, to move the OPEN overlay up a line, and the CLOSE overlay
@@ -2609,9 +2611,11 @@ down a line, you would enter the keystrokes:
 
    Which will result in the buffer:
 
+     The quick brown fox jumps over the lazy dog.
      /* The quick brown fox jumps over the lazy dog.
      ** The quick brown |fox jumps over the lazy dog.
      ** The quick brown fox jumps over the lazy dog. */
+     The quick brown fox jumps over the lazy dog.
 
    To then indent the comment two spaces, you would enter the
 keystrokes:
@@ -2620,9 +2624,11 @@ keystrokes:
 
    Which will result in the buffer:
 
+     The quick brown fox jumps over the lazy dog.
        /* The quick brown fox jumps over the lazy dog.
        ** The quick brown fox jumps over the lazy dog.
        ** The quick brown fox jumps over the lazy dog. */
+     The quick brown fox jumps over the lazy dog.
 
    And then, to indent the text after the comment two spaces, you would
 enter the keystrokes:
@@ -2631,18 +2637,20 @@ enter the keystrokes:
 
    Which will result in the buffer:
 
+     The quick brown fox jumps over the lazy dog.
        /*   The quick brown fox jumps over the lazy dog.
        **   The quick brown fox jumps over the lazy dog.
        **   The quick brown fox jumps over the lazy dog. */
+     The quick brown fox jumps over the lazy dog.
 
 
 File: ipe.info,  Node: Auto Insertion,  Next: Positioning POINT and MARK,  Prev: Defining line PAIRs with an INFIX,  Up: Other Features
 
-7.5 Auto Insertion
+8.4 Auto Insertion
 ==================
 
-_Intermediate_ and _Advanced_ (*Note Types of PAIR Definition::) ’Insert
-Pair Edit’ (ipe) PAIRs can be defined with an _Auto-Insert_ flag equal
+_Intermediate_ and _Advanced_ (*Note Types of PAIR Definition::) 'Insert
+Pair Edit' (ipe) PAIRs can be defined with an _Auto-Insert_ flag equal
 to ‘y’.
 
    Running ‘insert-pair-edit’ and entering the MNEMONIC for a PAIR with
@@ -2676,15 +2684,15 @@ command ‘insert-pair-edit-update’ using the keystrokes:
 
 File: ipe.info,  Node: Positioning POINT and MARK,  Next: PAIRs With Empty OPEN / CLOSE,  Prev: Auto Insertion,  Up: Other Features
 
-7.6 Positioning POINT and MARK
+8.5 Positioning POINT and MARK
 ==============================
 
 The position at which POINT (the *Emacs* cursor) is placed on insert of
-an ’Insert Pair Edit’ (ipe) PAIR is controlled by:
+an 'Insert Pair Edit' (ipe) PAIR is controlled by:
 
  -- User Option: ipe--move-point-on-insert
      This option is consulted when inserting (*Note Inserting and
-     Aborting::) an ’Insert Pair Edit’ (ipe) PAIR into the buffer.
+     Aborting::) an 'Insert Pair Edit' (ipe) PAIR into the buffer.
 
      If *nil*, POINT will remain at the position it was when the PAIR
      was first inserted.
@@ -2707,7 +2715,7 @@ controlled by:
 
  -- User Option: ipe-set-mark-on-insert
      This option is consulted when inserting (*Note Inserting and
-     Aborting::) an ’Insert Pair Edit’ (ipe) PAIR into the buffer.
+     Aborting::) an 'Insert Pair Edit' (ipe) PAIR into the buffer.
 
      If *nil*, MARK will not be set.
 
@@ -2722,16 +2730,16 @@ controlled by:
         • close-end - MARK will be set to the end of the CLOSE string.
 
    _Intermediate_ and _Advanced_ (*Note Types of PAIR Definition::)
-’Insert Pair Edit’ (ipe) PAIRs can define the position at which to place
-POINT on _insert_ of the PAIR into the buffer ’per-PAIR’.
+'Insert Pair Edit' (ipe) PAIRs can define the position at which to place
+POINT on _insert_ of the PAIR into the buffer 'per-PAIR'.
 
 
 File: ipe.info,  Node: PAIRs With Empty OPEN / CLOSE,  Next: Updating Existing PAIRs,  Prev: Positioning POINT and MARK,  Up: Other Features
 
-7.7 PAIRs With Empty OPEN / CLOSE
+8.6 PAIRs With Empty OPEN / CLOSE
 =================================
 
-’Insert Pair Edit’ (ipe) PAIRs can be defined with an _empty_ OPEN or
+'Insert Pair Edit' (ipe) PAIRs can be defined with an _empty_ OPEN or
 CLOSE string.
 
    The position of an _empty_ OPEN or CLOSE string will still be
@@ -2760,10 +2768,10 @@ _not_ inserted into the buffer by ‘ipe-edit--insert-pair’.
 
 File: ipe.info,  Node: Updating Existing PAIRs,  Prev: PAIRs With Empty OPEN / CLOSE,  Up: Other Features
 
-7.8 Updating Existing PAIRs
+8.7 Updating Existing PAIRs
 ===========================
 
-In addition to inserting PAIRs, the ’Insert Pair Edit’ (ipe) package
+In addition to inserting PAIRs, the 'Insert Pair Edit' (ipe) package
 also offers a number of commands to _update_ the PAIRs which already
 exist within an *Emacs* buffer.
 
@@ -2784,10 +2792,10 @@ when within ‘ipe-edit-mode’.
 
 File: ipe.info,  Node: Update Search Process,  Next: Update PAIR Matching,  Up: Updating Existing PAIRs
 
-7.8.1 Update Search Process
+8.7.1 Update Search Process
 ---------------------------
 
-The PAIRs updated by the ’Insert Pair Edit’ (ipe) commands:
+The PAIRs updated by the 'Insert Pair Edit' (ipe) commands:
 
    • ‘insert-pair-edit-update’ (*Note Updating PAIRs::);
    • ‘insert-pair-edit-delete’ (*Note Deleting PAIRs::), and;
@@ -2827,10 +2835,10 @@ _region_.)
 
 File: ipe.info,  Node: Update PAIR Matching,  Next: Updates on a Region,  Prev: Update Search Process,  Up: Updating Existing PAIRs
 
-7.8.2 Update PAIR Matching
+8.7.2 Update PAIR Matching
 --------------------------
 
-The PAIRs selected by the ’Insert Pair Edit’ (ipe) commands are
+The PAIRs selected by the 'Insert Pair Edit' (ipe) commands are
 _matched_, thus allowing the OPEN and CLOSE strings of a PAIR to be
 nested.  Searching forward / backward for PAIRs (*Note Update Search
 Process::) will attempt to match the _corresponding_ OPEN and CLOSE
@@ -2840,8 +2848,8 @@ strings.
 
    • The ‘insert-pair-edit’ command has been bound to the suggested
      <M-(> binding;
-   • The <(> MNEMONIC is bound to the PAIR <(> and <)>;
-   • The <[> MNEMONIC is bound to the PAIR <[> and <]>, and;
+   • The <(> MNEMONIC is bound to the PAIR <(> <)>;
+   • The <[> MNEMONIC is bound to the PAIR <[> <]>, and;
    • The buffer contains the following text:
 
           The (quick (|brown (fox) jumps) over) the lazy dog.
@@ -2852,9 +2860,9 @@ strings.
 
      <C-u> <M-(> <(>
 
-   Which will match the PAIR around the text “brown fox jumps”.
-(Because the <(> <)> PAIR around “fox” is _nested_ within the outer PAIR
-around “brown fox jumps”.)
+   Which will match the PAIR around the text "brown fox jumps".
+(Because the <(> <)> PAIR around "fox" is _nested_ within the outer PAIR
+around "brown fox jumps".)
 
    Changing the PAIR using the keystrokes:
 
@@ -2867,10 +2875,10 @@ around “brown fox jumps”.)
 
 File: ipe.info,  Node: Updates on a Region,  Prev: Update PAIR Matching,  Up: Updating Existing PAIRs
 
-7.8.3 Updates on Region
+8.7.3 Updates on Region
 -----------------------
 
-If the *Emacs* _region_ is active, running any of the ’Insert Pair Edit’
+If the *Emacs* _region_ is active, running any of the 'Insert Pair Edit'
 (ipe) commands:
 
    • ‘insert-pair-edit-update’
@@ -2886,7 +2894,7 @@ multiple PAIRs to be edited at once.
 
    • The ‘insert-pair-edit’ command has been bound to the suggested
      <M-(> binding;
-   • The <(> MNEMONIC is bound to the PAIR <(> and <)>, and;
+   • The <(> MNEMONIC is bound to the PAIR <(> <)>, and;
    • The buffer contains the following text:
 
           The quick (brown) fox jumps (over) the lazy dog.
@@ -2912,7 +2920,7 @@ multiple PAIRs to be edited at once.
 
 File: ipe.info,  Node: Development,  Next: Index,  Prev: Other Features,  Up: Top
 
-8 Development
+9 Development
 *************
 
 * Menu:
@@ -2925,12 +2933,12 @@ File: ipe.info,  Node: Development,  Next: Index,  Prev: Other Features,  Up: To
 
 File: ipe.info,  Node: Creating 'ipe-mode-pairs' PAIRs using Emacs Lisp,  Next: Binding MNEMONICs to Keys,  Up: Development
 
-8.1 Creating ’ipe-mode-pairs’ PAIRs using Emacs Lisp
+9.1 Creating 'ipe-mode-pairs' PAIRs using Emacs Lisp
 ====================================================
 
-The ’Insert Pair Edit’ (ipe) package is specifically designed to cater
+The 'Insert Pair Edit' (ipe) package is specifically designed to cater
 for _Mode-Specific_ PAIR bindings.  Several _Mode-Specific_ bindings
-come bundled with the ’Insert Pair Edit’ (ipe) package:
+come bundled with the 'Insert Pair Edit' (ipe) package:
 
    • texinfo-mode - (‘ipe-textinfo-mode.el’)
    • c-mode - (‘ipe-c-mode.el’)
@@ -2939,16 +2947,16 @@ come bundled with the ’Insert Pair Edit’ (ipe) package:
    • markdown-mode - (‘ipe-markdown-mode.el’)
 
    These bindings are automatically activated whenever one of the
-’Insert Pair Edit’ (ipe) commands is invoked within a buffer with the
+'Insert Pair Edit' (ipe) commands is invoked within a buffer with the
 given ‘major-mode’.
 
    While bindings for _Major Modes_ can be added dynamically using the
-’Insert Pair Edit’ customization options (*Note Customization::), they
+'Insert Pair Edit' customization options (*Note Customization::), they
 can also be added using *Emacs Lisp*.  This may be a more desirable
-option for Users wanting to supply ’Insert Pair Edit’ (ipe) PAIRs for
+option for Users wanting to supply 'Insert Pair Edit' (ipe) PAIRs for
 their own *Emacs* ‘major-mode’.
 
-   To add new ’Insert Pair Edit’ (ipe) PAIR bindings for a new *Emacs*
+   To add new 'Insert Pair Edit' (ipe) PAIR bindings for a new *Emacs*
 ‘major-mode’ using *Emacs Lisp*, use the following functions (available
 from the ‘ipe-custom.el’ / ‘ipe.el’ libraries.)
 
@@ -2956,7 +2964,7 @@ from the ‘ipe-custom.el’ / ‘ipe.el’ libraries.)
    • ‘ipe-mode-pairs-add’
 
  -- Function: ipe-custom--pair-list-get DEFN
-     Converts a list (‘DEFN’) describing a set of ’Insert Pair Edit’
+     Converts a list (‘DEFN’) describing a set of 'Insert Pair Edit'
      (ipe) PAIRs into the format used by the *Emacs* ‘customize’
      widgets.
 
@@ -2973,9 +2981,9 @@ from the ‘ipe-custom.el’ / ‘ipe.el’ libraries.)
           after calling ‘insert-pair-edit’ to indicate which OPEN and
           CLOSE strings are to be inserted.
         • ‘OPEN’ Is a string placed at the beginning of a lexical unit,
-          and then moved by the ’Insert Pair Edit’ commands.
+          and then moved by the 'Insert Pair Edit' commands.
         • ‘CLOSE’ Is a string placed at the end of a lexical unit, and
-          then moved by the ’Insert Pair Edit’ commands.
+          then moved by the 'Insert Pair Edit' commands.
         • ‘PLIST’ Is a property list specifying a set of optional
           _Advanced_ options that can be included to specify extra
           configuration passed to _specialised_ movement functions.
@@ -2992,11 +3000,11 @@ from the ‘ipe-custom.el’ / ‘ipe.el’ libraries.)
                :menu            MENU
 
              - MOVEMENT The initial lexical unit indicating the type of
-               movements made by the ’Insert Pair Edit’ commands.
-               (pre-defined values: ’char, ’word, ’line, ’list; default:
-               ’word.)
+               movements made by the 'Insert Pair Edit' commands.
+               (pre-defined values: 'char, 'word, 'line, 'list; default:
+               'word.)
              - INFIX A string added to the front of lines between the
-               OPEN and CLOSE PAIR when ‘MOVEMENT’ = ’line.
+               OPEN and CLOSE PAIR when ‘MOVEMENT’ = 'line.
              - ESCAPES Is a list of pairs of strings.  Each pair of
                strings (MATCH REPLACE) represents an escape sequence.
                Each MATCH between OPEN and CLOSE will be replaced by
@@ -3007,20 +3015,23 @@ from the ‘ipe-custom.el’ / ‘ipe.el’ libraries.)
              - MOVE-POINT Indicates where to move _POINT_ when a new
                PAIR is inserted.  This is a PAIR-specific override to
                the global IPE-MOVE-POINT-ON-INSERT setting, and takes
-               the same values (’resume, ’open-beg, ’open-end,
-               ’close-beg, ’close-end)
+               the same values ('resume, 'open-beg, 'open-end,
+               'close-beg, 'close-end)
              - INDENT-FUNCTION is either *nil*, or a function used to
                indent the OPEN and CLOSE strings.
-             - MENU Is a forward slash (’/’) separated string of the
+             - MENU Is a forward slash ('/') separated string of the
                names of the menus under which the PAIR is displayed
-               within the *Emacs* ’Insert Pair Edit’ menus.
+               within the *Emacs* 'Insert Pair Edit' menus.
 
  -- Function: ipe-mode-pairs-add MODE DEFN
      Adds a binding for the PAIR definition list (‘DEFN’) to the
      IPE-MODE-PAIRS variable for the given ‘MODE’.
 
-   For example, for a fictional ‘xxx-mode’, create a new file,
-‘ipe-xxx-mode.el’:
+   For example, for a fictional ‘xxx-mode’, to create a set of _Mode
+Specific_ 'ipe' PAIR Definitions, create a new file, ‘ipe-xxx-mode.el’,
+and add the following *Emacs Lisp*:
+
+     ;;; ipe-xxx-mode.el --- Insert Pair Edit - xxx-mode definitions
 
      (require 'ipe-custom)
      (require 'ipe)
@@ -3050,13 +3061,15 @@ from the ‘ipe-custom.el’ / ‘ipe.el’ libraries.)
      ; Activate the new 'ipe-xxx-pairs' whenever in 'xxx-mode'.
      (ipe-mode-pairs-add 'xxx-mode 'ipe-xxx-pairs)
 
+     (provide 'ipe-xxx-mode)
+
 
 File: ipe.info,  Node: Binding MNEMONICs to Keys,  Next: Defining custom 'ipe--movement' Functions,  Prev: Creating 'ipe-mode-pairs' PAIRs using Emacs Lisp,  Up: Development
 
-8.2 Binding MNEMONICs to Keys
+9.2 Binding MNEMONICs to Keys
 =============================
 
-To bind an ’Insert Pair Edit’ (ipe) PAIR directly to the key
+To bind an 'Insert Pair Edit' (ipe) PAIR directly to the key
 representing its MNEMONIC (so that typing the MNEMONIC inserts the PAIR)
 use the function:
 
@@ -3066,7 +3079,7 @@ use the function:
 
      (local-set-key "(" 'insert-pair-edit-cmd)
 
-   This will bind the <(> key to the ’Insert Pair Edit’ (ipe) MNEMONIC
+   This will bind the <(> key to the 'Insert Pair Edit' (ipe) MNEMONIC
 <(>.  Typing <(> within a buffer where this has been set will insert the
 PAIR associated with the <(> MNEMONIC, and enter ‘ipe-edit-mode’.
 
@@ -3078,7 +3091,7 @@ every time the OPEN key for the PAIR is pressed.  (Without entering
 
 File: ipe.info,  Node: Defining custom 'ipe--movement' Functions,  Next: Adding 'ipe' ERTs (Emacs Regression Tests),  Prev: Binding MNEMONICs to Keys,  Up: Development
 
-8.3 Defining custom ’ipe–movement Functions
+9.3 Defining custom 'ipe-movement Functions
 ===========================================
 
 The movements (‘character’, ‘word’, ‘line’, ‘list’) supplied within
@@ -3105,7 +3118,7 @@ The movements (‘character’, ‘word’, ‘line’, ‘list’) supplied wit
           Where:
 
              - DEFN - Is the definition of the PAIR from IPE-PAIRS.
-             - N - Is the position of the PAIR in IPE–PAIR-POS-LIST.
+             - N - Is the position of the PAIR in IPE-PAIR-POS-LIST.
              - SIDE - Is either ‘'open’ or ‘'close’.
              - ACTION - Is either ‘'init’, ‘'beg’, ‘'up’, ‘'backward’,
                ‘'forward’, ‘'down’, ‘'end’, or ‘'reset’.
@@ -3149,10 +3162,10 @@ The movements (‘character’, ‘word’, ‘line’, ‘list’) supplied wit
 
 File: ipe.info,  Node: Adding 'ipe' ERTs (Emacs Regression Tests),  Prev: Defining custom 'ipe--movement' Functions,  Up: Development
 
-8.4 Adding ’ipe’ ERT (Emacs Regression Tests)
+9.4 Adding 'ipe' ERT (Emacs Regression Tests)
 =============================================
 
-Regression tests (Using the *Emacs* ERT (_Emacs Regression Test_)
+Regression tests (Using the *Emacs* ERT (_Emacs Regression Test_))
 package can be defined using the EMACS macro:
 
  -- Macro: ipe-test-def-kbd NAME PARAM DOC CUSTOM SETUP BUFFER-TEXT
@@ -3168,7 +3181,7 @@ package can be defined using the EMACS macro:
      For this test, the ‘insert-pair-edit’ will be bound to <M-(>.
 
         • ‘NAME’ The name of the ‘ert’ test.  This will be prefixed with
-          ’ipe-test–’.
+          ’ipe-test-’.
         • ‘PARAM’ Placeholder - for future ERT extensibility.
         • ‘DOC’ Documentation string for the ‘ert-deftest’ definition.
         • ‘CUSTOM’ List of ’ipe’ customizations for the test.
@@ -3203,7 +3216,7 @@ package can be defined using the EMACS macro:
 
 File: ipe.info,  Node: Running 'ipe' ERTs (Emacs Regression Tests),  Up: Adding 'ipe' ERTs (Emacs Regression Tests)
 
-8.4.1 Running ’ipe’ ERTs (Emacs Regression Tests)
+9.4.1 Running 'ipe' ERTs (Emacs Regression Tests)
 -------------------------------------------------
 
 To run _Emacs Regression Test_s defined by the ‘ipe-test-def-kbd’ macro,
@@ -3251,9 +3264,9 @@ Index
 * Basic Usage:                           Basic Usage.          (line  6)
 * Changing PAIRs:                        Changing PAIRs.       (line  6)
 * Customization:                         Customization.        (line  6)
-* Customization using ’customize’:       Customization using 'customize'.
+* Customization using 'customize':       Customization using 'customize'.
                                                                (line  6)
-* Customization using the ’Pairs’ Menu:  Customization using the 'Pairs' Menu.
+* Customization using the 'Pairs' Menu:  Customization using the 'Pairs' Menu.
                                                                (line  6)
 * Deleting PAIRs:                        Deleting PAIRs.       (line  6)
 * Development:                           Development.          (line  6)
@@ -3272,7 +3285,7 @@ Index
 * Replacing PAIRs:                       Replacing PAIRs.      (line  6)
 * Running insert-pair-edit:              Running insert-pair-edit.
                                                                (line  6)
-* The ’Edit’ -> ’Pairs’ menu:            The 'Edit' -> 'Pairs' menu.
+* The 'Edit' -> 'Pairs' menu:            The 'Edit' -> 'Pairs' menu.
                                                                (line  6)
 * Types of PAIR Definition:              Types of PAIR Definition.
                                                                (line  6)
@@ -3281,75 +3294,75 @@ Index
 
 
 Tag Table:
-Node: Top103
-Node: Overview1044
-Node: Expected Usage2821
-Node: Installation4450
-Node: Basic Usage5486
-Node: Running insert-pair-edit5867
-Node: ipe-edit-mode8030
-Node: Other `insert-pair-edit-*' commands8950
-Node: The 'Edit' -> 'Pairs' menu9951
-Node: Basic Mode Key Bindings11474
-Node: Basic Movement12150
-Node: Basic Movement Options14905
-Node: Basic Movement (Alphabetic)16043
-Node: Basic Movement (Arrows)17643
-Node: Basic Movement (WASD)19484
-Node: Basic Movement (VI)21048
-Node: Basic Movement (Custom)22845
-Node: Inserting and Aborting23611
-Node: Movement Units24951
-Node: Changing PAIRs26615
-Node: Mouse Movement27957
-Node: Other Major Commands30542
-Node: Updating PAIRs31015
-Node: Deleting PAIRs33286
-Node: Replacing PAIRs35050
-Node: Customization37429
-Node: Types of PAIR Definition38060
-Node: Customization using 'customize'39176
-Node: Customization using the 'Pairs' Menu40325
-Node: Inline Customization44023
-Node: Inline Customization Prompts46123
-Node: Display Customization50528
-Node: Other ipe-edit-mode Commands52094
-Node: Insert And... Commands52533
-Node: Edit CONTENTS Commands53984
-Node: Next / Previous Commands55951
-Node: Next / Previous PAIRs56257
-Node: Next / Previous CONTENTS57716
-Node: Next / Previous OPEN / CLOSE59494
-Node: Multiple PAIRs Commands61670
-Node: Adding Multiple PAIRs using the Emacs Region62495
-Node: Adding Multiple PAIRs using insert-pair-edit64039
-Node: Adding Multiple PAIRs using Existing OPEN / CLOSE65887
-Node: Adding Multiple PAIRs using PAIR CONTENT68598
-Node: Removing PAIRs71819
-Node: Escaping Text within a PAIR72758
-Node: Other Features75194
-Node: Line Movement75679
-Node: Line Movement - Forward / Backward76728
-Node: Line Movement - Beginning / End78936
-Node: List Movement81428
-Node: List Movement - Forward / Backward82216
-Node: List Movement - Up / Down84141
-Node: List Movement - Beginning / End86299
-Node: Defining line PAIRs with an INFIX88051
-Node: Auto Insertion90791
-Node: Positioning POINT and MARK92106
-Node: PAIRs With Empty OPEN / CLOSE94163
-Node: Updating Existing PAIRs95321
-Node: Update Search Process96011
-Node: Update PAIR Matching97748
-Node: Updates on a Region99074
-Node: Development100518
-Node: Creating 'ipe-mode-pairs' PAIRs using Emacs Lisp100818
-Node: Binding MNEMONICs to Keys106412
-Node: Defining custom 'ipe--movement' Functions107363
-Node: Adding 'ipe' ERTs (Emacs Regression Tests)110146
-Node: Running 'ipe' ERTs (Emacs Regression Tests)112449
-Node: Index113393
+Node: Top101
+Node: Overview1002
+Node: Expected Usage2843
+Node: Installation4462
+Node: Basic Usage5494
+Node: Running insert-pair-edit5875
+Node: ipe-edit-mode8077
+Node: Other `insert-pair-edit-*' commands8992
+Node: The 'Edit' -> 'Pairs' menu9985
+Node: Basic Mode Key Bindings11494
+Node: Basic Movement12177
+Node: Basic Movement Options14868
+Node: Basic Movement (Alphabetic)16006
+Node: Basic Movement (Arrows)17558
+Node: Basic Movement (WASD)19351
+Node: Basic Movement (VI)20867
+Node: Basic Movement (Custom)22616
+Node: Inserting and Aborting23370
+Node: Movement Units24699
+Node: Changing PAIRs26323
+Node: Mouse Movement27653
+Node: Other Major Commands30050
+Node: Updating PAIRs30504
+Node: Deleting PAIRs32739
+Node: Replacing PAIRs34487
+Node: Customization36840
+Node: Types of PAIR Definition37497
+Node: Customization using 'customize'38601
+Node: Customization using the 'Pairs' Menu39742
+Node: Inline Customization43315
+Node: Inline Customization Prompts45387
+Node: Display Customization49772
+Node: Other ipe-edit-mode Commands51281
+Node: Insert And... Commands51720
+Node: Edit CONTENTS Commands53171
+Node: Next / Previous Commands55138
+Node: Next / Previous PAIRs55444
+Node: Next / Previous CONTENTS56887
+Node: Next / Previous OPEN / CLOSE58641
+Node: Multiple PAIRs Commands60793
+Node: Adding Multiple PAIRs using the Emacs Region61618
+Node: Adding Multiple PAIRs using insert-pair-edit63142
+Node: Adding Multiple PAIRs using Existing OPEN / CLOSE64974
+Node: Adding Multiple PAIRs using PAIR CONTENT67637
+Node: Removing PAIRs70818
+Node: Escaping Text within a PAIR71749
+Node: Other Features74121
+Node: Line Movement74602
+Node: Line Movement - Forward / Backward75609
+Node: Line Movement - Beginning / End77797
+Node: List Movement80271
+Node: List Movement - Forward / Backward81025
+Node: List Movement - Up / Down82841
+Node: List Movement - Beginning / End84881
+Node: Defining line PAIRs with an INFIX86593
+Node: Auto Insertion89827
+Node: Positioning POINT and MARK91138
+Node: PAIRs With Empty OPEN / CLOSE93175
+Node: Updating Existing PAIRs94329
+Node: Update Search Process95015
+Node: Update PAIR Matching96748
+Node: Updates on a Region98050
+Node: Development99486
+Node: Creating 'ipe-mode-pairs' PAIRs using Emacs Lisp99786
+Node: Binding MNEMONICs to Keys105501
+Node: Defining custom 'ipe--movement' Functions106444
+Node: Adding 'ipe' ERTs (Emacs Regression Tests)109221
+Node: Running 'ipe' ERTs (Emacs Regression Tests)111519
+Node: Index112459
 
 End Tag Table
 
