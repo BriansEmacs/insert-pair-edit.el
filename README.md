@@ -15,7 +15,9 @@ The `insert-pair-edit` package supplies commands to _insert_ and
 _update_ "PAIRs" within an **Emacs** buffer.  The _PAIRs_ consist of
 _OPEN_ and _CLOSE_ strings which delimit text in some fashion.
 
-The primary function of the `insert-pair-edit` package is the
+![insert-pair-edit command](doc/insert-pair-edit-minibuffer.png)
+
+The main entry point to the `insert-pair-edit` package is the
 **Emacs** interactive command `insert-pair-edit`.  When executed, the
 `insert-pair-edit` interactive command will prompt the user to enter
 a `customize`-able _MNEMONIC_ identifying a _PAIR_ via the **Emacs**
@@ -31,10 +33,12 @@ defined within the `ipe-edit-mode` minor mode.
 ----------------------------------------------------------------------
 ## Editing PAIRs
 
-After the `insert-pair-edit` command is run, the _OPEN_ and _CLOSE_
-strings of the _PAIR_ are inserted into the current buffer as
-overlays, then, `insert-pair-edit` runs the command `ipe-edit-mode` to
-enter the **Insert Pair Edit (ipe)** minor mode. 
+![ipe-edit-mode Commands](doc/ipe-edit-mode-menu.png)
+
+After a MNEMONIC is entered, the `insert-pair-edit` command inserts
+the _OPEN_ and _CLOSE_ strings of the _PAIR_ into the current buffer
+as overlays.  It then runs the command, `ipe-edit-mode`, to enter the
+**Insert Pair Edit (ipe)** minor mode.
 
 The `ipe-edit-mode` supplies further commands to interactively and
 independently move the overlays representing the _OPEN_ and _CLOSE_
@@ -49,8 +53,6 @@ or lists (S-expressions).
 By default, movement will be by 'words', but this can be changed
 interactively via the: `ipe-edit--movement-by-*` commands or, by
 `ipe-pairs` / `ipe-mode-pairs` `customize`-ations.
-
-![ipe-edit-mode Commands](doc/ipe-edit-mode-menu.png)
 
 Additional commands are supplied to operate on the _CONTENTS_ of the
 _PAIR_ (i.e. the text between the _OPEN_ and _CLOSE_ overlays.)  Text
