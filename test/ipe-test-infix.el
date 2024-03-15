@@ -5,9 +5,10 @@
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
 ;; Version: 2023.12.30
+;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: internal local
-;; Homepage: http://github.com/brians.emacs/insert-pair-edit
+;; Homepage: https://github.com/BriansEmacs/insert-pair-edit.el
 
 ;; -------------------------------------------------------------------
 ;; This file is not part of GNU Emacs.
@@ -52,8 +53,8 @@
       '((ipe-move-point-on-insert   nil)
         (ipe-prefix-moves-close-p   t)
         (ipe-edit--movement-keysets '(modifiers))
-        (ipe-pairs                  '(("<" "<!-- " "  -->" (:movement line :infix "  -- "))
-                                      ("[" "[" "]"         (:movement line :infix "-"))))
+        (ipe-pairs                  '(("<" "<-- " " -->" (:movement line :infix " -- "))
+                                      ("[" "[" "]"       (:movement line :infix "-"))))
         (ipe-mode-pairs             nil)))
 
 (ipe-test-def-kbd infix-basic-insert-1 ()
@@ -63,7 +64,7 @@ Using a 'line (+ :infix) PAIR."
   ipe-test-infix-options
   nil
   ""
-  "<!-- |  -->"
+  "<-- | -->"
   "M-( <")
 
 (ipe-test-def-kbd infix-basic-insert-2 ()
@@ -73,7 +74,7 @@ Using a 'line (+ :infix) PAIR."
   ipe-test-infix-options
   nil
   "|The quick brown fox jumps over the lazy dog."
-  "<!-- |The quick brown fox jumps over the lazy dog.  -->"
+  "<-- |The quick brown fox jumps over the lazy dog. -->"
   "M-( < RET")
 
 (ipe-test-def-kbd infix-basic-insert-3 ()
@@ -83,7 +84,7 @@ Using a 'line (+ :infix) PAIR."
   ipe-test-infix-options
   nil
   "The quick brown fox |jumps over the lazy dog."
-  "<!-- The quick brown fox |jumps over the lazy dog.  -->"
+  "<-- The quick brown fox |jumps over the lazy dog. -->"
   "M-( < RET")
 
 (ipe-test-def-kbd infix-basic-insert-4 ()
@@ -93,7 +94,7 @@ Using a 'line (+ :infix) PAIR."
   ipe-test-infix-options
   nil
   "The quick brown fox jumps over the lazy dog.|"
-  "<!-- The quick brown fox jumps over the lazy dog.|  -->"
+  "<-- The quick brown fox jumps over the lazy dog.| -->"
   "M-( < RET")
 
 (ipe-test-def-kbd infix-basic-insert-5 ()
@@ -103,7 +104,7 @@ Using a 'line (+ :infix) PAIR."
   ipe-test-infix-options
   nil
   "|  The quick brown fox jumps over the lazy dog."
-  "<!-- |  The quick brown fox jumps over the lazy dog.  -->"
+  "<-- |  The quick brown fox jumps over the lazy dog. -->"
   "M-( < RET")
 
 (ipe-test-def-kbd infix-basic-insert-6 ()
@@ -113,7 +114,7 @@ Using a 'line (+ :infix) PAIR."
   ipe-test-infix-options
   nil
   "The quick brown fox jumps over the lazy dog.  |"
-  "<!-- The quick brown fox jumps over the lazy dog.  |  -->"
+  "<-- The quick brown fox jumps over the lazy dog.  | -->"
   "M-( < RET")
 
 (ipe-test-def-kbd infix-basic-prefix-insert-1 ()
@@ -127,7 +128,7 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
-  '("<!-- The quick brown fox |jumps over the lazy dog.  -->"
+  '("<-- The quick brown fox |jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
@@ -145,8 +146,8 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
-  '("<!-- The quick brown fox |jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog.  -->"
+  '("<-- The quick brown fox |jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
@@ -163,9 +164,9 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
-  '("<!-- The quick brown fox |jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog.  -->"
+  '("<-- The quick brown fox |jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
   "C-3 M-( < RET")
@@ -181,10 +182,10 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
-  '("<!-- The quick brown fox |jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog.  -->"
+  '("<-- The quick brown fox |jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog.")
   "C-4 M-( < RET")
 
@@ -199,11 +200,11 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox |jumps over the lazy dog.")
-  '("<!-- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox |jumps over the lazy dog.  -->")
+  '("<-- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox |jumps over the lazy dog. -->")
   "C-- C-4 M-( < RET")
 
 (ipe-test-def-kbd infix-open-start-1 ()
@@ -213,8 +214,8 @@ Using a 'line (+ :infix) PAIR."
   ipe-test-infix-options
   nil
   '("The quick brown fox |jumps over the lazy dog.")
-  '("<!-- "
-    "  -- The quick brown fox |jumps over the lazy dog.  -->")
+  '("<-- "
+    " -- The quick brown fox |jumps over the lazy dog. -->")
   "M-( < C-a RET")
 
 (ipe-test-def-kbd infix-open-start-2 ()
@@ -224,8 +225,8 @@ Using a 'line (+ :infix) PAIR at the beginning of buffer."
   ipe-test-infix-options
   nil
   '("|The quick brown fox jumps over the lazy dog.")
-  '("<!-- |"
-    "  -- The quick brown fox jumps over the lazy dog.  -->")
+  '("<-- |"
+    " -- The quick brown fox jumps over the lazy dog. -->")
   "M-( < C-a C-a RET")
 
 (ipe-test-def-kbd infix-open-start-3 ()
@@ -237,8 +238,8 @@ Using a 'line (+ :infix) PAIR at the beginning of line."
   '("The quick brown fox jumps over the lazy dog."
     "The quick brown fox |jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
-    "<!-- "
-    "  -- The quick brown fox |jumps over the lazy dog.  -->")
+    "<-- "
+    " -- The quick brown fox |jumps over the lazy dog. -->")
   "M-( < C-a C-a RET")
 
 (ipe-test-def-kbd infix-open-start-4 ()
@@ -249,9 +250,9 @@ Using a 'line (+ :infix) PAIR with a numeric prefix."
   nil
   '("The quick brown fox jumps over the lazy dog."
     "The quick brown fox |jumps over the lazy dog.")
-  '("<!-- "
-    "  -- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox |jumps over the lazy dog.  -->")
+  '("<-- "
+    " -- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox |jumps over the lazy dog. -->")
   "M-( < C-p 2 C-a RET")
 
 (ipe-test-def-kbd infix-open-up-1 ()
@@ -268,8 +269,8 @@ Using a 'line (+ :infix) PAIR."
   '("The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
-    "<!-- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox |jumps over the lazy dog.  -->")
+    "<-- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox |jumps over the lazy dog. -->")
   "M-( < C-p RET")
 
 (ipe-test-def-kbd infix-open-up-2 ()
@@ -285,9 +286,9 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox |jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
-    "<!-- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox |jumps over the lazy dog.  -->")
+    "<-- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox |jumps over the lazy dog. -->")
   "M-( < C-p C-p RET")
 
 (ipe-test-def-kbd infix-open-up-3 ()
@@ -302,10 +303,10 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox |jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
-    "<!-- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox |jumps over the lazy dog.  -->")
+    "<-- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox |jumps over the lazy dog. -->")
   "M-( < 3 C-p RET")
 
 (ipe-test-def-kbd infix-open-up-4 ()
@@ -319,11 +320,11 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox |jumps over the lazy dog.")
-  '("<!-- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox |jumps over the lazy dog.  -->")
+  '("<-- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox |jumps over the lazy dog. -->")
   "M-( < C-u C-p RET")
 
 (ipe-test-def-kbd infix-open-up-blank ()
@@ -336,8 +337,8 @@ Using a 'line (+ :infix) PAIR."
     ""
     "The quick brown fox |jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
-    "<!-- "
-    "  -- The quick brown fox |jumps over the lazy dog.  -->")
+    "<-- "
+    " -- The quick brown fox |jumps over the lazy dog. -->")
   "M-( < C-p RET")
 
 (ipe-test-def-kbd infix-open-up-blank-2 ()
@@ -349,9 +350,9 @@ Using a 'line (+ :infix) PAIR."
   '("The quick brown fox jumps over the lazy dog."
     ""
     "The quick brown fox |jumps over the lazy dog.")
-  '("<!-- The quick brown fox jumps over the lazy dog."
-    "  -- "
-    "  -- The quick brown fox |jumps over the lazy dog.  -->")
+  '("<-- The quick brown fox jumps over the lazy dog."
+    " -- "
+    " -- The quick brown fox |jumps over the lazy dog. -->")
   "M-( < C-p C-p RET")
 
 (ipe-test-def-kbd infix-open-up-offset ()
@@ -368,8 +369,8 @@ Using a 'line (+ :infix) PAIR."
   '("  The quick brown fox jumps over the lazy dog."
     "  The quick brown fox jumps over the lazy dog."
     "  The quick brown fox jumps over the lazy dog."
-    "<!--   The quick brown fox jumps over the lazy dog."
-    "  --   The quick brown fox |jumps over the lazy dog.  -->")
+    "<--   The quick brown fox jumps over the lazy dog."
+    " --   The quick brown fox |jumps over the lazy dog. -->")
   "M-( < C-p RET")
 
 (ipe-test-def-kbd infix-open-up-offset-beginning ()
@@ -380,8 +381,8 @@ Using a 'line (+ :infix) PAIR."
   nil
   '("The quick brown fox jumps over the lazy dog."
     "  |The quick brown fox jumps over the lazy dog.")
-  '("<!-- The quick brown fox jumps over the lazy dog."
-    "  --   |The quick brown fox jumps over the lazy dog.  -->")
+  '("<-- The quick brown fox jumps over the lazy dog."
+    " --   |The quick brown fox jumps over the lazy dog. -->")
   "M-( < C-p RET")
 
 (ipe-test-def-kbd infix-open-up-offset-beginning-2 ()
@@ -392,8 +393,8 @@ Using a 'line (+ :infix) PAIR."
   nil
   '("  The quick brown fox jumps over the lazy dog."
     "|The quick brown fox jumps over the lazy dog.")
-  '("<!--   The quick brown fox jumps over the lazy dog."
-    "  -- |The quick brown fox jumps over the lazy dog.  -->")
+  '("<--   The quick brown fox jumps over the lazy dog."
+    " -- |The quick brown fox jumps over the lazy dog. -->")
   "M-( < C-p RET")
 
 (ipe-test-def-kbd infix-open-backward-1 ()
@@ -408,9 +409,9 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
-    " <!-- The quick brown fox jumps over the lazy dog."
-    "   -- The quick brown fox |jumps over the lazy dog."
-    "   -- The quick brown fox jumps over the lazy dog.  -->"
+    " <-- The quick brown fox jumps over the lazy dog."
+    "  -- The quick brown fox |jumps over the lazy dog."
+    "  -- The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog.")
   "M-( < C-n C-p C-b RET")
 
@@ -426,9 +427,9 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
-    "  <!-- The quick brown fox jumps over the lazy dog."
-    "    -- The quick brown fox |jumps over the lazy dog."
-    "    -- The quick brown fox jumps over the lazy dog.  -->"
+    "  <-- The quick brown fox jumps over the lazy dog."
+    "   -- The quick brown fox |jumps over the lazy dog."
+    "   -- The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog.")
   "M-( < C-n C-p C-b C-b RET")
 
@@ -444,9 +445,9 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
-    "   <!-- The quick brown fox jumps over the lazy dog."
-    "     -- The quick brown fox |jumps over the lazy dog."
-    "     -- The quick brown fox jumps over the lazy dog.  -->"
+    "   <-- The quick brown fox jumps over the lazy dog."
+    "    -- The quick brown fox |jumps over the lazy dog."
+    "    -- The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog.")
   "M-( < C-n C-p 3 C-b RET")
 
@@ -462,9 +463,9 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
-    "    <!-- The quick brown fox jumps over the lazy dog."
-    "      -- The quick brown fox |jumps over the lazy dog."
-    "      -- The quick brown fox jumps over the lazy dog.  -->"
+    "    <-- The quick brown fox jumps over the lazy dog."
+    "     -- The quick brown fox |jumps over the lazy dog."
+    "     -- The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog.")
   "M-( < C-n C-p C-u C-b RET")
 
@@ -480,9 +481,9 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
-    "                <!-- The quick brown fox jumps over the lazy dog."
-    "                  -- The quick brown fox |jumps over the lazy dog."
-    "                  -- The quick brown fox jumps over the lazy dog.  -->"
+    "                <-- The quick brown fox jumps over the lazy dog."
+    "                 -- The quick brown fox |jumps over the lazy dog."
+    "                 -- The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog.")
   "M-( < C-n C-p C-u C-u C-b RET")
 
@@ -493,7 +494,7 @@ Using a 'line (+ :infix) PAIR."
   ipe-test-infix-options
   nil
   "|The quick brown fox jumps over the lazy dog."
-  " <!-- |The quick brown fox jumps over the lazy dog.  -->"
+  " <-- |The quick brown fox jumps over the lazy dog. -->"
   "M-( < C-b RET")
 
 (ipe-test-def-kbd infix-open-backward-blank ()
@@ -505,9 +506,9 @@ Using a 'line (+ :infix) PAIR."
   '("The quick brown fox jumps over the lazy dog."
     "|"
     "The quick brown fox jumps over the lazy dog.")
-  '(" <!-- The quick brown fox jumps over the lazy dog."
-    "   -- |"
-    "   -- The quick brown fox jumps over the lazy dog.  -->")
+  '(" <-- The quick brown fox jumps over the lazy dog."
+    "  -- |"
+    "  -- The quick brown fox jumps over the lazy dog. -->")
   "M-( < C-n C-p C-b RET")
 
 (ipe-test-def-kbd infix-open-backward-blank-2 ()
@@ -519,9 +520,9 @@ Using a 'line (+ :infix) PAIR."
   '("The quick brown fox jumps over the lazy dog."
     "|"
     "The quick brown fox jumps over the lazy dog.")
-  '("  <!-- The quick brown fox jumps over the lazy dog."
-    "    -- |"
-    "    -- The quick brown fox jumps over the lazy dog.  -->")
+  '("  <-- The quick brown fox jumps over the lazy dog."
+    "   -- |"
+    "   -- The quick brown fox jumps over the lazy dog. -->")
   "M-( < C-n C-p C-b C-b RET")
 
 (ipe-test-def-kbd infix-open-forward-1 ()
@@ -536,9 +537,9 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
-    "<!-- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox |jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog.  -->"
+    "<-- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox |jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog.")
   "M-( < C-n C-p C-b M-f RET")
 
@@ -554,9 +555,9 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
-    "<!-- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox |jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog.  -->"
+    "<-- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox |jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog.")
   "M-( < C-n C-p C-b C-b M-f M-f RET")
 
@@ -572,9 +573,9 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
-    "<!-- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox |jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog.  -->"
+    "<-- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox |jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog.")
   "M-( < C-n C-p 3 C-b 3 M-f RET")
 
@@ -590,9 +591,9 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
-    "<!-- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox |jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog.  -->"
+    "<-- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox |jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog.")
   "M-( < C-n C-p C-u C-b C-u M-f RET")
 
@@ -608,9 +609,9 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
-    "<!-- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox |jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog.  -->"
+    "<-- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox |jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog.")
   "M-( < C-n C-p C-u C-u C-b C-u C-u M-f RET")
 
@@ -621,7 +622,7 @@ Using a 'line (+ :infix) PAIR."
   ipe-test-infix-options
   nil
   '("The quick brown fox jumps over the lazy dog.|")
-  '("<!-- The quick brown fox jumps over the lazy dog.|  -->")
+  '("<-- The quick brown fox jumps over the lazy dog.| -->")
   "M-( < M-f RET")
 
 (ipe-test-def-kbd infix-open-forward-blank ()
@@ -634,7 +635,7 @@ Using a 'line (+ :infix) PAIR."
     "|"
     "The quick brown fox jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
-    "<!-- |  -->"
+    "<-- | -->"
     "The quick brown fox jumps over the lazy dog.")
   "M-( < C-b M-f RET")
 
@@ -647,9 +648,9 @@ Using a 'line (+ :infix) PAIR."
   '("The quick brown fox jumps over the lazy dog."
     "|"
     "The quick brown fox jumps over the lazy dog.")
-  '("<!-- The quick brown fox jumps over the lazy dog."
-    "  -- |"
-    "  -- The quick brown fox jumps over the lazy dog.  -->")
+  '("<-- The quick brown fox jumps over the lazy dog."
+    " -- |"
+    " -- The quick brown fox jumps over the lazy dog. -->")
   "M-( < C-n C-p M-f M-f RET")
 
 (ipe-test-def-kbd infix-open-down-1 ()
@@ -664,7 +665,7 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
   '("The quick brown fox |jumps over the lazy dog."
-    "<!-- The quick brown fox jumps over the lazy dog.  -->"
+    "<-- The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
@@ -683,7 +684,7 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog.")
   '("The quick brown fox |jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
-    "<!-- The quick brown fox jumps over the lazy dog.  -->"
+    "<-- The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
   "M-( < M-n M-n RET")
@@ -702,7 +703,7 @@ Using a 'line (+ :infix) PAIR."
   '("The quick brown fox |jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
-    "<!-- The quick brown fox jumps over the lazy dog.  -->"
+    "<-- The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog.")
   "M-( < 3 M-n RET")
 
@@ -721,7 +722,7 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
-    "<!-- The quick brown fox jumps over the lazy dog.  -->")
+    "<-- The quick brown fox jumps over the lazy dog. -->")
   "M-( < C-u M-n RET")
 
 (ipe-test-def-kbd infix-open-down-blank ()
@@ -734,7 +735,7 @@ Using a 'line (+ :infix) PAIR."
     ""
     "The quick brown fox jumps over the lazy dog.")
   '("The quick brown fox |jumps over the lazy dog."
-    "<!--   -->"
+    "<--  -->"
     "The quick brown fox jumps over the lazy dog.")
   "M-( < M-n RET")
 
@@ -749,7 +750,7 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog.")
   '("The quick brown fox |jumps over the lazy dog."
     ""
-    "<!-- The quick brown fox jumps over the lazy dog.  -->")
+    "<-- The quick brown fox jumps over the lazy dog. -->")
   "M-( < M-n M-n RET")
 
 (ipe-test-def-kbd infix-open-down-offset ()
@@ -763,7 +764,7 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
     "The quick brown fox |jumps over the lazy dog."
-    "<!-- The quick brown fox jumps over the lazy dog.  -->")
+    "<-- The quick brown fox jumps over the lazy dog. -->")
   "M-( < M-n RET")
 
 (ipe-test-def-kbd infix-open-down-offset-beginning ()
@@ -775,7 +776,7 @@ Using a 'line (+ :infix) PAIR."
   '("|The quick brown fox jumps over the lazy dog."
     "  The quick brown fox jumps over the lazy dog.")
   '("|The quick brown fox jumps over the lazy dog."
-    "<!--   The quick brown fox jumps over the lazy dog.  -->")
+    "<--   The quick brown fox jumps over the lazy dog. -->")
   "M-( < M-n RET")
 
 (ipe-test-def-kbd infix-open-down-offset-beginning-2 ()
@@ -787,7 +788,7 @@ Using a 'line (+ :infix) PAIR."
   '("|  The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
   '("|  The quick brown fox jumps over the lazy dog."
-    "<!-- The quick brown fox jumps over the lazy dog.  -->")
+    "<-- The quick brown fox jumps over the lazy dog. -->")
   "M-( < M-n RET")
 
 (ipe-test-def-kbd infix-open-end-1 ()
@@ -797,7 +798,7 @@ Using a 'line (+ :infix) PAIR."
   ipe-test-infix-options
   nil
   '("The quick brown fox |jumps over the lazy dog.")
-  '("<!-- The quick brown fox |jumps over the lazy dog.  -->")
+  '("<-- The quick brown fox |jumps over the lazy dog. -->")
   "M-( < C-e M-e RET")
 
 (ipe-test-def-kbd infix-open-end-2 ()
@@ -807,7 +808,7 @@ Using a 'line (+ :infix) PAIR at end of buffer."
   ipe-test-infix-options
   nil
   "The quick brown fox jumps over the lazy dog.|"
-  "<!-- The quick brown fox jumps over the lazy dog.|  -->"
+  "<-- The quick brown fox jumps over the lazy dog.| -->"
   "M-( < C-e C-e M-e M-e RET")
 
 (ipe-test-def-kbd infix-open-end-3 ()
@@ -818,7 +819,7 @@ Using a 'line (+ :infix) PAIR at end of line."
   nil
   '("The quick brown fox |jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
-  '("<!-- The quick brown fox |jumps over the lazy dog.  -->"
+  '("<-- The quick brown fox |jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog.")
   "M-( < C-e C-e M-e M-e RET")
 
@@ -830,8 +831,8 @@ Using a 'line (+ :infix) PAIR with a numeric prefix."
   nil
   '("The quick brown fox |jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
-  '("<!-- The quick brown fox |jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog.  -->")
+  '("<-- The quick brown fox |jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog. -->")
   "M-( < C-n 2 M-e RET")
 
 (ipe-test-def-kbd infix-close-start-1 ()
@@ -841,7 +842,7 @@ Using a 'line (+ :infix) PAIR."
   ipe-test-infix-options
   nil
   "The quick brown fox |jumps over the lazy dog."
-  "<!-- The quick brown fox |jumps over the lazy dog.  -->"
+  "<-- The quick brown fox |jumps over the lazy dog. -->"
   "M-( < a M-a RET")
 
 (ipe-test-def-kbd infix-close-start-2 ()
@@ -851,7 +852,7 @@ Using a 'line (+ :infix) PAIR at the start of buffer."
   ipe-test-infix-options
   nil
   "The quick brown fox jumps over the lazy dog."
-  "<!-- |The quick brown fox jumps over the lazy dog.  -->"
+  "<-- |The quick brown fox jumps over the lazy dog. -->"
   "M-( < a a M-a M-a RET")
 
 (ipe-test-def-kbd infix-close-start-3 ()
@@ -862,8 +863,8 @@ Using a 'line (+ :infix) PAIR at the beginning of line."
   nil
   '("The quick brown fox jumps over the lazy dog."
     "The quick brown fox |jumps over the lazy dog.")
-  '("<!-- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox |jumps over the lazy dog.  -->")
+  '("<-- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox |jumps over the lazy dog. -->")
   "M-( < C-p a a M-a M-a RET")
 
 (ipe-test-def-kbd infix-close-start-4 ()
@@ -875,7 +876,7 @@ Using a 'line (+ :infix) PAIR with a numeric prefix."
   '("The quick brown fox jumps over the lazy dog."
     "The quick brown fox |jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
-    "<!-- The quick brown fox |jumps over the lazy dog.  -->")
+    "<-- The quick brown fox |jumps over the lazy dog. -->")
   "M-( < 2 a 2 M-a RET")
 
 (ipe-test-def-kbd infix-close-up-1 ()
@@ -892,7 +893,7 @@ Using a 'line (+ :infix) PAIR."
   '("The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
-    "<!-- The quick brown fox jumps over the lazy dog.  -->"
+    "<-- The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox |jumps over the lazy dog.")
   "M-( < M-p RET")
 
@@ -909,7 +910,7 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox |jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
-    "<!-- The quick brown fox jumps over the lazy dog.  -->"
+    "<-- The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox |jumps over the lazy dog.")
   "M-( < M-p M-p RET")
@@ -926,7 +927,7 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox |jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
-    "<!-- The quick brown fox jumps over the lazy dog.  -->"
+    "<-- The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox |jumps over the lazy dog.")
@@ -943,7 +944,7 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox |jumps over the lazy dog.")
-  '("<!-- The quick brown fox jumps over the lazy dog.  -->"
+  '("<-- The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
@@ -960,7 +961,7 @@ Using a 'line (+ :infix) PAIR."
     ""
     "The quick brown fox |jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
-    "<!--   -->"
+    "<--  -->"
     "The quick brown fox |jumps over the lazy dog.")
   "M-( < M-p RET")
 
@@ -973,7 +974,7 @@ Using a 'line (+ :infix) PAIR."
   '("The quick brown fox jumps over the lazy dog."
     ""
     "The quick brown fox |jumps over the lazy dog.")
-  '("<!-- The quick brown fox jumps over the lazy dog.  -->"
+  '("<-- The quick brown fox jumps over the lazy dog. -->"
     ""
     "The quick brown fox |jumps over the lazy dog.")
   "M-( < M-p M-p RET")
@@ -987,7 +988,7 @@ Using a 'line (+ :infix) PAIR."
   '("  The quick brown fox jumps over the lazy dog."
     "  The quick brown fox |jumps over the lazy dog."
     "  The quick brown fox jumps over the lazy dog.")
-  '("<!--   The quick brown fox jumps over the lazy dog.  -->"
+  '("<--   The quick brown fox jumps over the lazy dog. -->"
     "  The quick brown fox |jumps over the lazy dog."
     "  The quick brown fox jumps over the lazy dog.")
   "M-( < M-p RET")
@@ -1000,7 +1001,7 @@ Using a 'line (+ :infix) PAIR."
   nil
   '("The quick brown fox jumps over the lazy dog."
     "|  The quick brown fox jumps over the lazy dog.")
-  '("<!-- The quick brown fox jumps over the lazy dog.  -->"
+  '("<-- The quick brown fox jumps over the lazy dog. -->"
     "|  The quick brown fox jumps over the lazy dog.")
   "M-( < M-p RET")
 
@@ -1012,7 +1013,7 @@ Using a 'line (+ :infix) PAIR."
   nil
   '("  The quick brown fox jumps over the lazy dog."
     "|The quick brown fox jumps over the lazy dog.")
-  '("<!--   The quick brown fox jumps over the lazy dog.  -->"
+  '("<--   The quick brown fox jumps over the lazy dog. -->"
     "|The quick brown fox jumps over the lazy dog.")
   "M-( < M-p RET")
 
@@ -1028,9 +1029,9 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
-    "<!-- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox |jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog.  -->"
+    "<-- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox |jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog.")
   "M-( < C-n C-p C-f M-b RET")
 
@@ -1046,9 +1047,9 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
-    "<!-- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox |jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog.  -->"
+    "<-- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox |jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog.")
   "M-( < C-n C-p C-f C-f M-b M-b RET")
 
@@ -1064,9 +1065,9 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
-    "<!-- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox |jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog.  -->"
+    "<-- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox |jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog.")
   "M-( < C-n C-p 3 C-f 3 M-b RET")
 
@@ -1082,9 +1083,9 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
-    "<!-- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox |jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog.  -->"
+    "<-- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox |jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog.")
   "M-( < C-n C-p C-u C-f C-u M-b RET")
 
@@ -1100,9 +1101,9 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
-    "<!-- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox |jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog.  -->"
+    "<-- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox |jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog.")
   "M-( < C-n C-p C-u C-u C-f C-u C-u M-b RET")
 
@@ -1113,7 +1114,7 @@ Using a 'line (+ :infix) PAIR."
   ipe-test-infix-options
   nil
   '("|The quick brown fox jumps over the lazy dog.")
-  '("<!-- |The quick brown fox jumps over the lazy dog.  -->")
+  '("<-- |The quick brown fox jumps over the lazy dog. -->")
   "M-( < M-b RET")
 
 (ipe-test-def-kbd infix-close-backward-blank ()
@@ -1126,7 +1127,7 @@ Using a 'line (+ :infix) PAIR."
     "|"
     "The quick brown fox jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
-    "<!-- |  -->"
+    "<-- | -->"
     "The quick brown fox jumps over the lazy dog.")
   "M-( < M-b RET")
 
@@ -1140,7 +1141,7 @@ Using a 'line (+ :infix) PAIR."
     "|"
     "The quick brown fox jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
-    "<!-- |  -->"
+    "<-- | -->"
     "The quick brown fox jumps over the lazy dog.")
   "M-( < M-b M-b RET")
 
@@ -1156,9 +1157,9 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
-    "<!--  The quick brown fox jumps over the lazy dog."
-    "  --  The quick brown fox |jumps over the lazy dog."
-    "  --  The quick brown fox jumps over the lazy dog.  -->"
+    "<--  The quick brown fox jumps over the lazy dog."
+    " --  The quick brown fox |jumps over the lazy dog."
+    " --  The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog.")
   "M-( < C-n C-p C-f RET")
 
@@ -1174,9 +1175,9 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
-    "<!--   The quick brown fox jumps over the lazy dog."
-    "  --   The quick brown fox |jumps over the lazy dog."
-    "  --   The quick brown fox jumps over the lazy dog.  -->"
+    "<--   The quick brown fox jumps over the lazy dog."
+    " --   The quick brown fox |jumps over the lazy dog."
+    " --   The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog.")
   "M-( < C-n C-p C-f C-f RET")
 
@@ -1192,9 +1193,9 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
-    "<!--    The quick brown fox jumps over the lazy dog."
-    "  --    The quick brown fox |jumps over the lazy dog."
-    "  --    The quick brown fox jumps over the lazy dog.  -->"
+    "<--    The quick brown fox jumps over the lazy dog."
+    " --    The quick brown fox |jumps over the lazy dog."
+    " --    The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog.")
   "M-( < C-n C-p 3 C-f RET")
 
@@ -1210,9 +1211,9 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
-    "<!--     The quick brown fox jumps over the lazy dog."
-    "  --     The quick brown fox |jumps over the lazy dog."
-    "  --     The quick brown fox jumps over the lazy dog.  -->"
+    "<--     The quick brown fox jumps over the lazy dog."
+    " --     The quick brown fox |jumps over the lazy dog."
+    " --     The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog.")
   "M-( < C-n C-p C-u C-f RET")
 
@@ -1228,9 +1229,9 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
-    "<!--                 The quick brown fox jumps over the lazy dog."
-    "  --                 The quick brown fox |jumps over the lazy dog."
-    "  --                 The quick brown fox jumps over the lazy dog.  -->"
+    "<--                 The quick brown fox jumps over the lazy dog."
+    " --                 The quick brown fox |jumps over the lazy dog."
+    " --                 The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog.")
   "M-( < C-n C-p C-u C-u C-f RET")
 
@@ -1241,7 +1242,7 @@ Using a 'line (+ :infix) PAIR."
   ipe-test-infix-options
   nil
   "The quick brown fox jumps over the lazy dog.|"
-  "<!--  The quick brown fox jumps over the lazy dog|.  -->"
+  "<--  The quick brown fox jumps over the lazy dog|. -->"
   "M-( < C-f RET")
 
 (ipe-test-def-kbd infix-close-forward-blank ()
@@ -1254,7 +1255,7 @@ Using a 'line (+ :infix) PAIR."
     "|"
     "The quick brown fox jumps over the lazy dog.")
   '("The quick brown fox jumps over the lazy dog."
-    "<!-- |   -->"
+    "<-- |  -->"
     "The quick brown fox jumps over the lazy dog.")
   "M-( < C-f RET")
 
@@ -1267,9 +1268,9 @@ Using a 'line (+ :infix) PAIR."
   '("The quick brown fox jumps over the lazy dog."
     "|"
     "The quick brown fox jumps over the lazy dog.")
-  '("<!--   The quick brown fox jumps over the lazy dog."
-    "  --   |"
-    "  --   The quick brown fox jumps over the lazy dog.  -->")
+  '("<--   The quick brown fox jumps over the lazy dog."
+    " --   |"
+    " --   The quick brown fox jumps over the lazy dog. -->")
   "M-( < C-n C-p C-f C-f RET")
 
 (ipe-test-def-kbd infix-close-down-1 ()
@@ -1283,8 +1284,8 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
-  '("<!-- The quick brown fox |jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog.  -->"
+  '("<-- The quick brown fox |jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
@@ -1301,9 +1302,9 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
-  '("<!-- The quick brown fox |jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog.  -->"
+  '("<-- The quick brown fox |jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
   "M-( < C-n C-n RET")
@@ -1319,10 +1320,10 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
-  '("<!-- The quick brown fox |jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog.  -->"
+  '("<-- The quick brown fox |jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog. -->"
     "The quick brown fox jumps over the lazy dog.")
   "M-( < 3 C-n RET")
 
@@ -1337,11 +1338,11 @@ Using a 'line (+ :infix) PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
-  '("<!-- The quick brown fox |jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog.  -->")
+  '("<-- The quick brown fox |jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog. -->")
   "M-( < C-u C-n RET")
 
 (ipe-test-def-kbd infix-close-down-blank ()
@@ -1353,8 +1354,8 @@ Using a 'line (+ :infix) PAIR."
   '("The quick brown fox |jumps over the lazy dog."
     ""
     "The quick brown fox jumps over the lazy dog.")
-  '("<!-- The quick brown fox |jumps over the lazy dog."
-    "  --   -->"
+  '("<-- The quick brown fox |jumps over the lazy dog."
+    " --  -->"
     "The quick brown fox jumps over the lazy dog.")
   "M-( < C-n RET")
 
@@ -1367,9 +1368,9 @@ Using a 'line (+ :infix) PAIR."
   '("The quick brown fox |jumps over the lazy dog."
     ""
     "The quick brown fox jumps over the lazy dog.")
-  '("<!-- The quick brown fox |jumps over the lazy dog."
-    "  -- "
-    "  -- The quick brown fox jumps over the lazy dog.  -->")
+  '("<-- The quick brown fox |jumps over the lazy dog."
+    " -- "
+    " -- The quick brown fox jumps over the lazy dog. -->")
   "M-( < C-n C-n RET")
 
 (ipe-test-def-kbd infix-close-down-offset ()
@@ -1383,8 +1384,8 @@ Using a 'line (+ :infix) PAIR."
     "  The quick brown fox jumps over the lazy dog."
     "  The quick brown fox jumps over the lazy dog."
     "  The quick brown fox jumps over the lazy dog.")
-  '("<!--   The quick brown fox |jumps over the lazy dog."
-    "  --   The quick brown fox jumps over the lazy dog.  -->"
+  '("<--   The quick brown fox |jumps over the lazy dog."
+    " --   The quick brown fox jumps over the lazy dog. -->"
     "  The quick brown fox jumps over the lazy dog."
     "  The quick brown fox jumps over the lazy dog."
     "  The quick brown fox jumps over the lazy dog.")
@@ -1398,8 +1399,8 @@ Using a 'line (+ :infix) PAIR."
   nil
   '("|The quick brown fox jumps over the lazy dog."
     "  The quick brown fox jumps over the lazy dog.")
-  '("<!-- |The quick brown fox jumps over the lazy dog."
-    "  --   The quick brown fox jumps over the lazy dog.  -->")
+  '("<-- |The quick brown fox jumps over the lazy dog."
+    " --   The quick brown fox jumps over the lazy dog. -->")
   "M-( < C-n RET")
 
 (ipe-test-def-kbd infix-close-down-offset-beginning-2 ()
@@ -1410,8 +1411,8 @@ Using a 'line (+ :infix) PAIR."
   nil
   '("|  The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
-  '("<!-- |  The quick brown fox jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog.  -->")
+  '("<-- |  The quick brown fox jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog. -->")
   "M-( < C-n RET")
 
 (ipe-test-def-kbd infix-close-end-1 ()
@@ -1421,8 +1422,8 @@ Using a 'line (+ :infix) PAIR."
   ipe-test-infix-options
   nil
   '("The quick brown fox |jumps over the lazy dog.")
-  '("<!-- The quick brown fox |jumps over the lazy dog."
-    "  -->")
+  '("<-- The quick brown fox |jumps over the lazy dog."
+    " -->")
   "M-( < C-e RET")
 
 (ipe-test-def-kbd infix-close-end-2 ()
@@ -1432,8 +1433,8 @@ Using a 'line (+ :infix) PAIR at the end of buffer."
   ipe-test-infix-options
   nil
   '("The quick brown fox jumps over the lazy dog.|")
-  '("<!-- The quick brown fox jumps over the lazy dog.|"
-    "  -->")
+  '("<-- The quick brown fox jumps over the lazy dog.|"
+    " -->")
   "M-( < C-e C-e RET")
 
 (ipe-test-def-kbd infix-close-end-3 ()
@@ -1444,9 +1445,9 @@ Using a 'line (+ :infix) PAIR at the end of line."
   nil
   '("The quick brown fox |jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
-  '("<!-- The quick brown fox |jumps over the lazy dog."
-    "  -- The quick brown fox jumps over the lazy dog."
-    "  -->")
+  '("<-- The quick brown fox |jumps over the lazy dog."
+    " -- The quick brown fox jumps over the lazy dog."
+    " -->")
   "M-( < C-n C-e RET")
 
 (ipe-test-def-kbd infix-close-end-4 ()
@@ -1457,8 +1458,8 @@ Using a 'line (+ :infix) PAIR with a numeric prefix."
   nil
   '("The quick brown fox |jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
-  '("<!-- The quick brown fox |jumps over the lazy dog."
-    "  -->"
+  '("<-- The quick brown fox |jumps over the lazy dog."
+    " -->"
     "The quick brown fox jumps over the lazy dog.")
   "M-( < 2 C-e RET")
 

@@ -8,7 +8,7 @@
 ;; Package: ipe
 ;; Package-Requires: ((emacs "24.4"))
 ;; Keywords: convenience, tools
-;; Homepage: http://github.com/brians.emacs/insert-pair-edit
+;; Homepage: https://github.com/BriansEmacs/insert-pair-edit.el
 
 ;; -------------------------------------------------------------------
 ;; This file is not part of GNU Emacs.

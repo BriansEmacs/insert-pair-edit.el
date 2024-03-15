@@ -5,8 +5,9 @@
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 18 July, 2020
 ;; Version: 2023.12.30
+;; Package: ipe
 ;; Keywords: convenience, tools
-;; Homepage: http://github.com/brians.emacs/insert-pair-edit
+;; Homepage: https://github.com/BriansEmacs/insert-pair-edit.el
 
 ;; -------------------------------------------------------------------
 ;; This file is not part of GNU Emacs.

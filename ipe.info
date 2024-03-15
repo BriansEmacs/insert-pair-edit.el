@@ -2,6 +2,17 @@ This is ipe.info, produced by makeinfo version 7.1 from ipe.texi.
 
 Copyright © 2023 Brian Kavanagh
 
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.3 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with no Front-Cover Texts,
+     and with no Back-Cover Texts.  A copy of the license is included in
+     the section entitled "GNU Free Documentation License".
+INFO-DIR-SECTION Emacs
+START-INFO-DIR-ENTRY
+* ipe: (ipe).	Insert Pair Edit (ipe).
+END-INFO-DIR-ENTRY
+
 
 File: ipe.info,  Node: Top,  Next: Overview,  Up: (dir)
 
@@ -129,7 +140,7 @@ File: ipe.info,  Node: Installation,  Next: Basic Usage,  Prev: Overview,  Up: T
 To install the 'Insert Pair Edit' (ipe) package, download
 ‘insert-pair-edit’ from:
 
-   <http://github.com/brians.emacs/insert-pair-edit>
+   <https://github.com/BriansEmacs/insert-pair-edit.el>
 
    Add the following to your ‘.emacs’ file:
 
@@ -2940,11 +2951,11 @@ The 'Insert Pair Edit' (ipe) package is specifically designed to cater
 for _Mode-Specific_ PAIR bindings.  Several _Mode-Specific_ bindings
 come bundled with the 'Insert Pair Edit' (ipe) package:
 
-   • texinfo-mode - (‘ipe-textinfo-mode.el’)
-   • c-mode - (‘ipe-c-mode.el’)
-   • html-mode - (‘ipe-html-mode.el’)
-   • mhtml-mode - (‘ipe-html-mode.el’)
-   • markdown-mode - (‘ipe-markdown-mode.el’)
+   • texinfo-mode - (‘modes/ipe-texinfo-mode.el’)
+   • c-mode - (‘modes/ipe-c-mode.el’)
+   • html-mode - (‘modes/ipe-html-mode.el’)
+   • mhtml-mode - (‘modes/ipe-html-mode.el’)
+   • markdown-mode - (‘modes/ipe-markdown-mode.el’)
 
    These bindings are automatically activated whenever one of the
 'Insert Pair Edit' (ipe) commands is invoked within a buffer with the
@@ -3294,75 +3305,75 @@ Index
 
 
 Tag Table:
-Node: Top101
-Node: Overview1002
-Node: Expected Usage2843
-Node: Installation4462
-Node: Basic Usage5494
-Node: Running insert-pair-edit5875
-Node: ipe-edit-mode8077
-Node: Other `insert-pair-edit-*' commands8992
-Node: The 'Edit' -> 'Pairs' menu9985
-Node: Basic Mode Key Bindings11494
-Node: Basic Movement12177
-Node: Basic Movement Options14868
-Node: Basic Movement (Alphabetic)16006
-Node: Basic Movement (Arrows)17558
-Node: Basic Movement (WASD)19351
-Node: Basic Movement (VI)20867
-Node: Basic Movement (Custom)22616
-Node: Inserting and Aborting23370
-Node: Movement Units24699
-Node: Changing PAIRs26323
-Node: Mouse Movement27653
-Node: Other Major Commands30050
-Node: Updating PAIRs30504
-Node: Deleting PAIRs32739
-Node: Replacing PAIRs34487
-Node: Customization36840
-Node: Types of PAIR Definition37497
-Node: Customization using 'customize'38601
-Node: Customization using the 'Pairs' Menu39742
-Node: Inline Customization43315
-Node: Inline Customization Prompts45387
-Node: Display Customization49772
-Node: Other ipe-edit-mode Commands51281
-Node: Insert And... Commands51720
-Node: Edit CONTENTS Commands53171
-Node: Next / Previous Commands55138
-Node: Next / Previous PAIRs55444
-Node: Next / Previous CONTENTS56887
-Node: Next / Previous OPEN / CLOSE58641
-Node: Multiple PAIRs Commands60793
-Node: Adding Multiple PAIRs using the Emacs Region61618
-Node: Adding Multiple PAIRs using insert-pair-edit63142
-Node: Adding Multiple PAIRs using Existing OPEN / CLOSE64974
-Node: Adding Multiple PAIRs using PAIR CONTENT67637
-Node: Removing PAIRs70818
-Node: Escaping Text within a PAIR71749
-Node: Other Features74121
-Node: Line Movement74602
-Node: Line Movement - Forward / Backward75609
-Node: Line Movement - Beginning / End77797
-Node: List Movement80271
-Node: List Movement - Forward / Backward81025
-Node: List Movement - Up / Down82841
-Node: List Movement - Beginning / End84881
-Node: Defining line PAIRs with an INFIX86593
-Node: Auto Insertion89827
-Node: Positioning POINT and MARK91138
-Node: PAIRs With Empty OPEN / CLOSE93175
-Node: Updating Existing PAIRs94329
-Node: Update Search Process95015
-Node: Update PAIR Matching96748
-Node: Updates on a Region98050
-Node: Development99486
-Node: Creating 'ipe-mode-pairs' PAIRs using Emacs Lisp99786
-Node: Binding MNEMONICs to Keys105501
-Node: Defining custom 'ipe--movement' Functions106444
-Node: Adding 'ipe' ERTs (Emacs Regression Tests)109221
-Node: Running 'ipe' ERTs (Emacs Regression Tests)111519
-Node: Index112459
+Node: Top612
+Node: Overview1513
+Node: Expected Usage3354
+Node: Installation4973
+Node: Basic Usage6008
+Node: Running insert-pair-edit6389
+Node: ipe-edit-mode8591
+Node: Other `insert-pair-edit-*' commands9506
+Node: The 'Edit' -> 'Pairs' menu10499
+Node: Basic Mode Key Bindings12008
+Node: Basic Movement12691
+Node: Basic Movement Options15382
+Node: Basic Movement (Alphabetic)16520
+Node: Basic Movement (Arrows)18072
+Node: Basic Movement (WASD)19865
+Node: Basic Movement (VI)21381
+Node: Basic Movement (Custom)23130
+Node: Inserting and Aborting23884
+Node: Movement Units25213
+Node: Changing PAIRs26837
+Node: Mouse Movement28167
+Node: Other Major Commands30564
+Node: Updating PAIRs31018
+Node: Deleting PAIRs33253
+Node: Replacing PAIRs35001
+Node: Customization37354
+Node: Types of PAIR Definition38011
+Node: Customization using 'customize'39115
+Node: Customization using the 'Pairs' Menu40256
+Node: Inline Customization43829
+Node: Inline Customization Prompts45901
+Node: Display Customization50286
+Node: Other ipe-edit-mode Commands51795
+Node: Insert And... Commands52234
+Node: Edit CONTENTS Commands53685
+Node: Next / Previous Commands55652
+Node: Next / Previous PAIRs55958
+Node: Next / Previous CONTENTS57401
+Node: Next / Previous OPEN / CLOSE59155
+Node: Multiple PAIRs Commands61307
+Node: Adding Multiple PAIRs using the Emacs Region62132
+Node: Adding Multiple PAIRs using insert-pair-edit63656
+Node: Adding Multiple PAIRs using Existing OPEN / CLOSE65488
+Node: Adding Multiple PAIRs using PAIR CONTENT68151
+Node: Removing PAIRs71332
+Node: Escaping Text within a PAIR72263
+Node: Other Features74635
+Node: Line Movement75116
+Node: Line Movement - Forward / Backward76123
+Node: Line Movement - Beginning / End78311
+Node: List Movement80785
+Node: List Movement - Forward / Backward81539
+Node: List Movement - Up / Down83355
+Node: List Movement - Beginning / End85395
+Node: Defining line PAIRs with an INFIX87107
+Node: Auto Insertion90341
+Node: Positioning POINT and MARK91652
+Node: PAIRs With Empty OPEN / CLOSE93689
+Node: Updating Existing PAIRs94843
+Node: Update Search Process95529
+Node: Update PAIR Matching97262
+Node: Updates on a Region98564
+Node: Development100000
+Node: Creating 'ipe-mode-pairs' PAIRs using Emacs Lisp100300
+Node: Binding MNEMONICs to Keys106044
+Node: Defining custom 'ipe--movement' Functions106987
+Node: Adding 'ipe' ERTs (Emacs Regression Tests)109764
+Node: Running 'ipe' ERTs (Emacs Regression Tests)112062
+Node: Index113002
 
 End Tag Table
 

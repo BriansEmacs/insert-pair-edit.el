@@ -9,6 +9,7 @@
 LOCAL_PACKAGE_DIR=`cygpath -ma ~/.emacs.d/my/packages`
             FILES="${LOCAL_PACKAGE_DIR}/ipe/ipe.el \
                    ${LOCAL_PACKAGE_DIR}/ipe/ipe-char.el \
+                   ${LOCAL_PACKAGE_DIR}/ipe/ipe-compat.el \
                    ${LOCAL_PACKAGE_DIR}/ipe/ipe-custom.el \
                    ${LOCAL_PACKAGE_DIR}/ipe/ipe-defn.el \
                    ${LOCAL_PACKAGE_DIR}/ipe/ipe-edit.el \

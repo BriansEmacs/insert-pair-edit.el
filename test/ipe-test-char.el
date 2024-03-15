@@ -5,9 +5,10 @@
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
 ;; Version: 2023.12.30
+;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: internal local
-;; Homepage: http://github.com/brians.emacs/insert-pair-edit
+;; Homepage: https://github.com/BriansEmacs/insert-pair-edit.el
 
 ;; -------------------------------------------------------------------
 ;; This file is not part of GNU Emacs.

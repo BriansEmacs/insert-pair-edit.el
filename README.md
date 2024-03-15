@@ -4,79 +4,91 @@
 # insert-pair-edit
 
 This project defines a [GNU Emacs](https://www.gnu.org/emacs/)
-package, `insert-pair-edit`, which supplies a set of commands that are
-targeted as being a more feature rich alternative to the standard
-`M-(` **Emacs** keybinding, `insert-parentheses`. 
+package, `insert-pair-edit`.  This package supplies commands that are
+a more feature rich alternative to the standard `M-(` **Emacs**
+keybinding, (`insert-parentheses`).
 
 ----------------------------------------------------------------------
 ## Overview
 
-The `insert-pair-edit` package supplies commands to _insert_ and
-_update_ "PAIRs" within an **Emacs** buffer.  The _PAIRs_ consist of
-_OPEN_ and _CLOSE_ strings which delimit text in some fashion.
+The `insert-pair-edit` package supplies commands to _insert_ (and
+also, _update_, _edit_ and _delete_) "PAIRs" within an **Emacs**
+buffer.  These _PAIRs_ consist of _OPEN_ and _CLOSE_ strings that
+delimit text in some fashion.  (This could be a simple open and close
+parentheses, '(' ')', or, it could be a more complex pair of strings
+that are used within a programming language.)
+
+The main entry point to the `insert-pair-edit` package is the
+**Emacs** interactive command `insert-pair-edit`.  When executed, this
+command will prompt the user to enter a _MNEMONIC_ identifying a
+(customizable) _PAIR_ via the **Emacs** `minibuffer`.
 
 ![insert-pair-edit command](doc/insert-pair-edit-minibuffer.png)
 
-The main entry point to the `insert-pair-edit` package is the
-**Emacs** interactive command `insert-pair-edit`.  When executed, the
-`insert-pair-edit` interactive command will prompt the user to enter
-a `customize`-able _MNEMONIC_ identifying a _PAIR_ via the **Emacs**
-`minibuffer`. 
+Selection of a _MNEMONIC_ will cause two overlays to be inserted into
+the buffer.  These overlays represent the _OPEN_ and _CLOSE_ strings
+of the _PAIR_ to be inserted.
 
-Selection of a _MNEMONIC_ will cause a 'major-mode dependent' _PAIR_ to
-be inserted around a 'lexical unit' at _POINT_.  The _PAIR_ consists
-of _OPEN_ and _CLOSE_ strings which delimit text in some fashion.
-
-This _PAIR_ can then be _moved_ about the buffer using the commands
-defined within the `ipe-edit-mode` minor mode.
+These overlays can then be either: immediately inserted into the
+buffer, or, more importantly, _moved_ about the buffer to correctly
+surround the text to be enclosed by the _PAIR_.
 
 ----------------------------------------------------------------------
 ## Editing PAIRs
 
 ![ipe-edit-mode Commands](doc/ipe-edit-mode-menu.png)
 
-After a MNEMONIC is entered, the `insert-pair-edit` command inserts
-the _OPEN_ and _CLOSE_ strings of the _PAIR_ into the current buffer
-as overlays.  It then runs the command, `ipe-edit-mode`, to enter the
+After adding the _OPEN_ and _CLOSE_ overlays into the buffer, the
+`insert-pair-edit` command starts `ipe-edit-mode` to enter the
 **Insert Pair Edit (ipe)** minor mode.
 
-The `ipe-edit-mode` supplies further commands to interactively and
-independently move the overlays representing the _OPEN_ and _CLOSE_
-strings for the inserted _PAIR_ about the buffer, and to either
-insert (`ipe-edit--insert-pair`), or discard (`ipe-edit--abort`)
-them once they have been correctly positioned.
+The **Insert Pair Edit (ipe)** minor mode supplies commands to
+move these _OPEN_ and _CLOSE_ overlays about the buffer.  When
+positioned correctly, these _OPEN_ and _CLOSE_ overlays can then
+either be inserted `<RET>` (`ipe-edit--insert-pair`), or discarded
+`C-g` (`ipe-edit--abort`).
 
-Movement of the _OPEN_ and _CLOSE_ overlays is based upon 'lexical
-units'.  The 'lexical units' are either: characters, words, lines,
-or lists (S-expressions).
+The **Insert Pair Edit (ipe)** minor mode also supplies additional
+commands to:
 
-By default, movement will be by 'words', but this can be changed
-interactively via the: `ipe-edit--movement-by-*` commands or, by
-`ipe-pairs` / `ipe-mode-pairs` `customize`-ations.
-
-Additional commands are supplied to operate on the _CONTENTS_ of the
-_PAIR_ (i.e. the text between the _OPEN_ and _CLOSE_ overlays.)  Text
-can be copied, deleted, replaced and case converted.
-
-Certain characters between the _OPEN_ and _CLOSE_ overlays can also be
-ESCAPE-d.  These characters will be replaced by overlays, which
-will be updated by the `ipe-edit-mode` movement commands, and
-inserted when the `ipe-edit--insert-pair` command is invoked.
+* Change the _PAIR_ to be inserted on-the-fly.
+* Change the 'lexical units' used by the movement commands.
+* Operate on the _CONTENTS_ of the _PAIR_ (i.e. the text between the
+  _OPEN_ and _CLOSE_ overlays.)  Text can be copied, deleted, replaced
+  and case converted.
+* Search for (and _edit_) other _PAIRs_.
+* Operate on multiple _PAIRs_ at once.
+* Escape characters between the _OPEN_ and _CLOSE_ strings.
 
 Customizations for the mode can be found under the `ipe` group.
+
+-------------------------------------------------------------------
+## Mode-Specific
+
+The set of _PAIRs_ available for editing are defined _per-major-mode_.
+
+![Insert Pair Edit - markdown-mode](doc/insert-pair-edit-markdown-mode.gif)
+
+Example _PAIR Definitions_ are supplied for:
+
+* TexInfo
+* HTML
+* Markdown
 
 -------------------------------------------------------------------
 ## Pairs Menu
 
 ![Insert Pair Edit Menu](doc/insert-pair-edit-menu.png)
 
-If running **Emacs** in a graphical environment which supports menus,
-the `insert-pair-edit` package can add an extra `Pairs` menu item to
-the standard **Emacs** `Edit` Menu.
+Most of the functionality of the **Insert Pair Edit (ipe)** package
+can also be accessed via the **Emacs** menubar.  If running **Emacs**
+in an environment which supports menus, the `insert-pair-edit` package
+can add an extra `Pairs` sub-menu to the standard **Emacs** `Edit`
+menu item.
 
-The set of _PAIRs_ listed under the `Insert PAIR` / `Update
-PAIR` / `Delete PAIR` sub-menus will change dynamically based upon
-the current buffer's `major-mode`.
+The set of _PAIRs_ listed under the `Pairs` -> `Insert PAIR` /
+`Update PAIR` / `Delete PAIR` sub-menus will change dynamically based
+upon the current buffer's `major-mode`.
 
 ![Insert Pair Edit Menu](doc/insert-pair-edit-mode-menu.png)
 

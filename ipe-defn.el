@@ -5,9 +5,10 @@
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 19 December, 2020
 ;; Version: 2023.12.30
+;; Package: ipe
 ;; Package-Requires: ((emacs "24.4"))
 ;; Keywords: convenience, tools
-;; Homepage: http://github.com/brians.emacs/insert-pair-edit
+;; Homepage: https://github.com/BriansEmacs/insert-pair-edit.el
 
 ;; -------------------------------------------------------------------
 ;; This file is not part of GNU Emacs.
@@ -113,7 +114,7 @@ postfix `*-mode'"
 			 (ipe-defn--string-ends-with (symbol-name x) "-mode")
 			 (setq modes (cons (symbol-name x) modes)))))
 	modes)
-    (mapcar 'car ipe-mode-pairs)))
+    (mapcar (lambda (x) (symbol-name (car x))) ipe-mode-pairs)))
 
 (defun ipe-defn--update-pair-list (pair-list-sym defn
 						 &optional save mode)
@@ -156,7 +157,8 @@ postfix `*-mode'"
     (when save
       (customize-set-variable pair-list-sym
 			      (ipe-custom--pair-list-get (eval pair-list-sym)))
-      (customize-save-customized))))
+      (when (or custom-file user-init-file)
+	(customize-save-customized)))))
 
 (defun ipe-defn--update-mode-pair (mode defn &optional save)
   "Update an Mode-Specific `ipe' PAIR Definition List.
@@ -220,7 +222,8 @@ The updated Mode-Specific PAIR Definition List will be added to
     (when save
       (customize-set-variable 'ipe-mode-pairs
 			      (ipe-custom-mode-pairs-get 'ipe-mode-pairs))
-      (customize-save-customized))))
+      (when (or custom-file user-init-file)
+	(customize-save-customized)))))
 
 ;; -------------------------------------------------------------------
 ;;;; Annotation Functions

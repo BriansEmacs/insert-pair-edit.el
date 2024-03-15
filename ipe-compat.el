@@ -1,0 +1,99 @@
+;;; ipe-compat.el --- Insert Pair Edit - backwards compatibility
+;; Copyright (C) 2023 Brian Kavanagh
+
+;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
+;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
+;; Created: 28 June, 2020
+;; Version: 2023.12.30
+;; Package: ipe
+;; Keywords: convenience, tools
+;; Homepage: https://github.com/BriansEmacs/insert-pair-edit.el
+
+;; -------------------------------------------------------------------
+;; This file is not part of GNU Emacs.
+
+;; This program is free software; you can redistribute it and/or
+;; modify it under the terms of the GNU General Public License as
+;; published by the Free Software Foundation; either version 2, or (at
+;; your option) any later version.
+
+;; This program is distributed in the hope that it will be useful, but
+;; WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+;; General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this programe.  If not, see
+;; <https://www.gnu.org/licenses/>.
+
+;; -------------------------------------------------------------------
+;;; Commentary:
+;;
+;; This file defines some functions used by the Insert Pair Edit (ipe)
+;; library which are not available within earlier versions of Emacs.
+
+;; -------------------------------------------------------------------
+;;; Code:
+
+;; -------------------------------------------------------------------
+;;;; Emacs < 24
+;; -------------------------------------------------------------------
+
+(when (<= emacs-major-version 23)
+  (error "Insert Pair Edit (ipe) requires Emacs 24+"))
+
+;; -------------------------------------------------------------------
+;;;; Emacs 26
+;; -------------------------------------------------------------------
+
+(when (<= emacs-major-version 26)
+
+  (unless (facep 'show-paren-match)
+    (defface show-paren-match
+      '((t (:background "steelblue3")))
+      "Insert Pair Edit (ipe) compatibility face.
+
+Face used for a matching paren.
+
+\(Introduced Emacs 2X.)"
+      :group 'paren-showing-faces))
+
+  (unless (functionp 'caddr)
+    (defun caddr (x)
+      "Insert Pair Edit (ipe) compatibility function.
+
+Return the `car' of the `cdr' of the `cdr' of X.
+
+\(Introduced Emacs 2X.)"
+      (car (cdr (cdr x)))))
+
+  (unless (functionp 'cadddr)
+    (defun cadddr (x)
+      "Insert Pair Edit (ipe) compatibility function.
+
+Return the `car' of the `cdr' of the `cdr' of the `cdr' of X.
+
+\(Introduced Emacs 2X.)"
+      (car (cdr (cdr (cdr x)))))))
+
+;; -------------------------------------------------------------------
+;;;; Emacs 26
+;; -------------------------------------------------------------------
+
+(when (<= emacs-major-version 26)
+  (defun mapcan (func sequence)
+    "Insert Pair Edit (ipe) compatibility function.
+
+Apply FUNC to each element of SEQUENCE, and concatenate the results by
+altering them (using `nconc').  SEQUENCE may be a list, a vector, a
+bool-vector, or a string.
+
+(Introduced Emacs 26.1)"
+    (apply #'nconc (mapcar func sequence))))
+
+;; -------------------------------------------------------------------
+
+(provide 'ipe-compat)
+
+;;; ipe-compat.el ends here
+

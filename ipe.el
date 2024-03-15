@@ -8,7 +8,7 @@
 ;; Package: ipe
 ;; Package-Requires: ((emacs "26.1"))
 ;; Keywords: convenience, tools
-;; Homepage: http://github.com/brians.emacs/insert-pair-edit
+;; Homepage: https://github.com/BriansEmacs/insert-pair-edit.el
 
 ;; -------------------------------------------------------------------
 ;; This file is not part of GNU Emacs.
@@ -63,6 +63,7 @@
 ;; -------------------------------------------------------------------
 ;;; Code:
 
+(require 'ipe-compat)
 (require 'ipe-custom)
 
 ;; -------------------------------------------------------------------
@@ -981,11 +982,16 @@ existing KEY, or a new KEY + VALUE association."
 	(setf (cdr (assoc key copy)) (list value))
 	copy))))
 
-(defun ipe--safecall (symbol)
-  "Check if a given SYMBOL is function before calling it."
+(defun ipe--safecall (symbol &rest arguments)
+  "Check if a given SYMBOL is function before calling it.
+
+ARGUMENTS, if specified are the arguments to be passed
+to the function SYMBOL."
 
   (when (functionp symbol)
-    (funcall symbol)))
+    (if arguments
+	(apply symbol arguments)
+      (funcall symbol))))
 
 (defun ipe--arg-units (arg)
   "Convert a prefix ARG to a positive INTEGER.
@@ -1516,7 +1522,7 @@ Amalgamates the changes made while in `ipe-edit-mode' into a single
 `undo'."
 
   (when ipe--undo-handle
-    (undo-amalgamate-change-group ipe--undo-handle)
+    (ipe--safecall 'undo-amalgamate-change-group ipe--undo-handle)
     (condition-case nil
 	(accept-change-group ipe--undo-handle)
       (error nil))
@@ -1799,9 +1805,14 @@ within `ipe--pair-pos-list', the POS-CLOSE of the first entry will be
 
   (setq ipe--pair-pos-list
 	(sort
-	 (cl-remove-if (lambda (x) (or (not (car x)) (not (cadr x))))
-		       ipe--pair-pos-list)
-	 (lambda (x y) (< (car x) (car y)))))
+	 (let ((result))
+	   (dolist (x ipe--pair-pos-list)
+	     (when (and (car x) (cadr x))
+	       (add-to-list 'result x t)))
+	   result)
+	 (lambda (x y) (or (< (car x) (car y))
+			   (and (= (car x)  (car y))
+				(< (cadr x) (cadr y)))))))
 
   (dotimes (i (1- (ipe--pos-count)))
     (dotimes (j (- (ipe--pos-count) i 1))
@@ -2234,7 +2245,7 @@ Remove the overlay (`ipe--open-overlays') displaying the `N'th OPEN
 string from the current buffer."
 
   (let ((overlay (ipe--open-overlay n)))
-    (when overlay
+    (when (overlayp overlay)
       (overlay-put overlay 'display "")
       (delete-overlay overlay))))
 
@@ -2408,7 +2419,7 @@ Remove the overlay (`ipe--close-overlays') displaying the `N'th CLOSE
 string from the current buffer."
 
   (let ((overlay (ipe--close-overlay n)))
-    (when overlay
+    (when (overlayp overlay)
       (overlay-put overlay 'display "")
       (delete-overlay overlay))))
 
@@ -2546,8 +2557,9 @@ Remove all of the overlays (`ipe--infix-overlays') that display the
 
   (when (nth n ipe--infix-overlays)
     (dolist (infix-overlay (nth n ipe--infix-overlays))
-      (overlay-put infix-overlay 'display "")
-      (delete-overlay infix-overlay))
+      (when (overlayp infix-overlay)
+	(overlay-put infix-overlay 'display "")
+	(delete-overlay infix-overlay)))
     (setcar (nthcdr n ipe--infix-overlays) nil)))
 
 (defun ipe--infixes-update (n)
@@ -2601,7 +2613,8 @@ Return the number of characters inserted."
   (if (memq t
 	    (mapcan (lambda (overlays)
 		      (mapcar (lambda (overlay)
-				(if (and (overlay-buffer overlay)
+				(if (and (overlayp overlay)
+					 (overlay-buffer overlay)
 					 (overlay-get    overlay 'ipe-escape)
 					 (< (overlay-start overlay) end)
 					 (> (overlay-end   overlay) beg))
@@ -2738,8 +2751,9 @@ Remove all of the overlays (`ipe--escape-overlays') that display the
 
   (when (nth n ipe--escape-overlays)
     (dolist (escape-overlay (nth n ipe--escape-overlays))
-      (overlay-put escape-overlay 'display "")
-      (delete-overlay escape-overlay))
+      (when (overlayp escape-overlay)
+	(overlay-put escape-overlay 'display "")
+	(delete-overlay escape-overlay)))
     (setcar (nthcdr n ipe--escape-overlays) nil)))
 
 (defun ipe--escapes-show (n)
@@ -2775,10 +2789,11 @@ Create ESCAPE overlays (`ipe--escape-overlays') between the `N'th
 		;; Escape between OPEN and CLOSE Overlays.
 		(t
 		 (let ((overlay (ipe--escape-overlay n i)))
-		   (overlay-put overlay 'display
-				(propertize (cadr escape) 'face 'ipe-escape-highlight))
-		   (move-overlay overlay (match-beginning 0)
-				 (match-end 0)))
+		   (when (overlayp overlay)
+		     (overlay-put overlay 'display
+				  (propertize (cadr escape) 'face 'ipe-escape-highlight))
+		     (move-overlay overlay (match-beginning 0)
+				   (match-end 0))))
 		 (setq i (1+ i)))))))
 	 escapes)))))
 
@@ -3176,18 +3191,19 @@ the `ipe--pair-pos-list'."
 
   (ipe--pos-list-normalize)
 
-  (let ((move-by (ipe--move-by-function))
-	(pair    (ipe--pair))
+  (let ((move-by   (ipe--move-by-function))
+	(pair      (ipe--pair))
+	(n         0)
+	(display-n 0)
 	(open)
 	(open-infix)
 	(close)
-	(display-n 0)
 	(open-list)
 	(close-list)
 	(eobc)
 	(no-after-p))
 
-    (dotimes (n (ipe--pos-count))
+    (while (< n (ipe--pos-count))
 
       (funcall move-by pair n 'open  'redisplay 0 0 0)
       (funcall move-by pair n 'close 'redisplay 0 0 0)
@@ -3326,7 +3342,9 @@ the `ipe--pair-pos-list'."
 
       (if ipe--escapes-show-p
 	  (ipe--escapes-show n)
-	(ipe--escapes-hide n)))
+	(ipe--escapes-hide n))
+
+      (setq n (1+ n)))
 
     (when (> (length ipe--open-overlays) (ipe--pos-count))
       (dotimes (n (- (length ipe--open-overlays) (ipe--pos-count)))

@@ -6,4 +6,4 @@
   :keywords    '("convenience" "tools")
   :authors     '(("Brian Kavanagh" . "Brians.Emacs@gmail.com"))
   :maintainer  '("Brian Kavanagh" . "Brians.Emacs@gmail.com")
-  :url	       "https://github.com/brians.emacs/insert-pair-edit")
+  :url	       "https://github.com/BriansEmacs/insert-pair-edit.el")

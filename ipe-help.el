@@ -5,9 +5,10 @@
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
 ;; Version: 2023.12.30
+;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: convenience, tools
-;; Homepage: http://github.com/brians.emacs/insert-pair-edit
+;; Homepage: https://github.com/BriansEmacs/insert-pair-edit.el
 
 ;; -------------------------------------------------------------------
 ;; This file is not part of GNU Emacs.
@@ -341,12 +342,16 @@ PAIRs are highlighted using:
   "Display help for the 'Insert Pair Edit' package.
 
 \(command `ipe-edit-mode')"
+
   (interactive)
 
   (with-help-window "*Help*"
+    (set-buffer standard-output)
+    (setq-local tab-width 8)
     (help-setup-xref (list #'ipe-help) t)
     (insert (substitute-command-keys ipe-help--help-text))
     (goto-char (point-max)))
+
   (save-excursion
     (with-current-buffer (get-buffer "*Help*")
       (let ((buffer-read-only nil))
@@ -365,13 +370,16 @@ PAIRs are highlighted using:
   "Display more help for the 'Insert Pair Edit' package.
 
 \(command `ipe-edit-mode')"
+
   (interactive)
 
   (with-help-window "*Help*"
+    (set-buffer standard-output)
     (setq-local tab-width 8)
     (help-setup-xref (list #'ipe-help--more-1) t)
     (insert (substitute-command-keys ipe-help--help-more-1))
     (goto-char (point-max)))
+
   (save-excursion
     (with-current-buffer (get-buffer "*Help*")
       (let ((buffer-read-only nil))
@@ -389,13 +397,16 @@ PAIRs are highlighted using:
   "Display more help for the 'Insert Pair Edit' package.
 
 \(command `ipe-edit-mode')"
+
   (interactive)
 
   (with-help-window "*Help*"
+    (set-buffer standard-output)
     (setq-local tab-width 8)
     (help-setup-xref (list #'ipe-help--more-2) t)
     (insert (substitute-command-keys ipe-help--help-more-2))
     (goto-char (point-max)))
+
   (save-excursion
     (with-current-buffer (get-buffer "*Help*")
       (let ((buffer-read-only nil))
@@ -413,13 +424,16 @@ PAIRs are highlighted using:
   "Display more help for the 'Insert Pair Edit' package.
 
 \(command `ipe-edit-mode')"
+
   (interactive)
 
   (with-help-window "*Help*"
+    (set-buffer standard-output)
     (setq-local tab-width 8)
     (help-setup-xref (list #'ipe-help--more-3) t)
     (insert (substitute-command-keys ipe-help--help-more-3))
     (goto-char (point-max)))
+
   (save-excursion
     (with-current-buffer (get-buffer "*Help*")
       (let ((buffer-read-only nil))
@@ -437,13 +451,16 @@ PAIRs are highlighted using:
   "Display more help for the 'Insert Pair Edit' package.
 
 \(command `ipe-edit-mode')"
+
   (interactive)
 
   (with-help-window "*Help*"
+    (set-buffer standard-output)
     (setq-local tab-width 8)
     (help-setup-xref (list #'ipe-help--more-4) t)
     (insert (substitute-command-keys ipe-help--help-more-4))
     (goto-char (point-max)))
+
   (save-excursion
     (with-current-buffer (get-buffer "*Help*")
       (let ((buffer-read-only nil))
@@ -461,13 +478,16 @@ PAIRs are highlighted using:
   "Display more help for the 'Insert Pair Edit' package.
 
 \(command `ipe-edit-mode')"
+
   (interactive)
 
   (with-help-window "*Help*"
+    (set-buffer standard-output)
     (setq-local tab-width 8)
     (help-setup-xref (list #'ipe-help--more-5) t)
     (insert (substitute-command-keys ipe-help--help-more-5))
     (goto-char (point-max)))
+
   (save-excursion
     (with-current-buffer (get-buffer "*Help*")
       (let ((buffer-read-only nil))
@@ -485,13 +505,16 @@ PAIRs are highlighted using:
   "Display more help for the 'Insert Pair Edit' package.
 
 \(command `ipe-edit-mode')"
+
   (interactive)
 
   (with-help-window "*Help*"
+    (set-buffer standard-output)
     (setq-local tab-width 8)
     (help-setup-xref (list #'ipe-help--more-6) t)
     (insert (substitute-command-keys ipe-help--help-more-6))
     (goto-char (point-max)))
+
   (save-excursion
     (with-current-buffer (get-buffer "*Help*")
       (let ((buffer-read-only nil))
@@ -509,13 +532,16 @@ PAIRs are highlighted using:
   "Display more help for the 'Insert Pair Edit' package.
 
 \(command `ipe-edit-mode')"
+
   (interactive)
 
   (with-help-window "*Help*"
+    (set-buffer standard-output)
     (setq-local tab-width 8)
     (help-setup-xref (list #'ipe-help--more-7) t)
     (insert (substitute-command-keys ipe-help--help-more-7))
     (goto-char (point-max)))
+
   (save-excursion
     (with-current-buffer (get-buffer "*Help*")
       (let ((buffer-read-only nil))
@@ -533,8 +559,11 @@ PAIRs are highlighted using:
   "Display help for the 'Insert Pair Edit' minor mode.
 
 \(command `ipe-edit-mode')"
+
   (interactive)
+
   (with-help-window "*Help*"
+    (set-buffer standard-output)
     (setq-local tab-width 8)
     (help-setup-xref (list #'ipe-help--mode-help) t)
     (insert (substitute-command-keys
@@ -584,8 +613,11 @@ This minor mode forms part of the 'Insert Pair Edit' (ipe) package.
 
 (defun ipe-help--prompt ()
   "Display the 'Insert Pair Edit' prompt help."
+
   (interactive)
+
   (with-help-window "*Help*"
+    (set-buffer standard-output)
     (setq-local tab-width 8)
     (help-setup-xref (list #'ipe-help--prompt) t)
     (insert (substitute-command-keys
@@ -646,12 +678,14 @@ Or, use one the following key bindings:
  Delete a Mode-Specific 'Insert Pair Edit' PAIR Definition.
 	    (command: `ipe-defn--delete-mode-pair')
 
-") nil))
+")))
     ""))
 
 (defun ipe-help--info ()
   "Display the 'Insert Pair Edit' info help."
+
   (interactive)
+
   (let ((dir (if (symbol-file 'ipe-help--help-text)
 		 (concat "/" (file-name-directory (symbol-file
 						   'ipe-help--help-text)))
@@ -697,21 +731,11 @@ Or, use one the following key bindings:
 
 ;; -------------------------------------------------------------------
 
-(defface ipe-help--logo-face
-  '((t (
-	:height 400
-	:weight bold)))
-  "The face used to display the \"Insert Pair Edit (ipe)\" logo."
-
-  :group 'ipe-display
-  :tag   "Insert Pair Edit (Faces) - Logo face."
-  :link  '(function-link insert-pair-edit)
-  :link  '(function-link ipe-edit-mode))
-
 (defun ipe-help-logo ()
   "Display the \"Insert Pair Edit (ipe)\" logo."
 
   (interactive)
+
   (let* ((logo-buffer  (get-buffer-create "**ipe-logo**"))
 	 (logo         "Insert Pair Edit (ipe)")
 	 (cursor-color (face-attribute 'cursor :background))
@@ -727,8 +751,8 @@ Or, use one the following key bindings:
 			    ("[" "[" "]")
 			    ("{" "{" "}")
 			    ("\"" "\"" "\"")
-			    ("'" "'" "'"))
-		ipe-mode-pairs nil)
+			    ("'" "'" "'")))
+    (setq-local ipe-mode-pairs nil)
 
     (delete-region (point-min) (point-max))
 
@@ -754,13 +778,185 @@ Or, use one the following key bindings:
 	      '(ipe-edit--change-pair "{")
 	      '(ipe-edit--change-pair "\"")
 	      '(ipe-edit--change-pair "'")
-	      '(ipe-edit--change-pair ")")
+	      '(ipe-edit--change-pair "(")
 	      '(ipe-edit--contents-upcase)
 	      '(ipe-edit--contents-downcase)
 	      '(ipe-edit--contents-capitalize)
 	      '(ipe-edit--open-forward nil)
 	      '(ipe-edit--open-forward nil)
 	      '(ipe-edit--abort)))
+
+      (run-at-time (setq time (+ time delay))
+		   0
+		   'apply
+		   command))
+
+    (set-cursor-color cursor-color)))
+
+(defun ipe-help-markdown-demo (&optional speed)
+  "Display the \"Insert Pair Edit (ipe)\" markdown-demo.
+
+If specified, SPEED represents the delay between actions
+within the demo."
+
+  (interactive)
+
+  (let* ((demo-buffer  (get-buffer-create "**ipe-markdown-demo**"))
+	 (cursor-color (face-attribute 'cursor :background))
+	 (delay        (or speed 0.40))
+	 (time         0)
+	 (command))
+
+    (switch-to-buffer demo-buffer)
+
+    (setq-local ipe-pairs
+		'(("(" "(" ")")
+		  ("'" "'" "'")
+		  ("1" "# "      " #")
+		  ("2" "## "     " ##")
+		  ("*" "**"      "**")
+		  ("_" "_"       "_")
+		  ("`" "`"       "`")
+		  ("~" "~~"      "~~"  (:movement char))
+		  ("-" " - "     ""    (:movement line :infix " - "))
+		  ("x" " - [ ] " ""    (:movement line :infix " - [ ] "))
+		  ("f" "```"     "```" (:movement line))))
+
+    (ipe--safecall 'markdown-mode)
+    (blink-cursor-mode 0)
+    (set-cursor-color "grey30")
+
+    (delete-region (point-min) (point-max))
+
+    (insert (concat
+	     "Insert Pair Edit ipe - markdown mode\n"
+	     "\n"
+	     "Text Styles\n"
+	     "Bold\n"
+	     "Italic\n"
+	     "Monospace\n"
+	     "Strikethrough\n"
+	     "\n"
+	     "Lists\n"
+	     "One\n"
+	     "Two\n"
+	     "Three\n"
+	     "\n"
+	     "Checkboxes\n"
+	     "Item #1\n"
+	     "Item #2\n"
+	     "Item #3\n"
+	     "\n"
+	     "Blocks\n"
+	     "The quick brown\n"
+	     "fox jumps over\n"
+	     "the lazy dog.\n"))
+
+    (goto-char (point-min))
+
+    (dolist (command
+	     (list
+	      ;; Edit the title line.
+	      '(insert-pair-edit nil "(")
+	      '(ipe-edit--open-forward nil)
+	      '(ipe-edit--open-forward nil)
+	      '(ipe-edit--open-forward nil)
+	      '(ipe-edit--insert-pair)
+	      '(insert-pair-edit nil "'")
+	      '(ipe-edit--open-forward nil)
+	      '(ipe-edit--open-forward nil)
+	      '(ipe-edit--open-forward nil)
+	      '(ipe-edit--open-forward nil)
+	      '(ipe-edit--insert-pair)
+	      '(insert-pair-edit nil "1")
+	      '(ipe-edit--close-end nil)
+	      '(ipe-edit--insert-pair)
+	      '(beginning-of-line)
+
+	      ;; Edit the 'Text Styles'.
+	      '(next-line)
+	      '(next-line)
+	      '(insert-pair-edit nil "2")
+	      '(ipe-edit--close-forward nil)
+	      '(ipe-edit--insert-pair)
+	      '(beginning-of-line)
+	      '(next-line)
+	      '(insert-pair-edit nil "*")
+	      '(ipe-edit--insert-pair)
+	      '(beginning-of-line)
+	      '(next-line)
+	      '(insert-pair-edit nil "_")
+	      '(ipe-edit--insert-pair)
+	      '(beginning-of-line)
+	      '(next-line)
+	      '(insert-pair-edit nil "`")
+	      '(ipe-edit--insert-pair)
+	      '(beginning-of-line)
+	      '(next-line)
+	      '(insert-pair-edit nil "~")
+	      '(ipe-edit--close-forward nil)
+	      '(ipe-edit--close-forward nil)
+	      '(ipe-edit--close-forward nil)
+	      '(ipe-edit--close-forward nil)
+	      '(ipe-edit--close-forward nil)
+	      '(ipe-edit--close-forward nil)
+	      '(ipe-edit--insert-pair)
+	      '(beginning-of-line)
+
+	      ;; Edit the 'Lists'.
+	      '(next-line)
+	      '(next-line)
+	      '(insert-pair-edit nil "2")
+	      '(ipe-edit--insert-pair)
+	      '(beginning-of-line)
+	      '(next-line)
+	      '(insert-pair-edit nil "-")
+	      '(ipe-edit--close-down nil)
+	      '(ipe-edit--close-down nil)
+	      '(ipe-edit--insert-pair)
+	      '(beginning-of-line)
+	      '(next-line)
+	      '(next-line)
+	      '(next-line)
+
+	      ;; Edit the 'Checkboxes'.
+	      '(next-line)
+	      '(insert-pair-edit nil "2")
+	      '(ipe-edit--insert-pair)
+	      '(beginning-of-line)
+	      '(next-line)
+	      '(insert-pair-edit nil "x")
+	      '(ipe-edit--close-down nil)
+	      '(ipe-edit--close-down nil)
+	      '(ipe-edit--open-backward nil)
+	      '(ipe-edit--open-backward nil)
+	      '(ipe-edit--close-forward nil)
+	      '(ipe-edit--close-forward nil)
+	      '(ipe-edit--insert-pair)
+	      '(beginning-of-line)
+	      '(next-line)
+	      '(next-line)
+	      '(next-line)
+
+	      ;; Edit the 'Blocks'
+	      '(next-line)
+	      '(insert-pair-edit nil "2")
+	      '(ipe-edit--insert-pair)
+	      '(beginning-of-line)
+	      '(next-line)
+	      '(insert-pair-edit nil "f")
+	      '(ipe-edit--open-beg nil)
+	      '(ipe-edit--close-down nil)
+	      '(ipe-edit--close-down nil)
+	      '(ipe-edit--close-end nil)
+	      '(ipe-edit--close-forward nil)
+	      '(ipe-edit--close-forward nil)
+	      '(ipe-edit--close-forward nil)
+	      '(next-line)
+	      '(ipe-edit--insert-pair)
+
+	      ;; Done.
+	      '(beginning-of-buffer)))
 
       (run-at-time (setq time (+ time delay))
 		   0

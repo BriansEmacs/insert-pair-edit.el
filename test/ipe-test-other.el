@@ -5,9 +5,10 @@
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
 ;; Version: 2023.12.30
+;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: internal local
-;; Homepage: http://github.com/brians.emacs/insert-pair-edit
+;; Homepage: https://github.com/BriansEmacs/insert-pair-edit.el
 
 ;; -------------------------------------------------------------------
 ;; This file is not part of GNU Emacs.
@@ -196,8 +197,9 @@ Using a 'line PAIR and a 'word PAIR."
     "The quick brown fox jumps over the lazy dog.)")
   "M-( / C-n C-n RET C-u C-u C-u M-( / ( RET")
 
-(ipe-test-def-kbd other-undo-1 ()
-  "Test `insert-pair-edit' undo.
+(when (>= emacs-major-version 26)
+  (ipe-test-def-kbd other-undo-1 ()
+    "Test `insert-pair-edit' undo.
 
 Using multiple:
 
@@ -205,18 +207,18 @@ Using multiple:
 - C-r (`ipe-edit--previous-pair')
 
 calls."
-  ipe-test-other-options
-  nil
-  '("|The quick brown fox (jumps) over the lazy dog."
-    "The quick brown fox (jumps) over the lazy dog."
-    "The quick brown fox (jumps) over the lazy dog.")
-  '("The quick brown fox |(jumps) over the lazy dog."
-    "The quick brown fox (jumps) over the lazy dog."
-    "The quick brown fox (jumps) over the lazy dog.")
-  "C-u M-( ( C-s C-s C-r C-r RET C-/")
+    ipe-test-other-options
+    nil
+    '("|The quick brown fox (jumps) over the lazy dog."
+      "The quick brown fox (jumps) over the lazy dog."
+      "The quick brown fox (jumps) over the lazy dog.")
+    '("The quick brown fox |(jumps) over the lazy dog."
+      "The quick brown fox (jumps) over the lazy dog."
+      "The quick brown fox (jumps) over the lazy dog.")
+    "C-u M-( ( C-s C-s C-r C-r RET C-/")
 
-(ipe-test-def-kbd other-undo-2 ()
-  "Test `insert-pair-edit' undo.
+  (ipe-test-def-kbd other-undo-2 ()
+    "Test `insert-pair-edit' undo.
 
 Using:
 
@@ -225,15 +227,15 @@ Using:
 - %   (`ipe-edit--contents-replace')
 
 calls."
-  ipe-test-other-options
-  nil
-  '("|The quick brown fox (jumps) over the lazy dog."
-    "The quick brown fox (jumps) over the lazy dog."
-    "The quick brown fox (jumps) over the lazy dog.")
-  '("The quick brown fox |(jumps) over the lazy dog."
-    "The quick brown fox (jumps) over the lazy dog."
-    "The quick brown fox (jumps) over the lazy dog.")
-  "C-u M-( ( M-u C-s M-c C-s % x C-a C-k test RET RET C-/")
+    ipe-test-other-options
+    nil
+    '("|The quick brown fox (jumps) over the lazy dog."
+      "The quick brown fox (jumps) over the lazy dog."
+      "The quick brown fox (jumps) over the lazy dog.")
+    '("The quick brown fox |(jumps) over the lazy dog."
+      "The quick brown fox (jumps) over the lazy dog."
+      "The quick brown fox (jumps) over the lazy dog.")
+    "C-u M-( ( M-u C-s M-c C-s % x C-a C-k test RET RET C-/"))
 
 (provide 'ipe-test-other)
 

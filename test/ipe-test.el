@@ -5,9 +5,10 @@
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
 ;; Version: 2023.12.30
+;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: internal local
-;; Homepage: http://github.com/brians.emacs/insert-pair-edit
+;; Homepage: https://github.com/BriansEmacs/insert-pair-edit.el
 
 ;; -------------------------------------------------------------------
 ;; This file is not part of GNU Emacs.
@@ -94,10 +95,11 @@ Additionally:
 
   ;; If 'multiple-cursors is loaded, set up the multiple-cursors.
   (goto-char (point-min))
-  (when (and (functionp 'multiple-cursors-mode)
-	     (re-search-forward ipe-test--mc-point-indicator
-				(point-max) t))
-    (funcall 'multiple-cursors-mode t)
+  (when (re-search-forward ipe-test--mc-point-indicator
+			   (point-max) t)
+
+    (when (functionp 'multiple-cursors-mode)
+      (funcall 'multiple-cursors-mode t))
 
     (goto-char (point-min))
     (while (re-search-forward ipe-test--mc-point-indicator
@@ -303,10 +305,16 @@ BODY - Commands to be executed against the temporary buffer."
 	       ,@body
 	     (t nil))
 	   (ipe-test--show-point)
-	   (let ((actual   (buffer-string))
-		 (expected (if (listp ,expected)
-			       (mapconcat 'identity ,expected "\n")
-			     ,expected)))
+	   (let* ((actual (buffer-string))
+		  (concat (if (listp ,expected)
+			      (mapconcat 'identity ,expected "\n")
+			    ,expected))
+		  (expected (if (functionp 'multiple-cursors-mode)
+				concat
+			      (replace-regexp-in-string
+			       ipe-test--mc-point-indicator
+			       ""
+			       concat))))
 	     (should (ipe-test--ert-equal actual expected)))))
        (ipe-edit--keymap-init))))
 
@@ -382,8 +390,11 @@ and `ipe-test-def-kbd' macros."
 
 ;; Add the `ipe-test--find-ert-test' replacement to the
 ;; `find-function-regexp-alist'.
-(setf (cdr (assoc 'ert--test find-function-regexp-alist))
-      'ipe-test--find-ert-test)
+(if (assoc 'ert--test find-function-regexp-alist)
+    (setf (cdr (assoc 'ert--test find-function-regexp-alist))
+	  'ipe-test--find-ert-test)
+  (push '(ert--test . ipe-test--find-ert-test)
+	find-function-regexp-alist))
 
 ;; -------------------------------------------------------------------
 ;;;; Interactive `ipe' Test Functions
