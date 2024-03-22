@@ -3,7 +3,7 @@
 ----------------------------------------------------------------------
 # insert-pair-edit
 
-This project defines a [GNU Emacs](https://www.gnu.org/emacs/)
+This project defines a [GNU Emacs](https://www.gnu.org/software/emacs/)
 package, `insert-pair-edit`.  This package supplies commands that are
 a more feature rich alternative to the standard `M-(` **Emacs**
 keybinding, (`insert-parentheses`).
@@ -15,8 +15,8 @@ The `insert-pair-edit` package supplies commands to _insert_ (and
 also, _update_, _edit_ and _delete_) "PAIRs" within an **Emacs**
 buffer.  These _PAIRs_ consist of _OPEN_ and _CLOSE_ strings that
 delimit text in some fashion.  (This could be a simple open and close
-parentheses, '(' ')', or, it could be a more complex pair of strings
-that are used within a programming language.)
+parentheses, `(` and `)`, or, it could be a more complex pair of
+strings that are used within a programming language.)
 
 The main entry point to the `insert-pair-edit` package is the
 **Emacs** interactive command `insert-pair-edit`.  When executed, this
@@ -61,6 +61,8 @@ commands to:
 * Escape characters between the _OPEN_ and _CLOSE_ strings.
 
 Customizations for the mode can be found under the `ipe` group.
+
+![Insert Pair Edit - customize](doc/insert-pair-edit-customize.png)
 
 -------------------------------------------------------------------
 ## Mode-Specific

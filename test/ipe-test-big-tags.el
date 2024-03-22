@@ -56,19 +56,21 @@
 (require 'ert)
 (require 'ipe-test)
 
-(setq ipe-test-big-tag-options
-      '((ipe-move-point-on-insert   nil)
-        (ipe-prefix-moves-close-p   t)
-        (ipe-edit--movement-keysets '(modifiers))
-        (ipe-pairs                  '(("(" "<start-of-tag>" "<end-of-tag>")
-                                      ("[" "[" "]")))
-        (ipe-mode-pairs             nil)))
+(defvar ipe-test-big-tags-options
+  '((ipe-move-point-on-insert   nil)
+    (ipe-prefix-moves-close-p   t)
+    (ipe-edit--movement-keysets '(modifiers))
+    (ipe-pairs
+     '(("(" "<start-of-tag>" "<end-of-tag>")
+       ("[" "["              "]")))
+    (ipe-mode-pairs             nil))
+  "Options used by `ipe-test-def-kbd' for `ipe-test-big-tags'.")
 
 (ipe-test-def-kbd big-tag-basic-insert-1 ()
   "Test `insert-pair-edit' in an empty buffer.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   ""
   "<start-of-tag>|<end-of-tag>"
@@ -78,7 +80,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' at the start of buffer.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "|The quick brown fox jumps over the lazy dog."
   "<start-of-tag>|The<end-of-tag> quick brown fox jumps over the lazy dog."
@@ -88,7 +90,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' in the middle of a buffer.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "The quick brown fox |jumps over the lazy dog."
   "The quick brown fox <start-of-tag>|jumps<end-of-tag> over the lazy dog."
@@ -98,7 +100,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' at the end of buffer.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "The quick brown fox jumps over the lazy dog.|"
   "The quick brown fox jumps over the lazy <start-of-tag>dog<end-of-tag>.|"
@@ -108,7 +110,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' at 'offset' beginning of buffer.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "|  The quick brown fox jumps over the lazy dog."
   "|  <start-of-tag>The<end-of-tag> quick brown fox jumps over the lazy dog."
@@ -118,7 +120,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' at 'offset' end of buffer.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "The quick brown fox jumps over the lazy dog.  |"
   "The quick brown fox jumps over the lazy <start-of-tag>dog<end-of-tag>.  |"
@@ -128,7 +130,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' with a numeric prefix.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "The quick brown fox |jumps over the lazy dog."
   "The quick brown fox <start-of-tag>|jumps<end-of-tag> over the lazy dog."
@@ -138,7 +140,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' with a '2' numeric prefix.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "The quick brown fox |jumps over the lazy dog."
   "The quick brown fox <start-of-tag>|jumps over<end-of-tag> the lazy dog."
@@ -148,7 +150,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' with a '3' numeric prefix.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "The quick brown fox |jumps over the lazy dog."
   "The quick brown fox <start-of-tag>|jumps over the<end-of-tag> lazy dog."
@@ -158,7 +160,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' with a '4' numeric prefix.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "The quick brown fox |jumps over the lazy dog."
   "The quick brown fox <start-of-tag>|jumps over the lazy<end-of-tag> dog."
@@ -168,7 +170,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' with a negative numeric prefix.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "The quick brown fox |jumps over the lazy dog."
   "The <start-of-tag>quick brown fox |jumps<end-of-tag> over the lazy dog."
@@ -178,7 +180,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN backward.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "The quick brown fox |jumps over the lazy dog."
   "The quick brown <start-of-tag>fox |jumps<end-of-tag> over the lazy dog."
@@ -188,7 +190,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN backward x2.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "The quick brown fox |jumps over the lazy dog."
   "The quick <start-of-tag>brown fox |jumps<end-of-tag> over the lazy dog."
@@ -198,7 +200,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN backward x3.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "The quick brown fox |jumps over the lazy dog."
   "The <start-of-tag>quick brown fox |jumps<end-of-tag> over the lazy dog."
@@ -208,7 +210,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN backward x4.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "The quick brown fox |jumps over the lazy dog."
   "<start-of-tag>The quick brown fox |jumps<end-of-tag> over the lazy dog."
@@ -218,7 +220,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN backward x16.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "The quick brown fox |jumps over the lazy dog."
   "<start-of-tag>The quick brown fox |jumps<end-of-tag> over the lazy dog."
@@ -228,7 +230,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN backward at beginning of buffer.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "|The quick brown fox jumps over the lazy dog."
   "<start-of-tag>|The<end-of-tag> quick brown fox jumps over the lazy dog."
@@ -238,7 +240,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN backward with a blank line.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox jumps over the lazy dog."
     ""
@@ -252,7 +254,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN backward x2 with a blank line.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox jumps over the lazy dog."
     ""
@@ -266,7 +268,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE forward.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "The quick brown fox |jumps over the lazy dog."
   "The quick brown fox <start-of-tag>|jumps over<end-of-tag> the lazy dog."
@@ -276,7 +278,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE forward x2.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "The quick brown fox |jumps over the lazy dog."
   "The quick brown fox <start-of-tag>|jumps over the<end-of-tag> lazy dog."
@@ -286,7 +288,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE forward x3.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "The quick brown fox |jumps over the lazy dog."
   "The quick brown fox <start-of-tag>|jumps over the lazy<end-of-tag> dog."
@@ -296,7 +298,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE forward x4.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "The quick brown fox |jumps over the lazy dog."
   "The quick brown fox <start-of-tag>|jumps over the lazy dog<end-of-tag>."
@@ -306,7 +308,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE forward x16.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "The quick brown fox |jumps over the lazy dog."
   "The quick brown fox <start-of-tag>|jumps over the lazy dog<end-of-tag>."
@@ -316,7 +318,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE forward at end of buffer.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "The quick brown fox jumps over the lazy dog.|"
   "The quick brown fox jumps over the lazy <start-of-tag>dog<end-of-tag>.|"
@@ -326,7 +328,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE forward with a blank line.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox jumps over the lazy |dog."
     ""
@@ -340,7 +342,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE forward x2 with a blank line.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox jumps over the lazy |dog."
     ""
@@ -354,7 +356,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN forward.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "The quick brown fox |jumps over the lazy dog."
   "The quick brown fox |jumps <start-of-tag>over<end-of-tag> the lazy dog."
@@ -364,7 +366,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN forward x2.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "The quick brown fox |jumps over the lazy dog."
   "The quick brown fox |jumps over <start-of-tag>the<end-of-tag> lazy dog."
@@ -374,7 +376,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN forward x3.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "The quick brown fox |jumps over the lazy dog."
   "The quick brown fox |jumps over the <start-of-tag>lazy<end-of-tag> dog."
@@ -384,7 +386,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN forward x4.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "The quick brown fox |jumps over the lazy dog."
   "The quick brown fox |jumps over the lazy <start-of-tag>dog<end-of-tag>."
@@ -394,7 +396,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN forward x16.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "The quick brown fox |jumps over the lazy dog."
   "The quick brown fox |jumps over the lazy dog.<start-of-tag><end-of-tag>"
@@ -404,7 +406,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN forward at the end of buffer.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "The quick brown fox jumps over the lazy dog.|"
   "The quick brown fox jumps over the lazy dog.<start-of-tag>|<end-of-tag>"
@@ -414,7 +416,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN forward with a blank line.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox jumps over the lazy |dog."
     ""
@@ -428,7 +430,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN forward x2 with a blank line.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox jumps over the lazy |dog."
     ""
@@ -442,7 +444,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE backward.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "The quick brown fox |jumps over the lazy dog."
   "The quick brown <start-of-tag>fox<end-of-tag> |jumps over the lazy dog."
@@ -452,7 +454,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE backward x2.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "The quick brown fox |jumps over the lazy dog."
   "The quick <start-of-tag>brown<end-of-tag> fox |jumps over the lazy dog."
@@ -462,7 +464,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE backward x3.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "The quick brown fox |jumps over the lazy dog."
   "The <start-of-tag>quick<end-of-tag> brown fox |jumps over the lazy dog."
@@ -472,7 +474,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE backward x4.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "The quick brown fox |jumps over the lazy dog."
   "<start-of-tag>The<end-of-tag> quick brown fox |jumps over the lazy dog."
@@ -482,7 +484,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE backward x16.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "The quick brown fox |jumps over the lazy dog."
   "<start-of-tag><end-of-tag>The quick brown fox |jumps over the lazy dog."
@@ -492,7 +494,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE backward at the beginning of buffer.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   "|The quick brown fox jumps over the lazy dog."
   "<start-of-tag>|<end-of-tag>The quick brown fox jumps over the lazy dog."
@@ -502,7 +504,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE backward with a blank line.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox jumps over the lazy dog."
     ""
@@ -516,7 +518,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE backward x2 with a blank line.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox jumps over the lazy dog."
     ""
@@ -530,7 +532,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN up.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox jumps over the lazy dog."
     "The quick brown fox |jumps over the lazy dog."
@@ -544,7 +546,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN up x2.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox jumps over the lazy dog."
     "The quick brown fox |jumps over the lazy dog."
@@ -558,7 +560,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN up x3.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
@@ -576,7 +578,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN up x4.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
@@ -594,7 +596,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN up with a blank line.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox jumps over the lazy dog."
     ""
@@ -608,7 +610,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN up x2 with a blank line.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox jumps over the lazy dog."
     ""
@@ -622,7 +624,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN up with an offset.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown foxes jumps over the lazy dog."
     "The quick brown fox |jumps over the lazy dog."
@@ -636,7 +638,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN up at offset beginning of line.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox jumps over the lazy dog."
     "  |The quick brown fox jumps over the lazy dog.")
@@ -648,7 +650,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN up offset at beginning of line.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("  The quick brown fox jumps over the lazy dog."
     "|The quick brown fox jumps over the lazy dog.")
@@ -660,7 +662,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE down.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox jumps over the lazy dog."
     "The quick brown fox |jumps over the lazy dog."
@@ -674,7 +676,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE down x2.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox jumps over the lazy dog."
     "The quick brown fox |jumps over the lazy dog."
@@ -688,7 +690,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE down x3.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox |jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
@@ -706,7 +708,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE down x4.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox |jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
@@ -724,7 +726,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE down with a blank line.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox |jumps over the lazy dog."
     ""
@@ -738,7 +740,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE down x2 with a blank line.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox |jumps over the lazy dog."
     ""
@@ -752,7 +754,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE down with an offset.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox jumps over the lazy dog."
     "The quick brown fox |jumps over the lazy dog."
@@ -766,7 +768,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE down at offset beginning of line.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("|The quick brown fox jumps over the lazy dog."
     "  The quick brown fox jumps over the lazy dog.")
@@ -778,7 +780,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE down offset at beginning of line.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("|  The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
@@ -790,7 +792,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN down.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox jumps over the lazy dog."
     "The quick brown fox |jumps over the lazy dog."
@@ -804,7 +806,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN down x2.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox jumps over the lazy dog."
     "The quick brown fox |jumps over the lazy dog."
@@ -818,7 +820,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN down x3.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox |jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
@@ -836,7 +838,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN down x4.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox |jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
@@ -854,7 +856,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN down with a blank line.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox |jumps over the lazy dog."
     ""
@@ -868,7 +870,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN down x2 with a blank line.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox |jumps over the lazy dog."
     ""
@@ -882,7 +884,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN down with an offset.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox jumps over the lazy dog."
     "The quick brown fox |jumps over the lazy dog."
@@ -896,7 +898,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN down offset beginning of to line.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("|The quick brown fox jumps over the lazy dog."
     "  The quick brown fox jumps over the lazy dog.")
@@ -908,7 +910,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' OPEN down offset beginning of from line.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("|  The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
@@ -920,7 +922,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE up.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox jumps over the lazy dog."
     "The quick brown fox |jumps over the lazy dog."
@@ -934,7 +936,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE up x2.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox jumps over the lazy dog."
     "The quick brown fox |jumps over the lazy dog."
@@ -948,7 +950,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE up x3.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
@@ -966,7 +968,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE up x4.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
@@ -984,7 +986,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE up with a blank line.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox jumps over the lazy dog."
     ""
@@ -998,7 +1000,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE up x2 with a blank line.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox jumps over the lazy dog."
     ""
@@ -1012,7 +1014,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE up with an offset.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown foxes jumps over the lazy dog."
     "The quick brown fox |jumps over the lazy dog."
@@ -1026,7 +1028,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE up at offset beginning of line.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("The quick brown fox jumps over the lazy dog."
     "|  The quick brown fox jumps over the lazy dog.")
@@ -1038,7 +1040,7 @@ Using a 'word PAIR."
   "Test `insert-pair-edit' CLOSE up offset at beginning of line.
 
 Using a 'word PAIR."
-  ipe-test-big-tag-options
+  ipe-test-big-tags-options
   nil
   '("  The quick brown fox jumps over the lazy dog."
     "|The quick brown fox jumps over the lazy dog.")
@@ -1048,4 +1050,4 @@ Using a 'word PAIR."
 
 (provide 'ipe-test-big-tags)
 
-;; ipe-test-big-tags.el ends here
+;;; ipe-test-big-tags.el ends here

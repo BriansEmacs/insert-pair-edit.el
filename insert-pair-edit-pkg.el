@@ -1,7 +1,7 @@
 (define-package
   "insert-pair-edit"
   "20231230.1200"
-  "Insert Pair Edit - 'M-(' with interactive editing and modal pairs"
+  "Insert Pair Edit - Insert, update and delete PAIRs using overlays."
   '((emacs "24.3"))
   :keywords    '("convenience" "tools")
   :authors     '(("Brian Kavanagh" . "Brians.Emacs@gmail.com"))

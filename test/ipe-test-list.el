@@ -63,13 +63,15 @@
 (require 'ert)
 (require 'ipe-test)
 
-(setq ipe-test-list-options
-      '((ipe-move-point-on-insert   nil)
-	(ipe-prefix-moves-close-p   t)
-	(ipe-edit--movement-keysets '(modifiers))
-	(ipe-pairs                  '(("{" "{" "}" (:movement list))
-				      ("[" "[" "]" (:movement list))))
-	(ipe-mode-pairs             nil)))
+(defvar ipe-test-list-options
+  '((ipe-move-point-on-insert   nil)
+    (ipe-prefix-moves-close-p   t)
+    (ipe-edit--movement-keysets '(modifiers))
+    (ipe-pairs
+     '(("{" "{" "}" (:movement list))
+       ("[" "[" "]" (:movement list))))
+    (ipe-mode-pairs             nil))
+  "Options used by `ipe-test-def-kbd' for `ipe-test-list'.")
 
 (ipe-test-def-kbd list-basic-insert-1 ()
   "Test `insert-pair-edit' in an empty buffer.
@@ -963,4 +965,4 @@ Using a 'list PAIR with a numeric prefix."
 
 (provide 'ipe-test-list)
 
-;; ipe-test-list.el ends here
+;;; ipe-test-list.el ends here

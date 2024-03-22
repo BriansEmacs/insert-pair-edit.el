@@ -49,13 +49,14 @@
 (require 'ert)
 (require 'ipe-test)
 
-(setq ipe-test-matching-options
-      '((ipe-move-point-on-insert   nil)
-        (ipe--escapes-show-p        t)
-        (ipe-prefix-moves-close-p   t)
-        (ipe-edit--movement-keysets '(modifiers))
-        (ipe-pairs '(("("  "(" ")")))
-        (ipe-mode-pairs nil)))
+(defvar ipe-test-matching-options
+  '((ipe-move-point-on-insert   nil)
+	(ipe--escapes-show-p        t)
+	(ipe-prefix-moves-close-p   t)
+	(ipe-edit--movement-keysets '(modifiers))
+	(ipe-pairs '(("("  "(" ")")))
+	(ipe-mode-pairs nil))
+  "Options used by `ipe-test-def-kbd' for `ipe-test-matching'.")
 
 (ipe-test-def-kbd matching-update-1 ()
   "Test `insert-pair-edit-update' function with nested PAIRs.
@@ -129,4 +130,4 @@ Test multiple unmatched PAIRs."
 
 (provide 'ipe-test-matching)
 
-;; ipe-test-matching.el ends here
+;;; ipe-test-matching.el ends here

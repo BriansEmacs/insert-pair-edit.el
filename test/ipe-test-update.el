@@ -52,21 +52,21 @@
 (require 'ert)
 (require 'ipe-test)
 
-(setq ipe-test-update-options
-      '((ipe-move-point-on-insert   nil)
-        (ipe-prefix-moves-close-p   t)
-        (ipe-edit--movement-keysets '(modifiers))
-        (ipe-pairs
-         '(
-           ("("  "((((("  ")))))")
-           ("{"  "{{{{{"  "}}}}}")
-           ("<"  "<"      ">")
-           ("'"  "'"      "'"    (:escapes (("'" "\\'"))))
-           ("\"" "\""     "\""   (:escapes (("\"" "\\\""))))
-           (";"  "<-- "   " -->" (:movement line :infix " -- "))
-           ("*"  "/*"     "*/"   (:movement line :infix "**"))
-           ("1"  "/*"     "*/"   (:movement line))))
-        (ipe-mode-pairs        nil)))
+(defvar ipe-test-update-options
+  '((ipe-move-point-on-insert   nil)
+    (ipe-prefix-moves-close-p   t)
+    (ipe-edit--movement-keysets '(modifiers))
+    (ipe-pairs
+     '(("("  "((((("  ")))))")
+       ("{"  "{{{{{"  "}}}}}")
+       ("<"  "<"      ">")
+       ("'"  "'"      "'"    (:escapes (("'" "\\'"))))
+       ("\"" "\""     "\""   (:escapes (("\"" "\\\""))))
+       (";"  "<-- "   " -->" (:movement line :infix " -- "))
+       ("*"  "/*"     "*/"   (:movement line :infix "**"))
+       ("1"  "/*"     "*/"   (:movement line))))
+    (ipe-mode-pairs        nil))
+  "Options used by `ipe-test-def-kbd' for `ipe-test-update'.")
 
 (ipe-test-def-kbd update-cursor-1 ()
   "Test `insert-pair-edit-update' cursor position.
@@ -946,4 +946,4 @@ Update with single empty line at end of buffer."
 
 (provide 'ipe-test-update)
 
-;; ipe-test-update.el ends here
+;;; ipe-test-update.el ends here

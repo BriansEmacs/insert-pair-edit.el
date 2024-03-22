@@ -55,17 +55,17 @@
 (require 'ert)
 (require 'ipe-test)
 
-(setq ipe-test-add-options
-      '((ipe-move-point-on-insert   nil)
-        (ipe-prefix-moves-close-p   t)
-        (ipe-edit--movement-keysets '(modifiers))
-        (ipe-pairs
-         '(
-           ("("  "(((((" ")))))")
-           ("<"  "<"     ">")
-           ("'"  "'"     "'"     (:escapes (("'" "\\'"))))
-           (";"  "<-- "  " -->"  (:movement line :infix    " -- "))))
-        (ipe-mode-pairs        nil)))
+(defvar ipe-test-add-options
+  '((ipe-move-point-on-insert   nil)
+    (ipe-prefix-moves-close-p   t)
+    (ipe-edit--movement-keysets '(modifiers))
+    (ipe-pairs
+     '(("("  "(((((" ")))))")
+       ("<"  "<"     ">")
+       ("'"  "'"     "'"     (:escapes (("'" "\\'"))))
+       (";"  "<-- "  " -->"  (:movement line :infix    " -- "))))
+    (ipe-mode-pairs        nil))
+  "Options used by `ipe-test-def-kbd' for `ipe-test-add'.")
 
 (ipe-test-def-kbd add-next-pair-1 ()
   "Test `insert-pair-edit' `ipe-edit--add-next-pair'.
@@ -237,4 +237,4 @@ Using a 'word PAIR.  With prefix arg."
 
 (provide 'ipe-test-add)
 
-;; ipe-test-add.el ends here
+;;; ipe-test-add.el ends here

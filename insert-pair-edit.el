@@ -45,7 +45,6 @@
 ;;
 ;; The `ipe-edit-mode' supplies commands to interactively and
 ;; independently move the overlays representing the OPEN and CLOSE
-;;
 ;; strings for the inserted PAIR about the buffer, and to either
 ;; insert (`ipe-edit--insert-pair'), or discard (`ipe-edit--abort')
 ;; them once they have been correctly positioned.

@@ -47,27 +47,27 @@
 
 (require 'ert)
 
-(ert-deftest ipe-test--custom-basic-1 ()
-    "Test `ipe-custom--basic-defn-get-p'"
+(ert-deftest ipe-test-custom--basic-1 ()
+  "Test `ipe-custom--basic-defn-get-p'."
 
-    ;; Invalid Basic PAIR definitions.
-    (mapcar
-     (lambda (x)
-       (should (eq (ipe-custom--basic-defn-get-p x) nil)))
-     '(()
-       ("(")
-       ("(" "(")
-       ("(" "(" ")" ())
-       ("(" "(" ")" (:movement line))))
+  ;; Invalid Basic PAIR definitions.
+  (mapc
+   (lambda (x)
+     (should (eq (ipe-custom--basic-defn-get-p x) nil)))
+   '(()
+     ("(")
+     ("(" "(")
+     ("(" "(" ")" ())
+     ("(" "(" ")" (:movement line))))
 
-    ;; Valid Basic PAIR definitions.
-    (should (eq (ipe-custom--basic-defn-get-p '("" "" "")) t)))
+  ;; Valid Basic PAIR definitions.
+  (should (eq (ipe-custom--basic-defn-get-p '("" "" "")) t)))
 
-(ert-deftest ipe-test--custom-intermediate-1 ()
-  "Test `ipe-custom--intermediate-defn-get-p'"
+(ert-deftest ipe-test-custom--intermediate-1 ()
+  "Test `ipe-custom--intermediate-defn-get-p'."
 
   ;; Invalid Intermediate PAIR definitions.
-  (mapcar
+  (mapc
    (lambda (x)
      (should (eq (ipe-custom--intermediate-defn-get-p x) nil)))
    '(()
@@ -76,13 +76,13 @@
      ("(" "(" ")" ())
      ("(" "(" ")" (:movement char :move-point      open-start))
      ("(" "(" ")" (:movement char :indent-function current))
-;; TODO: Add regexp update matching.
-;;   ("(" "(" ")" (:movement char :open-regexp     ".*"))
-;;   ("(" "(" ")" (:movement char :close-regexp    ".*"))
+     ;; TODO: Add regexp update matching.
+     ;;   ("(" "(" ")" (:movement char :open-regexp     ".*"))
+     ;;   ("(" "(" ")" (:movement char :close-regexp    ".*"))
      ("(" "(" ")" (:movement char :menu            "Test"))))
 
   ;; Valid Intermediate PAIR definitions.
-  (mapcar
+  (mapc
    (lambda (x)
      (should (eq (ipe-custom--intermediate-defn-get-p x) t)))
    '(("(" "(" ")" (:movement char))
@@ -90,11 +90,11 @@
      ("(" "(" ")" (:movement word))
      ("(" "(" ")" (:movement list)))))
 
-(ert-deftest ipe-test--custom-advanced-1 ()
-  "Test `ipe-custom--advanced-defn-get-p'"
+(ert-deftest ipe-test-custom--advanced-1 ()
+  "Test `ipe-custom--advanced-defn-get-p'."
 
   ;; Invalid Advanced PAIR definitions.
-  (mapcar
+  (mapc
    (lambda (x)
      (should (eq (ipe-custom--advanced-defn-get-p x) nil)))
    '(()
@@ -104,7 +104,7 @@
      ("(" "(" ")" (:movement custom))))
 
   ;; Valid Advanced PAIR definitions.
-  (mapcar
+  (mapc
    (lambda (x)
      (should (eq (ipe-custom--advanced-defn-get-p x) t)))
    '(("(" "(" ")" (:movement char))
@@ -113,11 +113,11 @@
      ("(" "(" ")" (:movement list))
      ("(" "(" ")" (:movement char :move-point      open-start))
      ("(" "(" ")" (:movement char :indent-function current))
-;; TODO: Add regexp update matching.
-;;   ("(" "(" ")" (:movement char :open-regexp     ".*"))
-;;   ("(" "(" ")" (:movement char :close-regexp    ".*"))
+     ;; TODO: Add regexp update matching.
+     ;;   ("(" "(" ")" (:movement char :open-regexp     ".*"))
+     ;;   ("(" "(" ")" (:movement char :close-regexp    ".*"))
      ("(" "(" ")" (:movement char :menu            "Test")))))
 
 (provide 'ipe-test-custom)
 
-;; ipe-test-custom.el ends here
+;;; ipe-test-custom.el ends here

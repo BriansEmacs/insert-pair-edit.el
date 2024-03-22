@@ -59,22 +59,22 @@
 (require 'ert)
 (require 'ipe-test)
 
-(setq ipe-test-adjust-options
-      '((ipe-move-point-on-insert   nil)
-	(ipe-prefix-moves-close-p   t)
-	(ipe-edit--movement-keysets '(modifiers))
-	(ipe-pairs
-	 '(
-	   ("("  "(((((" ")))))")
-	   ("<"  "<"     ">")
-	   ("'"  "'"     "'"     (:escapes (("'" "\\'"))))
-	   ("{"  "{"     "}"     (:movement line))
-	   ("-"  "<-- "  " -->"  (:movement line :infix " -- "))
-	   (";"  ";"     ";"     (:movement line :infix ";"))
-	   ("1"  ";"     ""      (:movement line :infix ";"))
-	   ("2"  ""      ";"     (:movement line :infix ";"))
-	   ("3"  ""      ""      (:movement line :infix ";"))))
-	(ipe-mode-pairs        nil)))
+(defvar ipe-test-adjust-options
+  '((ipe-move-point-on-insert   nil)
+    (ipe-prefix-moves-close-p   t)
+    (ipe-edit--movement-keysets '(modifiers))
+    (ipe-pairs
+     '(("("  "(((((" ")))))")
+       ("<"  "<"     ">")
+       ("'"  "'"     "'"     (:escapes (("'" "\\'"))))
+       ("{"  "{"     "}"     (:movement line))
+       ("-"  "<-- "  " -->"  (:movement line :infix " -- "))
+       (";"  ";"     ";"     (:movement line :infix ";"))
+       ("1"  ";"     ""      (:movement line :infix ";"))
+       ("2"  ""      ";"     (:movement line :infix ";"))
+       ("3"  ""      ""      (:movement line :infix ";"))))
+    (ipe-mode-pairs        nil))
+  "Options used by `ipe-test-def-kbd' for `ipe-test--adjust'.")
 
 (ipe-test-def-kbd adjust-next-pair-1 ()
   "Test `insert-pair-edit' `ipe-edit--update-next-pair'."
@@ -202,7 +202,7 @@ To nested PAIR."
   "The <quick> brown (((((|fox))))) jumps (((((over))))) the (((((lazy))))) dog."
   "C-u M-( ( C-r ( < RET")
 
-(ipe-test-def-kbd adjust-previous-pair-1 ()
+(ipe-test-def-kbd adjust-previous-pair-2 ()
   "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
 
 With no previous PAIR."
@@ -1851,4 +1851,4 @@ With differing open-toggle / close-toggle."
 
 (provide 'ipe-test-adjust)
 
-;; ipe-test-adjust.el ends here
+;;; ipe-test-adjust.el ends here

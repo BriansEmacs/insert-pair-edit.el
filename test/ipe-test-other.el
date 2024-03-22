@@ -49,19 +49,19 @@
 (require 'ert)
 (require 'ipe-test)
 
-(setq ipe-test-other-options
-      '((ipe-move-point-on-insert   nil)
-	(ipe-prefix-moves-close-p   t)
-	(ipe-edit--movement-keysets '(modifiers))
-	(ipe-pairs
-	 '(
-	   ("(" "(" ")")
-	   ("<" "<" ">")
-	   ("`" "`" "'"     (:movement char))
-	   ("{" "{" "}"     (:movement word))
-	   ("[" "[" "]"     (:movement line))
-	   ("/" "/**" " */" (:movement line :infix " * "))))
-	(ipe-mode-pairs nil)))
+(defvar ipe-test-other-options
+  '((ipe-move-point-on-insert   nil)
+    (ipe-prefix-moves-close-p   t)
+    (ipe-edit--movement-keysets '(modifiers))
+    (ipe-pairs
+     '(("(" "(" ")")
+       ("<" "<" ">")
+       ("`" "`" "'"     (:movement char))
+       ("{" "{" "}"     (:movement word))
+       ("[" "[" "]"     (:movement line))
+       ("/" "/**" " */" (:movement line :infix " * "))))
+    (ipe-mode-pairs nil))
+  "Options used by `ipe-test-def-kbd' for `ipe-test-other'.")
 
 (ipe-test-def-kbd other-replace-1 ()
   "Test `insert-pair-edit-replace'.
@@ -239,4 +239,4 @@ calls."
 
 (provide 'ipe-test-other)
 
-;; ipe-test-other.el ends here
+;;; ipe-test-other.el ends here

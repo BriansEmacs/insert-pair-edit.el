@@ -55,39 +55,41 @@
 ;;; Code:
 
 (require 'ert)
+(require 'ipe)
 (require 'ipe-test)
 
-(setq ipe-test-options-base
-      '(
-	;; 'Display Only' options - not tested.
-	;;
-	;; (ipe-elide-description       0)
-	;; (ipe-empty-close-string      ")")
-	;; (ipe-empty-open-string       "(")
-	;; (ipe-menu-display-in-edit-p  t)
-	;; (ipe-menu-support-p          t)
-	;; (ipe-mouse-support-p         t)
-	;; (ipe-pair-sort               'mnemonic)
-	;;
-	(ipe-edit--movement-keysets     '(modifiers))
-	(ipe-mnemonic-prompt-shortcut-p t)
-	(ipe-move-point-on-insert       'resume)
-	(ipe-prefix-moves-close-p       nil)
-	(ipe-set-mark-on-insert         nil)
-	(ipe-pairs '(
-		     ("(" "("     ")")
-		     ("<" "<"     ">"     (:movement   char))
-		     ("{" "{"     "}"     (:movement   word))
-		     ("[" "["     "]"     (:movement   line))
-		     ("0" "(((((" ")))))")
-		     ("1" "(((((" ")))))" (:move-point open-beg))
-		     ("2" "(((((" ")))))" (:move-point open-end))
-		     ("3" "(((((" ")))))" (:move-point close-beg))
-		     ("4" "(((((" ")))))" (:move-point close-end))
-		     ("5" "(((((" ")))))" (:move-point 3))
-		     ("6" "(((((" ")))))" (:move-point -3))
-		     ("7" "("     ")"     (:auto-insert t))))
-	(ipe-mode-pairs           nil)))
+;; 'Display Only' options - not tested.
+;;
+;; (ipe-elide-description       0)
+;; (ipe-empty-close-string      ")")
+;; (ipe-empty-open-string       "(")
+;; (ipe-menu-display-in-edit-p  t)
+;; (ipe-menu-support-p          t)
+;; (ipe-mouse-support-p         t)
+;; (ipe-pair-sort               'mnemonic)
+;;
+(defvar ipe-test-options-base
+  '(
+    (ipe-edit--movement-keysets     '(modifiers))
+    (ipe-mnemonic-prompt-shortcut-p t)
+    (ipe-move-point-on-insert       'resume)
+    (ipe-prefix-moves-close-p       nil)
+    (ipe-set-mark-on-insert         nil)
+    (ipe-pairs
+     '(("(" "("     ")")
+       ("<" "<"     ">"     (:movement   char))
+       ("{" "{"     "}"     (:movement   word))
+       ("[" "["     "]"     (:movement   line))
+       ("0" "(((((" ")))))")
+       ("1" "(((((" ")))))" (:move-point open-beg))
+       ("2" "(((((" ")))))" (:move-point open-end))
+       ("3" "(((((" ")))))" (:move-point close-beg))
+       ("4" "(((((" ")))))" (:move-point close-end))
+       ("5" "(((((" ")))))" (:move-point 3))
+       ("6" "(((((" ")))))" (:move-point -3))
+       ("7" "("     ")"     (:auto-insert t))))
+    (ipe-mode-pairs           nil))
+  "Options used by `ipe-test-def-kbd' for `ipe-test-options'.")
 
 (ipe-test-def-kbd options-movement-keyset-modifiers-1 ()
   "Test `insert-pair-edit' with `ipe-edit-movement-keysets' 'modifiers.
@@ -721,4 +723,4 @@ With (:auto-insert t) & `ipe-prefix-moves-close-p' set.
 
 (provide 'ipe-test-options)
 
-;; ipe-test-options.el ends here
+;;; ipe-test-options.el ends here

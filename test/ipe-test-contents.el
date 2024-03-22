@@ -58,16 +58,16 @@
 (require 'ert)
 (require 'ipe-test)
 
-(setq ipe-test-contents-options
-      '((ipe-move-point-on-insert   nil)
-        (ipe-prefix-moves-close-p   t)
-        (ipe-edit--movement-keysets '(modifiers))
-        (ipe-pairs
-         '(
-           ("(" "(" ")")
-           ("<" "<" ">" (:movement line))
-           ("*" "" ""   (:movement line))))
-        (ipe-mode-pairs nil)))
+(defvar ipe-test-contents-options
+  '((ipe-move-point-on-insert   nil)
+    (ipe-prefix-moves-close-p   t)
+    (ipe-edit--movement-keysets '(modifiers))
+    (ipe-pairs
+     '(("(" "(" ")")
+       ("<" "<" ">" (:movement line))
+       ("*" "" ""   (:movement line))))
+    (ipe-mode-pairs nil))
+  "Options used by `ipe-test-def-kbd' for `ipe-test-contents'.")
 
 (ipe-test-def-kbd contents-kill-1 ()
   "Test `ipe-edit--contents-kill' function."
@@ -243,7 +243,7 @@ Cursor at beginning of buffer."
   "|67890"
   "M-( * % x C-a C-k 67890 RET RET")
 
-(ipe-test-def-kbd contents-replace-6 ()
+(ipe-test-def-kbd contents-replace-7 ()
   "Test `ipe-edit--contents-replace' function.
 
 Replace entire buffer.
@@ -255,7 +255,7 @@ Cursor in middle of buffer."
   "67|890"
   "M-( * % x C-a C-k 67890 RET RET")
 
-(ipe-test-def-kbd contents-replace-7 ()
+(ipe-test-def-kbd contents-replace-8 ()
   "Test `ipe-edit--contents-replace' function.
 
 Replace entire buffer.
@@ -293,4 +293,4 @@ Cursor at end of buffer."
 
 (provide 'ipe-test-contents)
 
-;; ipe-test-contents.el ends here
+;;; ipe-test-contents.el ends here

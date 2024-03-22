@@ -53,16 +53,16 @@
 (require 'ert)
 (require 'ipe-test)
 
-(setq ipe-test-edit-options
-      '((ipe-move-point-on-insert   nil)
-        (ipe-prefix-moves-close-p   t)
-        (ipe-edit--movement-keysets '(modifiers))
-        (ipe-pairs
-         '(
-           ("(" "(" ")")
-           ("<" "<" ">")
-           (";" "<-- " " -->" (:movement line :infix " -- "))))
-        (ipe-mode-pairs        nil)))
+(defvar ipe-test-edit-options
+  '((ipe-move-point-on-insert   nil)
+    (ipe-prefix-moves-close-p   t)
+    (ipe-edit--movement-keysets '(modifiers))
+    (ipe-pairs
+     '(("(" "(" ")")
+       ("<" "<" ">")
+       (";" "<-- " " -->" (:movement line :infix " -- "))))
+    (ipe-mode-pairs        nil))
+  "Options used by `ipe-test-def-kbd' for `ipe-test-edit'.")
 
 (ipe-test-def-kbd edit-update-1 ()
   "Test `insert-pair-edit-update' function.
@@ -256,4 +256,4 @@ Using a :infix"
 
 (provide 'ipe-test-edit)
 
-;; ipe-test-edit.el ends here
+;;; ipe-test-edit.el ends here

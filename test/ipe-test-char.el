@@ -63,13 +63,15 @@
 (require 'ert)
 (require 'ipe-test)
 
-(setq ipe-test-char-options
-      '((ipe-move-point-on-insert   nil)
-        (ipe-prefix-moves-close-p   t)
-        (ipe-edit--movement-keysets '(modifiers))
-        (ipe-pairs                  '(("(" "(" ")" (:movement char))
-                                      ("[" "[" "]")))
-        (ipe-mode-pairs             nil)))
+(defvar ipe-test-char-options
+  '((ipe-move-point-on-insert   nil)
+    (ipe-prefix-moves-close-p   t)
+    (ipe-edit--movement-keysets '(modifiers))
+    (ipe-pairs
+     '(("(" "(" ")" (:movement char))
+       ("[" "[" "]")))
+    (ipe-mode-pairs             nil))
+  "Options used by `ipe-test-def-kbd' for `ipe-test-char'.")
 
 (ipe-test-def-kbd char-basic-insert-1 ()
   "Test `insert-pair-edit' in an empty buffer.
@@ -211,7 +213,7 @@ Using a 'char PAIR at the beginning of line."
     "|The quick brown fox jumps over the lazy dog.")
   '("(The quick brown fox jumps over the lazy dog."
     "|)The quick brown fox jumps over the lazy dog.")
-    "M-( ( C-a RET")
+  "M-( ( C-a RET")
 
 (ipe-test-def-kbd char-open-start-4 ()
   "Test `insert-pair-edit' OPEN start.
@@ -223,7 +225,7 @@ Using a 'char PAIR at the end of buffer."
     "The quick brown fox jumps over the lazy dog.|")
   '("(The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.|)")
-    "M-( ( C-a C-a RET")
+  "M-( ( C-a C-a RET")
 
 (ipe-test-def-kbd char-open-start-5 ()
   "Test `insert-pair-edit' OPEN start x2.
@@ -1543,4 +1545,4 @@ Using a 'char PAIR."
 
 (provide 'ipe-test-char)
 
-;; ipe-test-char.el ends here
+;;; ipe-test-char.el ends here

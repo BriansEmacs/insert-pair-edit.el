@@ -49,26 +49,36 @@
 (require 'ert)
 (require 'ipe-test)
 
-(setq ipe-test-escape-options
-      '((ipe-move-point-on-insert   nil)
-        (ipe--escapes-show-p        t)
-        (ipe-prefix-moves-close-p   t)
-        (ipe-edit--movement-keysets '(modifiers))
-        (ipe-pairs
-         '(
-           ("'"  "'"      "'"        (:escapes (("'" "\\'"))))
-           ("\"" "\""     "\""       (:escapes (("\"" "\\\"") ("\\" "\\\\"))))
-           ("`"  "`"      "`"        (:escapes (("`" "\\`")   ("\\" "\\\\")) :movement char))
-           ("t"  "<code>" "</code>"  (:escapes (("<" "&lt;")  (">" "&gt;") ("&" "&amp;"))))
-           ("1"  ""       ""         (:escapes (("\\" "\\\\"))))
-           ("2"  "("      ")"        (:escapes (("1"  "11") ("2" "22") ("12" "33"))))
-           ("3"  "("      ")"        (:escapes (("12" "33") ("1" "11") ("2"  "22"))))
-           ("4"  "("      ")"        (:escapes (("1" "22222") ("3" "4444") ("5"  "666") ("7" "88") ("9" "0"))))
-           ("5"  "("      ")"        (:escapes (("22222" "1") ("4444" "3") ("666"  "5") ("88" "7") ("0" "9"))))
-           ("6"  ""       ""         (:escapes (("11" "22222")) :movement line))
-           ("7"  ""       ""         (:escapes (("22222" "11")) :movement line))
-           ))
-        (ipe-mode-pairs             nil)))
+(defvar ipe-test-escape-options
+  '((ipe-move-point-on-insert   nil)
+    (ipe--escapes-show-p        t)
+    (ipe-prefix-moves-close-p   t)
+    (ipe-edit--movement-keysets '(modifiers))
+    (ipe-pairs
+     '(("'"  "'"  "'"
+	(:escapes (("'" "\\'"))))
+       ("\"" "\"" "\""
+	(:escapes (("\"" "\\\"") ("\\" "\\\\"))))
+       ("`"  "`"  "`"
+	(:escapes (("`" "\\`")   ("\\" "\\\\")) :movement char))
+       ("t"  "<code>" "</code>"
+	(:escapes (("<" "&lt;")  (">" "&gt;") ("&" "&amp;"))))
+       ("1"  ""   ""
+	(:escapes (("\\" "\\\\"))))
+       ("2"  "("  ")"
+	(:escapes (("1"  "11") ("2" "22") ("12" "33"))))
+       ("3"  "("  ")"
+	(:escapes (("12" "33") ("1" "11") ("2"  "22"))))
+       ("4"  "("  ")"
+	(:escapes (("1" "22222") ("3" "4444") ("5"  "666") ("7" "88") ("9" "0"))))
+       ("5"  "("  ")"
+	(:escapes (("22222" "1") ("4444" "3") ("666"  "5") ("88" "7") ("0" "9"))))
+       ("6"  ""   ""
+	(:escapes (("11" "22222")) :movement line))
+       ("7"  ""   ""
+	(:escapes (("22222" "11")) :movement line))))
+    (ipe-mode-pairs             nil))
+  "Options used by `ipe-test-def-kbd' for `ipe-test-escape'.")
 
 (ipe-test-def-kbd escape-insert-1 ()
   "Test `insert-pair-edit' with :escapes.
@@ -746,4 +756,4 @@ Test multiple deletes (x4)."
 
 (provide 'ipe-test-escape)
 
-;; ipe-test-escape.el ends here
+;;; ipe-test-escape.el ends here

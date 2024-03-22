@@ -56,12 +56,13 @@
 (require 'ert)
 (require 'ipe-test)
 
-(setq ipe-test-insert-and-options
-      '((ipe-move-point-on-insert   nil)
-        (ipe-prefix-moves-close-p   t)
-        (ipe-edit--movement-keysets '(modifiers))
-        (ipe-pairs                  '(("(" "<start>" "<end>")))
-        (ipe-mode-pairs             nil)))
+(defvar ipe-test-insert-and-options
+  '((ipe-move-point-on-insert   nil)
+    (ipe-prefix-moves-close-p   t)
+    (ipe-edit--movement-keysets '(modifiers))
+    (ipe-pairs                  '(("(" "<start>" "<end>")))
+    (ipe-mode-pairs             nil))
+  "Options used by `ipe-test-def-kbd' for `ipe-test-insert-and'.")
 
 (ipe-test-def-kbd insert-and-goto-open-1 ()
   "Test `insert-pair-edit' \"Insert And... -> Goto Open\".
@@ -185,4 +186,4 @@ Using a 'line PAIR."
 
 (provide 'ipe-test-insert-and)
 
-;; ipe-test-insert-and.el ends here
+;;; ipe-test-insert-and.el ends here

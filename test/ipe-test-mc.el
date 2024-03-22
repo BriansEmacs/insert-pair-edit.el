@@ -48,16 +48,17 @@
 (require 'ert)
 (require 'ipe-test)
 
-(setq ipe-test-mc-options
-      '((ipe-move-point-on-insert   nil)
-	(ipe-prefix-moves-close-p   t)
-	(ipe-edit--movement-keysets '(modifiers))
-	(ipe-pairs
-	 '(("(" "(" ")")
-	   ("S" "<start>" "<end>")
-	   ("L" "<really-large-open-tag>" "<really-large-close-tag>")
-	   ("i" "(" ")" (:auto-insert t))))
-	(ipe-mode-pairs             nil)))
+(defvar ipe-test-mc-options
+  '((ipe-move-point-on-insert   nil)
+    (ipe-prefix-moves-close-p   t)
+    (ipe-edit--movement-keysets '(modifiers))
+    (ipe-pairs
+     '(("(" "(" ")")
+       ("S" "<start>" "<end>")
+       ("L" "<really-large-open-tag>" "<really-large-close-tag>")
+       ("i" "(" ")" (:auto-insert t))))
+    (ipe-mode-pairs             nil))
+  "Options used by `ipe-test-def-kbd' for `ipe-test-mc'.")
 
 (ipe-test-def-kbd mc-basic-insert-1 ()
   "Test `insert-pair-edit' at start of a buffer.
@@ -1963,4 +1964,4 @@ Using a 'word PAIR with multiple-cursors."
 
 (provide 'ipe-test-mc)
 
-;; ipe-test-mc.el ends here
+;;; ipe-test-mc.el ends here

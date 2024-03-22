@@ -49,22 +49,22 @@
 (require 'ert)
 (require 'ipe-test)
 
-(setq ipe-test-missing-options
-      '((ipe-move-point-on-insert   nil)
-	(ipe-prefix-moves-close-p   t)
-	(ipe-edit--movement-keysets '(modifiers))
-	(ipe-pairs
-	 '(
-	   ("1" "<"   ""    (:movement char))
-	   ("2" ""    ">"   (:movement char))
+(defvar ipe-test-missing-options
+  '((ipe-move-point-on-insert   nil)
+    (ipe-prefix-moves-close-p   t)
+    (ipe-edit--movement-keysets '(modifiers))
+    (ipe-pairs
+     '(("1" "<"   ""    (:movement char))
+       ("2" ""    ">"   (:movement char))
        ("3" ""    ""    (:movement char))
-	   ("4" "{{{" ""    (:movement word))
-	   ("5" ""    "}}}" (:movement word))
-	   ("6" ""    ""    (:movement word))
-	   ("7" "// " ""    (:movement line :infix "// "))
-	   ("8" ""    "// " (:movement line :infix "// "))
-	   ("9" ""    ""    (:movement line :infix "// "))))
-	(ipe-mode-pairs nil)))
+       ("4" "{{{" ""    (:movement word))
+       ("5" ""    "}}}" (:movement word))
+       ("6" ""    ""    (:movement word))
+       ("7" "// " ""    (:movement line :infix "// "))
+       ("8" ""    "// " (:movement line :infix "// "))
+       ("9" ""    ""    (:movement line :infix "// "))))
+    (ipe-mode-pairs nil))
+  "Options used by `ipe-test-def-kbd' for `ipe-test-missing'.")
 
 ;; *********************************************************************
 ;; Missing CLOSE
@@ -90,7 +90,7 @@ PAIR has only a multi-character OPEN string (:movement 'word)."
   "{{{|"
   "M-( 4")
 
-(ipe-test-def-kbd missing-close-empty-buffer-insert-2 ()
+(ipe-test-def-kbd missing-close-empty-buffer-insert-3 ()
   "Test `insert-pair-edit' in an empty buffer.
 
 PAIR has only a multi-character OPEN string (:movement 'line)."
@@ -743,4 +743,4 @@ Region active."
 
 (provide 'ipe-test-missing)
 
-;; ipe-test-missing.el ends here
+;;; ipe-test-missing.el ends here

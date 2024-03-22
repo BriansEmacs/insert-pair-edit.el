@@ -63,13 +63,15 @@
 (require 'ert)
 (require 'ipe-test)
 
-(setq ipe-test-word-options
-      '((ipe-move-point-on-insert   nil)
-	(ipe-prefix-moves-close-p   t)
-	(ipe-edit--movement-keysets '(modifiers))
-	(ipe-pairs                  '(("(" "(" ")")
-				      ("[" "[" "]")))
-	(ipe-mode-pairs             nil)))
+(defvar ipe-test-word-options
+  '((ipe-move-point-on-insert   nil)
+    (ipe-prefix-moves-close-p   t)
+    (ipe-edit--movement-keysets '(modifiers))
+    (ipe-pairs
+     '(("(" "(" ")")
+       ("[" "[" "]")))
+    (ipe-mode-pairs             nil))
+  "Options used by `ipe-test-def-kbd' for `ipe-test-word'.")
 
 (ipe-test-def-kbd word-basic-insert-1 ()
   "Test `insert-pair-edit' in an empty buffer.
@@ -1540,4 +1542,4 @@ Using a 'word PAIR."
 
 (provide 'ipe-test-word)
 
-;; ipe-test-word.el ends here
+;;; ipe-test-word.el ends here

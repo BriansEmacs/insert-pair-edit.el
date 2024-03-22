@@ -40,7 +40,7 @@
 ;; output text, and cursor positions) with an 'expected' output.
 ;;
 ;; The tests within this file are used to test the 'on-the-fly'
-;; editing of an 'Insert Pair Edit' (ipe) PAIR definition. This is
+;; editing of an 'Insert Pair Edit' (ipe) PAIR definition.  This is
 ;; done via the 'Edit PAIR Definitions' 'Insert Pair Edit'
 ;; `ipe-edit-mode' commands:
 ;;
@@ -55,29 +55,31 @@
 (require 'ert)
 (require 'ipe-test)
 
-(setq ipe-test-defn-options
-      '((ipe-move-point-on-insert   nil)
-        (ipe-prefix-moves-close-p   t)
-        (ipe-edit--movement-keysets '(modifiers))
-        (ipe-pairs                  '(("(" "(" ")")
-                                      ("[" "[" "]")
-                                      ("<" "<" ">")))
-        (ipe-emacs-lisp-pairs       '(("<" "**" "**")))
-        (ipe-mode-pairs             '((html-mode (("<" "&lt;" "&gt;")))
-                                      (emacs-lisp-mode ipe-emacs-lisp-pairs)))))
+(defvar ipe-test-defn-options
+  '((ipe-move-point-on-insert   nil)
+    (ipe-prefix-moves-close-p   t)
+    (ipe-edit--movement-keysets '(modifiers))
+    (ipe-pairs
+     '(("(" "(" ")")
+       ("[" "[" "]")
+       ("<" "<" ">")))
+    (ipe-emacs-lisp-pairs       '(("<" "**" "**")))
+    (ipe-mode-pairs             '((html-mode (("<" "&lt;" "&gt;")))
+				  (emacs-lisp-mode ipe-emacs-lisp-pairs))))
+  "Options used by `ipe-test-def-kbd' for `ipe-test-defn'.")
 
 (defun ipe-test-defn--setup ()
   "Override `customize-set-variable' / `customize-save-customized'.
 
-This function is used to provide alternative 'empty' functions for the
-'customize-set-variable' / 'customize-save-customized' functions when
-running tests of the 'ipe-defn--*' functions so that the tests to not
+This function is used to provide alternative empty functions for the
+`customize-set-variable' / `customize-save-customized' functions when
+running tests of the `ipe-defn--*' functions so that the tests to not
 permanently write changes to the custom.el files."
   (fset 'ipe-test-defn--customize-set-variable
-        (symbol-function 'customize-set-variable))
+	(symbol-function 'customize-set-variable))
   (fset 'customize-set-variable (lambda (x y)))
   (fset 'ipe-test-defn--customize-save-customized
-        (symbol-function 'customize-save-customized))
+	(symbol-function 'customize-save-customized))
   (fset 'customize-save-customized (lambda ()))
   (when (functionp 'icy-mode)
     (funcall 'icy-mode -1)))
@@ -89,9 +91,9 @@ This functions restores the `customize-set-variable' /
 `customize-save-customized' functions overridden by
 `ipe-test-defn--setup' to their original values."
   (fset 'customize-set-variable
-        (symbol-function 'ipe-test-defn--customize-set-variable))
+	(symbol-function 'ipe-test-defn--customize-set-variable))
   (fset 'customize-save-customized
-        (symbol-function 'ipe-test-defn--customize-save-customized)))
+	(symbol-function 'ipe-test-defn--customize-save-customized)))
 
 (setq ipe-test-defn--teardown 'ipe-test-defn--teardown)
 
@@ -199,4 +201,4 @@ This tests a mode with 'inline' PAIR definitions."
 
 (provide 'ipe-test-defn)
 
-;; ipe-test-defn.el ends here
+;;; ipe-test-defn.el ends here

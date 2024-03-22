@@ -49,13 +49,15 @@
 (require 'ert)
 (require 'ipe-test)
 
-(setq ipe-test-infix-options
-      '((ipe-move-point-on-insert   nil)
-        (ipe-prefix-moves-close-p   t)
-        (ipe-edit--movement-keysets '(modifiers))
-        (ipe-pairs                  '(("<" "<-- " " -->" (:movement line :infix " -- "))
-                                      ("[" "[" "]"       (:movement line :infix "-"))))
-        (ipe-mode-pairs             nil)))
+(defvar ipe-test-infix-options
+  '((ipe-move-point-on-insert   nil)
+    (ipe-prefix-moves-close-p   t)
+    (ipe-edit--movement-keysets '(modifiers))
+    (ipe-pairs
+     '(("<" "<-- " " -->" (:movement line :infix " -- "))
+       ("[" "[" "]"       (:movement line :infix "-"))))
+    (ipe-mode-pairs             nil))
+  "Options used by `ipe-test-def-kbd' for `ipe-test-infix'.")
 
 (ipe-test-def-kbd infix-basic-insert-1 ()
   "Test `insert-pair-edit' in an empty buffer.
@@ -1465,4 +1467,4 @@ Using a 'line (+ :infix) PAIR with a numeric prefix."
 
 (provide 'ipe-test-infix)
 
-;; ipe-test-infix.el ends here
+;;; ipe-test-infix.el ends here

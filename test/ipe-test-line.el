@@ -63,13 +63,15 @@
 (require 'ert)
 (require 'ipe-test)
 
-(setq ipe-test-line-options
-      '((ipe-move-point-on-insert   nil)
-	(ipe-prefix-moves-close-p   t)
-	(ipe-edit--movement-keysets '(modifiers))
-	(ipe-pairs                  '(("(" "(" ")" (:movement line))
-				      ("[" "[" "]" (:movement line))))
-	(ipe-mode-pairs             nil)))
+(defvar ipe-test-line-options
+  '((ipe-move-point-on-insert   nil)
+    (ipe-prefix-moves-close-p   t)
+    (ipe-edit--movement-keysets '(modifiers))
+    (ipe-pairs
+     '(("(" "(" ")" (:movement line))
+       ("[" "[" "]" (:movement line))))
+    (ipe-mode-pairs             nil))
+  "Options used by `ipe-test-def-kbd' for `ipe-test-line'.")
 
 (ipe-test-def-kbd line-basic-insert-1 ()
   "Test `insert-pair-edit' in an empty buffer.
@@ -1511,4 +1513,4 @@ Using a 'line PAIR with a numeric prefix."
 
 (provide 'ipe-test-line)
 
-;; ipe-test-line.el ends here
+;;; ipe-test-line.el ends here

@@ -49,17 +49,19 @@
 (require 'ert)
 (require 'ipe-test)
 
-(setq ipe-test-indent-options
-      '((ipe-move-point-on-insert   nil)
-	(ipe-prefix-moves-close-p   t)
-	(ipe-edit--movement-keysets '(modifiers))
-	(ipe-pairs                  '(("(" "("   ")")
-				      ("/" "/**" " */"
-				       (
-					:movement        line
-					:infix           " * "
-					:indent-function previous))))
-	(ipe-mode-pairs             nil)))
+(defvar ipe-test-indent-options
+  '((ipe-move-point-on-insert   nil)
+    (ipe-prefix-moves-close-p   t)
+    (ipe-edit--movement-keysets '(modifiers))
+    (ipe-pairs
+     '(("(" "("   ")")
+       ("/" "/**" " */"
+	(
+	 :movement        line
+	 :infix           " * "
+	 :indent-function previous))))
+    (ipe-mode-pairs             nil))
+  "Options used by `ipe-test-def-kbd' for `ipe-test-indent'.")
 
 (ipe-test-def-kbd indent-basic-insert-1 ()
   "Test `insert-pair-edit' in with indents.
@@ -191,4 +193,4 @@ and movement."
 
 (provide 'ipe-test-indent)
 
-;; ipe-test-indent.el ends here
+;;; ipe-test-indent.el ends here
