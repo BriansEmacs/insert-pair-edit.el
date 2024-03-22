@@ -63,6 +63,7 @@
 ;; -------------------------------------------------------------------
 ;;; Code:
 
+(require 'ipe-compat)
 (require 'ipe-edit)
 
 ;; -------------------------------------------------------------------
@@ -137,7 +138,7 @@ EVENT is the mouse drag event."
 	     (= (length event) 3))
     (ipe--pos-list-singular)
     (let* ((p1  (posn-point (cadr event)))
-	   (p2  (posn-point (caddr event)))
+	   (p2  (posn-point (ipe-compat--caddr event)))
 	   (beg (if (and p1 p2 (< p1 p2)) p1 p2))
 	   (end (if (and p1 p2 (< p1 p2)) p2 p1)))
 

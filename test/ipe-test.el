@@ -51,6 +51,7 @@
 ;;; Code:
 
 (require 'ert)
+(require 'insert-pair-edit)
 
 (defconst ipe-test--point-indicator "|"
   "The position of POINT within 'ipe-test--.*' tests.
@@ -71,6 +72,21 @@ This string is inserted within the input string passed to the
 This string is inserted within the input / expected output string
 passed to the 'ipe-test--.*' `ert' tests to indicate the position of
 a 'multiple-cursors' fake-cursor.")
+
+;;  "The keystrokes for the currently running 'ipe-test--.*'.
+(setq ipe-test--keystrokes nil)
+
+(defvar ipe-test--buffer-text nil
+  "The buffer text for the currently running 'ipe-test--.*'.")
+
+(defvar ipe-test--names '()
+  "A history list for `completing-read' for `ipe-test--*' names.")
+
+(defvar ipe-test--buffer-text-alist-p t
+  "Whether to populate `ipe-test--buffer-text-alist'.")
+
+(defvar ipe-test--buffer-text-alist '()
+  "An alist of `ipe-test--name' to their associated 'BUFFER-TEXT.")
 
 ;; -------------------------------------------------------------------
 ;;;; Helper functions
@@ -113,7 +129,8 @@ Additionally:
   (goto-char (point-min))
   (when (re-search-forward ipe-test--mark-indicator (point-max) t)
     (delete-region (match-beginning 0) (match-end 0))
-    (set-mark-command nil))
+    (push-mark-command nil t)
+    (transient-mark-mode nil))
 
   ;; Search for a point indicator.
   (goto-char (point-min))
@@ -191,7 +208,8 @@ character difference between the two lines."
 		"\n"
 		"\t\tActual:  '" actual-line "'")
       (let*
-	  ((expected-line    (ipe-test--get-string-line expected lineno))
+	  ((expected-lines   (ipe-test--count-string-lines expected))
+	   (expected-line    (ipe-test--get-string-line expected lineno))
 	   (mc-point         (regexp-quote ipe-test--mc-point-indicator))
 	   (point-indicator  (regexp-quote ipe-test--point-indicator))
 	   (actual-line-mc   (replace-regexp-in-string mc-point
@@ -215,13 +233,35 @@ character difference between the two lines."
 	   (same-line    (if (integerp compare-line)
 			     (1- (abs compare-line))
 			   0)))
-	(concat "\n"
-		"\n"
-		(if (equal compare-line-nc t)
-		    "\tCursor position differs at line "
-		  "\tText differs at line ")
-		line ":\n"
-		"\n"
+
+	(concat "\n\n"
+		(if (and ipe-test--keystrokes
+			 ipe-test--buffer-text)
+		    (concat
+		     "\tWhen typing:\n\n\t\t'"
+		     ipe-test--keystrokes
+		     "'\n\n\tIn buffer:\n\n\t\t"
+		     (replace-regexp-in-string
+		      "\n" "\n\t\t"
+		      (concat ipe-test--buffer-text))
+		     (if (> expected-lines 1)
+			 (concat
+			  "\n\n\tWe expect:\n\n\t\t"
+			  (replace-regexp-in-string
+			   "\n" "\n\t\t"
+			   buffer-expected)
+			  "\n\n\tBut got:\n\n\t\t"
+			  (replace-regexp-in-string
+			   "\n" "\n\t\t"
+			   buffer-actual))
+		       "")
+		     "\n\n")
+		  "")
+		"\t"
+		(if (equal compare-line-nc t) "Cursor position " "Text ")
+		"differs at "
+		(if (> expected-lines 1) (concat "Line: " line " ") "")
+		"Position: " (number-to-string same-line) "\n\n"
 		"\t\tExpected: '" expected-line "'\n"
 		"\t\tActual:   '" actual-line "'\n"
 		"\t\t-----------" (make-string same-line ?-) "^\n")))))
@@ -243,9 +283,6 @@ and the EXPECTED result."
      'ert-explainer
      'ipe-test--ert-equal-explainer)
 
-(defvar ipe-test--names '()
-  "A history list for `completing-read' for `ipe-test--*' names.")
-
 (defun ipe-test--names ()
   "Return a list of the `ert' test cases with a 'ipe-test--.*' prefix.
 
@@ -258,12 +295,6 @@ within `ipe-test-run'."
 	   (lambda (s) (and (ert-test-boundp s)
 			    (string-match "^ipe-test--.*"
 					  (symbol-name s)))))))
-
-(defvar ipe-test--buffer-text-alist-p t
-  "Whether to populate `ipe-test--buffer-text-alist'.")
-
-(defvar ipe-test--buffer-text-alist '()
-  "An alist of `ipe-test--name' to their associated 'BUFFER-TEXT.")
 
 ;; -------------------------------------------------------------------
 ;;;; Test Macros
@@ -301,9 +332,10 @@ BODY - Commands to be executed against the temporary buffer."
 	       (insert (mapconcat 'identity ,buffer-text "\n"))
 	     (insert ,buffer-text))
 	   (ipe-test--set-point)
-	   (condition-case ipe-test-error
-	       ,@body
-	     (t nil))
+	   (let ((inhibit-message t))
+	     (condition-case ipe-test-error
+		 ,@body
+	       (t nil)))
 	   (ipe-test--show-point)
 	   (let* ((actual (buffer-string))
 		  (concat (if (listp ,expected)
@@ -314,7 +346,11 @@ BODY - Commands to be executed against the temporary buffer."
 			      (replace-regexp-in-string
 			       ipe-test--mc-point-indicator
 			       ""
-			       concat))))
+			       concat)))
+		  (ipe-test--buffer-text
+		   (if (listp ,buffer-text)
+		       (mapconcat 'identity ,buffer-text "\n")
+		     ,buffer-text)))
 	     (should (ipe-test--ert-equal actual expected)))))
        (ipe-edit--keymap-init))))
 
@@ -351,8 +387,10 @@ TEARDOWN - Commands used to clean up the temporary test buffer."
   `(ipe-test-def ,name ,param ,doc ,custom ,buffer-text ,expected
      (save-window-excursion
        (set-window-buffer nil (current-buffer))
-       (let ((ipe-keyboard-test-state)
-	     (original-binding (global-key-binding (kbd "M-("))))
+       (let ((original-binding (global-key-binding (kbd "M-("))))
+
+	 (setq ipe-test--keystrokes (concat ,keystrokes))
+
 	 (unwind-protect
 	     (progn
 	       (when ,setup
@@ -421,6 +459,16 @@ This interactive function runs all of the tests with `ipe-test-def' or
 `ipe-test-def-kbd'."
   (interactive)
   (ert "^ipe-test--.*"))
+
+(defun ipe-test-run-all-and-exit (&optional quiet)
+  "Run all of the `ert' test cases that start with 'ipe-test--.*'.
+
+This function runs all of the tests with `ipe-test-def' or
+`ipe-test-def-kbd' and then exits.  If QUIET is non-nil, set
+`ert-quiet'."
+
+  (let ((ert-quiet quiet))
+    (ert-run-tests-batch-and-exit "^ipe-test--.*")))
 
 (defun ipe-test-buffer (name)
   "Create a buffer containing the BUFFER-TEXT from an `ipe-test-def'.

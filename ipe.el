@@ -555,7 +555,9 @@ mode.
   :link  '(function-link ipe-edit-mode))
 
 (defface ipe-close-highlight
-  '((t (:inherit show-paren-match)))
+  (list (list t (if (facep 'show-paren-match)
+		    (list :inherit 'show-paren-match)
+		  (list :background "steelblue3"))))
   "The face that highlights the Insert Pair Edit CLOSE overlays.
 
 This face highlights the CLOSE string of a PAIR inserted by
@@ -1174,7 +1176,7 @@ This predicate is passed to `sort' to order `ipe' PAIRs by CLOSE.
 - Return 0   if the CLOSE of PAIR1 = the CLOSE of PAIR2.
 - Return > 0 if the CLOSE of PAIR1 > the CLOSE of PAIR2."
 
-  (string< (caddr pair1) (caddr pair2)))
+  (string< (ipe-compat--caddr pair1) (ipe-compat--caddr pair2)))
 
 (defun ipe--pair-sort-by ()
   "Return the function used to sort `ipe' PAIR definitions."
@@ -1231,7 +1233,7 @@ MODE-PAIRS.
 
   (append
    mode-pairs
-   (append (mapcan
+   (append (ipe-compat--mapcan
 	    (lambda (e)
 	      (unless (member (car e) (mapcar 'car mode-pairs))
 		(list e)))
@@ -1295,7 +1297,7 @@ Else, return an Empty PAIR CLOSE string:
 (defun ipe--pair-close-string (pair)
   "Return the Insert Pair Edit (ipe) CLOSE string for PAIR."
 
-  (if pair (caddr pair) ""))
+  (if pair (ipe-compat--caddr pair) ""))
 
 (defun ipe--pair-intermediate-p (pair)
   "Return non-nil if an `ipe' PAIR has `Intermediate' properties."
@@ -1489,7 +1491,8 @@ Defaulting to movement by 'words'."
 	       ipe--movement
 	       (ipe--mnemonic-describe ipe--mnemonic))
       (setq ipe--movement 'word
-	    move-by (caddr (assoc ipe--movement ipe-move-by-movements))))
+	    move-by (ipe-compat--caddr
+		     (assoc ipe--movement ipe-move-by-movements))))
 
     move-by))
 
@@ -1499,7 +1502,7 @@ Defaulting to movement by 'words'."
   (setq ipe--movement
 	movement
 	ipe--pos-property-set-callback
-	(caddr (assoc movement ipe-move-by-movements))))
+	(ipe-compat--caddr (assoc movement ipe-move-by-movements))))
 
 ;; -------------------------------------------------------------------
 ;;;; Undo Processing.
@@ -1572,7 +1575,7 @@ attribute of the `N'th entry within the `ipe--pair-pos-list'.
 If there are less than `N' `ipe' PAIR Positions currently defined,
 return nil."
 
-  (cadr (assoc pname (caddr (nth n ipe--pair-pos-list)))))
+  (cadr (assoc pname (ipe-compat--caddr (nth n ipe--pair-pos-list)))))
 
 (defun ipe--pos-property-set (n &rest args)
   "Set PNAME = VALUE for the `N'th `ipe' PAIR Position.
@@ -1593,7 +1596,7 @@ within `ipe--pair-pos-list', add empty PAIR Positions to
   (let* ((pair-pos-list (ipe--list-pad ipe--pair-pos-list (1+ n)))
 	 (pair-pos      (nth n pair-pos-list))
 	 (properties    args)
-	 (alist         (caddr pair-pos))
+	 (alist         (ipe-compat--caddr pair-pos))
 	 (new-alist     alist)
 	 (pname)
 	 (value))
@@ -1649,7 +1652,7 @@ within `ipe--pair-pos-list', add empty PAIR Positions to
   (let* ((pair-pos-list (ipe--list-pad ipe--pair-pos-list (1+ n)))
 	 (pair-pos      (nth n pair-pos-list)))
     (setcar (nthcdr n pair-pos-list)
-	    (list pos (cadr pair-pos) (caddr pair-pos)))
+	    (list pos (cadr pair-pos) (ipe-compat--caddr pair-pos)))
     (setq ipe--pair-pos-list pair-pos-list)))
 
 (defun ipe--pos-open-insert (n)
@@ -1710,7 +1713,7 @@ within `ipe--pair-pos-list', add empty PAIR Positions to
   (let* ((pair-pos-list (ipe--list-pad ipe--pair-pos-list (1+ n)))
 	 (pair-pos      (nth n pair-pos-list)))
     (setcar (nthcdr n pair-pos-list)
-	    (list (car pair-pos) pos (caddr pair-pos)))
+	    (list (car pair-pos) pos (ipe-compat--caddr pair-pos)))
     (setq ipe--pair-pos-list pair-pos-list)))
 
 (defun ipe--pos-close-insert (n)
@@ -2611,17 +2614,17 @@ Return the number of characters inserted."
   "Return t if the region between BEG and END has `ipe' `ESCAPE's."
 
   (if (memq t
-	    (mapcan (lambda (overlays)
-		      (mapcar (lambda (overlay)
-				(if (and (overlayp overlay)
-					 (overlay-buffer overlay)
-					 (overlay-get    overlay 'ipe-escape)
-					 (< (overlay-start overlay) end)
-					 (> (overlay-end   overlay) beg))
-				    t
-				  nil))
-			      (append ipe--open-overlays overlays)))
-		    ipe--escape-overlays))
+	    (ipe-compat--mapcan (lambda (overlays)
+				  (mapcar (lambda (overlay)
+					    (if (and (overlayp overlay)
+						     (overlay-buffer overlay)
+						     (overlay-get    overlay 'ipe-escape)
+						     (< (overlay-start overlay) end)
+						     (> (overlay-end   overlay) beg))
+						t
+					      nil))
+					  (append ipe--open-overlays overlays)))
+				ipe--escape-overlays))
       t nil))
 
 (defun ipe--escape-overlay (n i)
@@ -3385,7 +3388,7 @@ the echo area for the user."
 	(funcall move-by pair n 'close 'reset 0 0 0)))
 
     (setq ipe--pos-property-set-callback
-	  (caddr (assoc ipe--movement ipe-move-by-movements)))
+	  (ipe-compat--caddr (assoc ipe--movement ipe-move-by-movements)))
 
     (dotimes (n (ipe--pos-count))
       (ipe--open-init  n (ipe--pos-open n) 0)
@@ -3395,7 +3398,8 @@ the echo area for the user."
 
   (ipe--pair-pos-redisplay)
   (message (concat "'Insert Pair Edit' movement is now by '"
-		   (cadddr (assoc ipe--movement ipe-move-by-movements))
+		   (ipe-compat--cadddr
+		    (assoc ipe--movement ipe-move-by-movements))
 		   "'.")))
 
 (provide 'ipe)

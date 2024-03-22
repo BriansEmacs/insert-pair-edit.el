@@ -46,6 +46,7 @@
 ;; -------------------------------------------------------------------
 ;;; Code:
 
+(require 'ipe-compat)
 (require 'ipe)
 
 ;; -------------------------------------------------------------------
@@ -247,9 +248,10 @@ This function is called as an :annotation-function within
 `completing-read'."
 
   (format " - (Move 'Insert Pair Edit' OPEN and CLOSE by %s.)"
-	  (cadddr (ipe--list-member
-		   ipe-move-by-movements
-		   (lambda (x) (string= (cadddr x) movement))))))
+	  (ipe-compat--cadddr
+	   (ipe--list-member
+	    ipe-move-by-movements
+	    (lambda (x) (string= (ipe-compat--cadddr x) movement))))))
 
 (defun ipe-defn--annotate-indent-function (indent-function)
   "Return a suitable annotation for an `ipe' INDENT-FUNCTION.
@@ -325,10 +327,10 @@ Returns t, if a `y' is input, nil otherwise."
 	(string= response "y")))))
 
 (defun ipe-defn--read-mode (prompt &optional all)
-  "Prompt the user for a major-mode.
+  "Prompt the user for a `major-mode'.
 
 Calls `completing-read' to prompt the user to enter an Emacs
-major-mode, and returns a symbol representing this mode.
+`major-mode', and returns a symbol representing this mode.
 
 - PROMPT is the string used to prompt the user to enter a mode.
 - ALL if nil, only offer completions for those modes which already
@@ -387,8 +389,9 @@ DEFAULT is used to specify the initial contents of the
 
   (let* ((completion-extra-properties
 	  '(:annotation-function ipe-defn--annotate-movement))
-	 (movements (mapcar 'cadddr ipe-move-by-movements))
-	 (movement  (cadddr (assoc default ipe-move-by-movements)))
+	 (movements (mapcar 'ipe-compat--cadddr ipe-move-by-movements))
+	 (movement  (ipe-compat--cadddr
+		     (assoc default ipe-move-by-movements)))
 	 (initial   (cons movement 0))
 	 (string))
 
@@ -402,7 +405,7 @@ DEFAULT is used to specify the initial contents of the
     ;; Convert the :movement string to a symbol.
     (car (ipe--list-member
 	  ipe-move-by-movements
-	  (lambda (x) (string= (cadddr x) string))))))
+	  (lambda (x) (string= (ipe-compat--cadddr x) string))))))
 
 (defun ipe-defn--read-escapes (defaults)
   "Prompt the user for a list of `ipe' PAIR ESCAPE sequences.
@@ -915,7 +918,7 @@ The PAIR Definition is updated in `ipe-pairs'."
 		 (not (ipe-defn--y-or-n-p
 		       (format
 			"The NEW-MNEMONIC '%s' is already defined as the\
- Global PAIR%s. Overwrite? "
+ Global PAIR%s.  Overwrite? "
 			new-mnemonic
 			(ipe--mnemonic-annotate new-mnemonic t)))))
 	    (and (ipe--mode-pair new-mnemonic ipe--major-mode)

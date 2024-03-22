@@ -11,4 +11,5 @@ insert-pair-edit +
                  |              |             +-> ipe-line -+
                  |              |             +-> ipe-list -+
                  |              +-------------+-> ipe-defn -+
-                 +----------------------------+->-ipe-updt -+-> ipe -> ipe-custom
+                 +----------------------------+->-ipe-updt -+-> ipe +-> ipe-custom
+                                                                    +-> ipe-compat

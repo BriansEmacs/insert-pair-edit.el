@@ -1839,9 +1839,10 @@ another window."
 	blank
 	sep
 	"PAIR Positions:\n"
-	sep))
+	sep
+	"\n"))
 
-      (cl-prettyprint pair-pos-list)
+      (insert (format "%s" pair-pos-list))
 
       (insert
        (concat

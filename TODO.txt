@@ -15,6 +15,7 @@
 ;; STYLE
 ;; - Move ipe--set-point out of ipe-edit--abort.
 ;; - Check save-excursion usage.
+;; - Add MELPA conventions.
 ;; - Address TODO's.
 ;;
 ;; STRETCH
@@ -22,29 +23,17 @@
 ;;
 ;; TESTING
 ;; - Add extra tests for 'indention functions.
-;; - Add tests for search forward first on update.
+;; - Add tests for search 'forward first' on update.
 ;; - Search for Emacs code coverage tool.
 ;;
 ;; DOCUMENTATION
-;; - Create README.md
 ;; - Check documentation consistency.
 ;; - Check licensing / copyright headers.
 ;; - Check standard formats for .texi files.
-;; - Record screen cast.
-;; - Create GIF / Logo.
 ;;
 ;; BUILD
-;; - Check XEmacs compatibility.
-;; - Check 24.4+ compatibility.
-;; - Check < 24.4 graceful degradation.
 ;; - Check elisp conventions / other linters.
 ;;
 ;; RELEASE
 ;; - Line-by-Line code check.
 ;; - Check differences between ELPA / MELPA.
-;;
-;; LINT
-;; - ~/.emacs.d/my/packages/ipe/lint.sh
-;;
-;; OTHER
-;; - makeinfo ipe.texi

@@ -40,55 +40,42 @@
 ;; -------------------------------------------------------------------
 
 (when (<= emacs-major-version 23)
-  (error "Insert Pair Edit (ipe) requires Emacs 24+"))
+  (error "Insert Pair Edit (ipe) requires Emacs >= 24.3"))
 
 ;; -------------------------------------------------------------------
-;;;; Emacs 26
+;;;; Emacs < 26
 ;; -------------------------------------------------------------------
 
-(when (<= emacs-major-version 26)
-
-  (unless (facep 'show-paren-match)
-    (defface show-paren-match
-      '((t (:background "steelblue3")))
-      "Insert Pair Edit (ipe) compatibility face.
-
-Face used for a matching paren.
-
-\(Introduced Emacs 2X.)"
-      :group 'paren-showing-faces))
-
-  (unless (functionp 'caddr)
-    (defun caddr (x)
-      "Insert Pair Edit (ipe) compatibility function.
+(if (functionp 'caddr)
+    (defalias 'ipe-compat--caddr 'caddr)
+  (defun ipe-compat--caddr (x)
+    "Insert Pair Edit (ipe) compatibility function.
 
 Return the `car' of the `cdr' of the `cdr' of X.
 
-\(Introduced Emacs 2X.)"
-      (car (cdr (cdr x)))))
+\(Introduced Emacs 26.)"
+    (car (cdr (cdr x)))))
 
-  (unless (functionp 'cadddr)
-    (defun cadddr (x)
-      "Insert Pair Edit (ipe) compatibility function.
+(if (functionp 'cadddr)
+    (defalias 'ipe-compat--cadddr 'cadddr)
+  (defun ipe-compat--cadddr (x)
+    "Insert Pair Edit (ipe) compatibility function.
 
 Return the `car' of the `cdr' of the `cdr' of the `cdr' of X.
 
-\(Introduced Emacs 2X.)"
-      (car (cdr (cdr (cdr x)))))))
+\(Introduced Emacs 26.)"
+    (car (cdr (cdr (cdr x))))))
 
-;; -------------------------------------------------------------------
-;;;; Emacs 26
-;; -------------------------------------------------------------------
-
-(when (<= emacs-major-version 26)
-  (defun mapcan (func sequence)
+(if (functionp 'mapcan)
+    (defalias 'ipe-compat--mapcan 'mapcan)
+  (defun ipe-compat--mapcan (func sequence)
     "Insert Pair Edit (ipe) compatibility function.
 
 Apply FUNC to each element of SEQUENCE, and concatenate the results by
 altering them (using `nconc').  SEQUENCE may be a list, a vector, a
 bool-vector, or a string.
 
-(Introduced Emacs 26.1)"
+(Introduced Emacs 26.)"
     (apply #'nconc (mapcar func sequence))))
 
 ;; -------------------------------------------------------------------
