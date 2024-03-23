@@ -1,10 +1,10 @@
-;;; ipe-defn.el --- Insert Pair Edit - add / delete pair definitions
+;;; ipe-defn.el --- Insert Pair Edit - add / delete pair definitions -*- lexical-binding: t; -*-
 ;; Copyright (C) 2023 Brian Kavanagh
 
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 19 December, 2020
-;; Version: 2023.12.30
+;; Version: 1.0
 ;; Package: ipe
 ;; Package-Requires: ((emacs "24.4"))
 ;; Keywords: convenience, tools
@@ -117,8 +117,7 @@ postfix `*-mode'"
 	modes)
     (mapcar (lambda (x) (symbol-name (car x))) ipe-mode-pairs)))
 
-(defun ipe-defn--update-pair-list (pair-list-sym defn
-						 &optional save mode)
+(defun ipe-defn--update-pair-list (pair-list-sym defn &optional save)
   "Update an `ipe' PAIR Definition List with a new PAIR Definition.
 
 - PAIR-LIST-SYM is a symbol name containing a list of `ipe' PAIR
@@ -137,9 +136,7 @@ postfix `*-mode'"
   Which represents the PAIR Definition to be deleted from the
   PAIR-LIST-SYM.
 - SAVE, if non-nil, causes the change to be saved via
-  `customize-save-customized'.
-- MODE, if specified, is a mode-symbol, that indicates the update is
-  being made to a Mode-Specific `ipe' PAIR Definitions List."
+  `customize-save-customized'."
 
   (let ((mnemonic (car defn)))
 
@@ -191,7 +188,7 @@ The updated Mode-Specific PAIR Definition List will be added to
 
 	;; Are the definitions stored in a separate variable?
 	(if (symbolp mode-pair-list)
-	    (ipe-defn--update-pair-list mode-pair-list defn t mode)
+	    (ipe-defn--update-pair-list mode-pair-list defn t)
 
 	  ;; Inline definitions.
 	  (let ((updated-pair-list
@@ -501,7 +498,6 @@ DEFN."
 	 (orig-defn (ipe--pair mnemonic))
 	 (default)
 	 (initial)
-	 (string)
 	 (movement)
 	 (infix)
 	 (escapes)
@@ -1005,33 +1001,31 @@ The PAIR Definition is updated in `ipe-mode-pairs'."
 ;;;; UI Customization Functions
 ;; -------------------------------------------------------------------
 
-(defun ipe-defn--ui-add-pair (&optional mnemonic)
+(defun ipe-defn--ui-add-pair ()
   "Add a new `ipe' PAIR Definition using custom-like widgets.
 
 Calls `ipe-custom--edit-pair-defn' to create a new definition for an
 `ipe' PAIR using the *ipe-edit-pair-defn* buffer to display a
-custom-like widget interface.  If MNEMONIC is non-nil, pre-populates
-the MNEMONIC field within the UI.
+custom-like widget interface.
 
 On \"Save\", the PAIR Definition is written back to `ipe-pairs'."
 
   (interactive)
 
-  (let* ((callback (lambda (mode defn orig-defn)
+  (let* ((callback (lambda (_mode defn _orig-defn)
 		     (ipe-defn--update-pair-list 'ipe-pairs defn t)
 		     (run-hooks 'ipe-defn--update-hook)
 		     t)))
 
     (ipe-custom--edit-pair-defn nil '("" "" "") callback)))
 
-(defun ipe-defn--ui-add-mode-pair (&optional mode mnemonic)
+(defun ipe-defn--ui-add-mode-pair (&optional mode)
   "Add a Mode-Specific PAIR Definition using custom-like widgets.
 
 If MODE is nil, prompts the user for a MODE, then calls
 `ipe-custom--edit-pair-defn' to create a new definition a
 Mode-Specific `ipe' PAIR using the *ipe-edit-pair-defn* buffer to
-display a custom-like widget interface.  If MNEMONIC is non-nil,
-pre-populates the MNEMONIC field within the UI.
+display a custom-like widget interface.
 
 On \"Save\" the PAIR Definition is written back to `ipe-mode-pairs'."
 
@@ -1042,7 +1036,7 @@ On \"Save\" the PAIR Definition is written back to `ipe-mode-pairs'."
 		"Add new 'Insert Pair Edit' PAIR Definition for MODE: "
 		t)))
 
-  (let ((callback (lambda (mode defn orig-defn)
+  (let ((callback (lambda (mode defn _orig-defn)
 		    (ipe-defn--update-mode-pair mode defn t)
 		    (run-hooks 'ipe-defn--update-hook)
 		    t)))
@@ -1069,7 +1063,7 @@ On \"Save\" the PAIR Definition is written back to `ipe-pairs'."
   (let* ((pair-defn (ipe--pair mnemonic t))
 	 (pair-defn (or pair-defn (list mnemonic "" "")))
 	 (callback
-	  (lambda (mode defn orig-defn)
+	  (lambda (_mode defn orig-defn)
 	    ;; Delete the old defn if the MNEMONIC changes.
 	    (if (not (string= (car defn) (car orig-defn)))
 		(and (or (not (ipe--pair (car defn)))

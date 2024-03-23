@@ -1,12 +1,12 @@
-;;; ipe-list.el --- Insert Pair Edit - list pair movement functions
+;;; ipe-list.el --- Insert Pair Edit - list pair movement functions -*- lexical-binding: t; -*-
 ;; Copyright (C) 2023 Brian Kavanagh
 
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 2023.12.30
+;; Version: 1.0
 ;; Package: ipe
-;; Package-Requires: ((emacs "24.4"))
+;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: convenience, tools
 ;; Homepage: https://github.com/BriansEmacs/insert-pair-edit.el
 
@@ -76,16 +76,15 @@ Move backward to the beginning of a defun.  With UNITS, do it that
 many times."
 
   (interactive "P")
-  (if (< units 0)
-      (let ((done t))
-	(dotimes (i (- units))
+  (let ((done t))
+    (if (< units 0)
+	(ipe-dotimes (- units)
 	  (condition-case nil (end-of-defun 1)
-	    (error (setq done nil)))))
-    (let ((done t))
-      (dotimes (i units)
+	    (error (setq done nil))))
+      (ipe-dotimes units
 	(condition-case nil (beginning-of-defun 1)
-	  (error (setq done nil))))
-      done)))
+	  (error (setq done nil)))))
+    done))
 
 (defun ipe-list--forward-list (units)
   "Safe `forward-list' that will not error.
@@ -97,7 +96,7 @@ impossible to go the full number of UNITS, got as far as possible."
   (if (< units 0)
       (ipe-list--backward-list (- units))
     (let ((done t))
-      (dotimes (i units)
+      (ipe-dotimes units
 	(condition-case nil (forward-list 1)
 	  (error (setq done nil))))
       (unless done
@@ -116,7 +115,7 @@ is impossible to go the full number of UNITS, got as far as possible."
   (if (< units 0)
       (ipe-list--forward-list (- units))
     (let ((done t))
-      (dotimes (i units)
+      (ipe-dotimes units
 	(condition-case nil (backward-list 1)
 	  (error (setq done nil))))
       (unless done
@@ -135,11 +134,11 @@ impossible to go the full number of UNITS, got as far as possible."
   (let ((done t))
     (if (< units 0)
 	(progn
-	  (dotimes (i (- units))
+	  (ipe-dotimes (- units)
 	    (condition-case nil (backward-up-list 1)
 	      (error (setq done nil))))
 	  (unless done (goto-char (point-min))))
-      (dotimes (i units)
+      (ipe-dotimes units
 	(condition-case nil (up-list 1)
 	  (error (setq done nil))))
       (unless done (goto-char (point-max))))
@@ -155,7 +154,7 @@ impossible to go the full number of UNITS, got as far as possible."
   (let ((done t))
     (if (< units 0)
 	(progn
-	  (dotimes (i (- units))
+	  (ipe-dotimes (- units)
 	    (condition-case nil (down-list -1)
 	      (error (setq done nil))))
 	  (condition-case nil
@@ -163,7 +162,7 @@ impossible to go the full number of UNITS, got as far as possible."
 		  (progn (down-list -1) (up-list 1))
 		(ipe-list--forward-list 1))
 	    (error nil)))
-      (dotimes (i units)
+      (ipe-dotimes units
 	(condition-case nil (down-list 1)
 	  (error (setq done nil))))
       (condition-case nil
@@ -182,15 +181,15 @@ many times."
   (interactive "P")
   (let ((done t))
     (if (< units 0)
-	(dotimes (i (- units))
+	(ipe-dotimes (- units)
 	  (condition-case nil (beginning-of-defun 1)
 	    (error (setq done nil))))
-      (dotimes (i units)
+      (ipe-dotimes units
 	(condition-case nil (end-of-defun 1)
 	  (error (setq done nil)))))
     done))
 
-(defun ipe-list--push (side action pos other units)
+(defun ipe-list--push (side action other units)
   "Calculate movement by list for a push move.
 
 Moves POINT to a position corresponding to a movement initiated by the
@@ -200,11 +199,11 @@ movement of the OTHER member of the PAIR.
 - ACTION is either `'beg', `'up', `'backward', `'forward', `'down', or
   `'end', indicating the movement performed by the other member of the
   PAIR.
-- POS is the position from which the movement begins.
 - OTHER is the position of the other member of the PAIR.
 - UNITS are the number of units to move.
 
 Movement is calculated from POINT."
+
   (cond
    ((equal side 'open)
     (cond
@@ -246,8 +245,8 @@ Movement is calculated from POINT."
 ;;;; move-by Functions.
 ;; -------------------------------------------------------------------
 
-(defun ipe-list--move-by (defn n side action pos other units
-			       &optional push)
+(defun ipe-list--move-by (_defn _n side action pos other units
+				&optional push)
   "Calculate movement `by list' for Insert Pair Edit.
 
 - DEFN is the definition of the PAIR from `ipe-pairs'.
@@ -261,11 +260,12 @@ Movement is calculated from POINT."
 - PUSH indicates that this is a push move from the other PAIR.
 
 Movement is calculated from POINT."
+
   (save-excursion
     (goto-char (or pos (point)))
     (cond
      ((identity push)
-      (ipe-list--push side action pos other units))
+      (ipe-list--push side action other units))
 
      ((equal side 'open)
       (cond

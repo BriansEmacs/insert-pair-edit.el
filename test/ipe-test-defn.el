@@ -1,10 +1,10 @@
-;;; ipe-test-defn.el --- Insert Pair Edit - Edit PAIR Definitions Tests
+;;; ipe-test-defn.el --- Insert Pair Edit - Edit PAIR Definitions Tests -*- lexical-binding: t; -*-
 ;; Copyright (C) 2023 Brian Kavanagh
 
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 2023.12.30
+;; Version: 1.0
 ;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: internal local
@@ -55,6 +55,10 @@
 (require 'ert)
 (require 'ipe-test)
 
+(defvar ipe-test-defn-emacs-lisp-pairs
+  '(("<" "**" "**"))
+  "Mode specific PAIRs used by the `ipe-test-def-kbd' tests.")
+
 (defvar ipe-test-defn-options
   '((ipe-move-point-on-insert   nil)
     (ipe-prefix-moves-close-p   t)
@@ -63,9 +67,9 @@
      '(("(" "(" ")")
        ("[" "[" "]")
        ("<" "<" ">")))
-    (ipe-emacs-lisp-pairs       '(("<" "**" "**")))
-    (ipe-mode-pairs             '((html-mode (("<" "&lt;" "&gt;")))
-				  (emacs-lisp-mode ipe-emacs-lisp-pairs))))
+    (ipe-mode-pairs
+     '((html-mode (("<" "&lt;" "&gt;")))
+       (emacs-lisp-mode ipe-test-defn-emacs-lisp-pairs))))
   "Options used by `ipe-test-def-kbd' for `ipe-test-defn'.")
 
 (defun ipe-test-defn--setup ()
@@ -77,12 +81,13 @@ running tests of the `ipe-defn--*' functions so that the tests to not
 permanently write changes to the custom.el files."
   (fset 'ipe-test-defn--customize-set-variable
 	(symbol-function 'customize-set-variable))
-  (fset 'customize-set-variable (lambda (x y)))
+  (fset 'customize-set-variable (lambda (_x _y)))
   (fset 'ipe-test-defn--customize-save-customized
 	(symbol-function 'customize-save-customized))
   (fset 'customize-save-customized (lambda ()))
   (when (functionp 'icy-mode)
-    (funcall 'icy-mode -1)))
+    (funcall 'icy-mode -1))
+  (setq ipe-test-defn-emacs-lisp-pairs '(("<" "**" "**"))))
 
 (defun ipe-test-defn--teardown ()
   "Restore `customize-set-variable' / `customize-save-customized'.
@@ -94,8 +99,6 @@ This functions restores the `customize-set-variable' /
 	(symbol-function 'ipe-test-defn--customize-set-variable))
   (fset 'customize-save-customized
 	(symbol-function 'ipe-test-defn--customize-save-customized)))
-
-(setq ipe-test-defn--teardown 'ipe-test-defn--teardown)
 
 (ipe-test-def-kbd defn-add-pair-1 ()
   "Test `insert-pair-edit' `ipe-defn--add-pair' function."

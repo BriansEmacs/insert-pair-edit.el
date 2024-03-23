@@ -1,10 +1,10 @@
-;;; ipe-test-options.el --- Insert Pair Edit - Global Option Tests
+;;; ipe-test-options.el --- Insert Pair Edit - Global Option Tests -*- lexical-binding: t; -*-
 ;; Copyright (C) 2023 Brian Kavanagh
 
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 2023.12.30
+;; Version: 1.0
 ;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: internal local

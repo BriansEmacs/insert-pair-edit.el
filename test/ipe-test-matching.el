@@ -1,10 +1,10 @@
-;;; ipe-test-matching.el --- Insert Pair Edit - OPEN CLOSE Matching
+;;; ipe-test-matching.el --- Insert Pair Edit - OPEN CLOSE Matching -*- lexical-binding: t; -*-
 ;; Copyright (C) 2023 Brian Kavanagh
 
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 2023.12.30
+;; Version: 1.0
 ;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: internal local
@@ -51,11 +51,11 @@
 
 (defvar ipe-test-matching-options
   '((ipe-move-point-on-insert   nil)
-	(ipe--escapes-show-p        t)
-	(ipe-prefix-moves-close-p   t)
-	(ipe-edit--movement-keysets '(modifiers))
-	(ipe-pairs '(("("  "(" ")")))
-	(ipe-mode-pairs nil))
+    (ipe--escapes-show-p        t)
+    (ipe-prefix-moves-close-p   t)
+    (ipe-edit--movement-keysets '(modifiers))
+    (ipe-pairs '(("("  "(" ")")))
+    (ipe-mode-pairs nil))
   "Options used by `ipe-test-def-kbd' for `ipe-test-matching'.")
 
 (ipe-test-def-kbd matching-update-1 ()

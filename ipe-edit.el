@@ -1,11 +1,12 @@
-;;; ipe-edit.el --- Insert Pair Edit - editing minor mode
+;;; ipe-edit.el --- Insert Pair Edit - editing minor mode -*- lexical-binding: t; -*-
 ;; Copyright (C) 2023 Brian Kavanagh
 
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 2023.12.30
+;; Version: 1.0
 ;; Package: ipe
+;; Package-Requires: ((emacs "24.1"))
 ;; Keywords: convenience, tools
 ;; Homepage: https://github.com/BriansEmacs/insert-pair-edit.el
 
@@ -423,14 +424,13 @@ PAIRs are highlighted using:
   :lighter  " (<->)"
   :keymap   ipe-edit-mode-map
   (when ipe-edit-mode
-    (if (not (and ipe--mnemonic
-		  ipe--movement
-		  (ipe--pos-open 0)
-		  (ipe--pos-close 0)))
-	(progn
-	  (message "This mode should only be launched via\
+    (when (not (and ipe--mnemonic
+		    ipe--movement
+		    (ipe--pos-open 0)
+		    (ipe--pos-close 0)))
+      (message "This mode should only be launched via\
  'insert-pair-edit-*' commands.  See command: `insert-pair-edit'.")
-	  (ipe-edit-mode -1)))))
+      (ipe-edit-mode -1))))
 
 ;; -------------------------------------------------------------------
 ;;;;; Utility functions.
@@ -1277,8 +1277,6 @@ with an overlay that can be moved by the `ipe-edit-mode' commands."
 
       (let* ((units     (ipe--arg-units arg))
 	     (pair      (ipe--pair))
-	     (open      (ipe--pair-open-string  pair))
-	     (infix     (ipe--pair-infix-string pair))
 	     (escapes   (ipe--pair-escapes      pair))
 	     (close     (ipe--pair-close-string pair))
 	     (len-close (length (ipe--pos-close-insert n)))
@@ -1287,8 +1285,6 @@ with an overlay that can be moved by the `ipe-edit-mode' commands."
 			  (ipe--pos-open (1+ n))))
 	     (pos-close (ipe-updt--next-close
 			 (+ (ipe--pos-close n) len-close)
-			 open
-			 infix
 			 close
 			 escapes
 			 bound
@@ -1488,7 +1484,6 @@ with an overlay that can be moved by the `ipe-edit-mode' commands."
 
       (let* ((units      (ipe--arg-units arg))
 	     (pair       (ipe--pair))
-	     (infix      (ipe--pair-infix-string pair))
 	     (escapes    (ipe--pair-escapes      pair))
 	     (close      (ipe--pair-close-string pair))
 	     (len-open   (length (ipe--pos-open-insert n)))
@@ -1499,7 +1494,6 @@ with an overlay that can be moved by the `ipe-edit-mode' commands."
 			   (ipe--pos-close n)))
 	     (pos-close  (ipe-updt--previous-close close-prev
 						   close
-						   infix
 						   escapes
 						   (+ pos-open len-open)
 						   units)))
@@ -2149,7 +2143,12 @@ This function will also be called by `customize' when the
   (ipe-edit--key 45 'ipe-help--info)
   (ipe-edit--key 46 'ipe-help--mode-help)
 
+  ;; Default bindings.
   (define-key ipe-edit-mode-map (kbd "C-g")
+	      'ipe-edit--abort)
+  (define-key ipe-edit-mode-map (kbd "<ESC> <ESC>")
+	      'ipe-edit--abort)
+  (define-key ipe-edit-mode-map (kbd "<escape> <escape>")
 	      'ipe-edit--abort)
   (define-key ipe-edit-mode-map (kbd "<return>")
 	      'ipe-edit--insert-pair)

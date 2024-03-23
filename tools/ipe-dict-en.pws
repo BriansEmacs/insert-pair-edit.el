@@ -97,6 +97,7 @@ defconst
 defcustom
 defface
 defgroup
+defmacro
 defn
 defns
 defun
@@ -116,6 +117,7 @@ eobc
 eobp
 eol
 eq
+esc
 eval
 facep
 fn
@@ -123,6 +125,7 @@ func
 funcall
 functionp
 gif
+gifs
 gmail
 goto
 grey
@@ -203,4 +206,5 @@ url
 utf
 wasd
 whitespace
+wid
 zerop

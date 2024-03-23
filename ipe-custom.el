@@ -1,11 +1,12 @@
-;;; ipe-custom.el --- Insert Pair Edit - customize widgets + functions
+;;; ipe-custom.el --- Insert Pair Edit - customize widgets + functions -*- lexical-binding: t; -*-
 ;; Copyright (C) 2023 Brian Kavanagh
 
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 18 July, 2020
-;; Version: 2023.12.30
+;; Version: 1.0
 ;; Package: ipe
+;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: convenience, tools
 ;; Homepage: https://github.com/BriansEmacs/insert-pair-edit.el
 
@@ -46,6 +47,8 @@
 
 ;; -------------------------------------------------------------------
 ;;; Code:
+
+(require 'wid-edit)
 
 ;; -------------------------------------------------------------------
 ;;;; :get predicates.
@@ -126,7 +129,7 @@ type of Advanced PAIR definition."
 This will check that PLIST contains a `'char', `'word', `'line' or
 `'list' :movement property, but none of the `advanced' properties."
   (and (ipe-custom--plist-defn-get-p defn '(:movement))
-       (member t (mapcar (lambda (x)
+       (member t (mapcar (lambda (_x)
 			   (ipe-custom--plist-defn-get-p defn '(:movement)))
 			 '(char line word list)))
        (not (member t (mapcar (lambda (x)
@@ -864,10 +867,10 @@ This function calls either `ipe-mouse--install' or
 
   (set sym defn)
   (if defn
-      (if (functionp 'ipe-mouse--install)
-	  (ipe-mouse--install))
-    (if (functionp 'ipe-mouse--uninstall)
-	(ipe-mouse--uninstall))))
+      (when (functionp 'ipe-mouse--install)
+	(ipe-mouse--install))
+    (when (functionp 'ipe-mouse--uninstall)
+      (ipe-mouse--uninstall))))
 
 (defun ipe-custom--menu-set (sym defn)
   "`customize' :set function for `ipe-menu-support-p'.
@@ -880,10 +883,10 @@ This function calls either `ipe-menu--install' or
 
   (set sym defn)
   (if defn
-      (if (functionp 'ipe-menu--install)
-	  (ipe-menu--install))
-    (if (functionp 'ipe-menu--uninstall)
-	(ipe-menu--uninstall))))
+      (when (functionp 'ipe-menu--install)
+	(ipe-menu--install))
+    (when (functionp 'ipe-menu--uninstall)
+      (ipe-menu--uninstall))))
 
 ;; -------------------------------------------------------------------
 ;;;; Widget definitions.
@@ -1312,7 +1315,6 @@ definition (DEFN) will be passed to CALLBACK:
   (let ((buffer (get-buffer-create "*ipe-edit-pair-defn*"))
 	(widget-push-button-prefix "")
 	(widget-push-button-suffix "")
-	(custom-pair)
 	(check-save)
 	(on-save)
 	(on-cancel))
@@ -1383,12 +1385,18 @@ definition (DEFN) will be passed to CALLBACK:
       (widget-minor-mode)
 
       ;; Add local key bindings for Save / Cancel.
-      (local-set-key (kbd "C-x C-s") (list 'lambda '()
-					   (list 'interactive)
-					   (list on-save nil nil)))
       (local-set-key (kbd "C-g") (list 'lambda '()
 				       (list 'interactive)
 				       (list on-cancel nil nil)))
+      (local-set-key (kbd "<ESC> <ESC>") (list 'lambda '()
+					       (list 'interactive)
+					       (list on-cancel nil nil)))
+      (local-set-key (kbd "<escape> <escape>") (list 'lambda '()
+						     (list 'interactive)
+						     (list on-cancel nil nil)))
+      (local-set-key (kbd "C-x C-s") (list 'lambda '()
+					   (list 'interactive)
+					   (list on-save nil nil)))
 
       (goto-char (point-min)))
 

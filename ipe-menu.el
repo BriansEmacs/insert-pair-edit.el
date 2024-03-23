@@ -1,11 +1,12 @@
-;;; ipe-menu.el --- Insert Pair Edit - menu support
+;;; ipe-menu.el --- Insert Pair Edit - menu support -*- lexical-binding: t; -*-
 ;; Copyright (C) 2023 Brian Kavanagh
 
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 2023.12.30
+;; Version: 1.0
 ;; Package: ipe
+;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: convenience, tools
 ;; Homepage: https://github.com/BriansEmacs/insert-pair-edit.el
 
@@ -212,6 +213,7 @@ If MODE is nil, return non-nil if there are ANY `ipe' Mode-Specific
 PAIRS defined.
 If MODE is non nil, return non-nil if there are `ipe' Mode-Specific
 PAIRs defined for the given MODE within `ipe-mode-pairs'."
+
   (if mode
       (> (length (ipe--mode-pairs mode)) 0)
     (> (length ipe-mode-pairs) 0)))

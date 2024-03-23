@@ -124,7 +124,7 @@ test: clean
 ### Lint
 # ----------------------------------------------------------------------
 
-lint: pkgs
+lint: pkgs clean
 	@echo " • Linting ipe package..."
 	@$(EVAL) "(ipe-build--lint)"
 
@@ -132,7 +132,7 @@ lint: pkgs
 ### Lint test/*.el
 # ----------------------------------------------------------------------
 
-linttest: pkgs
+linttest: pkgs clean
 	@echo " • Linting ipe tests..."
 	@$(EVAL) "(ipe-build--linttest)"
 

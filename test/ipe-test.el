@@ -1,10 +1,10 @@
-;;; ipe-test.el --- Insert Pair Edit - ERT Test Helpers
+;;; ipe-test.el --- Insert Pair Edit - ERT Test Helpers -*- lexical-binding: t; -*-
 ;; Copyright (C) 2023 Brian Kavanagh
 
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 2023.12.30
+;; Version: 1.0
 ;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: internal local
@@ -54,33 +54,36 @@
 (require 'insert-pair-edit)
 
 (defconst ipe-test--point-indicator "|"
-  "The position of POINT within 'ipe-test--.*' tests.
+  "The position of POINT within \"ipe-test--.*\" tests.
 
 This string is inserted within the input / expected output string
-passed to the 'ipe-test--.*' `ert' tests to indicate the position of
+passed to the \"ipe-test--.*\" `ert' tests to indicate the position of
 POINT.")
 
 (defconst ipe-test--mark-indicator "@"
-  "The position of the MARK within 'ipe-test--.*' tests.
+  "The position of the MARK within \"ipe-test--.*\" tests.
 
 This string is inserted within the input string passed to the
-'ipe-test--.*' `ert' tests to indicate the position of mark.")
+\"ipe-test--.*\" `ert' tests to indicate the position of mark.")
 
 (defconst ipe-test--mc-point-indicator "!"
-  "The position of a multiple-cursor within 'ipe-test--.*'.
+  "The position of a multiple-cursor within \"ipe-test--.*\".
 
 This string is inserted within the input / expected output string
-passed to the 'ipe-test--.*' `ert' tests to indicate the position of
-a 'multiple-cursors' fake-cursor.")
+passed to the \"ipe-test--.*\" `ert' tests to indicate the position of
+a `multiple-cursors' fake-cursor.")
 
-;;  "The keystrokes for the currently running 'ipe-test--.*'.
+;;  "The keystrokes for the currently running \"ipe-test--.*\".
+(defvar-local ipe-test--keystrokes nil
+  "The keystrokes for the currently running \"ipe-test--.*\".")
+
 (setq ipe-test--keystrokes nil)
 
 (defvar ipe-test--buffer-text nil
-  "The buffer text for the currently running 'ipe-test--.*'.")
+  "The buffer text for the currently running \"ipe-test--.*\".")
 
 (defvar ipe-test--names '()
-  "A history list for `completing-read' for `ipe-test--*' names.")
+  "A history list for `completing-read' for \"ipe-test--.*\" names.")
 
 (defvar ipe-test--buffer-text-alist-p t
   "Whether to populate `ipe-test--buffer-text-alist'.")
@@ -106,7 +109,7 @@ Additionally:
   mark is set to the starting location of the indicator, and the
   region is activated.
 * If any `ipe-test--mc-point-indicator's are found, they are deleted,
-  and if the `multiple-cursors' library is loaded, new 'mc' cursors
+  and if the `multiple-cursors' library is loaded, new mc cursors
   are created at the location of the `ipe-test--mc-point-indicator'."
 
   ;; If 'multiple-cursors is loaded, set up the multiple-cursors.
@@ -175,7 +178,7 @@ Additionally:
 (defun ipe-test--ert-equal-explainer (buffer-actual buffer-expected)
   "`ert' explainer for `ipe-test--ert-equal'.
 
-This will output a slightly more 'user-friendly' explanation of a
+This will output a slightly more user-friendly explanation of a
 mismatch between the BUFFER-EXPECTED and BUFFER-ACTUAL strings within
 an `ipe-ert-test'.  If the BUFFER-EXPECTED and BUFFER-ACTUAL strings
 differ, this will output an explanation of the form:
@@ -186,8 +189,8 @@ differ, this will output an explanation of the form:
     Actual:   <actual LINE produced by test>
     ----------^
 
-Where the final '---*^' string will point to the location of the first
-character difference between the two lines."
+Where the final \"---*^\" string will point to the location of the
+first character difference between the two lines."
   (let*
       ((actual      (substring-no-properties buffer-actual))
        (expected    (substring-no-properties buffer-expected))
@@ -268,10 +271,10 @@ character difference between the two lines."
 
 ;; Equal with custom 'ert-explainer property.
 (defun ipe-test--ert-equal (actual expected)
-  "Rename of `equal' to allow 'ert-explainer binding.
+  "Rename of `equal' to allow \='ert-explainer binding.
 
-This version of `equal' is used by the 'ipe-test-.*' tests to perform
-a `should' test with a custom 'ert-explainer.
+This version of `equal' is used by the \"ipe-test--.*\" tests to
+perform a `should' test with a custom \='ert-explainer.
 \(`ipe-test--ert-equal-explainer').
 
 It provides a description of the differences between the ACTUAL result
@@ -284,10 +287,12 @@ and the EXPECTED result."
      'ipe-test--ert-equal-explainer)
 
 (defun ipe-test--names ()
-  "Return a list of the `ert' test cases with a 'ipe-test--.*' prefix.
+  "Return the `ert' test cases with a \"ipe-test--.*\" prefix.
 
-This function supplies the list of names for a `completing-read'
-within `ipe-test-run'."
+This function returns a list of strings representing the names of the
+\"ipe-test--*\" test cases.  It is expected to be used by a
+`completing-read' within `ipe-test-run'."
+
   (mapcar (lambda (s) (substring (symbol-name s)
 				 (length "ipe-test--")))
 	  (apropos-internal
@@ -300,7 +305,7 @@ within `ipe-test-run'."
 ;;;; Test Macros
 ;; -------------------------------------------------------------------
 
-(defmacro ipe-test-def (name param doc custom buffer-text expected
+(defmacro ipe-test-def (name _param doc custom buffer-text expected
 			     &rest body)
   "Customized version of `ert-deftest' for `ipe' unit testing.
 
@@ -308,10 +313,10 @@ This will run a set of commands, BODY, against the BUFFER-TEXT within
 a temporary buffer, and compare the result to the EXPECTED result.
 
 NAME - The name of the `ert' test.  This will be prefixed with
-  'ipe-test--'.
-PARAM - Placeholder - for future extensibility.
+  \"ipe-test--\".
+_PARAM - Placeholder - for future extensibility.
 DOC - Documentation string for the `ert-deftest' definition.
-CUSTOM - List of 'ipe' customizations for the test.
+CUSTOM - List of `ipe' customizations for the test.
 BUFFER-TEXT - Starting text within the temporary buffer.
 EXPECTED - Expected text within the temporary buffer after test
   completion.
@@ -333,7 +338,7 @@ BODY - Commands to be executed against the temporary buffer."
 	     (insert ,buffer-text))
 	   (ipe-test--set-point)
 	   (let ((inhibit-message t))
-	     (condition-case ipe-test-error
+	     (condition-case nil
 		 ,@body
 	       (t nil)))
 	   (ipe-test--show-point)
@@ -366,10 +371,10 @@ EXPECTED result.
 `insert-pair-edit' is bound to <M-(>.
 
 NAME - The name of the `ert' test.  This will be prefixed with
-  'ipe-test--'.
+  \"ipe-test--\".
 PARAM - Placeholder - for future extensibility.
 DOC - Documentation string for the `ert-deftest' definition.
-CUSTOM - List of 'ipe' customizations for the test.
+CUSTOM - List of `ipe' customizations for the test.
 SETUP - Commands used to initialize the temporary test buffer.
 BUFFER-TEXT - Starting text within the temporary buffer.
 EXPECTED - Expected text within the temporary buffer after test
@@ -402,13 +407,14 @@ TEARDOWN - Commands used to clean up the temporary test buffer."
 	     (progn (,teardown))))))))
 
 (defun ipe-test--find-ert-test (symbol)
-  "`find-function-regexp-alist' entry to find `ipe-test--*' SYMBOL's.
+  "`find-function-regexp-alist' entry for \"ipe-test--.*\" SYMBOLs.
 
 This function replaces the standard `ert--find-test-regexp' variable
-within the `find-function-regexp-alist' for 'ert-test SYMBOL's.
+within the `find-function-regexp-alist' for \='ert-test SYMBOLs.
 
 It extends the regular expression search to include the `ipe-test-def'
 and `ipe-test-def-kbd' macros."
+
   (let* ((name (symbol-name symbol))
 	 (search-symbol (if (string-prefix-p "ipe-test--" name)
 			    (substring name (length "ipe-test--"))
@@ -439,7 +445,7 @@ and `ipe-test-def-kbd' macros."
 ;; -------------------------------------------------------------------
 
 (defun ipe-test-run (pattern)
-  "Run an `ert' test that has prefix 'ipe-test--.*'.
+  "Run an `ert' test that has prefix \"ipe-test--.*\".
 
 Prompt for the name of an `ipe-test-def' or `ipe-test-def-kbd'
 test to be run, and run it.  The input PATTERN is a regular expression
@@ -453,7 +459,7 @@ that will match the NAMEs of the tests to be run."
   (ert (concat "^ipe-test--.*" pattern ".*")))
 
 (defun ipe-test-run-all ()
-  "Run all of the `ert' test cases that start with 'ipe-test--.*'.
+  "Run all of the `ert' test cases that start with \"ipe-test--.*\".
 
 This interactive function runs all of the tests with `ipe-test-def' or
 `ipe-test-def-kbd'."
@@ -461,7 +467,7 @@ This interactive function runs all of the tests with `ipe-test-def' or
   (ert "^ipe-test--.*"))
 
 (defun ipe-test-run-all-and-exit (&optional quiet)
-  "Run all of the `ert' test cases that start with 'ipe-test--.*'.
+  "Run all of the `ert' test cases that start with \"ipe-test--.*\".
 
 This function runs all of the tests with `ipe-test-def' or
 `ipe-test-def-kbd' and then exits.  If QUIET is non-nil, set
@@ -473,10 +479,10 @@ This function runs all of the tests with `ipe-test-def' or
 (defun ipe-test-buffer (name)
   "Create a buffer containing the BUFFER-TEXT from an `ipe-test-def'.
 
-Create a temporary buffer `*ipe-test-buffer*' and populate it with the
-BUFFER-TEXT for the `ipe-test-def' macro named NAME.  The position of
-POINT will be set according to the `ipe-test--point-indicator' within
-the BUFFER-TEXT.
+Create a temporary buffer \"*ipe-test-buffer*\"' and populate it with
+the BUFFER-TEXT for the `ipe-test-def' macro named NAME.  The position
+of POINT will be set according to the `ipe-test--point-indicator'
+within the BUFFER-TEXT.
 
 If BUFFER-TEXT contains `ipe-test--mark-indicator', MARK will be set
 to the according to the position indicated.

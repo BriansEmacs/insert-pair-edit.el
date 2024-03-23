@@ -1,12 +1,12 @@
-;;; ipe-line.el --- Insert Pair Edit - line pair movement functions
+;;; ipe-line.el --- Insert Pair Edit - line pair movement functions -*- lexical-binding: t; -*-
 ;; Copyright (C) 2023 Brian Kavanagh
 
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 2023.12.30
+;; Version: 1.0
 ;; Package: ipe
-;; Package-Requires: ((emacs "24.4"))
+;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: convenience, tools
 ;; Homepage: https://github.com/BriansEmacs/insert-pair-edit.el
 
@@ -87,6 +87,7 @@ based upon the current values of the following positional properties:
   * :indent-2 - A number which specifies the amount of whitespace to
     add after the :infix.
   * :open-toggle - If eq t, adds a newlines after the :open string."
+
   (let* ((pair        (ipe--pair))
 	 (indent-1    (ipe--pos-property n :indent-1))
 	 (open        (ipe--pair-open-string pair))
@@ -192,6 +193,7 @@ The following positional properties are removed:
   * :indent-2
   * :open-toggle
   * :close-toggle"
+
   (ipe--pos-property-set n
 			 :open         nil
 			 :infix        nil
@@ -201,7 +203,7 @@ The following positional properties are removed:
 			 :open-toggle  nil
 			 :close-toggle nil))
 
-(defun ipe-line--set (n &optional pname value)
+(defun ipe-line--set (n &optional pname _value)
   "Set the `ipe' position properties for the `N'th PAIR.
 
 This function acts as the `movement callback' for the `'line'
@@ -380,8 +382,8 @@ to add a newline to the start of the CLOSE string.
 ;;;; move-by Function.
 ;; -------------------------------------------------------------------
 
-(defun ipe-line--move-by (defn n side action pos other units
-			       &optional push)
+(defun ipe-line--move-by (_defn n side action pos _other units
+				&optional push)
   "Calculate movement `by line' for Insert Pair Edit.
 
 - DEFN is the definition of the PAIR from `ipe-pairs'.
@@ -395,6 +397,7 @@ to add a newline to the start of the CLOSE string.
 - PUSH indicates that this is a push move from the other PAIR.
 
 Movement is calculated from POINT."
+
   (save-excursion
     (goto-char (or pos (point)))
     (cond

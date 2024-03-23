@@ -1,12 +1,12 @@
-;;; ipe-char.el --- Insert Pair Edit - char pair movement functions
+;;; ipe-char.el --- Insert Pair Edit - char pair movement functions -*- lexical-binding: t; -*-
 ;; Copyright (C) 2023 Brian Kavanagh
 
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 2023.12.30
+;; Version: 1.0
 ;; Package: ipe
-;; Package-Requires: ((emacs "24.4"))
+;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: convenience, tools
 ;; Homepage: https://github.com/BriansEmacs/insert-pair-edit.el
 
@@ -78,8 +78,8 @@ If ARG is negative, move backward ARG lines."
 ;;;; move-by Functions.
 ;; -------------------------------------------------------------------
 
-(defun ipe-char--move-by (defn n side action pos other units
-			       &optional push)
+(defun ipe-char--move-by (_defn _n side action pos _other units
+				&optional push)
   "Calculate movement `by char' for Insert Pair Edit.
 
 - DEFN is the definition of the PAIR from `ipe-pairs'.

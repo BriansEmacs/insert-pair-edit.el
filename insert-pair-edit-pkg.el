@@ -1,6 +1,6 @@
 (define-package
   "insert-pair-edit"
-  "20231230.1200"
+  "1.0"
   "Insert Pair Edit - Insert, update and delete PAIRs using overlays."
   '((emacs "24.3"))
   :keywords    '("convenience" "tools")

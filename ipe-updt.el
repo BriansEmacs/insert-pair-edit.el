@@ -1,10 +1,10 @@
-;;; ipe-updt.el --- Insert Pair Edit - update functions
+;;; ipe-updt.el --- Insert Pair Edit - update functions -*- lexical-binding: t; -*-
 ;; Copyright (C) 2023 Brian Kavanagh
 
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 30 December, 2023
-;; Version: 2023.12.30
+;; Version: 1.0
 ;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: convenience, tools
@@ -140,7 +140,7 @@ string, or nil, if no OPEN string is found."
     (goto-char (+ pos (length open) -1))
 
     (let ((prev) (escape))
-      (dotimes (i (or count 1))
+      (ipe-dotimes (or count 1)
 
 	;; Find the positions of the previous ESCAPE and OPEN.
 	(setq escape (ipe-updt--previous-escape (point) escapes bound)
@@ -238,7 +238,7 @@ If no INFIX is found in a line before POS, return POS."
 	    infix-beg
 	  infix-prev)))))
 
-(defun ipe-updt--previous-close (pos close infix escapes bound
+(defun ipe-updt--previous-close (pos close escapes bound
 				     &optional count)
   "Return the end position of the previous `ipe' CLOSE string.
 
@@ -250,8 +250,6 @@ account:
 
 - POS is the position from which to begin the search.
 - CLOSE is the CLOSE string of the PAIR for which the search is being
-  made.
-- INFIX is the INFIX string of the PAIR for which the search is being
   made.
 - ESCAPES is a list of `ipe' escapes, (MATCH REPLACE), each
   representing a single ESCAPE.
@@ -270,7 +268,7 @@ or nil, if no CLOSE string is found."
 		 pos))
 
     (let ((prev) (escape))
-      (dotimes (i (or count 1))
+      (ipe-dotimes (or count 1)
 
 	;; Find the positions of the previous ESCAPE and CLOSE.
 	(setq escape (ipe-updt--previous-escape (point) escapes bound)
@@ -324,7 +322,7 @@ string, or nil, if no OPEN string is found."
 
     (let ((pos-open (ipe-updt--previous-open pos open infix
 					     close escapes bound))
-	  (pos-close (ipe-updt--previous-close pos close infix escapes
+	  (pos-close (ipe-updt--previous-close pos close escapes
 					       bound)))
 
       (while (and pos-open
@@ -340,7 +338,7 @@ string, or nil, if no OPEN string is found."
 	(if pos
 	    (setq pos-open (ipe-updt--previous-open pos open infix
 						    close escapes bound)
-		  pos-close (ipe-updt--previous-close pos close infix
+		  pos-close (ipe-updt--previous-close pos close
 						      escapes bound))
 	  (setq pos-open nil)))
 
@@ -387,7 +385,7 @@ If no PAIR is found, return nil."
 	 (end))
 
     (save-excursion
-      (dotimes (i count)
+      (ipe-dotimes count
 	(setq start beg)
 
 	(while start
@@ -414,7 +412,6 @@ If no PAIR is found, return nil."
 							    start))
 			(previous-close (ipe-updt--previous-close start
 								  close
-								  infix
 								  escapes
 								  min)))
 		    (if previous-close
@@ -454,7 +451,6 @@ If no PAIR is found, return nil."
 		      (and (not (zerop len-infix)) (string= close infix)))
 		  (let ((close-init (ipe--close-init-pos 0 (+ beg len-open)))
 			(next-open  (ipe-updt--next-infix-end (+ beg len-open)
-							      open
 							      infix
 							      close
 							      max)))
@@ -462,13 +458,10 @@ If no PAIR is found, return nil."
 
 		 ((zerop len-open)
 		  (let* ((next-infix (ipe-updt--next-infix-end beg
-							       open
 							       infix
 							       close
 							       max))
 			 (next-close (ipe-updt--next-close (- next-infix len-infix)
-							   open
-							   infix
 							   close
 							   escapes
 							   max)))
@@ -562,12 +555,11 @@ nil, if no OPEN string is found."
     (goto-char pos)
 
     (let ((next) (escape))
-      (dotimes (i (or count 1))
+      (ipe-dotimes (or count 1)
 
 	;; Skip forward over any 'leading' infixes.
 	(unless no-skip-infix
-	  (goto-char (ipe-updt--next-infix-end (point) open infix close
-					       bound)))
+	  (goto-char (ipe-updt--next-infix-end (point) infix close bound)))
 
 	;; Find the positions of the next ESCAPE and OPEN.
 	(setq escape (ipe-updt--next-escape (point) escapes bound)
@@ -607,11 +599,10 @@ POS if no line starting with INFIX was found after POS."
 	(ipe--bol (point))
       pos)))
 
-(defun ipe-updt--next-infix-end (pos open infix close &optional bound)
+(defun ipe-updt--next-infix-end (pos infix close &optional bound)
   "Return the bound of the lines after POS starting with INFIX.
 
 - POS is the position from which to begin the search.
-- OPEN is the OPEN string for the current `ipe' PAIR.
 - INFIX is the INFIX string for the current `ipe' PAIR.
 - CLOSE is the CLOSE string for the current `ipe' PAIR.
 - BOUND is the limit of the search, if nil, search to the end of
@@ -645,8 +636,7 @@ POS if no line starting with INFIX was found."
 
       infix-end)))
 
-(defun ipe-updt--next-close (pos open infix close escapes bound
-				 &optional count)
+(defun ipe-updt--next-close (pos close escapes bound &optional count)
   "Return the end position the next `ipe' CLOSE string.
 
 Search forward from POS for an `ipe' CLOSE string, but take into
@@ -656,10 +646,6 @@ account:
   in an ESCAPE, and ignore matches to the ESCAPE.
 
 - POS is the position from which to begin the search.
-- OPEN is the OPEN string of the PAIR for which the search is being
-  made.
-- INFIX is the INFIX string of the PAIR for which the search is being
-  made.
 - CLOSE is the CLOSE string of the PAIR for which the search is being
   made.
 - ESCAPES is a list of `ipe' escapes, (MATCH REPLACE), each
@@ -676,7 +662,7 @@ nil, if no CLOSE string is found."
     (goto-char pos)
 
     (let ((next) (escape))
-      (dotimes (i (or count 1))
+      (ipe-dotimes (or count 1)
 
 	;; Find the positions of the next CLOSE and ESCAPE.
 	(setq escape (ipe-updt--next-escape (point) escapes bound)
@@ -723,8 +709,7 @@ nil, if no CLOSE string is found."
   (save-excursion
     (goto-char pos)
 
-    (let ((pos-close (ipe-updt--next-close pos open infix close
-					   escapes bound))
+    (let ((pos-close (ipe-updt--next-close pos close escapes bound))
 	  (pos-open  (ipe-updt--next-open  pos open infix close
 					   escapes bound)))
 
@@ -739,9 +724,7 @@ nil, if no CLOSE string is found."
 						escapes
 						bound))
 	(if pos
-	    (setq pos-close (ipe-updt--next-close pos open infix close
-						  escapes
-						  bound)
+	    (setq pos-close (ipe-updt--next-close pos close escapes bound)
 		  pos-open  (ipe-updt--next-open  pos open infix close
 						  escapes
 						  bound))
@@ -789,7 +772,7 @@ If no PAIR is found, return nil."
 	 (bound     max))
 
     (save-excursion
-      (dotimes (i count)
+      (ipe-dotimes count
 	(setq start end)
 
 	(while start
@@ -811,17 +794,11 @@ If no PAIR is found, return nil."
 
 		 ((zerop len-open)
 		  (setq bound (ipe-updt--next-infix-end start
-							open
 							infix
 							close
 							max))
 
-		  (or (ipe-updt--next-close bound
-					    open
-					    infix
-					    close
-					    escapes
-					    max)
+		  (or (ipe-updt--next-close bound close escapes max)
 		      start))
 
 		 (t
@@ -857,7 +834,6 @@ If no PAIR is found, return nil."
 		 ((ipe--string-starts-with infix close)
 		  (let* ((close-init (ipe--close-init-pos 0 (+ beg len-open)))
 			 (next-infix (ipe-updt--next-infix-end (+ beg len-open)
-							       open
 							       infix
 							       close
 							       max)))
@@ -866,7 +842,6 @@ If no PAIR is found, return nil."
 		 ((zerop len-close)
 		  (let ((close-init (ipe--close-init-pos 0 (+ beg len-open)))
 			(infix-end  (ipe-updt--next-infix-end (+ beg len-open)
-							      open
 							      infix
 							      close
 							      max)))
@@ -874,13 +849,10 @@ If no PAIR is found, return nil."
 
 		 ((zerop len-open)
 		  (let* ((infix-end (ipe-updt--next-infix-end beg
-							      open
 							      infix
 							      close
 							      max))
 			 (next-close (ipe-updt--next-close infix-end
-							   open
-							   infix
 							   close
 							   escapes
 							   max)))
@@ -953,7 +925,6 @@ Where:
 	 (has-close (and close (> (length close) 0)))
 	 (bol-beg   (ipe--bol beg))
 	 (bol-end   (ipe--bol end))
-	 (eol-end   (ipe--eol end))
 	 (open-pre-indent   0)
 	 (open-post-indent  0)
 	 (open-toggle)
@@ -1098,7 +1069,7 @@ If no PAIR is found, return nil."
 	 (search  (if (zerop (length open)) pos (1+ pos)))
 	 (start
 	  (if ipe-update-forward-first
-	      (or (ipe-updt--previous-close pos close infix escapes
+	      (or (ipe-updt--previous-close pos close escapes
 					    (or min (point-min)))
 		  min
 		  (point-min))
@@ -1119,7 +1090,7 @@ If no PAIR is found, return nil."
 ;;;; Deletion.
 ;; -------------------------------------------------------------------
 
-(defun ipe-updt--delete-infixes (pair beg end indents n)
+(defun ipe-updt--delete-infixes (pair beg end indents)
   "Delete the Insert Pair Edit (ipe) `INFIX'es between BEG and END.
 
 Delete all of the matches for `ipe--pair-infix-string' for the ipe
@@ -1134,8 +1105,6 @@ PAIR with the given MNEMONIC in the region between BEG and END."
 					    (regexp-quote infix)
 					    (make-string infix-post-indent ? ))
 				  "^ +"))
-	     (bol-beg           (ipe--bol beg))
-	     (bol-end           (ipe--bol end))
 	     (change            0)
 	     (deleted           0))
 
@@ -1288,8 +1257,7 @@ Return the number of characters deleted from the buffer."
     ;; Delete INFIX'es + indents.
     (when (ipe--pair-infix-string pair)
       (let ((change (ipe-updt--delete-infixes pair beg-open
-					      beg-close indents
-					      (when set-pair-p i))))
+					      beg-close indents)))
 	(setq deleted (+ deleted change))))
 
     (ipe--pos-property-set i
@@ -1339,7 +1307,6 @@ recorded in `ipe--pair-pos-list'."
   (let* ((pair      (ipe--pair mnemonic))
 	 (open      (ipe--pair-open-string  pair))
 	 (infix     (ipe--pair-infix-string pair))
-	 (escapes   (ipe--pair-escapes      pair))
 	 (close     (ipe--pair-close-string pair))
 	 (len-open  (length open))
 	 (len-infix (length infix))

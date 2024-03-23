@@ -1,11 +1,12 @@
-;;; insert-pair-edit.el --- M-( with interactive editing and modal pairs
+;;; insert-pair-edit.el --- M-( with interactive editing and modal pairs -*- lexical-binding: t; -*-
 ;; Copyright (C) 2023 Brian Kavanagh
 
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 2023.12.30
+;; Version: 1.0
 ;; Package: ipe
+;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: convenience, tools
 ;; Homepage: https://github.com/BriansEmacs/insert-pair-edit.el
 
@@ -29,19 +30,21 @@
 ;; -------------------------------------------------------------------
 ;;; Commentary:
 ;;
-;; This file defines a command, `insert-pair-edit', which is targeted
-;; as being a more feature rich alternative to the standard 'M-('
-;; Emacs keybinding, `insert-parentheses'.
+;; This package defines a command, `insert-pair-edit', which offers a
+;; more feature rich alternative to the standard 'M-(' Emacs
+;; keybinding, `insert-parentheses'.  The `insert-pair-edit' command
+;; allows for the interactive insertion, update and deletion of
+;; `customize'-able PAIRs via the use of overlays.
 ;;
-;; `insert-pair-edit' will prompt the user to enter a `customize'-able
-;; MNEMONIC (See: `ipe-pairs' / `ipe-mode-pairs'), that selects a
-;; 'major-mode dependent' PAIR to be inserted around point.  The PAIR
-;; consists of OPEN and CLOSE strings which delimit text in some
-;; fashion.
+;; Executing the `insert-pair-edit' command will first prompt the user
+;; to enter a `customize'-able MNEMONIC (See: `ipe-pairs' /
+;; `ipe-mode-pairs'), that selects a 'major-mode dependent' PAIR to be
+;; inserted around point.  The PAIR consists of OPEN and CLOSE strings
+;; which delimit text in some fashion.
 ;;
-;; First, the OPEN and CLOSE strings are inserted as overlays, then
-;; `insert-pair-edit' runs the command `ipe-edit-mode' to enter the
-;; 'Insert Pair Edit' (ipe) minor mode.
+;; The OPEN and CLOSE strings are then added to the buffer as
+;; overlays, and the "Insert Pair Edit (ipe)" (`ipe-edit-mode') minor
+;; mode is activated.
 ;;
 ;; The `ipe-edit-mode' supplies commands to interactively and
 ;; independently move the overlays representing the OPEN and CLOSE
@@ -50,22 +53,20 @@
 ;; them once they have been correctly positioned.
 ;;
 ;; Movement of the OPEN and CLOSE overlays is based upon 'movement
-;; units'.  The 'lexical units' are either: characters, words, lines,
+;; units'.  The 'movement units' are either: characters, words, lines,
 ;; or lists (S-expressions).  (For the full list of movement / editing
 ;; commands, see the documentation for `ipe-edit-mode'.)
-;;
-;; By default, movement will be by 'words', but this can be changed
-;; interactively via the: `ipe-edit--movement-by-*' commands or, by
-;; `ipe-pairs' / `ipe-mode-pairs' `customize'-ations.
-;;
-;; Additional commands are supplied to operate on the CONTENTS of the
-;; PAIR (i.e. the text between the OPEN and CLOSE overlays.)  Text can
-;; be copied, deleted, replaced and case converted.
 ;;
 ;; Certain characters between the OPEN and CLOSE overlays can also be
 ;; ESCAPE-d.  These characters will be replaced by overlays, which
 ;; will be updated by the `ipe-edit-mode' movement commands, and
 ;; inserted when the `ipe-edit--insert-pair' command is invoked.
+;;
+;; Additional commands are supplied to operate on the CONTENTS of the
+;; PAIR (i.e. the text between the OPEN and CLOSE overlays.)  Text can
+;; be copied, deleted, replaced and case converted.
+;;
+;; Full Emacs Menu and Mouse support is included.
 ;;
 ;; Customizations for the mode can be found under the `ipe' group.
 

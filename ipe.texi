@@ -15,7 +15,7 @@
 @c 
 @c ----------------------------------------------------------------------
 
-@settitle Insert Pair Edit (ipe) Help 1.0.0
+@settitle Insert Pair Edit (ipe) Help 1.0
 
 @c **********************************************************************
 @c Copyright - TODO Check this for GNU... 
@@ -42,7 +42,7 @@ Texts.  A copy of the license is included in the section entitled
 @c **********************************************************************
 @titlepage
 @c **********************************************************************
-@title Insert Pair Edit (ipe) Help 1.0.0
+@title Insert Pair Edit (ipe) Help 1.0
 @subtitle A GNU Emacs Package.
 @author Brian Kavanagh
 

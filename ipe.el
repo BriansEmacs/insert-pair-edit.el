@@ -1,12 +1,12 @@
-;;; ipe.el --- Insert Pair Edit - core library
+;;; ipe.el --- Insert Pair Edit - core library -*- lexical-binding: t; -*-
 ;; Copyright (C) 2023 Brian Kavanagh
 
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 2023.12.30
+;; Version: 1.0
 ;; Package: ipe
-;; Package-Requires: ((emacs "26.1"))
+;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: convenience, tools
 ;; Homepage: https://github.com/BriansEmacs/insert-pair-edit.el
 
@@ -877,6 +877,26 @@ Where:
 
 - SYMBOL is a value to which `ipe-set-mark-on-insert' can be set.
 - STRING is a human readable description of SYMBOL.")
+
+;; -------------------------------------------------------------------
+;;;; Utility macros.
+;; -------------------------------------------------------------------
+
+(defmacro ipe-dotimes (count &rest body)
+  "Run BODY COUNT times.
+
+Like `dotimes', but avoids unused VAR error if the iteration variable
+is not used within BODY."
+
+  (declare (indent 1))
+  (let ((end         count)
+	(upper-bound (make-symbol "upper-bound"))
+	(counter     (make-symbol "counter")))
+    `(let ((,upper-bound ,end)
+	   (,counter     0))
+       (while (< ,counter ,upper-bound)
+	 ,@body
+	 (setq ,counter (1+ ,counter))))))
 
 ;; -------------------------------------------------------------------
 ;;;; Utility Functions.
@@ -1811,7 +1831,7 @@ within `ipe--pair-pos-list', the POS-CLOSE of the first entry will be
 	 (let ((result))
 	   (dolist (x ipe--pair-pos-list)
 	     (when (and (car x) (cadr x))
-	       (add-to-list 'result x t)))
+	       (setq result (append result (list x)))))
 	   result)
 	 (lambda (x y) (or (< (car x) (car y))
 			   (and (= (car x)  (car y))
@@ -1991,8 +2011,8 @@ replaced.)"
 	      (ipe--pos-close-set n (+ pos-close inserted)))
 
 	    ;; If inserting at :point, special behaviour.
-	    (if (and (integerp ipe-point) (<= (point) ipe-point))
-		(ipe--pos-point n (+ ipe-point inserted)))))
+	    (when (and (integerp ipe-point) (<= (point) ipe-point))
+	      (ipe--pos-point n (+ ipe-point inserted)))))
 
 	(insert (substring string len len-string))))
       inserted)))
@@ -2050,7 +2070,7 @@ Return the number of characters inserted."
 ;;;; Indentation.
 ;; -------------------------------------------------------------------
 
-(defun ipe--indent-current (pos-open pos-close location)
+(defun ipe--indent-current (pos-open _pos-close _location)
   "Return a string representing the indentation for an `ipe' PAIR.
 
 - POS-OPEN is the location of the PAIR OPEN string.
@@ -2075,7 +2095,7 @@ line prior to POS-OPEN."
     (re-search-forward "^\\([\\ ]*\\)" (point-max) t)
     (match-string 1)))
 
-(defun ipe--indent-previous (pos-open pos-close location)
+(defun ipe--indent-previous (pos-open _pos-close _location)
   "Return a string representing the indentation for an `ipe' PAIR.
 
 - POS-OPEN is the location of the PAIR OPEN string.
@@ -2162,7 +2182,7 @@ pad it out to `N'+1 entries, and return a newly created OPEN
 overlay."
 
   (when (>= n (length ipe--open-overlays))
-    (dotimes (i (1+ (- n (length ipe--open-overlays))))
+    (ipe-dotimes (1+ (- n (length ipe--open-overlays)))
       (let ((open-overlay (ipe--point-overlay-create (point) 5)))
 	(overlay-put open-overlay
 		     'help-echo
@@ -2341,7 +2361,7 @@ pad it out to `N'+1 entries, and return a newly created CLOSE
 overlay."
 
   (when (>= n (length ipe--close-overlays))
-    (dotimes (i (1+ (- n (length ipe--close-overlays))))
+    (ipe-dotimes (1+ (- n (length ipe--close-overlays)))
       (let ((close-overlay (ipe--point-overlay-create (point) 5)))
 	(overlay-put close-overlay
 		     'help-echo
@@ -2538,7 +2558,7 @@ If the `I'th INFIX overlay does not exist, create it and add it to
 					    (1+ n)))
 	 (infix-overlays     (nth n ipe--infix-overlays)))
     (when (>= i (length infix-overlays))
-      (dotimes (j (1+ (- i (length infix-overlays))))
+      (ipe-dotimes (1+ (- i (length infix-overlays)))
 	(let ((infix-overlay (ipe--point-overlay-create (point) 4)))
 	  (overlay-put infix-overlay 'ipe-infix t)
 	  (overlay-put infix-overlay
@@ -2614,17 +2634,18 @@ Return the number of characters inserted."
   "Return t if the region between BEG and END has `ipe' `ESCAPE's."
 
   (if (memq t
-	    (ipe-compat--mapcan (lambda (overlays)
-				  (mapcar (lambda (overlay)
-					    (if (and (overlayp overlay)
-						     (overlay-buffer overlay)
-						     (overlay-get    overlay 'ipe-escape)
-						     (< (overlay-start overlay) end)
-						     (> (overlay-end   overlay) beg))
-						t
-					      nil))
-					  (append ipe--open-overlays overlays)))
-				ipe--escape-overlays))
+	    (ipe-compat--mapcan
+	     (lambda (overlays)
+	       (mapcar (lambda (overlay)
+			 (if (and (overlayp overlay)
+				  (overlay-buffer overlay)
+				  (overlay-get    overlay 'ipe-escape)
+				  (< (overlay-start overlay) end)
+				  (> (overlay-end   overlay) beg))
+			     t
+			   nil))
+		       (append ipe--open-overlays overlays)))
+	     ipe--escape-overlays))
       t nil))
 
 (defun ipe--escape-overlay (n i)
@@ -2637,7 +2658,7 @@ If the `I'th ESCAPE overlay does not exist, create it and add it to
 					     (1+ n)))
 	 (escape-overlays     (nth n ipe--escape-overlays)))
     (when (>= i (length escape-overlays))
-      (dotimes (j (1+ (- i (length escape-overlays))))
+      (ipe-dotimes (1+ (- i (length escape-overlays)))
 	(let ((escape-overlay (ipe--point-overlay-create (point) 3)))
 	  (overlay-put escape-overlay 'after-string "")
 	  (overlay-put escape-overlay 'ipe-escape t)

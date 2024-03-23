@@ -27,6 +27,7 @@
     "ipe-char.el"
     "ipe-compat.el"
     "ipe-custom.el"
+    "ipe-doc.el"
     "ipe-defn.el"
     "ipe-edit.el"
     "ipe-help.el"
@@ -45,7 +46,9 @@
   "List of Emacs Lisp files which make up the `ipe' package.")
 
 (defvar ipe-build--test-elisp-files
-  '("test/ipe-test-adjust.el"
+  '("test/ipe-test.el"
+    "test/ipe-test-add.el"
+    "test/ipe-test-adjust.el"
     "test/ipe-test-big-tags.el"
     "test/ipe-test-char.el"
     "test/ipe-test-contents.el"
@@ -58,6 +61,7 @@
     "test/ipe-test-insert-and.el"
     "test/ipe-test-line.el"
     "test/ipe-test-list.el"
+    "test/ipe-test-matching.el"
     "test/ipe-test-mc.el"
     "test/ipe-test-missing.el"
     "test/ipe-test-options.el"
@@ -70,7 +74,8 @@
   "Name of the Insert Pair Edit package description file.")
 
 (defvar ipe-build--ert-tests
-  '(ipe-test-adjust
+  '(ipe-test-add
+    ipe-test-adjust
     ipe-test-big-tags
     ipe-test-char
     ipe-test-contents
@@ -83,6 +88,7 @@
     ipe-test-insert-and
     ipe-test-line
     ipe-test-list
+    ipe-test-matching
     ipe-test-mc
     ipe-test-missing
     ipe-test-options
@@ -314,6 +320,17 @@ files, and the version string within the *-pkg.el file."
 
   ;; Update the ';; Version: X.X.XXX' comment.
   (let ((files ipe-build--elisp-files))
+    (dolist (file files)
+      (find-file file)
+      (goto-char (point-min))
+      (when (re-search-forward "^;; Version: .*")
+	(replace-match (concat ";; Version: " version))
+	(ipe-build--log 2 "%s Updated to version %s" file version))
+      (basic-save-buffer)
+      (kill-buffer)))
+
+  ;; Update the ';; Version: X.X.XXX' comment.
+  (let ((files ipe-build--test-elisp-files))
     (dolist (file files)
       (find-file file)
       (goto-char (point-min))
