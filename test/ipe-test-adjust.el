@@ -4,7 +4,7 @@
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 1.0
+;; Version: 1.1
 ;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: internal local
@@ -77,7 +77,7 @@
   "Options used by `ipe-test-def-kbd' for `ipe-test--adjust'.")
 
 (ipe-test-def-kbd adjust-next-pair-1 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'."
+  "Test `ipe-edit--update-next-pair'."
   ipe-test-adjust-options
   nil
   "The (((((quick))))) brown (((((|fox))))) jumps (((((over))))) the (((((lazy))))) dog."
@@ -85,7 +85,7 @@
   "C-u M-( ( C-s ( < RET")
 
 (ipe-test-def-kbd adjust-next-pair-2 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With no next PAIR."
   ipe-test-adjust-options
@@ -95,7 +95,7 @@ With no next PAIR."
   "C-u M-( ( C-s ( < RET")
 
 (ipe-test-def-kbd adjust-next-pair-3 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With minimal PAIRs."
   ipe-test-adjust-options
@@ -105,7 +105,7 @@ With minimal PAIRs."
   "C-u M-( ' C-s ( ( RET")
 
 (ipe-test-def-kbd adjust-next-pair-4 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With nested PAIRs."
   ipe-test-adjust-options
@@ -115,7 +115,7 @@ With nested PAIRs."
   "C-u M-( ( C-s ( < RET")
 
 (ipe-test-def-kbd adjust-next-pair-5 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With PAIR at start of buffer."
   ipe-test-adjust-options
@@ -125,7 +125,7 @@ With PAIR at start of buffer."
   "C-u M-( ( C-s ( < RET")
 
 (ipe-test-def-kbd adjust-next-pair-6 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With PAIR at end of buffer."
   ipe-test-adjust-options
@@ -135,7 +135,7 @@ With PAIR at end of buffer."
   "C-u M-( ( C-s ( < RET")
 
 (ipe-test-def-kbd adjust-next-pair-7 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With :escapes."
   ipe-test-adjust-options
@@ -145,7 +145,7 @@ With :escapes."
   "C-u M-( ' C-s ( < RET")
 
 (ipe-test-def-kbd adjust-next-pair-8 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With numeric prefix."
   ipe-test-adjust-options
@@ -155,7 +155,7 @@ With numeric prefix."
   "C-u M-( ( M-3 C-s ( < RET")
 
 (ipe-test-def-kbd adjust-next-pair-9 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With universal arg prefix."
   ipe-test-adjust-options
@@ -165,7 +165,7 @@ With universal arg prefix."
   "C-u M-( ( C-u C-s ( < RET")
 
 (ipe-test-def-kbd adjust-next-pair-10 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With nested PAIRS (inner)."
   ipe-test-adjust-options
@@ -175,7 +175,7 @@ With nested PAIRS (inner)."
   "C-u M-( ( C-s ( < RET")
 
 (ipe-test-def-kbd adjust-next-pair-11 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With nested PAIRS (outer)."
   ipe-test-adjust-options
@@ -185,7 +185,7 @@ With nested PAIRS (outer)."
   "C-u M-( ( C-s ( < RET")
 
 (ipe-test-def-kbd adjust-next-pair-12 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 To nested PAIR."
   ipe-test-adjust-options
@@ -195,7 +195,7 @@ To nested PAIR."
   "C-u M-( ( C-s ( < RET")
 
 (ipe-test-def-kbd adjust-previous-pair-1 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'."
+  "Test `ipe-edit--update-previous-pair'."
   ipe-test-adjust-options
   nil
   "The (((((quick))))) brown (((((|fox))))) jumps (((((over))))) the (((((lazy))))) dog."
@@ -203,7 +203,7 @@ To nested PAIR."
   "C-u M-( ( C-r ( < RET")
 
 (ipe-test-def-kbd adjust-previous-pair-2 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With no previous PAIR."
   ipe-test-adjust-options
@@ -213,7 +213,7 @@ With no previous PAIR."
   "C-u M-( ( C-r ( < RET")
 
 (ipe-test-def-kbd adjust-previous-pair-3 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With minimal PAIRs."
   ipe-test-adjust-options
@@ -223,7 +223,7 @@ With minimal PAIRs."
   "C-u M-( ' C-r ( ( RET")
 
 (ipe-test-def-kbd adjust-previous-pair-4 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With nested PAIRs."
   ipe-test-adjust-options
@@ -233,7 +233,7 @@ With nested PAIRs."
   "C-u M-( ( C-r ( < RET")
 
 (ipe-test-def-kbd adjust-previous-pair-5 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With PAIR at start of buffer."
   ipe-test-adjust-options
@@ -243,7 +243,7 @@ With PAIR at start of buffer."
   "C-u M-( ( C-r ( < RET")
 
 (ipe-test-def-kbd adjust-previous-pair-6 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With PAIR at end of buffer."
   ipe-test-adjust-options
@@ -253,7 +253,7 @@ With PAIR at end of buffer."
   "C-u M-( ( C-r ( < RET")
 
 (ipe-test-def-kbd adjust-previous-pair-7 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With :escapes."
   ipe-test-adjust-options
@@ -263,7 +263,7 @@ With :escapes."
   "C-u M-( ' C-r ( < RET")
 
 (ipe-test-def-kbd adjust-previous-pair-8 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With numeric prefix."
   ipe-test-adjust-options
@@ -273,7 +273,7 @@ With numeric prefix."
   "C-u M-( ( C-3 C-r ( < RET")
 
 (ipe-test-def-kbd adjust-previous-pair-9 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With universal arg prefix."
   ipe-test-adjust-options
@@ -283,7 +283,7 @@ With universal arg prefix."
   "C-u M-( ( C-u C-r ( < RET")
 
 (ipe-test-def-kbd adjust-previous-pair-10 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With nested PAIRS (inner)."
   ipe-test-adjust-options
@@ -293,7 +293,7 @@ With nested PAIRS (inner)."
   "C-u M-( ( C-r ( < RET")
 
 (ipe-test-def-kbd adjust-previous-pair-11 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With nested PAIRS (outer)."
   ipe-test-adjust-options
@@ -303,7 +303,7 @@ With nested PAIRS (outer)."
   "C-u M-( ( C-r ( < RET")
 
 (ipe-test-def-kbd adjust-previous-pair-12 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 To nested PAIR."
   ipe-test-adjust-options
@@ -315,7 +315,7 @@ To nested PAIR."
 ;; TODO: Add extra NEXT-OPEN / NEXT-CLOSE cases as per NEXT-PAIR /
 ;; PREVIOUS-PAIR.  i.e. Start of buffer / end-of-buffer / :escapes.
 (ipe-test-def-kbd adjust-next-open-1 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-open'."
+  "Test `ipe-edit--update-next-open'."
   ipe-test-adjust-options
   nil
   "The (((((quick))))) (((((|brown (((((fox))))) jumps))))) (((((over))))) the (((((lazy))))) dog."
@@ -323,7 +323,7 @@ To nested PAIR."
   "C-u M-( ( M-> ( < RET")
 
 (ipe-test-def-kbd adjust-next-open-2 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-open'.
+  "Test `ipe-edit--update-next-open'.
 
 With minimal PAIRS."
   ipe-test-adjust-options
@@ -333,7 +333,7 @@ With minimal PAIRS."
   "C-u M-( < M-> ( ' RET")
 
 (ipe-test-def-kbd adjust-next-open-3 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-open'.
+  "Test `ipe-edit--update-next-open'.
 
 With numeric prefix."
   ipe-test-adjust-options
@@ -343,7 +343,7 @@ With numeric prefix."
   "C-u M-( ( M-3 M-> ( < RET")
 
 (ipe-test-def-kbd adjust-next-open-4 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-open'.
+  "Test `ipe-edit--update-next-open'.
 
 With universal arg prefix."
   ipe-test-adjust-options
@@ -353,7 +353,7 @@ With universal arg prefix."
   "C-u M-( ( C-u M-> ( < RET")
 
 (ipe-test-def-kbd adjust-next-open-5 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-open'.
+  "Test `ipe-edit--update-next-open'.
 
 With no next OPEN."
   ipe-test-adjust-options
@@ -363,7 +363,7 @@ With no next OPEN."
   "C-u M-( ( C-u M-> ( < RET")
 
 (ipe-test-def-kbd adjust-previous-open-1 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-open'."
+  "Test `ipe-edit--update-previous-open'."
   ipe-test-adjust-options
   nil
   "The (((((quick))))) (((((brown (((((|fox))))) jumps))))) (((((over))))) the (((((lazy))))) dog."
@@ -371,7 +371,7 @@ With no next OPEN."
   "C-u M-( ( C-< ( < RET")
 
 (ipe-test-def-kbd adjust-previous-open-2 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-open'.
+  "Test `ipe-edit--update-previous-open'.
 
 With minimal PAIRS."
   ipe-test-adjust-options
@@ -381,7 +381,7 @@ With minimal PAIRS."
   "C-u M-( < C-< ( ' RET")
 
 (ipe-test-def-kbd adjust-previous-open-3 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-open'.
+  "Test `ipe-edit--update-previous-open'.
 
 With numeric prefix."
   ipe-test-adjust-options
@@ -391,7 +391,7 @@ With numeric prefix."
   "C-u M-( ( C-3 C-< ( < RET")
 
 (ipe-test-def-kbd adjust-previous-open-4 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-open'.
+  "Test `ipe-edit--update-previous-open'.
 
 With universal arg prefix."
   ipe-test-adjust-options
@@ -401,7 +401,7 @@ With universal arg prefix."
   "C-u M-( ( C-u C-< ( < RET")
 
 (ipe-test-def-kbd adjust-previous-open-5 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-open'.
+  "Test `ipe-edit--update-next-open'.
 
 With no previous OPEN."
   ipe-test-adjust-options
@@ -411,7 +411,7 @@ With no previous OPEN."
   "C-u M-( ( C-u C-< ( < RET")
 
 (ipe-test-def-kbd adjust-next-close-1 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-close'."
+  "Test `ipe-edit--update-next-close'."
   ipe-test-adjust-options
   nil
   "The (((((quick))))) (((((brown (((((|fox))))) jumps))))) (((((over))))) the (((((lazy))))) dog."
@@ -419,7 +419,7 @@ With no previous OPEN."
   "C-u M-( ( C-> ( < RET")
 
 (ipe-test-def-kbd adjust-next-close-2 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-close'.
+  "Test `ipe-edit--update-next-close'.
 
 With minimal PAIRS."
   ipe-test-adjust-options
@@ -429,7 +429,7 @@ With minimal PAIRS."
   "C-u M-( < C-> ( ' RET")
 
 (ipe-test-def-kbd adjust-next-close-3 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-close'.
+  "Test `ipe-edit--update-next-close'.
 
 With numeric prefix."
   ipe-test-adjust-options
@@ -439,7 +439,7 @@ With numeric prefix."
   "C-u M-( ( C-3 C-> ( < RET")
 
 (ipe-test-def-kbd adjust-next-close-4 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-close'.
+  "Test `ipe-edit--update-next-close'.
 
 With universal arg prefix."
   ipe-test-adjust-options
@@ -449,7 +449,7 @@ With universal arg prefix."
   "C-u M-( ( C-u C-> ( < RET")
 
 (ipe-test-def-kbd adjust-next-close-5 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-close'.
+  "Test `ipe-edit--update-next-close'.
 
 With no next CLOSE."
   ipe-test-adjust-options
@@ -459,7 +459,7 @@ With no next CLOSE."
   "C-u M-( ( C-u C-> ( < RET")
 
 (ipe-test-def-kbd adjust-previous-close-1 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-close'."
+  "Test `ipe-edit--update-previous-close'."
   ipe-test-adjust-options
   nil
   "The (((((quick))))) (((((|brown (((((fox))))) jumps))))) (((((over))))) the (((((lazy))))) dog."
@@ -467,7 +467,7 @@ With no next CLOSE."
   "C-u M-( ( M-< ( < RET")
 
 (ipe-test-def-kbd adjust-previous-close-2 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-close'.
+  "Test `ipe-edit--update-previous-close'.
 
 With minimal PAIRS."
   ipe-test-adjust-options
@@ -477,7 +477,7 @@ With minimal PAIRS."
   "C-u M-( < M-< ( ' RET")
 
 (ipe-test-def-kbd adjust-previous-close-3 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-close'.
+  "Test `ipe-edit--update-previous-close'.
 
 With numeric prefix."
   ipe-test-adjust-options
@@ -487,7 +487,7 @@ With numeric prefix."
   "C-u M-( ( C-3 M-< ( < RET")
 
 (ipe-test-def-kbd adjust-previous-close-4 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-close'.
+  "Test `ipe-edit--update-previous-close'.
 
 With universal arg prefix."
   ipe-test-adjust-options
@@ -497,7 +497,7 @@ With universal arg prefix."
   "C-u M-( ( C-u M-< ( < RET")
 
 (ipe-test-def-kbd adjust-previous-close-5 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-close'.
+  "Test `ipe-edit--update-previous-close'.
 
 With no previous CLOSE."
   ipe-test-adjust-options
@@ -507,7 +507,7 @@ With no previous CLOSE."
   "C-u M-( ( C-u M-< ( < RET")
 
 (ipe-test-def-kbd adjust-next-contents-1 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-contents'.
+  "Test `ipe-edit--update-next-contents'.
 
 Using a 'word PAIR."
   ipe-test-adjust-options
@@ -521,7 +521,7 @@ Using a 'word PAIR."
   "M-( ( M-s RET")
 
 (ipe-test-def-kbd adjust-next-contents-2 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-contents'.
+  "Test `ipe-edit--update-next-contents'.
 
 Using a 'word PAIR.  Search (x2)"
   ipe-test-adjust-options
@@ -535,7 +535,7 @@ Using a 'word PAIR.  Search (x2)"
   "M-( ( M-s M-s RET")
 
 (ipe-test-def-kbd adjust-previous-contents-1 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-contents'.
+  "Test `ipe-edit--update-previous-contents'.
 
 Using a 'word PAIR."
   ipe-test-adjust-options
@@ -549,7 +549,7 @@ Using a 'word PAIR."
   "M-( ( M-r RET")
 
 (ipe-test-def-kbd adjust-previous-contents-2 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-contents'.
+  "Test `ipe-edit--update-previous-contents'.
 
 Using a 'word PAIR.  Search (x2)"
   ipe-test-adjust-options
@@ -568,7 +568,7 @@ Using a 'word PAIR.  Search (x2)"
 
 ;; Next PAIR
 (ipe-test-def-kbd adjust-next-infix-1 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With :infix."
   ipe-test-adjust-options
@@ -588,7 +588,7 @@ With :infix."
   "C-u M-( - C-s C-d")
 
 (ipe-test-def-kbd adjust-next-infix-2 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With :infix.  Newline at start."
   ipe-test-adjust-options
@@ -611,7 +611,7 @@ With :infix.  Newline at start."
   "C-u M-( - C-s C-d")
 
 (ipe-test-def-kbd adjust-next-infix-3 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With :infix.  Newline at end"
   ipe-test-adjust-options
@@ -634,7 +634,7 @@ With :infix.  Newline at end"
   "C-u M-( - C-s C-d")
 
 (ipe-test-def-kbd adjust-next-infix-4 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With :infix.  Newline at start and end."
   ipe-test-adjust-options
@@ -660,7 +660,7 @@ With :infix.  Newline at start and end."
   "C-u M-( - C-s C-d")
 
 (ipe-test-def-kbd adjust-next-infix-5 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With :infix.  No next PAIR."
   ipe-test-adjust-options
@@ -680,7 +680,7 @@ With :infix.  No next PAIR."
   "C-u M-( - C-s ( { RET")
 
 (ipe-test-def-kbd adjust-next-infix-6 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With :infix.  No next PAIR.  Newline at start and end."
   ipe-test-adjust-options
@@ -708,7 +708,7 @@ With :infix.  No next PAIR.  Newline at start and end."
   "C-u M-( - C-s ( { RET")
 
 (ipe-test-def-kbd adjust-next-infix-7 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With :infix = :open = :close."
   ipe-test-adjust-options
@@ -730,7 +730,7 @@ With :infix = :open = :close."
   "C-u M-( ; C-s C-d")
 
 (ipe-test-def-kbd adjust-next-infix-8 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With indented :infix = :open = :close."
   ipe-test-adjust-options
@@ -752,7 +752,7 @@ With indented :infix = :open = :close."
   "C-u M-( ; C-s C-d")
 
 (ipe-test-def-kbd adjust-next-infix-9 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With post indented :infix = :open = :close."
   ipe-test-adjust-options
@@ -774,7 +774,7 @@ With post indented :infix = :open = :close."
   "C-u M-( ; C-s C-d")
 
 (ipe-test-def-kbd adjust-next-infix-10 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With pre + post indented :infix = :open = :close."
   ipe-test-adjust-options
@@ -796,7 +796,7 @@ With pre + post indented :infix = :open = :close."
   "C-u M-( ; C-s C-d")
 
 (ipe-test-def-kbd adjust-next-infix-11 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With toggled pre + post indented :infix = :open = :close."
   ipe-test-adjust-options
@@ -822,7 +822,7 @@ With toggled pre + post indented :infix = :open = :close."
 
 ;;; FIXME - Should not match second indents.
 ;;(ipe-test-def-kbd adjust-next-infix-12 ()
-;;  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+;;  "Test `ipe-edit--update-next-pair'.
 ;;
 ;;With region + :infix = :open = :close."
 ;;  ipe-test-adjust-options
@@ -844,7 +844,7 @@ With toggled pre + post indented :infix = :open = :close."
 ;;  "C-u M-( ; C-s C-d")
 
 (ipe-test-def-kbd adjust-next-infix-13 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With :infix = :open."
   ipe-test-adjust-options
@@ -866,7 +866,7 @@ With :infix = :open."
   "C-u M-( 1 C-s C-d")
 
 (ipe-test-def-kbd adjust-next-infix-14 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With indented :infix = :open."
   ipe-test-adjust-options
@@ -888,7 +888,7 @@ With indented :infix = :open."
   "C-u M-( 1 C-s C-d")
 
 (ipe-test-def-kbd adjust-next-infix-15 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With post indented :infix = :open."
   ipe-test-adjust-options
@@ -910,7 +910,7 @@ With post indented :infix = :open."
   "C-u M-( 1 C-s C-d")
 
 (ipe-test-def-kbd adjust-next-infix-16 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With pre + post indented :infix = :open."
   ipe-test-adjust-options
@@ -932,7 +932,7 @@ With pre + post indented :infix = :open."
   "C-u M-( 1 C-s C-d")
 
 (ipe-test-def-kbd adjust-next-infix-17 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With toggled pre + post indented :infix = :open."
   ipe-test-adjust-options
@@ -957,7 +957,7 @@ With toggled pre + post indented :infix = :open."
   "C-u M-( 1 C-s C-d")
 
 (ipe-test-def-kbd adjust-next-infix-18 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With region + :infix = :open."
   ipe-test-adjust-options
@@ -979,7 +979,7 @@ With region + :infix = :open."
   "C-u M-( 1 C-s C-d")
 
 (ipe-test-def-kbd adjust-next-infix-19 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With :infix = :open. No next."
   ipe-test-adjust-options
@@ -1001,7 +1001,7 @@ With :infix = :open. No next."
   "C-u M-( 1 C-s C-d")
 
 (ipe-test-def-kbd adjust-next-infix-20 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With :infix + empty :open."
   ipe-test-adjust-options
@@ -1023,7 +1023,7 @@ With :infix + empty :open."
   "C-u M-( 3 C-s C-d")
 
 (ipe-test-def-kbd adjust-next-infix-21 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With indented :infix + empty :open."
   ipe-test-adjust-options
@@ -1045,7 +1045,7 @@ With indented :infix + empty :open."
   "C-u M-( 3 C-s C-d")
 
 (ipe-test-def-kbd adjust-next-infix-22 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With post indented :infix + empty :open."
   ipe-test-adjust-options
@@ -1067,7 +1067,7 @@ With post indented :infix + empty :open."
   "C-u M-( 3 C-s C-d")
 
 (ipe-test-def-kbd adjust-next-infix-23 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With pre + post indented :infix + empty :open."
   ipe-test-adjust-options
@@ -1089,7 +1089,7 @@ With pre + post indented :infix + empty :open."
   "C-u M-( 3 C-s C-d")
 
 (ipe-test-def-kbd adjust-next-infix-24 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With toggled pre + post indented :infix + empty :open."
   ipe-test-adjust-options
@@ -1115,7 +1115,7 @@ With toggled pre + post indented :infix + empty :open."
   "C-u M-( 3 C-s C-d")
 
 (ipe-test-def-kbd adjust-next-infix-25 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With region + :infix + empty :open."
   ipe-test-adjust-options
@@ -1137,7 +1137,7 @@ With region + :infix + empty :open."
   "C-u M-( 3 C-s C-d")
 
 (ipe-test-def-kbd adjust-next-infix-26 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With differing indents."
   ipe-test-adjust-options
@@ -1163,7 +1163,7 @@ With differing indents."
   "C-u M-( { C-s ( - RET")
 
 (ipe-test-def-kbd adjust-next-infix-27 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With differing open-toggle / close-toggle."
   ipe-test-adjust-options
@@ -1185,7 +1185,7 @@ With differing open-toggle / close-toggle."
   "C-u M-( { C-s ( - RET")
 
 (ipe-test-def-kbd adjust-next-infix-28 ()
-  "Test `insert-pair-edit' `ipe-edit--update-next-pair'.
+  "Test `ipe-edit--update-next-pair'.
 
 With differing open-toggle / close-toggle."
   ipe-test-adjust-options
@@ -1211,7 +1211,7 @@ With differing open-toggle / close-toggle."
 ;; *******************************************************************
 
 (ipe-test-def-kbd adjust-previous-infix-1 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With :infix."
   ipe-test-adjust-options
@@ -1231,7 +1231,7 @@ With :infix."
   "C-u M-( - C-r C-d")
 
 (ipe-test-def-kbd adjust-previous-infix-2 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With :infix.  Newline at start."
   ipe-test-adjust-options
@@ -1254,7 +1254,7 @@ With :infix.  Newline at start."
   "C-u M-( - C-r C-d")
 
 (ipe-test-def-kbd adjust-previous-infix-3 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With :infix.  Newline at end."
   ipe-test-adjust-options
@@ -1277,7 +1277,7 @@ With :infix.  Newline at end."
   "C-u M-( - C-r C-d")
 
 (ipe-test-def-kbd adjust-previous-infix-4 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With :infix.  Newline at start and end."
   ipe-test-adjust-options
@@ -1303,7 +1303,7 @@ With :infix.  Newline at start and end."
   "C-u M-( - C-r C-d")
 
 (ipe-test-def-kbd adjust-previous-infix-5 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With :infix.  No previous PAIR."
   ipe-test-adjust-options
@@ -1323,7 +1323,7 @@ With :infix.  No previous PAIR."
   "C-u M-( - C-r ( { RET")
 
 (ipe-test-def-kbd adjust-previous-infix-6 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With :infix.  No previous PAIR.  Newline at start and end."
   ipe-test-adjust-options
@@ -1351,7 +1351,7 @@ With :infix.  No previous PAIR.  Newline at start and end."
   "C-u M-( - C-r ( { RET")
 
 (ipe-test-def-kbd adjust-previous-infix-7 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With :infix = :open = :close."
   ipe-test-adjust-options
@@ -1373,7 +1373,7 @@ With :infix = :open = :close."
   "C-u M-( ; C-r C-d")
 
 (ipe-test-def-kbd adjust-previous-infix-8 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With indented :infix = :open = :close."
   ipe-test-adjust-options
@@ -1395,7 +1395,7 @@ With indented :infix = :open = :close."
   "C-u M-( ; C-r C-d")
 
 (ipe-test-def-kbd adjust-previous-infix-9 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With post indented :infix = :open = :close."
   ipe-test-adjust-options
@@ -1417,7 +1417,7 @@ With post indented :infix = :open = :close."
   "C-u M-( ; C-r C-d")
 
 (ipe-test-def-kbd adjust-previous-infix-10 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With pre+post indented :infix = :open = :close."
   ipe-test-adjust-options
@@ -1439,7 +1439,7 @@ With pre+post indented :infix = :open = :close."
   "C-u M-( ; C-r C-d")
 
 (ipe-test-def-kbd adjust-previous-infix-11 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With toggled pre+post indented :infix = :open = :close."
   ipe-test-adjust-options
@@ -1465,7 +1465,7 @@ With toggled pre+post indented :infix = :open = :close."
 
 ;;; FIXME - Delete extra characters before cursor.
 ;;(ipe-test-def-kbd adjust-previous-infix-12 ()
-;;  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+;;  "Test `ipe-edit--update-previous-pair'.
 ;;
 ;;With region + :infix = :open = :close."
 ;;  ipe-test-adjust-options
@@ -1487,7 +1487,7 @@ With toggled pre+post indented :infix = :open = :close."
 ;;  "C-u M-( ; C-r C-d")
 
 (ipe-test-def-kbd adjust-previous-infix-13 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With :infix = :open."
   ipe-test-adjust-options
@@ -1509,7 +1509,7 @@ With :infix = :open."
   "C-u M-( 1 C-r C-d")
 
 (ipe-test-def-kbd adjust-previous-infix-14 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With indented :infix = :open."
   ipe-test-adjust-options
@@ -1531,7 +1531,7 @@ With indented :infix = :open."
   "C-u M-( 1 C-r C-d")
 
 (ipe-test-def-kbd adjust-previous-infix-15 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With post indented :infix = :open."
   ipe-test-adjust-options
@@ -1553,7 +1553,7 @@ With post indented :infix = :open."
   "C-u M-( 1 C-r C-d")
 
 (ipe-test-def-kbd adjust-previous-infix-16 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With pre+post indented :infix = :open."
   ipe-test-adjust-options
@@ -1575,7 +1575,7 @@ With pre+post indented :infix = :open."
   "C-u M-( 1 C-r C-d")
 
 (ipe-test-def-kbd adjust-previous-infix-17 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With toggled pre+post indented :infix = :open."
   ipe-test-adjust-options
@@ -1600,7 +1600,7 @@ With toggled pre+post indented :infix = :open."
   "C-u M-( 1 C-r C-d")
 
 (ipe-test-def-kbd adjust-previous-infix-18 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With region + :infix = :open."
   ipe-test-adjust-options
@@ -1622,7 +1622,7 @@ With region + :infix = :open."
   "C-u M-( 1 C-r C-d")
 
 (ipe-test-def-kbd adjust-previous-infix-19 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With :infix = :open. No previous."
   ipe-test-adjust-options
@@ -1644,7 +1644,7 @@ With :infix = :open. No previous."
   "C-u M-( 1 C-r C-d")
 
 (ipe-test-def-kbd adjust-previous-infix-20 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With :infix + empty :open."
   ipe-test-adjust-options
@@ -1666,7 +1666,7 @@ With :infix + empty :open."
   "C-u M-( 3 C-r C-d")
 
 (ipe-test-def-kbd adjust-previous-infix-21 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With indented :infix + empty :open."
   ipe-test-adjust-options
@@ -1688,7 +1688,7 @@ With indented :infix + empty :open."
   "C-u M-( 3 C-r C-d")
 
 (ipe-test-def-kbd adjust-previous-infix-22 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With post indented :infix + empty :open."
   ipe-test-adjust-options
@@ -1710,7 +1710,7 @@ With post indented :infix + empty :open."
   "C-u M-( 3 C-r C-d")
 
 (ipe-test-def-kbd adjust-previous-infix-23 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With pre+post indented :infix + empty :open."
   ipe-test-adjust-options
@@ -1732,7 +1732,7 @@ With pre+post indented :infix + empty :open."
   "C-u M-( 3 C-r C-d")
 
 (ipe-test-def-kbd adjust-previous-infix-24 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With toggled pre+post indented :infix + empty :open."
   ipe-test-adjust-options
@@ -1758,7 +1758,7 @@ With toggled pre+post indented :infix + empty :open."
   "C-u M-( 3 C-r C-d")
 
 (ipe-test-def-kbd adjust-previous-infix-25 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With region + :infix + empty :open."
   ipe-test-adjust-options
@@ -1780,7 +1780,7 @@ With region + :infix + empty :open."
   "C-u M-( 3 C-r C-d")
 
 (ipe-test-def-kbd adjust-previous-infix-26 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With differing indents."
   ipe-test-adjust-options
@@ -1806,7 +1806,7 @@ With differing indents."
   "C-u M-( { C-r ( - RET")
 
 (ipe-test-def-kbd adjust-previous-infix-27 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With differing open-toggle / close-toggle."
   ipe-test-adjust-options
@@ -1828,7 +1828,7 @@ With differing open-toggle / close-toggle."
   "C-u M-( { C-r ( - RET")
 
 (ipe-test-def-kbd adjust-previous-infix-28 ()
-  "Test `insert-pair-edit' `ipe-edit--update-previous-pair'.
+  "Test `ipe-edit--update-previous-pair'.
 
 With differing open-toggle / close-toggle."
   ipe-test-adjust-options

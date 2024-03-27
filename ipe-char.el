@@ -4,7 +4,7 @@
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 1.0
+;; Version: 1.1
 ;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: convenience, tools
@@ -60,7 +60,7 @@
 ;; -------------------------------------------------------------------
 ;;; Code:
 
-(require 'ipe)
+(require 'ipe-)
 
 ;; -------------------------------------------------------------------
 ;;;; Utility Functions.
@@ -93,6 +93,7 @@ If ARG is negative, move backward ARG lines."
 - PUSH indicates that this is a push move from the other PAIR.
 
 Movement is calculated from POINT."
+
   (save-excursion
     (goto-char (or pos (point)))
     (cond
@@ -176,9 +177,10 @@ Movement is calculated from POINT."
 
     (point)))
 
-(setq ipe-move-by-movements
-      (append ipe-move-by-movements
-	      '((char ipe-char--move-by nil "characters"))))
+(ipe-move-by-install 'char
+		     'ipe-char--move-by
+		     nil
+		     "characters")
 
 (provide 'ipe-char)
 

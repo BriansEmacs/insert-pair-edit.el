@@ -4,7 +4,7 @@
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 1.0
+;; Version: 1.1
 ;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: internal local
@@ -61,7 +61,7 @@
   "Options used by `ipe-test-def-kbd' for `ipe-test-mc'.")
 
 (ipe-test-def-kbd mc-basic-insert-1 ()
-  "Test `insert-pair-edit' at start of a buffer.
+  "Test `ipe-insert-pair-edit' at start of a buffer.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -71,7 +71,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( RET")
 
 (ipe-test-def-kbd mc-basic-insert-2 ()
-  "Test `insert-pair-edit' at start of a line.
+  "Test `ipe-insert-pair-edit' at start of a line.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -85,7 +85,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( RET")
 
 (ipe-test-def-kbd mc-basic-insert-3 ()
-  "Test `insert-pair-edit' in middle of a line.
+  "Test `ipe-insert-pair-edit' in middle of a line.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -99,7 +99,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( RET")
 
 (ipe-test-def-kbd mc-basic-insert-4 ()
-  "Test `insert-pair-edit' at end of the line.
+  "Test `ipe-insert-pair-edit' at end of the line.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -112,7 +112,7 @@ Using a 'word PAIR with multiple-cursors."
     "The quick brown fox jumps over the lazy (dog).!")
   "M-( ( RET")
 (ipe-test-def-kbd mc-basic-insert-5 ()
-  "Test `insert-pair-edit' at 'offset' beginning of a line.
+  "Test `ipe-insert-pair-edit' at 'offset' beginning of a line.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -126,7 +126,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( RET")
 
 (ipe-test-def-kbd mc-basic-insert-6 ()
-  "Test `insert-pair-edit' at 'offset' end of a line.
+  "Test `ipe-insert-pair-edit' at 'offset' end of a line.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -140,7 +140,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( RET")
 
 (ipe-test-def-kbd mc-basic-prefix-insert-1 ()
-  "Test `insert-pair-edit' with a numeric prefix.
+  "Test `ipe-insert-pair-edit' with a numeric prefix.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -154,7 +154,7 @@ Using a 'word PAIR with multiple-cursors."
   "C-1 M-( ( RET")
 
 (ipe-test-def-kbd mc-basic-prefix-insert-2 ()
-  "Test `insert-pair-edit' with a '2' numeric prefix.
+  "Test `ipe-insert-pair-edit' with a '2' numeric prefix.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -168,7 +168,7 @@ Using a 'word PAIR with multiple-cursors."
   "C-2 M-( ( RET")
 
 (ipe-test-def-kbd mc-basic-prefix-insert-3 ()
-  "Test `insert-pair-edit' with a '3' numeric prefix.
+  "Test `ipe-insert-pair-edit' with a '3' numeric prefix.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -182,7 +182,7 @@ Using a 'word PAIR with multiple-cursors."
   "C-3 M-( ( RET")
 
 (ipe-test-def-kbd mc-basic-prefix-insert-4 ()
-  "Test `insert-pair-edit' with a '4' numeric prefix.
+  "Test `ipe-insert-pair-edit' with a '4' numeric prefix.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -196,7 +196,7 @@ Using a 'word PAIR with multiple-cursors."
   "C-4 M-( ( RET")
 
 (ipe-test-def-kbd mc-open-backward-1 ()
-  "Test `insert-pair-edit' OPEN backward.
+  "Test `ipe-insert-pair-edit' OPEN backward.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -210,7 +210,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-b RET")
 
 (ipe-test-def-kbd mc-open-backward-2 ()
-  "Test `insert-pair-edit' OPEN backward x2.
+  "Test `ipe-insert-pair-edit' OPEN backward x2.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -224,7 +224,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-b C-b RET")
 
 (ipe-test-def-kbd mc-open-backward-3 ()
-  "Test `insert-pair-edit' OPEN backward x3.
+  "Test `ipe-insert-pair-edit' OPEN backward x3.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -238,7 +238,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( 3 C-b RET")
 
 (ipe-test-def-kbd mc-open-backward-4 ()
-  "Test `insert-pair-edit' OPEN backward x4.
+  "Test `ipe-insert-pair-edit' OPEN backward x4.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -252,7 +252,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-u C-b RET")
 
 (ipe-test-def-kbd mc-open-backward-16 ()
-  "Test `insert-pair-edit' OPEN backward x16.
+  "Test `ipe-insert-pair-edit' OPEN backward x16.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -266,7 +266,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-u C-u C-b RET")
 
 (ipe-test-def-kbd mc-open-backward-beginning-1 ()
-  "Test `insert-pair-edit' OPEN backward at beginning of buffer.
+  "Test `ipe-insert-pair-edit' OPEN backward at beginning of buffer.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -280,7 +280,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-b RET")
 
 (ipe-test-def-kbd mc-open-backward-beginning-2 ()
-  "Test `insert-pair-edit' OPEN backward at beginning of buffer.
+  "Test `ipe-insert-pair-edit' OPEN backward at beginning of buffer.
 
 Using a 'word PAIR with multiple-cursors, single-line (x1)."
   ipe-test-mc-options
@@ -290,7 +290,7 @@ Using a 'word PAIR with multiple-cursors, single-line (x1)."
   "M-( ( C-b RET")
 
 (ipe-test-def-kbd mc-open-backward-beginning-3 ()
-  "Test `insert-pair-edit' OPEN backward at beginning of buffer.
+  "Test `ipe-insert-pair-edit' OPEN backward at beginning of buffer.
 
 Using a 'word PAIR with multiple-cursors, single-line (x2)."
   ipe-test-mc-options
@@ -300,7 +300,7 @@ Using a 'word PAIR with multiple-cursors, single-line (x2)."
   "M-( ( C-b C-b RET")
 
 (ipe-test-def-kbd mc-open-backward-beginning-4 ()
-  "Test `insert-pair-edit' OPEN backward at beginning of buffer.
+  "Test `ipe-insert-pair-edit' OPEN backward at beginning of buffer.
 
 Using a 'word PAIR with multiple-cursors, single-line (x3)."
   ipe-test-mc-options
@@ -310,7 +310,7 @@ Using a 'word PAIR with multiple-cursors, single-line (x3)."
   "M-( ( C-b C-b C-b RET")
 
 (ipe-test-def-kbd mc-open-backward-blank ()
-  "Test `insert-pair-edit' OPEN backward with a blank line.
+  "Test `ipe-insert-pair-edit' OPEN backward with a blank line.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -332,7 +332,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-b RET")
 
 (ipe-test-def-kbd mc-open-backward-blank-2 ()
-  "Test `insert-pair-edit' OPEN backward x2 with a blank line.
+  "Test `ipe-insert-pair-edit' OPEN backward x2 with a blank line.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -354,7 +354,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-b C-b RET")
 
 (ipe-test-def-kbd mc-close-forward-1 ()
-  "Test `insert-pair-edit' CLOSE forward.
+  "Test `ipe-insert-pair-edit' CLOSE forward.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -368,7 +368,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-f RET")
 
 (ipe-test-def-kbd mc-close-forward-2 ()
-  "Test `insert-pair-edit' CLOSE forward x2.
+  "Test `ipe-insert-pair-edit' CLOSE forward x2.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -382,7 +382,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-f C-f RET")
 
 (ipe-test-def-kbd mc-close-forward-3 ()
-  "Test `insert-pair-edit' CLOSE forward x3.
+  "Test `ipe-insert-pair-edit' CLOSE forward x3.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -396,7 +396,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( 3 C-f RET")
 
 (ipe-test-def-kbd mc-close-forward-4 ()
-  "Test `insert-pair-edit' CLOSE forward x4.
+  "Test `ipe-insert-pair-edit' CLOSE forward x4.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -410,7 +410,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-u C-f RET")
 
 (ipe-test-def-kbd mc-close-forward-16 ()
-  "Test `insert-pair-edit' CLOSE forward x16.
+  "Test `ipe-insert-pair-edit' CLOSE forward x16.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -424,7 +424,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-u C-u C-f RET")
 
 (ipe-test-def-kbd mc-close-forward-end-1 ()
-  "Test `insert-pair-edit' CLOSE forward at end of buffer.
+  "Test `ipe-insert-pair-edit' CLOSE forward at end of buffer.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -438,7 +438,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-f RET")
 
 (ipe-test-def-kbd mc-close-forward-end-2 ()
-  "Test `insert-pair-edit' CLOSE forward at end of buffer.
+  "Test `ipe-insert-pair-edit' CLOSE forward at end of buffer.
 
 Using a 'word PAIR with multiple-cursors, single-line (x1)."
   ipe-test-mc-options
@@ -448,7 +448,7 @@ Using a 'word PAIR with multiple-cursors, single-line (x1)."
   "M-( ( C-f RET")
 
 (ipe-test-def-kbd mc-close-forward-end-3 ()
-  "Test `insert-pair-edit' CLOSE forward at end of buffer.
+  "Test `ipe-insert-pair-edit' CLOSE forward at end of buffer.
 
 Using a 'word PAIR with multiple-cursors, single-line (x2)."
   ipe-test-mc-options
@@ -458,7 +458,7 @@ Using a 'word PAIR with multiple-cursors, single-line (x2)."
   "M-( ( C-f C-f RET")
 
 (ipe-test-def-kbd mc-close-forward-end-4 ()
-  "Test `insert-pair-edit' CLOSE forward at end of buffer.
+  "Test `ipe-insert-pair-edit' CLOSE forward at end of buffer.
 
 Using a 'word PAIR with multiple-cursors, single-line (x3)."
   ipe-test-mc-options
@@ -468,7 +468,7 @@ Using a 'word PAIR with multiple-cursors, single-line (x3)."
   "M-( ( C-f C-f C-f RET")
 
 (ipe-test-def-kbd mc-close-forward-blank ()
-  "Test `insert-pair-edit' CLOSE forward with a blank line.
+  "Test `ipe-insert-pair-edit' CLOSE forward with a blank line.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -488,7 +488,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-f RET")
 
 (ipe-test-def-kbd mc-close-forward-blank-2 ()
-  "Test `insert-pair-edit' CLOSE forward x2 with a blank line.
+  "Test `ipe-insert-pair-edit' CLOSE forward x2 with a blank line.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -508,7 +508,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-f C-f RET")
 
 (ipe-test-def-kbd mc-open-forward-1 ()
-  "Test `insert-pair-edit' OPEN forward.
+  "Test `ipe-insert-pair-edit' OPEN forward.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -522,7 +522,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( M-f RET")
 
 (ipe-test-def-kbd mc-open-forward-2 ()
-  "Test `insert-pair-edit' OPEN forward x2.
+  "Test `ipe-insert-pair-edit' OPEN forward x2.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -536,7 +536,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( M-f M-f RET")
 
 (ipe-test-def-kbd mc-open-forward-3 ()
-  "Test `insert-pair-edit' OPEN forward x3.
+  "Test `ipe-insert-pair-edit' OPEN forward x3.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -550,7 +550,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( 3 M-f RET")
 
 (ipe-test-def-kbd mc-open-forward-4 ()
-  "Test `insert-pair-edit' OPEN forward x4.
+  "Test `ipe-insert-pair-edit' OPEN forward x4.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -564,7 +564,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-u M-f RET")
 
 (ipe-test-def-kbd mc-open-forward-16 ()
-  "Test `insert-pair-edit' OPEN forward x16.
+  "Test `ipe-insert-pair-edit' OPEN forward x16.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -578,7 +578,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-u C-u M-f RET")
 
 (ipe-test-def-kbd mc-open-forward-end-1 ()
-  "Test `insert-pair-edit' OPEN forward at the end of buffer.
+  "Test `ipe-insert-pair-edit' OPEN forward at the end of buffer.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -592,7 +592,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( M-f RET")
 
 (ipe-test-def-kbd mc-open-forward-end-2 ()
-  "Test `insert-pair-edit' OPEN forward at the end of buffer.
+  "Test `ipe-insert-pair-edit' OPEN forward at the end of buffer.
 
 Using a 'word PAIR with multiple-cursors, single-line (x1)."
   ipe-test-mc-options
@@ -602,7 +602,7 @@ Using a 'word PAIR with multiple-cursors, single-line (x1)."
   "M-( ( M-f RET")
 
 (ipe-test-def-kbd mc-open-forward-end-3 ()
-  "Test `insert-pair-edit' OPEN forward at the end of buffer.
+  "Test `ipe-insert-pair-edit' OPEN forward at the end of buffer.
 
 Using a 'word PAIR with multiple-cursors, single-line (x2)."
   ipe-test-mc-options
@@ -612,7 +612,7 @@ Using a 'word PAIR with multiple-cursors, single-line (x2)."
   "M-( ( M-f M-f RET")
 
 (ipe-test-def-kbd mc-open-forward-end-4 ()
-  "Test `insert-pair-edit' OPEN forward at the end of buffer.
+  "Test `ipe-insert-pair-edit' OPEN forward at the end of buffer.
 
 Using a 'word PAIR with multiple-cursors, single-line (x3)."
   ipe-test-mc-options
@@ -622,7 +622,7 @@ Using a 'word PAIR with multiple-cursors, single-line (x3)."
   "M-( ( M-f M-f M-f RET")
 
 (ipe-test-def-kbd mc-open-forward-blank ()
-  "Test `insert-pair-edit' OPEN forward with a blank line.
+  "Test `ipe-insert-pair-edit' OPEN forward with a blank line.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -644,7 +644,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( M-f RET")
 
 (ipe-test-def-kbd mc-open-forward-blank-2 ()
-  "Test `insert-pair-edit' OPEN forward x2 with a blank line.
+  "Test `ipe-insert-pair-edit' OPEN forward x2 with a blank line.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -666,7 +666,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( M-f M-f RET")
 
 (ipe-test-def-kbd mc-close-backward-1 ()
-  "Test `insert-pair-edit' CLOSE backward.
+  "Test `ipe-insert-pair-edit' CLOSE backward.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -680,7 +680,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( M-b RET")
 
 (ipe-test-def-kbd mc-close-backward-2 ()
-  "Test `insert-pair-edit' CLOSE backward x2.
+  "Test `ipe-insert-pair-edit' CLOSE backward x2.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -694,7 +694,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( M-b M-b RET")
 
 (ipe-test-def-kbd mc-close-backward-3 ()
-  "Test `insert-pair-edit' CLOSE backward x3.
+  "Test `ipe-insert-pair-edit' CLOSE backward x3.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -708,7 +708,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( 3 M-b RET")
 
 (ipe-test-def-kbd mc-close-backward-4 ()
-  "Test `insert-pair-edit' CLOSE backward x4.
+  "Test `ipe-insert-pair-edit' CLOSE backward x4.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -722,7 +722,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-u M-b RET")
 
 (ipe-test-def-kbd mc-close-backward-16 ()
-  "Test `insert-pair-edit' CLOSE backward x16.
+  "Test `ipe-insert-pair-edit' CLOSE backward x16.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -736,7 +736,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-u C-u M-b RET")
 
 (ipe-test-def-kbd mc-close-backward-beginning-1 ()
-  "Test `insert-pair-edit' CLOSE backward at the beginning of buffer.
+  "Test `ipe-insert-pair-edit' CLOSE backward at the beginning of buffer.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -750,7 +750,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( M-b RET")
 
 (ipe-test-def-kbd mc-close-backward-beginning-2 ()
-  "Test `insert-pair-edit' CLOSE backward at the beginning of buffer.
+  "Test `ipe-insert-pair-edit' CLOSE backward at the beginning of buffer.
 
 Using a 'word PAIR with multiple-cursors, single-line (x1)."
   ipe-test-mc-options
@@ -760,7 +760,7 @@ Using a 'word PAIR with multiple-cursors, single-line (x1)."
   "M-( ( M-b RET")
 
 (ipe-test-def-kbd mc-close-backward-beginning-3 ()
-  "Test `insert-pair-edit' CLOSE backward at the beginning of buffer.
+  "Test `ipe-insert-pair-edit' CLOSE backward at the beginning of buffer.
 
 Using a 'word PAIR with multiple-cursors, single-line (x2)."
   ipe-test-mc-options
@@ -770,7 +770,7 @@ Using a 'word PAIR with multiple-cursors, single-line (x2)."
   "M-( ( M-b M-b RET")
 
 (ipe-test-def-kbd mc-close-backward-beginning-4 ()
-  "Test `insert-pair-edit' CLOSE backward at the beginning of buffer.
+  "Test `ipe-insert-pair-edit' CLOSE backward at the beginning of buffer.
 
 Using a 'word PAIR with multiple-cursors, single-line (x3)."
   ipe-test-mc-options
@@ -780,7 +780,7 @@ Using a 'word PAIR with multiple-cursors, single-line (x3)."
   "M-( ( M-b M-b M-b RET")
 
 (ipe-test-def-kbd mc-close-backward-blank ()
-  "Test `insert-pair-edit' CLOSE backward with a blank line.
+  "Test `ipe-insert-pair-edit' CLOSE backward with a blank line.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -802,7 +802,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( M-b RET")
 
 (ipe-test-def-kbd mc-close-backward-blank-2 ()
-  "Test `insert-pair-edit' CLOSE backward x2 with a blank line.
+  "Test `ipe-insert-pair-edit' CLOSE backward x2 with a blank line.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -824,7 +824,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( M-b M-b RET")
 
 (ipe-test-def-kbd mc-open-up-1 ()
-  "Test `insert-pair-edit' OPEN up.
+  "Test `ipe-insert-pair-edit' OPEN up.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -842,7 +842,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-p RET")
 
 (ipe-test-def-kbd mc-open-up-2 ()
-  "Test `insert-pair-edit' OPEN up x2.
+  "Test `ipe-insert-pair-edit' OPEN up x2.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -860,7 +860,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-p C-p RET")
 
 (ipe-test-def-kbd mc-open-up-3 ()
-  "Test `insert-pair-edit' OPEN up x3.
+  "Test `ipe-insert-pair-edit' OPEN up x3.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -880,7 +880,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( 3 C-p RET")
 
 (ipe-test-def-kbd mc-open-up-4 ()
-  "Test `insert-pair-edit' OPEN up x4.
+  "Test `ipe-insert-pair-edit' OPEN up x4.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -900,7 +900,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-u C-p RET")
 
 (ipe-test-def-kbd mc-open-up-blank ()
-  "Test `insert-pair-edit' OPEN up with a blank line.
+  "Test `ipe-insert-pair-edit' OPEN up with a blank line.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -922,7 +922,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-p RET")
 
 (ipe-test-def-kbd mc-open-up-blank-2 ()
-  "Test `insert-pair-edit' OPEN up x2 with a blank line.
+  "Test `ipe-insert-pair-edit' OPEN up x2 with a blank line.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -944,7 +944,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-p C-p RET")
 
 (ipe-test-def-kbd mc-open-up-offset ()
-  "Test `insert-pair-edit' OPEN up with an offset.
+  "Test `ipe-insert-pair-edit' OPEN up with an offset.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -960,7 +960,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-p RET")
 
 (ipe-test-def-kbd mc-open-up-offset-beginning ()
-  "Test `insert-pair-edit' OPEN up offset beginning of from line.
+  "Test `ipe-insert-pair-edit' OPEN up offset beginning of from line.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -980,7 +980,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-p RET")
 
 (ipe-test-def-kbd mc-open-up-offset-beginning-2 ()
-  "Test `insert-pair-edit' OPEN up offset beginning of to line.
+  "Test `ipe-insert-pair-edit' OPEN up offset beginning of to line.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -1000,7 +1000,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-p RET")
 
 (ipe-test-def-kbd mc-close-down-1 ()
-  "Test `insert-pair-edit' CLOSE down.
+  "Test `ipe-insert-pair-edit' CLOSE down.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -1018,7 +1018,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-n RET")
 
 (ipe-test-def-kbd mc-close-down-2 ()
-  "Test `insert-pair-edit' CLOSE down x2.
+  "Test `ipe-insert-pair-edit' CLOSE down x2.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -1036,7 +1036,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-n C-n RET")
 
 (ipe-test-def-kbd mc-close-down-3 ()
-  "Test `insert-pair-edit' CLOSE down x3.
+  "Test `ipe-insert-pair-edit' CLOSE down x3.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -1054,7 +1054,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( 3 C-n RET")
 
 (ipe-test-def-kbd mc-close-down-4 ()
-  "Test `insert-pair-edit' CLOSE down x4.
+  "Test `ipe-insert-pair-edit' CLOSE down x4.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -1072,7 +1072,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-u C-n RET")
 
 (ipe-test-def-kbd mc-close-down-blank ()
-  "Test `insert-pair-edit' CLOSE down with a blank line.
+  "Test `ipe-insert-pair-edit' CLOSE down with a blank line.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -1094,7 +1094,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-n RET")
 
 (ipe-test-def-kbd mc-close-down-blank-2 ()
-  "Test `insert-pair-edit' CLOSE down x2 with a blank line.
+  "Test `ipe-insert-pair-edit' CLOSE down x2 with a blank line.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -1116,7 +1116,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-n C-n RET")
 
 (ipe-test-def-kbd mc-close-down-offset ()
-  "Test `insert-pair-edit' CLOSE down with an offset.
+  "Test `ipe-insert-pair-edit' CLOSE down with an offset.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -1134,7 +1134,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-n RET")
 
 (ipe-test-def-kbd mc-close-down-offset-beginning ()
-  "Test `insert-pair-edit' CLOSE down offset beginning of to line.
+  "Test `ipe-insert-pair-edit' CLOSE down offset beginning of to line.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -1154,7 +1154,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-n RET")
 
 (ipe-test-def-kbd mc-close-down-offset-beginning-2 ()
-  "Test `insert-pair-edit' CLOSE down offset beginning of from line.
+  "Test `ipe-insert-pair-edit' CLOSE down offset beginning of from line.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -1174,7 +1174,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-n RET")
 
 (ipe-test-def-kbd mc-open-down-1 ()
-  "Test `insert-pair-edit' OPEN down.
+  "Test `ipe-insert-pair-edit' OPEN down.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -1192,7 +1192,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( M-n RET")
 
 (ipe-test-def-kbd mc-open-down-2 ()
-  "Test `insert-pair-edit' OPEN down x2.
+  "Test `ipe-insert-pair-edit' OPEN down x2.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -1210,7 +1210,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( M-n M-n RET")
 
 (ipe-test-def-kbd mc-open-down-3 ()
-  "Test `insert-pair-edit' OPEN down x3.
+  "Test `ipe-insert-pair-edit' OPEN down x3.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -1228,7 +1228,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( 3 M-n RET")
 
 (ipe-test-def-kbd mc-open-down-4 ()
-  "Test `insert-pair-edit' OPEN down x4.
+  "Test `ipe-insert-pair-edit' OPEN down x4.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -1246,7 +1246,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-u M-n RET")
 
 (ipe-test-def-kbd mc-open-down-blank ()
-  "Test `insert-pair-edit' OPEN down with a blank line.
+  "Test `ipe-insert-pair-edit' OPEN down with a blank line.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -1268,7 +1268,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( M-n RET")
 
 (ipe-test-def-kbd mc-open-down-blank-2 ()
-  "Test `insert-pair-edit' OPEN down x2 with a blank line.
+  "Test `ipe-insert-pair-edit' OPEN down x2 with a blank line.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -1290,7 +1290,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( M-n M-n RET")
 
 (ipe-test-def-kbd mc-open-down-offset ()
-  "Test `insert-pair-edit' OPEN down with an offset.
+  "Test `ipe-insert-pair-edit' OPEN down with an offset.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -1308,7 +1308,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( M-n RET")
 
 (ipe-test-def-kbd mc-open-down-offset-beginning ()
-  "Test `insert-pair-edit' OPEN down offset beginning of to line.
+  "Test `ipe-insert-pair-edit' OPEN down offset beginning of to line.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -1328,7 +1328,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( M-n RET")
 
 (ipe-test-def-kbd mc-open-down-offset-beginning-2 ()
-  "Test `insert-pair-edit' OPEN down offset beginning of from line.
+  "Test `ipe-insert-pair-edit' OPEN down offset beginning of from line.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -1348,7 +1348,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( M-n RET")
 
 (ipe-test-def-kbd mc-close-up-1 ()
-  "Test `insert-pair-edit' CLOSE up.
+  "Test `ipe-insert-pair-edit' CLOSE up.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -1366,7 +1366,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( M-p RET")
 
 (ipe-test-def-kbd mc-close-up-2 ()
-  "Test `insert-pair-edit' CLOSE up x2.
+  "Test `ipe-insert-pair-edit' CLOSE up x2.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -1384,7 +1384,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( M-p M-p RET")
 
 (ipe-test-def-kbd mc-close-up-3 ()
-  "Test `insert-pair-edit' CLOSE up x3.
+  "Test `ipe-insert-pair-edit' CLOSE up x3.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -1402,7 +1402,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( 3 M-p RET")
 
 (ipe-test-def-kbd mc-close-up-4 ()
-  "Test `insert-pair-edit' CLOSE up x4.
+  "Test `ipe-insert-pair-edit' CLOSE up x4.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -1420,7 +1420,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( C-u M-p RET")
 
 (ipe-test-def-kbd mc-close-up-blank ()
-  "Test `insert-pair-edit' CLOSE up with a blank line.
+  "Test `ipe-insert-pair-edit' CLOSE up with a blank line.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -1442,7 +1442,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( M-p RET")
 
 (ipe-test-def-kbd mc-close-up-blank-2 ()
-  "Test `insert-pair-edit' CLOSE up x2 with a blank line.
+  "Test `ipe-insert-pair-edit' CLOSE up x2 with a blank line.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -1464,7 +1464,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( M-p M-p RET")
 
 (ipe-test-def-kbd mc-close-up-offset ()
-  "Test `insert-pair-edit' CLOSE up with an offset.
+  "Test `ipe-insert-pair-edit' CLOSE up with an offset.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -1482,7 +1482,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( M-p RET")
 
 (ipe-test-def-kbd mc-close-up-offset-beginning ()
-  "Test `insert-pair-edit' CLOSE up offset beginning of from line.
+  "Test `ipe-insert-pair-edit' CLOSE up offset beginning of from line.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -1502,7 +1502,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( ( M-p RET")
 
 (ipe-test-def-kbd mc-close-up-offset-beginning-2 ()
-  "Test `insert-pair-edit' CLOSE up offset beginning of to line.
+  "Test `ipe-insert-pair-edit' CLOSE up offset beginning of to line.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -1543,7 +1543,7 @@ Using a 'word PAIR with multiple-cursors."
 ;;   "C-u M-( ( ( L RET")
 
 (ipe-test-def-kbd mc-edit-update-region ()
-  "Test `insert-pair-edit-update' function with a region.
+  "Test `ipe-insert-pair-edit-update' function with a region.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -1553,7 +1553,7 @@ Using a 'word PAIR with multiple-cursors."
   "C-u M-( ( ( S RET")
 
 (ipe-test-def-kbd mc-edit-replace-region ()
-  "Test `insert-pair-edit-replace' function with a region.
+  "Test `ipe-insert-pair-edit-replace' function with a region.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
@@ -1563,7 +1563,7 @@ Using a 'word PAIR with multiple-cursors."
   "C-u C-u C-u M-( ( S RET")
 
 (ipe-test-def-kbd mc-auto-insert ()
-  "Test `insert-pair-edit-delete' with multiple-cursors.
+  "Test `ipe-insert-pair-edit-delete' with multiple-cursors.
 
 Auto-insert PAIR."
   ipe-test-mc-options
@@ -1577,7 +1577,7 @@ Auto-insert PAIR."
   "M-( i i i")
 
 (ipe-test-def-kbd mc-delete-large-tags ()
-  "Test `insert-pair-edit-delete' with multiple-cursors.
+  "Test `ipe-insert-pair-edit-delete' with multiple-cursors.
 
 With 'large' OPEN and CLOSE strings."
   ipe-test-mc-options
@@ -1604,7 +1604,7 @@ With 'large' OPEN and CLOSE strings."
 
 ;; TODO: mc bug?
 ;; (ipe-test-def-kbd mc-missing-open ()
-;;   "Test `insert-pair-edit-delete' with a missing OPEN.
+;;   "Test `ipe-insert-pair-edit-delete' with a missing OPEN.
 ;;
 ;; Using a 'word PAIR and multiple-cursors."
 ;;   ipe-test-missing-options
@@ -1615,7 +1615,7 @@ With 'large' OPEN and CLOSE strings."
 
 ;; TODO: mc bug?
 ;; (ipe-test-def-kbd mc-missing-close ()
-;;   "Test `insert-pair-edit-delete' with a missing CLOSE.
+;;   "Test `ipe-insert-pair-edit-delete' with a missing CLOSE.
 ;;
 ;; Using a 'word PAIR and multiple-cursors."
 ;;   ipe-test-missing-options
@@ -1647,7 +1647,7 @@ With 'large' OPEN and CLOSE strings."
 
 ;; TODO: mc + ert bug?
 ;; (ipe-test-def-kbd mc-replace-1 ()
-;;   "Test `insert-pair-edit' replace using a small tag to large tag.
+;;   "Test `ipe-insert-pair-edit' replace using a small tag to large tag.
 ;;
 ;; Using a 'word PAIR with multiple-cursors.
 ;;
@@ -1668,7 +1668,7 @@ With 'large' OPEN and CLOSE strings."
 
 ;; TODO: mc bug?
 ;; (ipe-test-def-kbd mc-replace-2 ()
-;;   "Test `insert-pair-edit' replace using a large to to small tag.
+;;   "Test `ipe-insert-pair-edit' replace using a large to to small tag.
 ;;
 ;; Using a 'word PAIR with multiple-cursors.
 ;;
@@ -1688,7 +1688,7 @@ With 'large' OPEN and CLOSE strings."
 ;;   "C-u C-u C-u M-( L ( RET")
 
 (ipe-test-def-kbd mc-missing-open-insert ()
-  "Test `insert-pair-edit' with only an OPEN string.
+  "Test `ipe-insert-pair-edit' with only an OPEN string.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-missing-options
@@ -1702,7 +1702,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( 4 RET")
 
 (ipe-test-def-kbd mc-missing-close-insert ()
-  "Test `insert-pair-edit' with only a CLOSE string.
+  "Test `ipe-insert-pair-edit' with only a CLOSE string.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-missing-options
@@ -1716,7 +1716,7 @@ Using a 'word PAIR with multiple-cursors."
   "M-( 5 RET")
 
 (ipe-test-def-kbd mc-missing-open-to-close-replace ()
-  "Test `insert-pair-edit-replace' with a missing OPEN with active region.
+  "Test `ipe-insert-pair-edit-replace' with a missing OPEN with active region.
 
 Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-missing-options
@@ -1731,7 +1731,7 @@ Using a 'word PAIR with multiple-cursors."
 
 ;;; FIXME - Cursors should be after new OPEN.
 ;;(ipe-test-def-kbd mc-missing-close-to-open-replace ()
-;;  "Test `insert-pair-edit-replace' with a missing CLOSE with active region.
+;;  "Test `ipe-insert-pair-edit-replace' with a missing CLOSE with active region.
 ;;
 ;;Using a 'word PAIR with multiple-cursors."
 ;;  ipe-test-mc-missing-options
@@ -1745,7 +1745,7 @@ Using a 'word PAIR with multiple-cursors."
 ;;  "C-u C-u C-u M-( 5 4 RET")
 
 (ipe-test-def-kbd mc-missing-both-multiple ()
-  "Test `insert-pair-edit-delete' with multiple-cursors.
+  "Test `ipe-insert-pair-edit-delete' with multiple-cursors.
 
 Using a 'word PAIR with no OPEN nor CLOSE string."
   ipe-test-mc-missing-options

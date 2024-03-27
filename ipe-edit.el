@@ -4,9 +4,9 @@
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 1.0
+;; Version: 1.1
 ;; Package: ipe
-;; Package-Requires: ((emacs "24.1"))
+;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: convenience, tools
 ;; Homepage: https://github.com/BriansEmacs/insert-pair-edit.el
 
@@ -31,21 +31,21 @@
 ;;; Commentary:
 ;;
 ;; This file defines the minor mode `ipe-edit-mode' started by the
-;; `insert-pair-edit' command.
+;; `ipe-insert-pair-edit' command.
 ;;
 ;; The `ipe-edit-mode' supplies commands to interactively and
 ;; independently move the overlays representing the OPEN and CLOSE
-;; strings for a PAIR created by one of the `insert-pair-edit'
+;; strings for a PAIR created by one of the `ipe-insert-pair-edit'
 ;; commands.
 ;;
-;; `insert-pair-edit' will prompt the user to enter a `customize'-able
-;; MNEMONIC that selects a 'major-mode dependent' PAIR to be inserted
-;; around point.  The PAIR consists of OPEN and CLOSE strings which
-;; delimit text in some fashion.
+;; `ipe-insert-pair-edit' will prompt the user to enter a
+;; `customize'-able MNEMONIC that selects a 'major-mode dependent'
+;; PAIR to be inserted around point.  The PAIR consists of OPEN and
+;; CLOSE strings which delimit text in some fashion.
 ;;
 ;; These OPEN and CLOSE strings are inserted into the current buffer
-;; as overlays by the `insert-pair-edit' command.  The
-;; `insert-pair-edit' then starts the `ipe-edit-mode' to enter the
+;; as overlays by the `ipe-insert-pair-edit' command.  The
+;; `ipe-insert-pair-edit' then starts the `ipe-edit-mode' to enter the
 ;; 'Insert Pair Edit' (ipe) minor mode.
 ;;
 ;; Commands are supplied by this minor mode to move these OPEN and
@@ -86,7 +86,7 @@
 ;; -------------------------------------------------------------------
 ;;; Code:
 
-(require 'ipe)
+(require 'ipe-)
 (require 'ipe-read)
 (require 'ipe-updt)
 (require 'ipe-defn)
@@ -170,14 +170,14 @@ opening (OPEN) and closing (CLOSE) strings of a PAIR.
 
 PAIRs can be inserted, updated, deleted, and replaced by:
 
-  `\\[insert-pair-edit]' -\
- (command: `insert-pair-edit')
-  `\\[insert-pair-edit-update]' -\
- (command: `insert-pair-edit-update')
-  `\\[insert-pair-edit-delete]' -\
- (command: `insert-pair-edit-delete')
-  `\\[insert-pair-edit-replace]' -\
- (command: `insert-pair-edit-replace')
+  `\\[ipe-insert-pair-edit]' -\
+ (command: `ipe-insert-pair-edit')
+  `\\[ipe-insert-pair-edit-update]' -\
+ (command: `ipe-insert-pair-edit-update')
+  `\\[ipe-insert-pair-edit-delete]' -\
+ (command: `ipe-insert-pair-edit-delete')
+  `\\[ipe-insert-pair-edit-replace]' -\
+ (command: `ipe-insert-pair-edit-replace')
 
 Which prompt for, and then insert, update, delete or replace, PAIRs
 from the:
@@ -429,7 +429,8 @@ PAIRs are highlighted using:
 		    (ipe--pos-open 0)
 		    (ipe--pos-close 0)))
       (message "This mode should only be launched via\
- 'insert-pair-edit-*' commands.  See command: `insert-pair-edit'.")
+ 'ipe-insert-pair-edit-*' commands.  See command:\
+ `ipe-insert-pair-edit'.")
       (ipe-edit-mode -1))))
 
 ;; -------------------------------------------------------------------
@@ -1828,24 +1829,22 @@ another window."
       (delete-region (point-min) (point-max))
 
       (insert
-       (concat
-	"`Insert Pair Edit - Debug'\n"
-	blank
-	sep
-	"PAIR Positions:\n"
-	sep
-	"\n"))
+       "`Insert Pair Edit - Debug'\n"
+       blank
+       sep
+       "PAIR Positions:\n"
+       sep
+       "\n")
 
       (insert (format "%s" pair-pos-list))
 
       (insert
-       (concat
-	blank
-	blank
-	sep
-	"OPEN Overlays:\n"
-	sep
-	blank))
+       blank
+       blank
+       sep
+       "OPEN Overlays:\n"
+       sep
+       blank)
 
       (dolist (o open-overlays)
 	(let ((start  (overlay-start o))
@@ -1872,12 +1871,11 @@ another window."
 	      (insert (message "    After  [%s]\n" after))))))
 
       (insert
-       (concat
-	blank
-	sep
-	"CLOSE Overlays:\n"
-	sep
-	blank))
+       blank
+       sep
+       "CLOSE Overlays:\n"
+       sep
+       blank)
 
       (dolist (o close-overlays)
 	(let ((start  (overlay-start o))
@@ -1972,7 +1970,7 @@ when the `ipe-edit-mode' minor mode is activated by one of the 'Insert
 Pair Edit' functions."
   :group 'ipe-advanced
   :tag   "Insert Pair Edit - `ipe-edit-mode' key bindings."
-  :link  '(function-link insert-pair-edit)
+  :link  '(function-link ipe-insert-pair-edit)
   :link  '(emacs-commentary-link "ipe-edit.el")
   :type
   '(list
@@ -2118,7 +2116,7 @@ This function will also be called by `customize' when the
   (ipe-edit--key 27 'ipe-edit--update-previous-close)
 
   ;; Multiple >
-  (ipe-edit--key 28 'insert-pair-edit)
+  (ipe-edit--key 28 'ipe-insert-pair-edit)
   (ipe-edit--key 29 'ipe-edit--add-next-pair)
   (ipe-edit--key 30 'ipe-edit--add-previous-pair)
   (ipe-edit--key 31 'ipe-edit--add-next-contents)
@@ -2480,7 +2478,7 @@ This variable is expected to be set by
   `ipe-edit--movement-keysets-set'."
   :group 'ipe
   :tag   "Insert Pair Edit - Movement Keys"
-  :link  '(function-link insert-pair-edit)
+  :link  '(function-link ipe-insert-pair-edit)
   :link  '(emacs-commentary-link "ipe-edit.el")
   :type  '(choice
 	   (list :tag "Predefined Key Sets"

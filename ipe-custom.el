@@ -4,7 +4,7 @@
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 18 July, 2020
-;; Version: 1.0
+;; Version: 1.1
 ;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: convenience, tools
@@ -31,7 +31,7 @@
 ;;; Commentary:
 ;;
 ;; Widgets and `helper functions' for the customization of the
-;; `insert-pair-edit' package.
+;; `ipe' package.
 ;;
 ;; Most of the helper functions within this package are used to
 ;; convert between the representations of the 'Insert Pair Edit'
@@ -68,8 +68,8 @@ A Basic PAIR definition will be of the form:
 Where:
 
 - MNEMONIC: is a string input into the minibuffer by the user after
-  calling `insert-pair-edit' to indicate which OPEN and CLOSE strings
-  are to be inserted.
+  calling `ipe-insert-pair-edit' to indicate which OPEN and CLOSE
+  strings are to be inserted.
 - OPEN: is a string placed at the beginning of a lexical unit, and
   then moved by the Insert Pair Edit commands.
 - CLOSE: is a string placed at the end of a lexical unit, and then
@@ -95,15 +95,15 @@ An PLIST PAIR definition will be of the form:
 Where:
 
 - MNEMONIC: is a string input into the minibuffer by the user after
-  calling `insert-pair-edit' to indicate which OPEN and CLOSE strings
-  are to be inserted.
+  calling `ipe-insert-pair-edit' to indicate which OPEN and CLOSE
+  strings are to be inserted.
 - OPEN: is a string placed at the beginning of a lexical unit, and
   then moved by the Insert Pair Edit commands.
 - CLOSE: is a string placed at the end of a lexical unit, and then
   moved by the Insert Pair Edit commands.
 - PLIST: is an property list defining extra properties used by the
-  `insert-pair-edit' movement functions to determine the movement of
-  the OPEN and CLOSE strings in `ipe-edit-mode'.
+  `ipe-insert-pair-edit' movement functions to determine the movement
+  of the OPEN and CLOSE strings in `ipe-edit-mode'.
 
 The PROPERTIES parameter passed to this function is a list of the
 properties which must be present within the PLIST for this predicate
@@ -186,15 +186,15 @@ or
 Where:
 
 - MNEMONIC: is a string input into the minibuffer by the user after
-  calling `insert-pair-edit' to indicate which OPEN and CLOSE strings
-  are to be inserted.
+  calling `ipe-insert-pair-edit' to indicate which OPEN and CLOSE
+  strings are to be inserted.
 - OPEN: is a string placed at the beginning of a lexical unit, and
   then moved by the Insert Pair Edit commands.
 - CLOSE: is a string placed at the end of a lexical unit, and then
   moved by the Insert Pair Edit commands.
 - PLIST: is a property list defining extra properties used by the
-  `insert-pair-edit' movement functions to determine the movement /
-  display of the OPEN and CLOSE strings in `ipe-edit-mode'."
+  `ipe-insert-pair-edit' movement functions to determine the movement
+  / display of the OPEN and CLOSE strings in `ipe-edit-mode'."
 
   (and (listp defn)
        (not (member
@@ -256,8 +256,8 @@ widget will be of the form:
 Where:
 
 - MNEMONIC: is a string input into the minibuffer by the user after
-  calling `insert-pair-edit' to indicate which OPEN and CLOSE strings
-  are to be inserted.
+  calling `ipe-insert-pair-edit' to indicate which OPEN and CLOSE
+  strings are to be inserted.
 - OPEN: is a string placed at the beginning of a lexical unit, and
   then moved by the Insert Pair Edit commands.
 - CLOSE: is a string placed at the end of a lexical unit, and then
@@ -285,8 +285,8 @@ A Intermediate PAIR definition retrieved from a
 Where:
 
 - MNEMONIC: is a string input into the minibuffer by the user after
-  calling `insert-pair-edit' to indicate which OPEN and CLOSE strings
-  are to be inserted.
+  calling `ipe-insert-pair-edit' to indicate which OPEN and CLOSE
+  strings are to be inserted.
 - OPEN: is a string placed at the beginning of a lexical unit, and
   then moved by the Insert Pair Edit commands.
 - INFIX: is a string added to the front of lines between the OPEN and
@@ -299,8 +299,8 @@ Where:
   REPLACE) represents an escape sequence.  Each MATCH between OPEN and
   CLOSE will be replaced by REPLACE.
 - AUTO-INSERT: is a boolean which, if non-nil, will cause the
-  `insert-pair-edit' function to automatically insert the PAIR without
-  entering `ipe-edit-mode'."
+  `ipe-insert-pair-edit' function to automatically insert the PAIR
+  without entering `ipe-edit-mode'."
 
   (and (listp defn)
        (= (length defn) 7)
@@ -332,8 +332,8 @@ An Advanced PAIR definition retrieved from a
 Where:
 
 - MNEMONIC: is a string input into the minibuffer by the user after
-  calling `insert-pair-edit' to indicate which OPEN and CLOSE strings
-  are to be inserted.
+  calling `ipe-insert-pair-edit' to indicate which OPEN and CLOSE
+  strings are to be inserted.
 - OPEN: is a string placed at the beginning of a lexical unit, and
   then moved by the Insert Pair Edit commands.
 - INFIX: is a string added to the front of lines between the OPEN and
@@ -347,8 +347,8 @@ Where:
   REPLACE) represents an escape sequence.  Each MATCH between OPEN and
   CLOSE will be replaced by REPLACE.
 - AUTO-INSERT: is a boolean which, if non-nil, will cause the
-  `insert-pair-edit' function to automatically insert the PAIR without
-  entering `ipe-edit-mode'.
+  `ipe-insert-pair-edit' function to automatically insert the PAIR
+  without entering `ipe-edit-mode'.
 - MOVE-POINT: indicates where to move POINT when a new PAIR is
   inserted.  This is a PAIR specific override to the global
   `ipe-move-point-on-insert' setting, and takes the same values
@@ -410,8 +410,8 @@ A Custom Movement PAIR definition retrieved from a
 Where:
 
 - MNEMONIC: is a string input into the minibuffer by the user after
-  calling `insert-pair-edit' to indicate which OPEN and CLOSE strings
-  are to be inserted.
+  calling `ipe-insert-pair-edit' to indicate which OPEN and CLOSE
+  strings are to be inserted.
 - OPEN: is a string placed at the beginning of a lexical unit, and
   then moved by the Insert Pair Edit commands.
 - CLOSE: is a string placed at the end of a lexical unit, and then
@@ -903,8 +903,8 @@ This widget is used by `customize' to enter a list:
 Where:
 
 - MNEMONIC: is a string input into the minibuffer by the user after
-  calling `insert-pair-edit' to indicate which OPEN and CLOSE strings
-  are to be inserted.
+  calling `ipe-insert-pair-edit' to indicate which OPEN and CLOSE
+  strings are to be inserted.
 - OPEN: is a string placed at the beginning of a lexical unit, and
   then moved by the Insert Pair Edit commands.
 - CLOSE: is a string placed at the end of a lexical unit, and then
@@ -924,8 +924,8 @@ This widget is used by `customize' to enter a list:
 Where:
 
 - MNEMONIC: is a string input into the minibuffer by the user after
-  calling `insert-pair-edit' to indicate which OPEN and CLOSE strings
-  are to be inserted.
+  calling `ipe-insert-pair-edit' to indicate which OPEN and CLOSE
+  strings are to be inserted.
 - OPEN: is a string placed at the beginning of a lexical unit, and
   then moved by the Insert Pair Edit commands.
 - INFIX: is a string added to the front of lines between the OPEN and
@@ -938,8 +938,8 @@ Where:
   REPLACE) represents an escape sequence.  Each MATCH between OPEN and
   CLOSE will be replaced by REPLACE.
 - AUTO-INSERT: is a boolean which, if non-nil, will cause the
-  `insert-pair-edit' function to automatically insert the PAIR without
-  entering `ipe-edit-mode'."
+  `ipe-insert-pair-edit' function to automatically insert the PAIR
+  without entering `ipe-edit-mode'."
   :type '(group
 	  :format "\n%v"
 	  (string :tag "Mnemonic" :format "%t: %v\n" :size 1)
@@ -973,8 +973,8 @@ This widget is used by `customize' to enter a list:
 Where:
 
 - MNEMONIC: is a string input into the minibuffer by the user after
-  calling `insert-pair-edit' to indicate which OPEN and CLOSE strings
-  are to be inserted.
+  calling `ipe-insert-pair-edit' to indicate which OPEN and CLOSE
+  strings are to be inserted.
 - OPEN: is a string placed at the beginning of a lexical unit, and
   then moved by the Insert Pair Edit commands.
 - INFIX: is a string added to the front of lines between the OPEN and
@@ -987,8 +987,8 @@ Where:
   REPLACE) represents an escape sequence.  Each MATCH between OPEN and
   CLOSE will be replaced by REPLACE.
 - AUTO-INSERT: is a boolean which, if non-nil, will cause the
-  `insert-pair-edit' function to automatically insert the PAIR without
-  entering `ipe-edit-mode'.
+  `ipe-insert-pair-edit' function to automatically insert the PAIR
+  without entering `ipe-edit-mode'.
 - MOVE-POINT: indicates where to move POINT when a new PAIR is
   inserted.  This is a PAIR specific override to the global
   `ipe-move-point-on-insert' setting, and takes the same values
@@ -1072,8 +1072,8 @@ This widget is used by `customize' to enter a list:
 Where:
 
 - MNEMONIC: is a string input into the minibuffer by the user after
-  calling `insert-pair-edit' to indicate which OPEN and CLOSE strings
-  are to be inserted.
+  calling `ipe-insert-pair-edit' to indicate which OPEN and CLOSE
+  strings are to be inserted.
 - OPEN: is a string placed at the beginning of a lexical unit, and
   then moved by the Insert Pair Edit commands.
 - CLOSE: is a string placed at the end of a lexical unit, and then
@@ -1107,8 +1107,8 @@ Where:
 (define-widget 'ipe-custom-pair 'lazy
   "Widget to read definitions of a Insert Pair Edit PAIR.
 
-The `insert-pair-edit' function uses this widget (via `customize') to
-display and configure an `ipe' PAIR definitions.
+The `ipe-insert-pair-edit' function uses this widget (via `customize')
+to display and configure an `ipe' PAIR definitions.
 
 A PAIR definition consists of:
 
@@ -1119,8 +1119,8 @@ or
 Where:
 
 - MNEMONIC: is a string input into the minibuffer by the user after
-  calling `insert-pair-edit' to indicate which OPEN and CLOSE strings
-  are to be inserted.
+  calling `ipe-insert-pair-edit' to indicate which OPEN and CLOSE
+  strings are to be inserted.
 - OPEN: is a string placed at the beginning of a lexical unit, and
   then moved by the Insert Pair Edit commands.
 - CLOSE: is a string placed at the end of a lexical unit, and then
@@ -1149,7 +1149,7 @@ Where:
   - ESCAPES: Is a list of pairs of strings. Each pair of strings
     (MATCH REPLACE) represents an escape sequence.  Each MATCH between
     OPEN and CLOSE will be replaced by REPLACE.
-  - AUTO-INSERT: If non-nil, will cause the `insert-pair-edit'
+  - AUTO-INSERT: If non-nil, will cause the `ipe-insert-pair-edit'
     function to automatically insert the PAIR without entering
     `ipe-edit-mode'.
   - MOVE-POINT: indicates where to move POINT when a new PAIR is
@@ -1181,8 +1181,8 @@ Pre-defined :set / :get functions for this widget:
 (define-widget 'ipe-custom-pair-list 'lazy
   "Widget to read definitions of a set of Insert Pair Edit PAIRs.
 
-The `insert-pair-edit' function uses this widget (via `customize') to
-display and configure a list of PAIR definitions.
+The `ipe-insert-pair-edit' function uses this widget (via `customize')
+to display and configure a list of PAIR definitions.
 
 A PAIR definition consists of:
 
@@ -1193,8 +1193,8 @@ or
 Where:
 
 - MNEMONIC: is a string input into the minibuffer by the user after
-  calling `insert-pair-edit' to indicate which OPEN and CLOSE strings
-  are to be inserted.
+  calling `ipe-insert-pair-edit' to indicate which OPEN and CLOSE
+  strings are to be inserted.
 - OPEN: is a string placed at the beginning of a lexical unit, and
   then moved by the Insert Pair Edit commands.
 - CLOSE: is a string placed at the end of a lexical unit, and then
@@ -1223,7 +1223,7 @@ Where:
   - ESCAPES: Is a list of pairs of strings. Each pair of strings
     (MATCH REPLACE) represents an escape sequence.  Each MATCH between
     OPEN and CLOSE will be replaced by REPLACE.
-  - AUTO-INSERT: If non-nil, will cause the `insert-pair-edit'
+  - AUTO-INSERT: If non-nil, will cause the `ipe-insert-pair-edit'
     function to automatically insert the PAIR without entering
     `ipe-edit-mode'.
   - MOVE-POINT: indicates where to move POINT when a new PAIR is
@@ -1260,8 +1260,8 @@ Pre-defined :set / :get functions for this widget:
 (define-widget 'ipe-custom-mode-pairs 'lazy
   "Widget to read definitions for Mode-Specific `ipe' PAIRs.
 
-The `insert-pair-edit' function uses this widget (via `customize') to
-display and configure a list of Mode-Specific PAIR definitions.
+The `ipe-insert-pair-edit' function uses this widget (via `customize')
+to display and configure a list of Mode-Specific PAIR definitions.
 
 Each entry in the list of Mode-Specific PAIR definitions is itself a
 list consisting of entries of the form:
@@ -1338,26 +1338,22 @@ definition (DEFN) will be passed to CALLBACK:
 			   :format "%v\n"
 			   :value (ipe-custom--pair-get defn)))
 
-      ;; TODO: Is there a better way to get CALLBACK working?
       (setq check-save
-	    (list 'lambda '(defn orig-defn)
-		  (list 'if '(or (not defn)
-				 (not (stringp (car defn)))
-				 (zerop (length (car defn))))
-			'(message "Cannot save PAIR with empty MNEMONIC.")
-			(list 'when (list 'funcall
-					  callback
-					  (list 'quote mode) 'defn 'orig-defn)
-			      '(when (> (count-windows) 1)
-				 (delete-window))
-			      '(kill-buffer "*ipe-edit-pair-defn*")))))
+	    (lambda (defn orig-defn)
+	      (if (or (not defn)
+		      (not (stringp (car defn)))
+		      (zerop (length (car defn))))
+		  (message "Cannot save PAIR with empty MNEMONIC.")
+		(when (funcall callback mode defn orig-defn)
+		  (when (> (count-windows) 1)
+		    (delete-window))
+		  (kill-buffer "*ipe-edit-pair-defn*")))))
 
       (setq on-save
-	    (list 'lambda '(_widget _event)
-		  (list 'funcall
-			check-save
-			'(ipe-custom--pair-set (widget-value custom-pair))
-			(list 'quote defn))))
+	    (lambda (_widget _event)
+	      (funcall check-save
+		       (ipe-custom--pair-set (widget-value custom-pair))
+		       defn)))
 
       (widget-create 'push-button
 		     :tag         "Save"
@@ -1385,20 +1381,24 @@ definition (DEFN) will be passed to CALLBACK:
       (widget-minor-mode)
 
       ;; Add local key bindings for Save / Cancel.
-      (local-set-key (kbd "C-g") (list 'lambda '()
-				       (list 'interactive)
-				       (list on-cancel nil nil)))
-      (local-set-key (kbd "<ESC> <ESC>") (list 'lambda '()
-					       (list 'interactive)
-					       (list on-cancel nil nil)))
-      (local-set-key (kbd "<escape> <escape>") (list 'lambda '()
-						     (list 'interactive)
-						     (list on-cancel nil nil)))
-      (local-set-key (kbd "C-x C-s") (list 'lambda '()
-					   (list 'interactive)
-					   (list on-save nil nil)))
+      (local-set-key (kbd "C-g")
+		     (list 'lambda nil (list 'interactive)
+			   (list on-cancel nil nil)))
 
-      (goto-char (point-min)))
+      (local-set-key (kbd "<ESC> <ESC>")
+		     (list 'lambda nil (list 'interactive)
+			   (list on-cancel nil nil)))
+
+      (local-set-key (kbd "<escape> <escape>")
+		     (list 'lambda nil (list 'interactive)
+			   (list on-cancel nil nil)))
+
+      (local-set-key (kbd "C-x C-s")
+		     (list 'lambda nil (list 'interactive)
+			   (list on-save nil nil)))
+
+      (goto-char (point-min))
+      (widget-forward 1))
 
     (switch-to-buffer-other-window buffer)))
 

@@ -3,27 +3,27 @@
 ----------------------------------------------------------------------
 # insert-pair-edit
 
-This project defines a [GNU Emacs](https://www.gnu.org/software/emacs/)
-package, `insert-pair-edit`.  This package supplies commands that are
-a more feature rich alternative to the standard `M-(` **Emacs**
-keybinding, (`insert-parentheses`).
+This project defines a 
+[GNU Emacs](https://www.gnu.org/software/emacs/) package, `ipe`.  This
+package supplies commands that are a more feature rich alternative to
+the standard `M-(` **Emacs** keybinding, (`insert-parentheses`).
 
 ----------------------------------------------------------------------
 ## Overview
 
-The `insert-pair-edit` package supplies commands to _insert_ (and
-also, _update_, _edit_ and _delete_) "PAIRs" within an **Emacs**
-buffer.  These _PAIRs_ consist of _OPEN_ and _CLOSE_ strings that
-delimit text in some fashion.  (This could be a simple open and close
-parentheses, `(` and `)`, or, it could be a more complex pair of
-strings that are used within a programming language.)
+The `ipe` package supplies commands to _insert_ (and also, _update_,
+_edit_ and _delete_) "PAIRs" within an **Emacs** buffer.  These
+_PAIRs_ consist of _OPEN_ and _CLOSE_ strings that delimit text in
+some fashion.  (This could be a simple open and close parentheses, `(`
+and `)`, or, it could be a more complex pair of strings that are used
+within a programming language.)
 
-The main entry point to the `insert-pair-edit` package is the
-**Emacs** interactive command `insert-pair-edit`.  When executed, this
-command will prompt the user to enter a _MNEMONIC_ identifying a
-(customizable) _PAIR_ via the **Emacs** `minibuffer`.
+The main entry point to the `ipe` package is the **Emacs** interactive
+command `ipe-insert-pair-edit`.  When executed, this command will
+prompt the user to enter a _MNEMONIC_ identifying a (customizable)
+_PAIR_ via the **Emacs** `minibuffer`.
 
-![insert-pair-edit command](doc/insert-pair-edit-minibuffer.png)
+![ipe-insert-pair-edit command](doc/insert-pair-edit-minibuffer.png)
 
 Selection of a _MNEMONIC_ will cause two overlays to be inserted into
 the buffer.  These overlays represent the _OPEN_ and _CLOSE_ strings
@@ -39,7 +39,7 @@ surround the text to be enclosed by the _PAIR_.
 ![ipe-edit-mode Commands](doc/ipe-edit-mode-menu.png)
 
 After adding the _OPEN_ and _CLOSE_ overlays into the buffer, the
-`insert-pair-edit` command starts `ipe-edit-mode` to enter the
+`ipe-insert-pair-edit` command starts `ipe-edit-mode` to enter the
 **Insert Pair Edit (ipe)** minor mode.
 
 The **Insert Pair Edit (ipe)** minor mode supplies commands to
@@ -84,7 +84,7 @@ Example _PAIR Definitions_ are supplied for:
 
 Most of the functionality of the **Insert Pair Edit (ipe)** package
 can also be accessed via the **Emacs** menubar.  If running **Emacs**
-in an environment which supports menus, the `insert-pair-edit` package
+in an environment which supports menus, the `ipe` package
 can add an extra `Pairs` sub-menu to the standard **Emacs** `Edit`
 menu item.
 
@@ -107,19 +107,30 @@ _PAIR_ (of the given type) and remain in the current **Emacs** mode.
 ----------------------------------------------------------------------
 ## Installation:
 
-Download the `insert-pair-edit` project:
+1. Download `ipe` from [MELPA](https://melpa.org):
+
+```
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(package-initialize)
+(package-install 'ipe)
+(require 'ipe)
+(global-set-key (kbd "M-(") 'ipe-insert-pair-edit)
+```
+
+2. Or, download the `insert-pair-edit` project:
 
 ```
 git clone https://github.com/BriansEmacs/insert-pair-edit.el <path-to-download-dir>/ipe
 ```
 
-Add the following to your `.emacs` file:
+And add the following to your `.emacs` file:
 
 ```
 (add-to-list 'load-path "<path-to-download-dir>/ipe"))
 (add-to-list 'load-path "<path-to-download-dir>/ipe/modes"))
-(require 'insert-pair-edit)
-(global-set-key (kbd "M-(") 'insert-pair-edit)
+(require 'ipe)
+(global-set-key (kbd "M-(") 'ipe-insert-pair-edit)
 ```
 
 ----------------------------------------------------------------------

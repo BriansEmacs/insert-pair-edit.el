@@ -22,8 +22,8 @@
 (require 'package)
 
 (defvar ipe-build--elisp-files
-  '("insert-pair-edit.el"
-    "ipe.el"
+  '("ipe.el"
+    "ipe-.el"
     "ipe-char.el"
     "ipe-compat.el"
     "ipe-custom.el"
@@ -69,9 +69,6 @@
     "test/ipe-test-update.el"
     "test/ipe-test-word.el")
   "List of Emacs Lisp files which make up the `ipe' ert tests.")
-
-(defvar ipe-build--pkg-file "insert-pair-edit-pkg.el"
-  "Name of the Insert Pair Edit package description file.")
 
 (defvar ipe-build--ert-tests
   '(ipe-test-add
@@ -235,14 +232,39 @@ elint against the `ipe' Emacs Lisp source code."
   (setq package-user-dir ipe-build-pkgs-dir)
   (package-initialize)
   (require 'elisp-lint)
+  (require 'package-lint)
 
-  (let ((success t))
+  (let ((success t)
+        (file-success)
+	(dir default-directory))
     (dolist (file ipe-build--elisp-files)
-      (if (elisp-lint-file (expand-file-name file))
-	  (or (< ipe-build--verbose 2)
-	      (elisp-lint--print 'green "%s OK" file))
-	(elisp-lint--print 'red "%s FAIL" file)
-	(setq success nil)))
+      (cd-absolute dir)
+      (let ((file-dir (file-name-parent-directory (expand-file-name file))))
+	(when (not (member file-dir load-path))
+	  (add-to-list 'load-path file-dir)))
+      (cd (file-name-parent-directory (expand-file-name file)))
+      (setq file-success t)
+      (when (not (elisp-lint-file (file-name-nondirectory file)))
+	(setq success      nil
+              file-success nil)
+        (with-temp-buffer
+	  (insert-file-contents (file-name-nondirectory file) t)
+	  (emacs-lisp-mode)
+	  (let ((checking-result (package-lint-buffer)))
+            (when checking-result
+	      (setq success      nil
+                    file-success nil)
+	      (dolist (result checking-result)
+	        (message "%s:%d:%d: %s %s"
+		         file
+		         (nth 0 result)
+		         (nth 1 result)
+		         (nth 2 result)
+		         (nth 3 result))))))
+	(if file-success
+	    (or (< ipe-build--verbose 2)
+		(elisp-lint--print 'green "%s OK" file))
+	  (elisp-lint--print 'red "%s FAIL" file))))
 
     (if success
 	(progn (when (> ipe-build--verbose 0)
@@ -314,7 +336,7 @@ This function is called from the top level `ipe' `Makefile' to build the
 
 This function is called from the top level `ipe' `Makefile' to update
 the `;; Version: X.X.XXX' headers within the `ipe' Emacs Lisp source
-files, and the version string within the *-pkg.el file."
+files."
 
   (ipe-build--log 1 "Versioning `ipe' files...")
 
@@ -339,16 +361,6 @@ files, and the version string within the *-pkg.el file."
 	(ipe-build--log 2 "%s Updated to version %s" file version))
       (basic-save-buffer)
       (kill-buffer)))
-
-  ;; Update the *-pkg.el version string.
-  (find-file ipe-build--pkg-file)
-  (goto-char (point-min))
-  (forward-line 2)
-  (kill-line)
-  (insert (concat "  \"" version "\""))
-  (basic-save-buffer)
-  (ipe-build--log 2 "%s Updated to version %s" ipe-build--pkg-file version)
-  (kill-buffer)
 
   (ipe-build--log 1 "Versioning `ipe' files.  Done."))
 

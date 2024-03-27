@@ -4,7 +4,7 @@
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 1.0
+;; Version: 1.1
 ;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: internal local
@@ -81,7 +81,7 @@
   "Options used by `ipe-test-def-kbd' for `ipe-test-escape'.")
 
 (ipe-test-def-kbd escape-insert-1 ()
-  "Test `insert-pair-edit' with :escapes.
+  "Test `ipe-insert-pair-edit' with :escapes.
 
 Test single quote (') escape."
   ipe-test-escape-options
@@ -91,7 +91,7 @@ Test single quote (') escape."
   "M-( ' C-f RET")
 
 (ipe-test-def-kbd escape-insert-2 ()
-  "Test `insert-pair-edit' with :escapes.
+  "Test `ipe-insert-pair-edit' with :escapes.
 
 Test multiple quote (') escapes."
   ipe-test-escape-options
@@ -101,7 +101,7 @@ Test multiple quote (') escapes."
   "M-( ' C-f C-f C-f C-b C-b C-b RET")
 
 (ipe-test-def-kbd escape-insert-multiple-1 ()
-  "Test `insert-pair-edit' with :escapes.
+  "Test `ipe-insert-pair-edit' with :escapes.
 
 Test single HTML (&..;) :escapes."
   ipe-test-escape-options
@@ -111,7 +111,7 @@ Test single HTML (&..;) :escapes."
   "M-( t C-f C-b RET")
 
 (ipe-test-def-kbd escape-insert-multiple-2 ()
-  "Test `insert-pair-edit' with :escapes.
+  "Test `ipe-insert-pair-edit' with :escapes.
 
 Test multiple HTML (&..;) :escapes."
   ipe-test-escape-options
@@ -121,7 +121,7 @@ Test multiple HTML (&..;) :escapes."
   "M-( t C-f C-f C-f C-b C-b C-b RET")
 
 (ipe-test-def-kbd escape-insert-escape-1 ()
-  "Test `insert-pair-edit' with :escapes.
+  "Test `ipe-insert-pair-edit' with :escapes.
 
 Test escaping :escapes."
   ipe-test-escape-options
@@ -131,7 +131,7 @@ Test escaping :escapes."
   "M-( \" C-f C-b RET")
 
 (ipe-test-def-kbd escape-insert-missing ()
-  "Test `insert-pair-edit' with :escapes.
+  "Test `ipe-insert-pair-edit' with :escapes.
 
 Test missing OPEN and CLOSE with :escapes."
   ipe-test-escape-options
@@ -141,7 +141,7 @@ Test missing OPEN and CLOSE with :escapes."
   "M-( 1 RET")
 
 (ipe-test-def-kbd escape-insert-open-escape-1 ()
-  "Test `insert-pair-edit' with :escapes.
+  "Test `ipe-insert-pair-edit' with :escapes.
 
 Test :escapes at OPEN."
   ipe-test-escape-options
@@ -151,7 +151,7 @@ Test :escapes at OPEN."
   "M-( ` C-f RET")
 
 (ipe-test-def-kbd escape-insert-open-escape-2 ()
-  "Test `insert-pair-edit' with :escapes.
+  "Test `ipe-insert-pair-edit' with :escapes.
 
 Test multiple (x2) :escapes at OPEN."
   ipe-test-escape-options
@@ -161,7 +161,7 @@ Test multiple (x2) :escapes at OPEN."
   "M-( ` C-f C-f RET")
 
 (ipe-test-def-kbd escape-insert-open-escape-3 ()
-  "Test `insert-pair-edit' with :escapes.
+  "Test `ipe-insert-pair-edit' with :escapes.
 
 Test multiple (x3) :escapes at OPEN."
   ipe-test-escape-options
@@ -171,7 +171,7 @@ Test multiple (x3) :escapes at OPEN."
   "M-( ` C-f C-f C-f RET")
 
 (ipe-test-def-kbd escape-insert-close-escape-1 ()
-  "Test `insert-pair-edit' with :escapes.
+  "Test `ipe-insert-pair-edit' with :escapes.
 
 Test :escapes at CLOSE."
   ipe-test-escape-options
@@ -181,7 +181,7 @@ Test :escapes at CLOSE."
   "M-( ` C-b RET")
 
 (ipe-test-def-kbd escape-insert-close-escape-2 ()
-  "Test `insert-pair-edit' with :escapes.
+  "Test `ipe-insert-pair-edit' with :escapes.
 
 Test multiple (x2) :escapes at CLOSE."
   ipe-test-escape-options
@@ -191,7 +191,7 @@ Test multiple (x2) :escapes at CLOSE."
   "M-( ` C-b C-b RET")
 
 (ipe-test-def-kbd escape-insert-close-escape-3 ()
-  "Test `insert-pair-edit' with :escapes.
+  "Test `ipe-insert-pair-edit' with :escapes.
 
 Test multiple (x3) :escapes at CLOSE."
   ipe-test-escape-options
@@ -201,7 +201,7 @@ Test multiple (x3) :escapes at CLOSE."
   "M-( ` C-b C-b C-b RET")
 
 (ipe-test-def-kbd escape-insert-overlaps-1 ()
-  "Test `insert-pair-edit' with :escapes.
+  "Test `ipe-insert-pair-edit' with :escapes.
 
 Test :escapes which overlap."
   ipe-test-escape-options
@@ -211,7 +211,7 @@ Test :escapes which overlap."
   "M-( 2 C-f C-f C-f C-b C-b RET")
 
 (ipe-test-def-kbd escape-insert-overlaps-2 ()
-  "Test `insert-pair-edit' with :escapes.
+  "Test `ipe-insert-pair-edit' with :escapes.
 
 Test :escapes which overlap."
   ipe-test-escape-options
@@ -221,7 +221,7 @@ Test :escapes which overlap."
   "M-( 3 C-f C-f C-f C-b C-b RET")
 
 (ipe-test-def-kbd escape-insert-sizes-1 ()
-  "Test `insert-pair-edit' with :escapes.
+  "Test `ipe-insert-pair-edit' with :escapes.
 
 Test changing sizes of :escapes.  Small -> large.
 
@@ -235,7 +235,7 @@ Beginning of line."
   "M-( 6 RET")
 
 (ipe-test-def-kbd escape-insert-sizes-2 ()
-  "Test `insert-pair-edit' with :escapes.
+  "Test `ipe-insert-pair-edit' with :escapes.
 
 Test changing sizes of :escapes.  Large -> small.
 
@@ -249,7 +249,7 @@ Beginning of line."
   "M-( 7 RET")
 
 (ipe-test-def-kbd escape-update-simple-1 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Update simple PAIR, cursor before PAIR, abort."
   ipe-test-escape-options
@@ -259,7 +259,7 @@ Update simple PAIR, cursor before PAIR, abort."
   "C-u M-( ` C-d")
 
 (ipe-test-def-kbd escape-update-simple-2 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Update Simple PAIR, cursor before PAIR, insert."
   ipe-test-escape-options
@@ -269,7 +269,7 @@ Update Simple PAIR, cursor before PAIR, insert."
   "C-u M-( ` RET")
 
 (ipe-test-def-kbd escape-update-simple-3 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Update Simple PAIR, cursor before PAIR, move forward."
   ipe-test-escape-options
@@ -279,7 +279,7 @@ Update Simple PAIR, cursor before PAIR, move forward."
   "C-u M-( ` M-f RET")
 
 (ipe-test-def-kbd escape-update-simple-4 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Update Simple PAIR, cursor before PAIR, move backward."
   ipe-test-escape-options
@@ -289,7 +289,7 @@ Update Simple PAIR, cursor before PAIR, move backward."
   "C-u M-( ` M-b RET")
 
 (ipe-test-def-kbd escape-update-simple-5 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Update Simple PAIR, cursor after OPEN, abort."
   ipe-test-escape-options
@@ -299,7 +299,7 @@ Update Simple PAIR, cursor after OPEN, abort."
   "C-u M-( ` C-d")
 
 (ipe-test-def-kbd escape-update-simple-6 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Update Simple PAIR, cursor after OPEN, insert."
   ipe-test-escape-options
@@ -309,7 +309,7 @@ Update Simple PAIR, cursor after OPEN, insert."
   "C-u M-( ` RET")
 
 (ipe-test-def-kbd escape-update-simple-7 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Update Simple PAIR, cursor after OPEN, move forward."
   ipe-test-escape-options
@@ -319,7 +319,7 @@ Update Simple PAIR, cursor after OPEN, move forward."
   "C-u M-( ` M-f RET")
 
 (ipe-test-def-kbd escape-update-simple-8 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Update Simple PAIR, cursor after OPEN, move backward."
   ipe-test-escape-options
@@ -329,7 +329,7 @@ Update Simple PAIR, cursor after OPEN, move backward."
   "C-u M-( ` M-b RET")
 
 (ipe-test-def-kbd escape-update-simple-9 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Update Simple PAIR, cursor before CLOSE, abort."
   ipe-test-escape-options
@@ -339,7 +339,7 @@ Update Simple PAIR, cursor before CLOSE, abort."
   "C-u M-( ` C-d")
 
 (ipe-test-def-kbd escape-update-simple-10 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Update Simple PAIR, cursor before CLOSE, insert."
   ipe-test-escape-options
@@ -349,7 +349,7 @@ Update Simple PAIR, cursor before CLOSE, insert."
   "C-u M-( ` RET")
 
 (ipe-test-def-kbd escape-update-simple-11 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Update Simple PAIR, cursor before CLOSE, move forward."
   ipe-test-escape-options
@@ -359,7 +359,7 @@ Update Simple PAIR, cursor before CLOSE, move forward."
   "C-u M-( ` M-f RET")
 
 (ipe-test-def-kbd escape-update-simple-12 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Update Simple PAIR, cursor before CLOSE, move backward."
   ipe-test-escape-options
@@ -369,7 +369,7 @@ Update Simple PAIR, cursor before CLOSE, move backward."
   "C-u M-( ` M-b RET")
 
 (ipe-test-def-kbd escape-update-simple-13 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Update Simple PAIR, cursor after CLOSE, abort."
   ipe-test-escape-options
@@ -379,7 +379,7 @@ Update Simple PAIR, cursor after CLOSE, abort."
   "C-u M-( ` C-d")
 
 (ipe-test-def-kbd escape-update-simple-14 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Update Simple PAIR, cursor after CLOSE, insert."
   ipe-test-escape-options
@@ -389,7 +389,7 @@ Update Simple PAIR, cursor after CLOSE, insert."
   "C-u M-( ` RET")
 
 (ipe-test-def-kbd escape-update-simple-15 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Update Simple PAIR, cursor after CLOSE, move forward."
   ipe-test-escape-options
@@ -399,7 +399,7 @@ Update Simple PAIR, cursor after CLOSE, move forward."
   "C-u M-( ` M-f RET")
 
 (ipe-test-def-kbd escape-update-simple-16 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Update Simple PAIR, cursor after CLOSE, move backward."
   ipe-test-escape-options
@@ -409,7 +409,7 @@ Update Simple PAIR, cursor after CLOSE, move backward."
   "C-u M-( ` M-b RET")
 
 (ipe-test-def-kbd escape-update-single-1 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Test update with cursor at beginning of buffer."
   ipe-test-escape-options
@@ -419,7 +419,7 @@ Test update with cursor at beginning of buffer."
   "C-u M-( ' C-d")
 
 (ipe-test-def-kbd escape-update-single-2 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Test update with cursor at start of PAIR."
   ipe-test-escape-options
@@ -429,7 +429,7 @@ Test update with cursor at start of PAIR."
   "C-u M-( ' C-d")
 
 (ipe-test-def-kbd escape-update-single-3 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Test update with cursor immediately after OPEN."
   ipe-test-escape-options
@@ -439,7 +439,7 @@ Test update with cursor immediately after OPEN."
   "C-u M-( ' C-d")
 
 (ipe-test-def-kbd escape-update-single-4 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Test update with cursor at start of :escape."
   ipe-test-escape-options
@@ -449,7 +449,7 @@ Test update with cursor at start of :escape."
   "C-u M-( ' C-d")
 
 (ipe-test-def-kbd escape-update-single-5 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Test update with cursor immediately after :escape."
   ipe-test-escape-options
@@ -459,7 +459,7 @@ Test update with cursor immediately after :escape."
   "C-u M-( ' C-d")
 
 (ipe-test-def-kbd escape-update-single-6 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Test update with cursor inside :escape'd PAIR."
   ipe-test-escape-options
@@ -469,7 +469,7 @@ Test update with cursor inside :escape'd PAIR."
   "C-u M-( ' C-d")
 
 (ipe-test-def-kbd escape-update-single-7 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Test update with cursor at end of :escape'd PAIR."
   ipe-test-escape-options
@@ -479,7 +479,7 @@ Test update with cursor at end of :escape'd PAIR."
   "C-u M-( ' C-d")
 
 (ipe-test-def-kbd escape-update-single-8 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Test update with cursor after :escape'd PAIR."
   ipe-test-escape-options
@@ -489,7 +489,7 @@ Test update with cursor after :escape'd PAIR."
   "C-u M-( ' C-d")
 
 (ipe-test-def-kbd escape-update-single-9 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Test update with cursor immediately before CLOSE."
   ipe-test-escape-options
@@ -499,7 +499,7 @@ Test update with cursor immediately before CLOSE."
   "C-u M-( ' C-d")
 
 (ipe-test-def-kbd escape-update-single-10 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Test update with cursor after CLOSE."
   ipe-test-escape-options
@@ -509,7 +509,7 @@ Test update with cursor after CLOSE."
   "C-u M-( ' C-d")
 
 (ipe-test-def-kbd escape-update-single-11 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Test update with cursor at end-of-buffer."
   ipe-test-escape-options
@@ -519,7 +519,7 @@ Test update with cursor at end-of-buffer."
   "C-u M-( ' C-d")
 
 (ipe-test-def-kbd escape-update-double-1 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Test nested escape update with cursor at beginning of buffer."
   ipe-test-escape-options
@@ -529,7 +529,7 @@ Test nested escape update with cursor at beginning of buffer."
   "C-u M-( ' C-d")
 
 (ipe-test-def-kbd escape-update-double-2 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Test nested escape update with cursor at start of PAIR."
   ipe-test-escape-options
@@ -539,7 +539,7 @@ Test nested escape update with cursor at start of PAIR."
   "C-u M-( ' C-d")
 
 (ipe-test-def-kbd escape-update-double-3 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Test nested escape update with cursor immediately after OPEN."
   ipe-test-escape-options
@@ -549,7 +549,7 @@ Test nested escape update with cursor immediately after OPEN."
   "C-u M-( ' C-d")
 
 (ipe-test-def-kbd escape-update-double-4 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Test nested escape update with cursor at start of :escape."
   ipe-test-escape-options
@@ -559,7 +559,7 @@ Test nested escape update with cursor at start of :escape."
   "C-u M-( ' C-d")
 
 (ipe-test-def-kbd escape-update-double-5 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Test nested escape update with cursor at immediately after :escape."
   ipe-test-escape-options
@@ -569,7 +569,7 @@ Test nested escape update with cursor at immediately after :escape."
   "C-u M-( ' C-d")
 
 (ipe-test-def-kbd escape-update-double-6 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Test nested escape update with cursor inside :escape'd PAIR."
   ipe-test-escape-options
@@ -579,7 +579,7 @@ Test nested escape update with cursor inside :escape'd PAIR."
   "C-u M-( ' C-d")
 
 (ipe-test-def-kbd escape-update-double-7 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Test nested escape update with cursor at end of :escape'd PAIR."
   ipe-test-escape-options
@@ -589,7 +589,7 @@ Test nested escape update with cursor at end of :escape'd PAIR."
   "C-u M-( ' C-d")
 
 (ipe-test-def-kbd escape-update-double-8 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Test nested escape update with cursor after :escape'd PAIR."
   ipe-test-escape-options
@@ -599,7 +599,7 @@ Test nested escape update with cursor after :escape'd PAIR."
   "C-u M-( ' C-d")
 
 (ipe-test-def-kbd escape-update-double-9 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Test nested escape update with cursor immediately before CLOSE."
   ipe-test-escape-options
@@ -609,7 +609,7 @@ Test nested escape update with cursor immediately before CLOSE."
   "C-u M-( ' C-d")
 
 (ipe-test-def-kbd escape-update-double-10 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Test nested escape update with cursor after CLOSE."
   ipe-test-escape-options
@@ -619,7 +619,7 @@ Test nested escape update with cursor after CLOSE."
   "C-u M-( ' C-d")
 
 (ipe-test-def-kbd escape-update-double-11 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Test nested escape update with cursor at end-of-buffer."
   ipe-test-escape-options
@@ -629,7 +629,7 @@ Test nested escape update with cursor at end-of-buffer."
   "C-u M-( ' C-d")
 
 (ipe-test-def-kbd escape-update-sizes-1 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Test changing sizes of :escapes.  Large -> small."
   ipe-test-escape-options
@@ -639,7 +639,7 @@ Test changing sizes of :escapes.  Large -> small."
   "C-u M-( 4 C-d")
 
 (ipe-test-def-kbd escape-update-sizes-2 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Test changing sizes of :escapes.  Large -> small side-by-side.
 beginning of line."
@@ -650,7 +650,7 @@ beginning of line."
   "C-u M-( 4 C-d")
 
 (ipe-test-def-kbd escape-update-sizes-3 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Test changing sizes of :escapes.  Large -> small side-by-side,
 middle of line."
@@ -661,7 +661,7 @@ middle of line."
   "C-u M-( 4 C-d")
 
 (ipe-test-def-kbd escape-update-sizes-4 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Test changing sizes of :escapes.  Large -> small side-by-side.
 end of line."
@@ -672,7 +672,7 @@ end of line."
   "C-u M-( 4 C-d")
 
 (ipe-test-def-kbd escape-update-sizes-5 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Test changing sizes of :escapes.  Small -> large."
   ipe-test-escape-options
@@ -682,7 +682,7 @@ Test changing sizes of :escapes.  Small -> large."
   "C-u M-( 5 C-d")
 
 (ipe-test-def-kbd escape-update-sizes-6 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Test changing sizes of :escapes.  Small -> large side-by-side.
 beginning of line."
@@ -693,7 +693,7 @@ beginning of line."
   "C-u M-( 5 C-d")
 
 (ipe-test-def-kbd escape-update-sizes-7 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Test changing sizes of :escapes.  Small -> large side-by-side.
 middle of line."
@@ -704,7 +704,7 @@ middle of line."
   "C-u M-( 5 C-d")
 
 (ipe-test-def-kbd escape-update-sizes-8 ()
-  "Test `insert-pair-edit-update' with :escapes.
+  "Test `ipe-insert-pair-edit-update' with :escapes.
 
 Test changing sizes of :escapes.  Small -> large side-by-side.
 end of line."
@@ -715,7 +715,7 @@ end of line."
   "C-u M-( 5 C-d")
 
 (ipe-test-def-kbd escape-delete-inner-1 ()
-  "Test `insert-pair-edit-delete' with :escapes.
+  "Test `ipe-insert-pair-edit-delete' with :escapes.
 
 Test single delete."
   ipe-test-escape-options
@@ -725,7 +725,7 @@ Test single delete."
   "C-u C-u M-( '")
 
 (ipe-test-def-kbd escape-delete-inner-2 ()
-  "Test `insert-pair-edit-delete' with :escapes.
+  "Test `ipe-insert-pair-edit-delete' with :escapes.
 
 Test multiple deletes (x2)."
   ipe-test-escape-options
@@ -735,7 +735,7 @@ Test multiple deletes (x2)."
   "C-u C-u M-( ' C-u C-u M-( '")
 
 (ipe-test-def-kbd escape-delete-inner-3 ()
-  "Test `insert-pair-edit-delete' with :escapes.
+  "Test `ipe-insert-pair-edit-delete' with :escapes.
 
 Test multiple deletes (x3)."
   ipe-test-escape-options
@@ -745,7 +745,7 @@ Test multiple deletes (x3)."
   "C-u C-u M-( ' C-u C-u M-( ' C-u C-u M-( '")
 
 (ipe-test-def-kbd escape-delete-inner-4 ()
-  "Test `insert-pair-edit-delete' with :escapes.
+  "Test `ipe-insert-pair-edit-delete' with :escapes.
 
 Test multiple deletes (x4)."
   ipe-test-escape-options

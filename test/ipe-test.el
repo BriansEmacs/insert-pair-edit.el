@@ -4,7 +4,7 @@
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 1.0
+;; Version: 1.1
 ;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: internal local
@@ -51,7 +51,7 @@
 ;;; Code:
 
 (require 'ert)
-(require 'insert-pair-edit)
+(require 'ipe)
 
 (defconst ipe-test--point-indicator "|"
   "The position of POINT within \"ipe-test--.*\" tests.
@@ -368,7 +368,7 @@ This will run a set of keyboard commands, KEYSTROKES, against the
 BUFFER-TEXT within a temporary buffer, and compare the result to the
 EXPECTED result.
 
-`insert-pair-edit' is bound to <M-(>.
+`ipe-insert-pair-edit' is bound to <M-(>.
 
 NAME - The name of the `ert' test.  This will be prefixed with
   \"ipe-test--\".
@@ -400,7 +400,7 @@ TEARDOWN - Commands used to clean up the temporary test buffer."
 	     (progn
 	       (when ,setup
 		 (progn (,setup)))
-	       (local-set-key (kbd "M-(") 'insert-pair-edit)
+	       (local-set-key (kbd "M-(") 'ipe-insert-pair-edit)
 	       (execute-kbd-macro (kbd (concat ,keystrokes))))
 	   (local-set-key (kbd "M-(") original-binding)
 	   (when ,teardown
@@ -498,7 +498,8 @@ added to each position indicated."
 				      ipe-test--names)))
 
   (let ((buffer-text (cadr  (assoc name ipe-test--buffer-text-alist)))
-	(keystrokes  (caddr (assoc name ipe-test--buffer-text-alist))))
+	(keystrokes  (ipe-compat--caddr
+                      (assoc name ipe-test--buffer-text-alist))))
     (with-current-buffer (get-buffer-create "*ipe-test-buffer-keys*")
       (setq buffer-read-only nil)
       (delete-region (point-min) (point-max))

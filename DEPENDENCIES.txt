@@ -1,15 +1,16 @@
 REQUIREMENT DEPENDENCIES
 ------------------------
 
-insert-pair-edit +
-                 +-> ipe-menu --+-------------+
-                 +-> ipe-mouse -+             |
-                 +--------------+-> ipe-edit -+-> ipe-help ---> help-mode
-                 |              |             +-> ipe-read--+
-                 |              |             +-> ipe-char--+
-                 |              |             +-> ipe-word--+
-                 |              |             +-> ipe-line -+
-                 |              |             +-> ipe-list -+
-                 |              +-------------+-> ipe-defn -+
-                 +----------------------------+->-ipe-updt -+-> ipe +-> ipe-custom
-                                                                    +-> ipe-compat
+ipe +
+    +-> ipe-menu --+-------------+
+    +-> ipe-mouse -+             |
+    +----------------> ipe-updt -+
+    +--------------+-> ipe-edit -+-> ipe-read--+
+    |              |             +-> ipe-help -+-> help-mode
+    |              |             +-> ipe-char--+
+    |              |             +-> ipe-word--+
+    |              |             +-> ipe-line -+
+    |              |             +-> ipe-list -+
+    |              +-------------+-> ipe-defn -+
+    +----------------------------+->-ipe-updt -+-> ipe- +-> ipe-custom
+                                                        +-> ipe-compat

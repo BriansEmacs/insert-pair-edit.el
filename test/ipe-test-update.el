@@ -4,7 +4,7 @@
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 1.0
+;; Version: 1.1
 ;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: internal local
@@ -42,7 +42,7 @@
 ;; The tests within this file are used to test the processing
 ;; performed by the:
 ;;
-;;    `insert-pair-edit-update'
+;;    `ipe-insert-pair-edit-update'
 ;;
 ;; function.
 
@@ -69,7 +69,7 @@
   "Options used by `ipe-test-def-kbd' for `ipe-test-update'.")
 
 (ipe-test-def-kbd update-cursor-1 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 Cursor before PAIR."
   ipe-test-update-options
@@ -79,7 +79,7 @@ Cursor before PAIR."
   "C-u M-( ( ( { RET")
 
 (ipe-test-def-kbd update-cursor-2 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 Cursor before OPEN."
   ipe-test-update-options
@@ -89,7 +89,7 @@ Cursor before OPEN."
   "C-u M-( ( ( { RET")
 
 (ipe-test-def-kbd update-cursor-3 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 Cursor inside OPEN (1)."
   ipe-test-update-options
@@ -99,7 +99,7 @@ Cursor inside OPEN (1)."
   "C-u M-( ( ( { RET")
 
 (ipe-test-def-kbd update-cursor-4 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 Cursor inside OPEN (2)."
   ipe-test-update-options
@@ -109,7 +109,7 @@ Cursor inside OPEN (2)."
   "C-u M-( ( ( { RET")
 
 (ipe-test-def-kbd update-cursor-5 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 Cursor inside OPEN (3)."
   ipe-test-update-options
@@ -119,7 +119,7 @@ Cursor inside OPEN (3)."
   "C-u M-( ( ( { RET")
 
 (ipe-test-def-kbd update-cursor-6 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 Cursor inside OPEN (4)."
   ipe-test-update-options
@@ -129,7 +129,7 @@ Cursor inside OPEN (4)."
   "C-u M-( ( ( { RET")
 
 (ipe-test-def-kbd update-cursor-7 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 Cursor after OPEN."
   ipe-test-update-options
@@ -139,7 +139,7 @@ Cursor after OPEN."
   "C-u M-( ( ( { RET")
 
 (ipe-test-def-kbd update-cursor-8 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 Cursor inside PAIR (1)."
   ipe-test-update-options
@@ -149,7 +149,7 @@ Cursor inside PAIR (1)."
   "C-u M-( ( ( { RET")
 
 (ipe-test-def-kbd update-cursor-9 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 Cursor inside PAIR (2)."
   ipe-test-update-options
@@ -159,7 +159,7 @@ Cursor inside PAIR (2)."
   "C-u M-( ( ( { RET")
 
 (ipe-test-def-kbd update-cursor-10 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 Cursor before CLOSE."
   ipe-test-update-options
@@ -169,7 +169,7 @@ Cursor before CLOSE."
   "C-u M-( ( ( { RET")
 
 (ipe-test-def-kbd update-cursor-11 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 Cursor inside CLOSE (1)."
   ipe-test-update-options
@@ -179,7 +179,7 @@ Cursor inside CLOSE (1)."
   "C-u M-( ( ( { RET")
 
 (ipe-test-def-kbd update-cursor-12 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 Cursor inside CLOSE (1)."
   ipe-test-update-options
@@ -189,7 +189,7 @@ Cursor inside CLOSE (1)."
   "C-u M-( ( ( { RET")
 
 (ipe-test-def-kbd update-cursor-13 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 Cursor inside CLOSE (1)."
   ipe-test-update-options
@@ -199,7 +199,7 @@ Cursor inside CLOSE (1)."
   "C-u M-( ( ( { RET")
 
 (ipe-test-def-kbd update-cursor-14 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 Cursor inside CLOSE (1)."
   ipe-test-update-options
@@ -209,7 +209,7 @@ Cursor inside CLOSE (1)."
   "C-u M-( ( ( { RET")
 
 (ipe-test-def-kbd update-cursor-15 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 Cursor after CLOSE."
   ipe-test-update-options
@@ -219,7 +219,7 @@ Cursor after CLOSE."
   "C-u M-( ( ( { RET")
 
 (ipe-test-def-kbd update-cursor-16 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 Cursor after PAIR."
   ipe-test-update-options
@@ -229,7 +229,7 @@ Cursor after PAIR."
   "C-u M-( ( ( { RET")
 
 (ipe-test-def-kbd update-cursor-17 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 Cursor after at start of PAIR, multiple matches."
   ipe-test-update-options
@@ -239,7 +239,7 @@ Cursor after at start of PAIR, multiple matches."
   "C-u M-( ( ( { RET")
 
 (ipe-test-def-kbd update-cursor-18 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 OPEN = CLOSE, cursor before PAIR."
   ipe-test-update-options
@@ -249,7 +249,7 @@ OPEN = CLOSE, cursor before PAIR."
   "C-u M-( ' ( \" RET")
 
 (ipe-test-def-kbd update-cursor-19 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 OPEN = CLOSE, cursor inside PAIR."
   ipe-test-update-options
@@ -259,7 +259,7 @@ OPEN = CLOSE, cursor inside PAIR."
   "C-u M-( ' ( \" RET")
 
 (ipe-test-def-kbd update-cursor-20 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 OPEN = CLOSE, cursor after PAIR."
   ipe-test-update-options
@@ -269,7 +269,7 @@ OPEN = CLOSE, cursor after PAIR."
   "C-u M-( ' ( \" RET")
 
 (ipe-test-def-kbd update-cursor-21 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 OPEN = CLOSE, cursor at start of PAIR, multiple PAIRS."
   ipe-test-update-options
@@ -279,7 +279,7 @@ OPEN = CLOSE, cursor at start of PAIR, multiple PAIRS."
   "C-u M-( ' ( \" RET")
 
 (ipe-test-def-kbd update-cursor-22 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 OPEN = CLOSE, cursor inside PAIR, multiple PAIRS."
   ipe-test-update-options
@@ -289,7 +289,7 @@ OPEN = CLOSE, cursor inside PAIR, multiple PAIRS."
   "C-u M-( ' ( \" RET")
 
 (ipe-test-def-kbd update-cursor-23 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 OPEN = CLOSE, cursor at end of PAIR, multiple PAIRS."
   ipe-test-update-options
@@ -299,7 +299,7 @@ OPEN = CLOSE, cursor at end of PAIR, multiple PAIRS."
   "C-u M-( ' ( \" RET")
 
 (ipe-test-def-kbd update-cursor-24 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 Minimal buffer. Cursor before PAIR."
   ipe-test-update-options
@@ -309,7 +309,7 @@ Minimal buffer. Cursor before PAIR."
   "C-u M-( ' RET")
 
 (ipe-test-def-kbd update-cursor-25 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 Minimal buffer. Cursor inside PAIR."
   ipe-test-update-options
@@ -319,7 +319,7 @@ Minimal buffer. Cursor inside PAIR."
   "C-u M-( ' RET")
 
 (ipe-test-def-kbd update-cursor-26 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 Minimal buffer. Cursor after PAIR."
   ipe-test-update-options
@@ -329,7 +329,7 @@ Minimal buffer. Cursor after PAIR."
   "C-u M-( ' RET")
 
 (ipe-test-def-kbd update-cursor-27 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 Minimal buffer. Cursor between PAIRs."
   ipe-test-update-options
@@ -339,7 +339,7 @@ Minimal buffer. Cursor between PAIRs."
   "C-u M-( ' RET")
 
 (ipe-test-def-kbd update-cursor-28 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 Minimal buffer. Cursor afters PAIRs."
   ipe-test-update-options
@@ -349,7 +349,7 @@ Minimal buffer. Cursor afters PAIRs."
   "C-u M-( ' RET")
 
 (ipe-test-def-kbd update-cursor-29 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 Indents around PAIR.  Cursor at start of buffer."
   ipe-test-update-options
@@ -359,7 +359,7 @@ Indents around PAIR.  Cursor at start of buffer."
   "C-u M-( ( ( { RET")
 
 (ipe-test-def-kbd update-cursor-30 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 Indents around PAIR.  Cursor inside OPEN leading indent."
   ipe-test-update-options
@@ -369,7 +369,7 @@ Indents around PAIR.  Cursor inside OPEN leading indent."
   "C-u M-( ( ( { RET")
 
 (ipe-test-def-kbd update-cursor-31 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 Indents around PAIR.  Cursor inside OPEN trailing indent."
   ipe-test-update-options
@@ -379,7 +379,7 @@ Indents around PAIR.  Cursor inside OPEN trailing indent."
   "C-u M-( ( ( { RET")
 
 (ipe-test-def-kbd update-cursor-32 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 Indents around PAIR.  Cursor inside CLOSE leading indent."
   ipe-test-update-options
@@ -389,7 +389,7 @@ Indents around PAIR.  Cursor inside CLOSE leading indent."
   "C-u M-( ( ( { RET")
 
 (ipe-test-def-kbd update-cursor-33 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 Indents around PAIR.  Cursor inside CLOSE trailing indent."
   ipe-test-update-options
@@ -399,7 +399,7 @@ Indents around PAIR.  Cursor inside CLOSE trailing indent."
   "C-u M-( ( ( { RET")
 
 (ipe-test-def-kbd update-nested-1 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 Large tag nested PAIRs."
   ipe-test-update-options
@@ -409,7 +409,7 @@ Large tag nested PAIRs."
   "C-u M-( ( ( < RET")
 
 (ipe-test-def-kbd update-nested-2 ()
-  "Test `insert-pair-edit-update' cursor position.
+  "Test `ipe-insert-pair-edit-update' cursor position.
 
 Large tag nested PAIRs."
   ipe-test-update-options
@@ -419,7 +419,7 @@ Large tag nested PAIRs."
   "C-u M-( ( ( < RET")
 
 (ipe-test-def-kbd update-infix-1 ()
-  "Test `insert-pair-edit-update' with infixed line.
+  "Test `ipe-insert-pair-edit-update' with infixed line.
 
 Simple update."
   ipe-test-update-options
@@ -437,7 +437,7 @@ Simple update."
   "C-u M-( ; C-d")
 
 (ipe-test-def-kbd update-infix-2 ()
-  "Test `insert-pair-edit-update' with infixed line.
+  "Test `ipe-insert-pair-edit-update' with infixed line.
 
 Minimal buffer."
   ipe-test-update-options
@@ -447,7 +447,7 @@ Minimal buffer."
   "C-u M-( ; C-d")
 
 (ipe-test-def-kbd update-infix-3 ()
-  "Test `insert-pair-edit-update' with infixed line.
+  "Test `ipe-insert-pair-edit-update' with infixed line.
 
 Minimal buffer + indent."
   ipe-test-update-options
@@ -457,7 +457,7 @@ Minimal buffer + indent."
   "C-u M-( ; C-d")
 
 (ipe-test-def-kbd update-infix-4 ()
-  "Test `insert-pair-edit-update' with infixed line.
+  "Test `ipe-insert-pair-edit-update' with infixed line.
 
 Minimal buffer + post indent."
   ipe-test-update-options
@@ -467,7 +467,7 @@ Minimal buffer + post indent."
   "C-u M-( ; C-d")
 
 (ipe-test-def-kbd update-infix-5 ()
-  "Test `insert-pair-edit-update' with infixed line.
+  "Test `ipe-insert-pair-edit-update' with infixed line.
 
 Minimal buffer + toggled OPEN + CLOSE."
   ipe-test-update-options
@@ -479,7 +479,7 @@ Minimal buffer + toggled OPEN + CLOSE."
   "C-u M-( ; C-d")
 
 (ipe-test-def-kbd update-infix-6 ()
-  "Test `insert-pair-edit-update' with infixed line.
+  "Test `ipe-insert-pair-edit-update' with infixed line.
 
 Minimal buffer + toggled OPEN + CLOSE + indents."
   ipe-test-update-options
@@ -491,7 +491,7 @@ Minimal buffer + toggled OPEN + CLOSE + indents."
   "C-u M-( ; C-d")
 
 (ipe-test-def-kbd update-infix-7 ()
-  "Test `insert-pair-edit-update' with infixed line.
+  "Test `ipe-insert-pair-edit-update' with infixed line.
 
 Minimal buffer + toggled OPEN + CLOSE + indents, no infix."
   ipe-test-update-options
@@ -503,7 +503,7 @@ Minimal buffer + toggled OPEN + CLOSE + indents, no infix."
   "C-u M-( 1 C-d")
 
 (ipe-test-def-kbd update-infix-8 ()
-  "Test `insert-pair-edit-update' with infixed line.
+  "Test `ipe-insert-pair-edit-update' with infixed line.
 
 Update before cursor."
   ipe-test-update-options
@@ -521,7 +521,7 @@ Update before cursor."
   "C-u M-( ; C-d")
 
 (ipe-test-def-kbd update-infix-9 ()
-  "Test `insert-pair-edit-update' with infixed line.
+  "Test `ipe-insert-pair-edit-update' with infixed line.
 
 Update after cursor."
   ipe-test-update-options
@@ -539,7 +539,7 @@ Update after cursor."
   "C-u M-( ; C-d")
 
 (ipe-test-def-kbd update-infix-10 ()
-  "Test `insert-pair-edit-update' with infixed line.
+  "Test `ipe-insert-pair-edit-update' with infixed line.
 
 Update with leading whitespace."
   ipe-test-update-options
@@ -557,7 +557,7 @@ Update with leading whitespace."
   "C-u M-( ; C-d")
 
 (ipe-test-def-kbd update-infix-11 ()
-  "Test `insert-pair-edit-update' with infixed line.
+  "Test `ipe-insert-pair-edit-update' with infixed line.
 
 Update with trailing whitespace."
   ipe-test-update-options
@@ -575,7 +575,7 @@ Update with trailing whitespace."
   "C-u M-( ; C-d")
 
 (ipe-test-def-kbd update-infix-12 ()
-  "Test `insert-pair-edit-update' with infixed line.
+  "Test `ipe-insert-pair-edit-update' with infixed line.
 
 Update with toggled OPEN."
   ipe-test-update-options
@@ -594,7 +594,7 @@ Update with toggled OPEN."
   "C-u M-( ; C-d")
 
 (ipe-test-def-kbd update-infix-13 ()
-  "Test `insert-pair-edit-update' with infixed line.
+  "Test `ipe-insert-pair-edit-update' with infixed line.
 
 Update with toggled CLOSE."
   ipe-test-update-options
@@ -613,7 +613,7 @@ Update with toggled CLOSE."
   "C-u M-( ; C-d")
 
 (ipe-test-def-kbd update-infix-14 ()
-  "Test `insert-pair-edit-update' with infixed line.
+  "Test `ipe-insert-pair-edit-update' with infixed line.
 
 Update with leading / trailing whitespace + toggled OPEN & CLOSE."
   ipe-test-update-options
@@ -633,7 +633,7 @@ Update with leading / trailing whitespace + toggled OPEN & CLOSE."
   "C-u M-( ; C-d")
 
 (ipe-test-def-kbd update-infix-15 ()
-  "Test `insert-pair-edit-update' with infixed line.
+  "Test `ipe-insert-pair-edit-update' with infixed line.
 
 Update with leading / trailing whitespace + toggled OPEN & CLOSE,
 no-infix."
@@ -654,7 +654,7 @@ no-infix."
   "C-u M-( 1 C-d")
 
 (ipe-test-def-kbd update-infix-16 ()
-  "Test `insert-pair-edit-update' with infixed line.
+  "Test `ipe-insert-pair-edit-update' with infixed line.
 
 Update with leading / trailing whitespace + toggled OPEN & CLOSE from
 infixed line to a different infixed line."
@@ -677,7 +677,7 @@ infixed line to a different infixed line."
   "C-u M-( ; ( * RET")
 
 (ipe-test-def-kbd update-infix-17 ()
-  "Test `insert-pair-edit-update' with infixed line.
+  "Test `ipe-insert-pair-edit-update' with infixed line.
 
 Update with leading / trailing whitespace + toggled OPEN & CLOSE from
 non-infixed line to infixed line."
@@ -700,7 +700,7 @@ non-infixed line to infixed line."
   "C-u M-( 1 ( * RET")
 
 (ipe-test-def-kbd update-infix-18 ()
-  "Test `insert-pair-edit-update' with infixed line.
+  "Test `ipe-insert-pair-edit-update' with infixed line.
 
 Update with leading / trailing whitespace + toggled OPEN & CLOSE from
 infixed line to non-infixed line."
@@ -723,7 +723,7 @@ infixed line to non-infixed line."
   "C-u M-( * ( 1 RET")
 
 (ipe-test-def-kbd update-infix-19 ()
-  "Test `insert-pair-edit-update' with infixed line.
+  "Test `ipe-insert-pair-edit-update' with infixed line.
 
 Update with cursor inside OPEN (1)."
   ipe-test-update-options
@@ -745,7 +745,7 @@ Update with cursor inside OPEN (1)."
   "C-u M-( ; ( * RET")
 
 (ipe-test-def-kbd update-infix-20 ()
-  "Test `insert-pair-edit-update' with infixed line.
+  "Test `ipe-insert-pair-edit-update' with infixed line.
 
 Update with cursor inside OPEN (2)."
   ipe-test-update-options
@@ -767,7 +767,7 @@ Update with cursor inside OPEN (2)."
   "C-u M-( ; ( * RET")
 
 (ipe-test-def-kbd update-infix-21 ()
-  "Test `insert-pair-edit-update' with infixed line.
+  "Test `ipe-insert-pair-edit-update' with infixed line.
 
 Update with cursor inside OPEN (3)."
   ipe-test-update-options
@@ -789,7 +789,7 @@ Update with cursor inside OPEN (3)."
   "C-u M-( ; ( * RET")
 
 (ipe-test-def-kbd update-infix-22 ()
-  "Test `insert-pair-edit-update' with infixed line.
+  "Test `ipe-insert-pair-edit-update' with infixed line.
 
 Update with cursor inside OPEN (4)."
   ipe-test-update-options
@@ -807,7 +807,7 @@ Update with cursor inside OPEN (4)."
   "C-u M-( ; ( * RET")
 
 (ipe-test-def-kbd update-infix-23 ()
-  "Test `insert-pair-edit-update' with infixed line.
+  "Test `ipe-insert-pair-edit-update' with infixed line.
 
 Update with cursor inside CLOSE (1)."
   ipe-test-update-options
@@ -829,7 +829,7 @@ Update with cursor inside CLOSE (1)."
   "C-u M-( ; ( * RET")
 
 (ipe-test-def-kbd update-infix-24 ()
-  "Test `insert-pair-edit-update' with infixed line.
+  "Test `ipe-insert-pair-edit-update' with infixed line.
 
 Update with cursor inside CLOSE (2)."
   ipe-test-update-options
@@ -851,7 +851,7 @@ Update with cursor inside CLOSE (2)."
   "C-u M-( ; ( * RET")
 
 (ipe-test-def-kbd update-infix-25 ()
-  "Test `insert-pair-edit-update' with infixed line.
+  "Test `ipe-insert-pair-edit-update' with infixed line.
 
 Update with cursor inside CLOSE (3)."
   ipe-test-update-options
@@ -873,7 +873,7 @@ Update with cursor inside CLOSE (3)."
   "C-u M-( ; ( * RET")
 
 (ipe-test-def-kbd update-infix-26 ()
-  "Test `insert-pair-edit-update' with infixed line.
+  "Test `ipe-insert-pair-edit-update' with infixed line.
 
 Update with cursor inside CLOSE (4)."
   ipe-test-update-options
@@ -891,7 +891,7 @@ Update with cursor inside CLOSE (4)."
   "C-u M-( ; ( * RET")
 
 (ipe-test-def-kbd update-infix-27 ()
-  "Test `insert-pair-edit-update' with infixed line.
+  "Test `ipe-insert-pair-edit-update' with infixed line.
 
 Update with single empty line."
   ipe-test-update-options
@@ -909,7 +909,7 @@ Update with single empty line."
   "C-u M-( ; ( * RET")
 
 (ipe-test-def-kbd update-infix-28 ()
-  "Test `insert-pair-edit-update' with infixed line.
+  "Test `ipe-insert-pair-edit-update' with infixed line.
 
 Update with single empty line at start of buffer."
   ipe-test-update-options
@@ -927,7 +927,7 @@ Update with single empty line at start of buffer."
   "C-u M-( ; ( * RET")
 
 (ipe-test-def-kbd update-infix-29 ()
-  "Test `insert-pair-edit-update' with infixed line.
+  "Test `ipe-insert-pair-edit-update' with infixed line.
 
 Update with single empty line at end of buffer."
   ipe-test-update-options

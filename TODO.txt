@@ -13,7 +13,6 @@
 ;; - Add C-mouse-1 / C-mouse-2 actions (add / remove multiple PAIRs)
 ;;
 ;; STYLE
-;; - Move ipe--set-point out of ipe-edit--abort.
 ;; - Check save-excursion usage.
 ;; - Add MELPA conventions.
 ;; - Address TODO's.
@@ -36,4 +35,4 @@
 ;;
 ;; RELEASE
 ;; - Line-by-Line code check.
-;; - Check differences between ELPA / MELPA.
+

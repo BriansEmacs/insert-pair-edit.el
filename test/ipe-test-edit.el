@@ -4,7 +4,7 @@
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 1.0
+;; Version: 1.1
 ;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: internal local
@@ -43,9 +43,9 @@
 ;; replace 'Insert Pair Edit' (ipe) functions.  This is done via the
 ;; top-level 'Insert Pair Edit' (ipe) commands:
 ;;
-;;   `insert-pair-edit-update'
-;;   `insert-pair-edit-delete'
-;;   `insert-pair-edit-replace'
+;;   `ipe-insert-pair-edit-update'
+;;   `ipe-insert-pair-edit-delete'
+;;   `ipe-insert-pair-edit-replace'
 
 ;; -------------------------------------------------------------------
 ;;; Code:
@@ -65,7 +65,7 @@
   "Options used by `ipe-test-def-kbd' for `ipe-test-edit'.")
 
 (ipe-test-def-kbd edit-update-1 ()
-  "Test `insert-pair-edit-update' function.
+  "Test `ipe-insert-pair-edit-update' function.
 
 Using a ('word pair) -> ('word pair)"
   ipe-test-edit-options
@@ -75,7 +75,7 @@ Using a ('word pair) -> ('word pair)"
   "C-u M-( ( C-f RET")
 
 (ipe-test-def-kbd edit-update-2 ()
-  "Test `insert-pair-edit-update' function.
+  "Test `ipe-insert-pair-edit-update' function.
 
 Using a ('word pair) -> ('word pair) with cursor before pair."
   ipe-test-edit-options
@@ -85,7 +85,7 @@ Using a ('word pair) -> ('word pair) with cursor before pair."
   "C-u M-( ( C-f RET")
 
 (ipe-test-def-kbd edit-update-3 ()
-  "Test `insert-pair-edit-update' function.
+  "Test `ipe-insert-pair-edit-update' function.
 
 Using a ('word pair) -> ('word pair) with cursor after pair."
   ipe-test-edit-options
@@ -95,7 +95,7 @@ Using a ('word pair) -> ('word pair) with cursor after pair."
   "C-u M-( ( C-f RET")
 
 (ipe-test-def-kbd edit-update-4 ()
-  "Test `insert-pair-edit-update' function.
+  "Test `ipe-insert-pair-edit-update' function.
 
 Using a ('word pair) -> ('word pair) with cursor after pair."
   ipe-test-edit-options
@@ -105,7 +105,7 @@ Using a ('word pair) -> ('word pair) with cursor after pair."
   "C-u M-( ( C-f RET")
 
 (ipe-test-def-kbd edit-update-5 ()
-  "Test `insert-pair-edit-update' function.
+  "Test `ipe-insert-pair-edit-update' function.
 
 Using a :infix"
   ipe-test-edit-options
@@ -119,7 +119,7 @@ Using a :infix"
   "C-u M-( ; ( ( RET")
 
 (ipe-test-def-kbd edit-delete-2 ()
-  "Test `insert-pair-edit-delete' function.
+  "Test `ipe-insert-pair-edit-delete' function.
 
 Using a ('word pair) -> ('word pair)"
   ipe-test-edit-options
@@ -129,7 +129,7 @@ Using a ('word pair) -> ('word pair)"
   "C-u C-u M-( (")
 
 (ipe-test-def-kbd edit-delete-3 ()
-  "Test `insert-pair-edit-delete' function.
+  "Test `ipe-insert-pair-edit-delete' function.
 
 Using a ('word pair) -> ('word pair) with cursor before pair."
   ipe-test-edit-options
@@ -139,7 +139,7 @@ Using a ('word pair) -> ('word pair) with cursor before pair."
   "C-u C-u M-( (")
 
 (ipe-test-def-kbd edit-delete-4 ()
-  "Test `insert-pair-edit-delete' function.
+  "Test `ipe-insert-pair-edit-delete' function.
 
 Using a ('word pair) -> ('word pair) with cursor after pair."
   ipe-test-edit-options
@@ -149,7 +149,7 @@ Using a ('word pair) -> ('word pair) with cursor after pair."
   "C-u C-u M-( (")
 
 (ipe-test-def-kbd edit-delete-5 ()
-  "Test `insert-pair-edit-delete' function.
+  "Test `ipe-insert-pair-edit-delete' function.
 
 Using a :infix"
   ipe-test-edit-options
@@ -163,7 +163,7 @@ Using a :infix"
   "C-u C-u M-( ;")
 
 (ipe-test-def-kbd edit-delete-region ()
-  "Test `insert-pair-edit-delete' function with a region."
+  "Test `ipe-insert-pair-edit-delete' function with a region."
   ipe-test-edit-options
   nil
   "@The (quick) brown (fox) jumps (over) the (lazy) dog.|"
@@ -171,7 +171,7 @@ Using a :infix"
   "C-u C-u M-( (")
 
 (ipe-test-def-kbd edit-replace-empty-1 ()
-  "Test `insert-pair-edit-replace' function.
+  "Test `ipe-insert-pair-edit-replace' function.
 
 Using a ('word pair) -> ('word pair) in empty buffer."
   ipe-test-edit-options
@@ -181,7 +181,7 @@ Using a ('word pair) -> ('word pair) in empty buffer."
   "C-u C-u C-u M-( ( <")
 
 (ipe-test-def-kbd edit-replace-empty-2 ()
-  "Test `insert-pair-edit-replace' function.
+  "Test `ipe-insert-pair-edit-replace' function.
 
 Using a ('word pair) -> ('word pair) in empty buffer."
   ipe-test-edit-options
@@ -191,7 +191,7 @@ Using a ('word pair) -> ('word pair) in empty buffer."
   "C-u C-u C-u M-( ( <")
 
 (ipe-test-def-kbd edit-replace-empty-3 ()
-  "Test `insert-pair-edit-replace' function.
+  "Test `ipe-insert-pair-edit-replace' function.
 
 Using a ('word pair) -> ('word pair) in empty buffer."
   ipe-test-edit-options
@@ -201,7 +201,7 @@ Using a ('word pair) -> ('word pair) in empty buffer."
   "C-u C-u C-u M-( ( <")
 
 (ipe-test-def-kbd edit-replace-1 ()
-  "Test `insert-pair-edit-replace' function.
+  "Test `ipe-insert-pair-edit-replace' function.
 
 Using a ('word pair) -> ('word pair)"
   ipe-test-edit-options
@@ -211,7 +211,7 @@ Using a ('word pair) -> ('word pair)"
   "C-u C-u C-u M-( ( < RET")
 
 (ipe-test-def-kbd edit-replace-2 ()
-  "Test `insert-pair-edit-replace' function.
+  "Test `ipe-insert-pair-edit-replace' function.
 
 Using a ('word pair) -> ('word pair)"
   ipe-test-edit-options
@@ -221,7 +221,7 @@ Using a ('word pair) -> ('word pair)"
   "C-u C-u C-u M-( ( < RET")
 
 (ipe-test-def-kbd edit-replace-3 ()
-  "Test `insert-pair-edit-replace' function.
+  "Test `ipe-insert-pair-edit-replace' function.
 
 Using a ('word pair) -> ('word pair) with cursor before pair."
   ipe-test-edit-options
@@ -231,7 +231,7 @@ Using a ('word pair) -> ('word pair) with cursor before pair."
   "C-u C-u C-u M-( ( < RET")
 
 (ipe-test-def-kbd edit-replace-4 ()
-  "Test `insert-pair-edit-replace' function.
+  "Test `ipe-insert-pair-edit-replace' function.
 
 Using a ('word pair) -> ('word pair) with cursor after pair."
   ipe-test-edit-options
@@ -241,7 +241,7 @@ Using a ('word pair) -> ('word pair) with cursor after pair."
   "C-u C-u C-u M-( ( < RET")
 
 (ipe-test-def-kbd edit-replace-5 ()
-  "Test `insert-pair-edit-replace' function.
+  "Test `ipe-insert-pair-edit-replace' function.
 
 Using a :infix"
   ipe-test-edit-options

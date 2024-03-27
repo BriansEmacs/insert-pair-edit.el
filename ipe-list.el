@@ -4,7 +4,7 @@
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 1.0
+;; Version: 1.1
 ;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: convenience, tools
@@ -63,7 +63,7 @@
 ;; -------------------------------------------------------------------
 ;;; Code:
 
-(require 'ipe)
+(require 'ipe-)
 
 ;; -------------------------------------------------------------------
 ;;;; Utility Functions.
@@ -291,9 +291,10 @@ Movement is calculated from POINT."
 
     (point)))
 
-(setq ipe-move-by-movements
-      (append ipe-move-by-movements
-	      '((list ipe-list--move-by nil "lists (S-expressions)"))))
+(ipe-move-by-install 'list
+		     'ipe-list--move-by
+		     nil
+		     "lists (S-expressions)")
 
 (provide 'ipe-list)
 

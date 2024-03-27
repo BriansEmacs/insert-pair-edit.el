@@ -4,7 +4,6 @@ ARG
 ARG'th
 ARGS
 ARGs
-Accessor
 Brians
 CLOSE's
 CONTENTs
@@ -63,6 +62,7 @@ Unrecognised
 Upcase
 WASD
 Whitespace
+accessor
 alist
 arg
 args
@@ -120,6 +120,7 @@ eq
 esc
 eval
 facep
+featurep
 fn
 func
 funcall
@@ -153,6 +154,7 @@ mapc
 mapcan
 mapcar
 mc
+melpa
 memq
 ment
 menubar

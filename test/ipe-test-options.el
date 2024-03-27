@@ -4,7 +4,7 @@
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 1.0
+;; Version: 1.1
 ;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: internal local
@@ -92,7 +92,7 @@
   "Options used by `ipe-test-def-kbd' for `ipe-test-options'.")
 
 (ipe-test-def-kbd options-movement-keyset-modifiers-1 ()
-  "Test `insert-pair-edit' with `ipe-edit-movement-keysets' 'modifiers.
+  "Test `ipe-insert-pair-edit' with `ipe-edit-movement-keysets' 'modifiers.
 
 Moving outwards."
   (ipe--alist-update ipe-test-options-base 'ipe-edit--movement-keysets ''(modifiers))
@@ -106,7 +106,7 @@ Moving outwards."
   "M-( ( C-n C-f C-b C-p RET")
 
 (ipe-test-def-kbd options-movement-keyset-modifiers-2 ()
-  "Test `insert-pair-edit' with `ipe-edit-movement-keysets' 'modifiers.
+  "Test `ipe-insert-pair-edit' with `ipe-edit-movement-keysets' 'modifiers.
 
 Moving inwards."
   (ipe--alist-update ipe-test-options-base 'ipe-edit--movement-keysets ''(modifiers))
@@ -120,7 +120,7 @@ Moving inwards."
   "C-u M-( ( M-n M-f M-b M-p RET")
 
 (ipe-test-def-kbd options-movement-keyset-alpha-1 ()
-  "Test `insert-pair-edit' with `ipe-edit-movement-keysets' 'alpha.
+  "Test `ipe-insert-pair-edit' with `ipe-edit-movement-keysets' 'alpha.
 
 Test that the 'alpha characters do NOT move OPEN and close when the
 `ipe-edit--movement-keysets' is NOT 'alpha.
@@ -137,7 +137,7 @@ Movement outwards."
   "M-( ( n f b p RET")
 
 (ipe-test-def-kbd options-movement-keyset-alpha-2 ()
-  "Test `insert-pair-edit' with `ipe-edit-movement-keysets' 'with alpha.
+  "Test `ipe-insert-pair-edit' with `ipe-edit-movement-keysets' 'with alpha.
 
 Test that the 'alpha characters do NOT move OPEN and close when the
 `ipe-edit--movement-keysets' is NOT 'alpha.
@@ -154,7 +154,7 @@ Movement inwards."
   "C-u M-( ( N F B P RET")
 
 (ipe-test-def-kbd options-movement-keyset-alpha-3 ()
-  "Test `insert-pair-edit' with `ipe-edit-movement-keysets' 'alpha.
+  "Test `ipe-insert-pair-edit' with `ipe-edit-movement-keysets' 'alpha.
 
 Test that the 'alpha characters do move OPEN and CLOSE when the
 `ipe-edit--movement-keysets' _is_ 'alpha.
@@ -171,7 +171,7 @@ Movement outwards."
   "M-( ( n f b p RET")
 
 (ipe-test-def-kbd options-movement-keyset-alpha-4 ()
-  "Test `insert-pair-edit' with `ipe-edit-movement-keysets' 'alpha.
+  "Test `ipe-insert-pair-edit' with `ipe-edit-movement-keysets' 'alpha.
 
 Test that the 'alpha characters do move OPEN and CLOSE when the
 `ipe-edit--movement-keysets' _is_ 'alpha.
@@ -188,7 +188,7 @@ Movement inwards."
   "C-u M-( ( N F B P RET")
 
 (ipe-test-def-kbd options-movement-keyset-arrow-1 ()
-  "Test `insert-pair-edit' with `ipe-edit-movement-keysets' 'arrow.
+  "Test `ipe-insert-pair-edit' with `ipe-edit-movement-keysets' 'arrow.
 
 Test that the 'arrow characters do NOT move OPEN and close when the
 `ipe-edit--movement-keysets' is NOT 'arrow.
@@ -205,7 +205,7 @@ Movement outwards."
   "M-( ( <down> <right> <left> <up> RET")
 
 (ipe-test-def-kbd options-movement-keyset-arrow-2 ()
-  "Test `insert-pair-edit' with `ipe-edit-movement-keysets' 'arrow.
+  "Test `ipe-insert-pair-edit' with `ipe-edit-movement-keysets' 'arrow.
 
 Test that the 'arrow characters do NOT move OPEN and close when the
 `ipe-edit--movement-keysets' is NOT 'arrow.
@@ -222,7 +222,7 @@ Movement inwards."
   "C-u M-( ( <C-down> <C-right> <C-left> <C-up> RET")
 
 (ipe-test-def-kbd options-movement-keyset-arrow-3 ()
-  "Test `insert-pair-edit' with `ipe-edit-movement-keysets' 'arrow.
+  "Test `ipe-insert-pair-edit' with `ipe-edit-movement-keysets' 'arrow.
 
 Test that the 'arrow characters do move OPEN and CLOSE when the
 `ipe-edit--movement-keysets' _is_ 'arrow.
@@ -239,7 +239,7 @@ Movement outwards."
   "M-( ( <down> <right> <left> <up> RET")
 
 (ipe-test-def-kbd options-movement-keyset-arrow-4 ()
-  "Test `insert-pair-edit' with `ipe-edit-movement-keysets' 'arrow.
+  "Test `ipe-insert-pair-edit' with `ipe-edit-movement-keysets' 'arrow.
 
 Test that the 'arrow characters do move OPEN and CLOSE when the
 `ipe-edit--movement-keysets' _is_ 'arrow.
@@ -256,7 +256,7 @@ Movement inwards."
   "C-u M-( ( <C-down> <C-right> <C-left> <C-up> RET")
 
 (ipe-test-def-kbd options-movement-keyset-wasd-1 ()
-  "Test `insert-pair-edit' with `ipe-edit-movement-keysets' 'wasd.
+  "Test `ipe-insert-pair-edit' with `ipe-edit-movement-keysets' 'wasd.
 
 Test that the 'wasd characters do NOT move OPEN and close when the
 `ipe-edit--movement-keysets' is NOT 'wasd.
@@ -273,7 +273,7 @@ Movement outwards."
   "M-( ( d a w RET")
 
 (ipe-test-def-kbd options-movement-keyset-wasd-2 ()
-  "Test `insert-pair-edit' with `ipe-edit-movement-keysets' 'wasd.
+  "Test `ipe-insert-pair-edit' with `ipe-edit-movement-keysets' 'wasd.
 
 Test that the 'wasd characters do NOT move OPEN and close when the
 `ipe-edit--movement-keysets' is NOT 'wasd.
@@ -290,7 +290,7 @@ Movement inwards."
   "C-u M-( ( S D A W RET")
 
 (ipe-test-def-kbd options-movement-keyset-wasd-3 ()
-  "Test `insert-pair-edit' with `ipe-edit-movement-keysets' 'wasd.
+  "Test `ipe-insert-pair-edit' with `ipe-edit-movement-keysets' 'wasd.
 
 Test that the 'wasd characters do move OPEN and CLOSE when the
 `ipe-edit--movement-keysets' _is_ 'wasd.
@@ -307,7 +307,7 @@ Movement outwards."
   "M-( ( s d a w RET")
 
 (ipe-test-def-kbd options-movement-keyset-wasd-4 ()
-  "Test `insert-pair-edit' with `ipe-edit-movement-keysets' 'wasd.
+  "Test `ipe-insert-pair-edit' with `ipe-edit-movement-keysets' 'wasd.
 
 Test that the 'wasd characters do move OPEN and CLOSE when the
 `ipe-edit--movement-keysets' _is_ 'wasd.
@@ -324,7 +324,7 @@ Movement inwards."
   "C-u M-( ( S D A W RET")
 
 (ipe-test-def-kbd options-movement-keyset-vi-1 ()
-  "Test `insert-pair-edit' with `ipe-edit-movement-keysets' 'vi.
+  "Test `ipe-insert-pair-edit' with `ipe-edit-movement-keysets' 'vi.
 
 Test that the 'vi characters do NOT move OPEN and close when the
 `ipe-edit--movement-keysets' is NOT 'vi.
@@ -341,7 +341,7 @@ Movement outwards."
   "M-( ( j l h k RET")
 
 (ipe-test-def-kbd options-movement-keyset-vi-2 ()
-  "Test `insert-pair-edit' with `ipe-edit-movement-keysets' 'vi.
+  "Test `ipe-insert-pair-edit' with `ipe-edit-movement-keysets' 'vi.
 
 Test that the 'vi characters do NOT move OPEN and close when the
 `ipe-edit--movement-keysets' is NOT 'vi.
@@ -357,7 +357,7 @@ Movement inwards."
   "C-u M-( ( J L H K RET")
 
 (ipe-test-def-kbd options-movement-keyset-vi-3 ()
-  "Test `insert-pair-edit' with `ipe-edit-movement-keysets' 'vi.
+  "Test `ipe-insert-pair-edit' with `ipe-edit-movement-keysets' 'vi.
 
 Test that the 'vi characters do move OPEN and CLOSE when the
 `ipe-edit--movement-keysets' _is_ 'vi.
@@ -374,7 +374,7 @@ Movement outwards."
   "M-( ( j l h k RET")
 
 (ipe-test-def-kbd options-movement-keyset-vi-4 ()
-  "Test `insert-pair-edit' with `ipe-edit-movement-keysets' 'vi.
+  "Test `ipe-insert-pair-edit' with `ipe-edit-movement-keysets' 'vi.
 
 Test that the 'vi characters do move OPEN and CLOSE when the
 `ipe-edit--movement-keysets' _is_ 'vi.
@@ -391,7 +391,7 @@ Movement inwards."
   "C-u M-( ( J L H K RET")
 
 (ipe-test-def-kbd options-mnemonic-prompt-shortcut-1 ()
-  "Test `insert-pair-edit' with `ipe-mnemonic-prompt-shortcut-p' on."
+  "Test `ipe-insert-pair-edit' with `ipe-mnemonic-prompt-shortcut-p' on."
   (ipe--alist-update ipe-test-options-base 'ipe-mnemonic-prompt-shortcut-p t)
   nil
   "The quick brown fox |jumps over the lazy dog."
@@ -399,7 +399,7 @@ Movement inwards."
   "M-( ( RET")
 
 (ipe-test-def-kbd options-mnemonic-prompt-shortcut-2 ()
-  "Test `insert-pair-edit' with `ipe-mnemonic-prompt-shortcut-p' off."
+  "Test `ipe-insert-pair-edit' with `ipe-mnemonic-prompt-shortcut-p' off."
   (ipe--alist-update ipe-test-options-base 'ipe-mnemonic-prompt-shortcut-p nil)
   nil
   "The quick brown fox |jumps over the lazy dog."
@@ -407,7 +407,7 @@ Movement inwards."
   "M-( ( RET RET")
 
 (ipe-test-def-kbd options-move-point-on-insert-1 ()
-  "Test `insert-pair-edit' with `ipe-move-point-on-insert' 'resume."
+  "Test `ipe-insert-pair-edit' with `ipe-move-point-on-insert' 'resume."
   (ipe--alist-update ipe-test-options-base 'ipe-move-point-on-insert ''resume)
   nil
   "The quick brown fox jum|ps over the lazy dog."
@@ -415,7 +415,7 @@ Movement inwards."
   "M-( ( RET")
 
 (ipe-test-def-kbd options-move-point-on-insert-2 ()
-  "Test `insert-pair-edit' with `ipe-move-point-on-insert' 'open-beg."
+  "Test `ipe-insert-pair-edit' with `ipe-move-point-on-insert' 'open-beg."
   (ipe--alist-update ipe-test-options-base 'ipe-move-point-on-insert ''open-beg)
   nil
   "The quick brown fox jum|ps over the lazy dog."
@@ -423,7 +423,7 @@ Movement inwards."
   "M-( ( RET")
 
 (ipe-test-def-kbd options-move-point-on-insert-3 ()
-  "Test `insert-pair-edit' with `ipe-move-point-on-insert' 'open-end."
+  "Test `ipe-insert-pair-edit' with `ipe-move-point-on-insert' 'open-end."
   (ipe--alist-update ipe-test-options-base 'ipe-move-point-on-insert ''open-end)
   nil
   "The quick brown fox jum|ps over the lazy dog."
@@ -431,7 +431,7 @@ Movement inwards."
   "M-( ( RET")
 
 (ipe-test-def-kbd options-move-point-on-insert-4 ()
-  "Test `insert-pair-edit' with `ipe-move-point-on-insert' 'close-beg."
+  "Test `ipe-insert-pair-edit' with `ipe-move-point-on-insert' 'close-beg."
   (ipe--alist-update ipe-test-options-base 'ipe-move-point-on-insert ''close-beg)
   nil
   "The quick brown fox jum|ps over the lazy dog."
@@ -439,7 +439,7 @@ Movement inwards."
   "M-( ( RET")
 
 (ipe-test-def-kbd options-move-point-on-insert-5 ()
-  "Test `insert-pair-edit' with `ipe-move-point-on-insert' 'close-end."
+  "Test `ipe-insert-pair-edit' with `ipe-move-point-on-insert' 'close-end."
   (ipe--alist-update ipe-test-options-base 'ipe-move-point-on-insert ''close-end)
   nil
   "The quick brown fox jum|ps over the lazy dog."
@@ -447,7 +447,7 @@ Movement inwards."
   "M-( ( RET")
 
 (ipe-test-def-kbd options-move-point-open-beg ()
-  "Test `insert-pair-edit' with `ipe-move-point-on-insert' 'open-beg."
+  "Test `ipe-insert-pair-edit' with `ipe-move-point-on-insert' 'open-beg."
   (ipe--alist-update ipe-test-options-base 'ipe-move-point-on-insert ''open-beg)
   nil
   "The quick brown fox |jumps over the lazy dog."
@@ -455,7 +455,7 @@ Movement inwards."
   "M-( 0 RET")
 
 (ipe-test-def-kbd options-move-point-open-end ()
-  "Test `insert-pair-edit' with `ipe-move-point-on-insert' 'open-end."
+  "Test `ipe-insert-pair-edit' with `ipe-move-point-on-insert' 'open-end."
   (ipe--alist-update ipe-test-options-base 'ipe-move-point-on-insert ''open-end)
   nil
   "The quick brown fox |jumps over the lazy dog."
@@ -463,7 +463,7 @@ Movement inwards."
   "M-( 0 RET")
 
 (ipe-test-def-kbd options-move-point-close-beg ()
-  "Test `insert-pair-edit' with `ipe-move-point-on-insert' 'close-beg."
+  "Test `ipe-insert-pair-edit' with `ipe-move-point-on-insert' 'close-beg."
   (ipe--alist-update ipe-test-options-base 'ipe-move-point-on-insert ''close-beg)
   nil
   "The quick brown fox |jumps over the lazy dog."
@@ -471,7 +471,7 @@ Movement inwards."
   "M-( 0 RET")
 
 (ipe-test-def-kbd options-move-point-close-end ()
-  "Test `insert-pair-edit' with `ipe-move-point-on-insert' 'close-end."
+  "Test `ipe-insert-pair-edit' with `ipe-move-point-on-insert' 'close-end."
   (ipe--alist-update ipe-test-options-base 'ipe-move-point-on-insert ''close-end)
   nil
   "The quick brown fox |jumps over the lazy dog."
@@ -479,7 +479,7 @@ Movement inwards."
   "M-( 0 RET")
 
 (ipe-test-def-kbd options-move-point-positive-number ()
-  "Test `insert-pair-edit' with `ipe-move-point-on-insert' = 3."
+  "Test `ipe-insert-pair-edit' with `ipe-move-point-on-insert' = 3."
   (ipe--alist-update ipe-test-options-base 'ipe-move-point-on-insert 3)
   nil
   "The quick brown fox |jumps over the lazy dog."
@@ -487,7 +487,7 @@ Movement inwards."
   "M-( 0 RET")
 
 (ipe-test-def-kbd options-move-point-negative-number ()
-  "Test `insert-pair-edit' with `ipe-move-point-on-insert' = -3."
+  "Test `ipe-insert-pair-edit' with `ipe-move-point-on-insert' = -3."
   (ipe--alist-update ipe-test-options-base 'ipe-move-point-on-insert -3)
   nil
   "The quick brown fox |jumps over the lazy dog."
@@ -495,7 +495,7 @@ Movement inwards."
   "M-( 0 RET")
 
 (ipe-test-def-kbd options-prefix-moves-close-on-1 ()
-  "Test `insert-pair-edit' with `ipe-prefix-prefix-moves-close-p' on.
+  "Test `ipe-insert-pair-edit' with `ipe-prefix-prefix-moves-close-p' on.
 
 Movement (x2)."
   (ipe--alist-update ipe-test-options-base 'ipe-prefix-moves-close-p t)
@@ -505,7 +505,7 @@ Movement (x2)."
   "M-2 M-( ( RET")
 
 (ipe-test-def-kbd options-prefix-moves-close-on-2 ()
-  "Test `insert-pair-edit' with `ipe-prefix-prefix-moves-close-p' on.
+  "Test `ipe-insert-pair-edit' with `ipe-prefix-prefix-moves-close-p' on.
 
 Movement (x4)."
   (ipe--alist-update ipe-test-options-base 'ipe-prefix-moves-close-p t)
@@ -515,7 +515,7 @@ Movement (x4)."
   "M-4 M-( ( RET")
 
 (ipe-test-def-kbd options-prefix-moves-close-off-1 ()
-  "Test `insert-pair-edit' with `ipe-prefix-prefix-moves-close-p' on.
+  "Test `ipe-insert-pair-edit' with `ipe-prefix-prefix-moves-close-p' on.
 
 Movement (x2)."
   (ipe--alist-update ipe-test-options-base 'ipe-prefix-moves-close-p nil)
@@ -525,7 +525,7 @@ Movement (x2)."
   "M-2 M-( ( RET")
 
 (ipe-test-def-kbd options-prefix-moves-close-off-2 ()
-  "Test `insert-pair-edit' with `ipe-prefix-prefix-moves-close-p' on.
+  "Test `ipe-insert-pair-edit' with `ipe-prefix-prefix-moves-close-p' on.
 
 Movement (x4)."
   (ipe--alist-update ipe-test-options-base 'ipe-prefix-moves-close-p nil)
@@ -535,7 +535,7 @@ Movement (x4)."
   "M-4 M-( ( RET")
 
 (ipe-test-def-kbd options-set-mark-nil ()
-  "Test `insert-pair-edit' with `ipe-set-mark-on-insert' nil."
+  "Test `ipe-insert-pair-edit' with `ipe-set-mark-on-insert' nil."
   (ipe--alist-update ipe-test-options-base 'ipe-set-mark-on-insert nil)
   nil
   "The quick brown fox |jumps over the lazy dog."
@@ -543,7 +543,7 @@ Movement (x4)."
   "C-SPC M-( 0 M-f RET C-w")
 
 (ipe-test-def-kbd options-set-mark-open-beg ()
-  "Test `insert-pair-edit' with `ipe-set-mark-on-insert' 'open-beg."
+  "Test `ipe-insert-pair-edit' with `ipe-set-mark-on-insert' 'open-beg."
   (ipe--alist-update ipe-test-options-base 'ipe-set-mark-on-insert ''open-beg)
   nil
   "The quick brown fox |jumps over the lazy dog."
@@ -551,7 +551,7 @@ Movement (x4)."
   "M-( 0 M-f RET C-w")
 
 (ipe-test-def-kbd options-set-mark-open-end ()
-  "Test `insert-pair-edit' with `ipe-set-mark-on-insert' 'open-end."
+  "Test `ipe-insert-pair-edit' with `ipe-set-mark-on-insert' 'open-end."
   (ipe--alist-update ipe-test-options-base 'ipe-set-mark-on-insert ''open-end)
   nil
   "The quick brown fox |jumps over the lazy dog."
@@ -559,7 +559,7 @@ Movement (x4)."
   "M-( 0 M-f RET C-w")
 
 (ipe-test-def-kbd options-set-mark-close-beg ()
-  "Test `insert-pair-edit' with `ipe-set-mark-on-insert' 'close-beg."
+  "Test `ipe-insert-pair-edit' with `ipe-set-mark-on-insert' 'close-beg."
   (ipe--alist-update ipe-test-options-base 'ipe-set-mark-on-insert ''close-beg)
   nil
   "The quick brown fox |jumps over the lazy dog."
@@ -567,7 +567,7 @@ Movement (x4)."
   "M-( 0 M-f RET C-w")
 
 (ipe-test-def-kbd options-set-mark-close-end ()
-  "Test `insert-pair-edit' with `ipe-set-mark-on-insert' 'close-end."
+  "Test `ipe-insert-pair-edit' with `ipe-set-mark-on-insert' 'close-end."
   (ipe--alist-update ipe-test-options-base 'ipe-set-mark-on-insert ''close-end)
   nil
   "The quick brown fox |jumps over the lazy dog."
@@ -578,7 +578,7 @@ Movement (x4)."
 ;; Per PAIR Definition options.
 
 (ipe-test-def-kbd options-move-point-override-open-beg ()
-  "Test `insert-pair-edit' with :move-point 'open-beg."
+  "Test `ipe-insert-pair-edit' with :move-point 'open-beg."
   ipe-test-options-base
   nil
   "The quick brown fox |jumps over the lazy dog."
@@ -586,7 +586,7 @@ Movement (x4)."
   "M-( 1 RET")
 
 (ipe-test-def-kbd options-move-point-override-open-beg-empty ()
-  "Test `insert-pair-edit' with :move-point 'open-beg.
+  "Test `ipe-insert-pair-edit' with :move-point 'open-beg.
 
 In empty buffer."
   ipe-test-options-base
@@ -596,7 +596,7 @@ In empty buffer."
   "M-( 1")
 
 (ipe-test-def-kbd options-move-point-override-open-end ()
-  "Test `insert-pair-edit' with :move-point 'open-end."
+  "Test `ipe-insert-pair-edit' with :move-point 'open-end."
   ipe-test-options-base
   nil
   "The quick brown fox |jumps over the lazy dog."
@@ -604,7 +604,7 @@ In empty buffer."
   "M-( 2 RET")
 
 (ipe-test-def-kbd options-move-point-override-open-end-empty ()
-  "Test `insert-pair-edit' with :move-point 'open-end.
+  "Test `ipe-insert-pair-edit' with :move-point 'open-end.
 
 In empty buffer."
   ipe-test-options-base
@@ -614,7 +614,7 @@ In empty buffer."
   "M-( 2")
 
 (ipe-test-def-kbd options-move-point-override-close-beg ()
-  "Test `insert-pair-edit' with :move-point 'close-beg."
+  "Test `ipe-insert-pair-edit' with :move-point 'close-beg."
   ipe-test-options-base
   nil
   "The quick brown fox |jumps over the lazy dog."
@@ -622,7 +622,7 @@ In empty buffer."
   "M-( 3 RET")
 
 (ipe-test-def-kbd options-move-point-override-close-beg-empty ()
-  "Test `insert-pair-edit' with :move-point 'close-beg.
+  "Test `ipe-insert-pair-edit' with :move-point 'close-beg.
 
 In empty buffer."
   ipe-test-options-base
@@ -632,7 +632,7 @@ In empty buffer."
   "M-( 3")
 
 (ipe-test-def-kbd options-move-point-override-close-end ()
-  "Test `insert-pair-edit' with :move-point 'close-end."
+  "Test `ipe-insert-pair-edit' with :move-point 'close-end."
   ipe-test-options-base
   nil
   "The quick brown fox |jumps over the lazy dog."
@@ -640,7 +640,7 @@ In empty buffer."
   "M-( 4 RET")
 
 (ipe-test-def-kbd options-move-point-override-close-end-empty ()
-  "Test `insert-pair-edit' with :move-point 'close-end.
+  "Test `ipe-insert-pair-edit' with :move-point 'close-end.
 
 In empty buffer."
   ipe-test-options-base
@@ -650,7 +650,7 @@ In empty buffer."
   "M-( 4")
 
 (ipe-test-def-kbd options-move-point-override-positive-number ()
-  "Test `insert-pair-edit' with :move-point positive number."
+  "Test `ipe-insert-pair-edit' with :move-point positive number."
   ipe-test-options-base
   nil
   "The quick brown fox |jumps over the lazy dog."
@@ -658,7 +658,7 @@ In empty buffer."
   "M-( 5 RET")
 
 (ipe-test-def-kbd options-move-point-override-negative-number ()
-  "Test `insert-pair-edit' with :move-point negative number."
+  "Test `ipe-insert-pair-edit' with :move-point negative number."
   ipe-test-options-base
   nil
   "The quick brown fox |jumps over the lazy dog."
@@ -666,7 +666,7 @@ In empty buffer."
   "M-( 6 RET")
 
 (ipe-test-def-kbd options-auto-insert ()
-  "Test `insert-pair-edit' with :auto-insert on."
+  "Test `ipe-insert-pair-edit' with :auto-insert on."
   ipe-test-options-base
   nil
   "The quick brown fox |jumps over the lazy dog."
@@ -674,7 +674,7 @@ In empty buffer."
   "M-( 7")
 
 (ipe-test-def-kbd options-single-pair-1 ()
-  "Test `insert-pair-edit' with single pair definition."
+  "Test `ipe-insert-pair-edit' with single pair definition."
   (ipe--alist-update ipe-test-options-base 'ipe-pairs ''(("(" "(" ")")))
   nil
   "The quick brown fox |jumps over the lazy dog."
@@ -682,7 +682,7 @@ In empty buffer."
   "M-( RET")
 
 (ipe-test-def-kbd options-single-pair-2 ()
-  "Test `insert-pair-edit' with single pair (:auto-insert) definition."
+  "Test `ipe-insert-pair-edit' with single pair (:auto-insert) definition."
   (ipe--alist-update ipe-test-options-base
 		     'ipe-pairs
 		     ''(("(" "(" ")" (:auto-insert t))))
@@ -692,7 +692,7 @@ In empty buffer."
   "M-(")
 
 (ipe-test-def-kbd options-single-pair-3 ()
-  "Test `insert-pair-edit' with single pair (:auto-insert) definition.
+  "Test `ipe-insert-pair-edit' with single pair (:auto-insert) definition.
 
 With (:auto-insert t) & `ipe-prefix-moves-close-p' = nil set."
   (ipe--alist-update
@@ -706,7 +706,7 @@ With (:auto-insert t) & `ipe-prefix-moves-close-p' = nil set."
   "M-2 M-(")
 
 (ipe-test-def-kbd options-single-pair-4 ()
-  "Test `insert-pair-edit' with single pair (:auto-insert) definition.
+  "Test `ipe-insert-pair-edit' with single pair (:auto-insert) definition.
 
 With (:auto-insert t) & `ipe-prefix-moves-close-p' set.
 

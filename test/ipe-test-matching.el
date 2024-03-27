@@ -4,7 +4,7 @@
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 1.0
+;; Version: 1.1
 ;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: internal local
@@ -40,7 +40,7 @@
 ;; output text, and cursor positions) with an 'expected' output.
 ;;
 ;; The tests within this file are used to test that the
-;; `insert-pair-edit-update' function correctly 'matches' nested
+;; `ipe-insert-pair-edit-update' function correctly 'matches' nested
 ;; 'Insert Pair Edit' (ipe) PAIRs when entering `ipe-edit-mode'.
 
 ;; -------------------------------------------------------------------
@@ -59,7 +59,7 @@
   "Options used by `ipe-test-def-kbd' for `ipe-test-matching'.")
 
 (ipe-test-def-kbd matching-update-1 ()
-  "Test `insert-pair-edit-update' function with nested PAIRs.
+  "Test `ipe-insert-pair-edit-update' function with nested PAIRs.
 
 Test single nested PAIR."
   ipe-test-matching-options
@@ -69,7 +69,7 @@ Test single nested PAIR."
   "C-u M-( ( C-d")
 
 (ipe-test-def-kbd matching-update-2 ()
-  "Test `insert-pair-edit-update' function with nested PAIRs.
+  "Test `ipe-insert-pair-edit-update' function with nested PAIRs.
 
 Test multiple nested PAIRs."
   ipe-test-matching-options
@@ -79,7 +79,7 @@ Test multiple nested PAIRs."
   "C-u M-( ( C-d")
 
 (ipe-test-def-kbd matching-update-3 ()
-  "Test `insert-pair-edit-update' function with nested PAIRs.
+  "Test `ipe-insert-pair-edit-update' function with nested PAIRs.
 
 Test multiple doubly nested PAIRs."
   ipe-test-matching-options
@@ -89,7 +89,7 @@ Test multiple doubly nested PAIRs."
   "C-u M-( ( C-d")
 
 (ipe-test-def-kbd matching-update-4 ()
-  "Test `insert-pair-edit-update' function with nested PAIRs.
+  "Test `ipe-insert-pair-edit-update' function with nested PAIRs.
 
 Test inner PAIR update."
   ipe-test-matching-options
@@ -99,7 +99,7 @@ Test inner PAIR update."
   "C-u M-( ( C-d")
 
 (ipe-test-def-kbd matching-update-5 ()
-  "Test `insert-pair-edit-update' function with nested PAIRs.
+  "Test `ipe-insert-pair-edit-update' function with nested PAIRs.
 
 Test single and doubly nested PAIRs."
   ipe-test-matching-options
@@ -109,7 +109,7 @@ Test single and doubly nested PAIRs."
   "C-u M-( ( C-d")
 
 (ipe-test-def-kbd matching-update-6 ()
-  "Test `insert-pair-edit-update' function with nested PAIRs.
+  "Test `ipe-insert-pair-edit-update' function with nested PAIRs.
 
 Test unmatched PAIR."
   ipe-test-matching-options
@@ -119,7 +119,7 @@ Test unmatched PAIR."
   "C-u M-( ( C-d")
 
 (ipe-test-def-kbd matching-update-7 ()
-  "Test `insert-pair-edit-update' function with nested PAIRs.
+  "Test `ipe-insert-pair-edit-update' function with nested PAIRs.
 
 Test multiple unmatched PAIRs."
   ipe-test-matching-options

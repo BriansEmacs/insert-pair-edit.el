@@ -4,7 +4,7 @@
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 23 March, 2024
-;; Version: 1.0
+;; Version: 1.1
 ;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: convenience, tools
@@ -36,7 +36,7 @@
 ;; -------------------------------------------------------------------
 ;;; Code:
 
-(require 'insert-pair-edit)
+(require 'ipe)
 
 (defun ipe-doc-logo ()
   "Display the \"Insert Pair Edit (ipe)\" logo."
@@ -71,7 +71,7 @@
 
     (dolist (command
 	     (list
-	      '(insert-pair-edit-update "(")
+	      '(ipe-insert-pair-edit-update "(")
 	      '(ipe-edit--close-backward nil)
 	      '(ipe-edit--close-backward nil)
 	      '(ipe-edit--close-backward nil)
@@ -163,18 +163,18 @@ within the demo."
     (dolist (command
 	     (list
 	      ;; Edit the title line.
-	      '(insert-pair-edit nil "(")
+	      '(ipe-insert-pair-edit nil "(")
 	      '(ipe-edit--open-forward nil)
 	      '(ipe-edit--open-forward nil)
 	      '(ipe-edit--open-forward nil)
 	      '(ipe-edit--insert-pair)
-	      '(insert-pair-edit nil "'")
+	      '(ipe-insert-pair-edit nil "'")
 	      '(ipe-edit--open-forward nil)
 	      '(ipe-edit--open-forward nil)
 	      '(ipe-edit--open-forward nil)
 	      '(ipe-edit--open-forward nil)
 	      '(ipe-edit--insert-pair)
-	      '(insert-pair-edit nil "1")
+	      '(ipe-insert-pair-edit nil "1")
 	      '(ipe-edit--close-end nil)
 	      '(ipe-edit--insert-pair)
 	      '(beginning-of-line)
@@ -182,24 +182,24 @@ within the demo."
 	      ;; Edit the 'Text Styles'.
 	      '(next-line)
 	      '(next-line)
-	      '(insert-pair-edit nil "2")
+	      '(ipe-insert-pair-edit nil "2")
 	      '(ipe-edit--close-forward nil)
 	      '(ipe-edit--insert-pair)
 	      '(beginning-of-line)
 	      '(next-line)
-	      '(insert-pair-edit nil "*")
+	      '(ipe-insert-pair-edit nil "*")
 	      '(ipe-edit--insert-pair)
 	      '(beginning-of-line)
 	      '(next-line)
-	      '(insert-pair-edit nil "_")
+	      '(ipe-insert-pair-edit nil "_")
 	      '(ipe-edit--insert-pair)
 	      '(beginning-of-line)
 	      '(next-line)
-	      '(insert-pair-edit nil "`")
+	      '(ipe-insert-pair-edit nil "`")
 	      '(ipe-edit--insert-pair)
 	      '(beginning-of-line)
 	      '(next-line)
-	      '(insert-pair-edit nil "~")
+	      '(ipe-insert-pair-edit nil "~")
 	      '(ipe-edit--close-forward nil)
 	      '(ipe-edit--close-forward nil)
 	      '(ipe-edit--close-forward nil)
@@ -212,11 +212,11 @@ within the demo."
 	      ;; Edit the 'Lists'.
 	      '(next-line)
 	      '(next-line)
-	      '(insert-pair-edit nil "2")
+	      '(ipe-insert-pair-edit nil "2")
 	      '(ipe-edit--insert-pair)
 	      '(beginning-of-line)
 	      '(next-line)
-	      '(insert-pair-edit nil "-")
+	      '(ipe-insert-pair-edit nil "-")
 	      '(ipe-edit--close-down nil)
 	      '(ipe-edit--close-down nil)
 	      '(ipe-edit--insert-pair)
@@ -227,11 +227,11 @@ within the demo."
 
 	      ;; Edit the 'Checkboxes'.
 	      '(next-line)
-	      '(insert-pair-edit nil "2")
+	      '(ipe-insert-pair-edit nil "2")
 	      '(ipe-edit--insert-pair)
 	      '(beginning-of-line)
 	      '(next-line)
-	      '(insert-pair-edit nil "x")
+	      '(ipe-insert-pair-edit nil "x")
 	      '(ipe-edit--close-down nil)
 	      '(ipe-edit--close-down nil)
 	      '(ipe-edit--open-backward nil)
@@ -246,11 +246,11 @@ within the demo."
 
 	      ;; Edit the 'Blocks'
 	      '(next-line)
-	      '(insert-pair-edit nil "2")
+	      '(ipe-insert-pair-edit nil "2")
 	      '(ipe-edit--insert-pair)
 	      '(beginning-of-line)
 	      '(next-line)
-	      '(insert-pair-edit nil "f")
+	      '(ipe-insert-pair-edit nil "f")
 	      '(ipe-edit--open-beg nil)
 	      '(ipe-edit--close-down nil)
 	      '(ipe-edit--close-down nil)

@@ -4,7 +4,7 @@
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 1.0
+;; Version: 1.1
 ;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: internal local
@@ -68,7 +68,7 @@
   "Options used by `ipe-test-def-kbd' for `ipe-test-add'.")
 
 (ipe-test-def-kbd add-next-pair-1 ()
-  "Test `insert-pair-edit' `ipe-edit--add-next-pair'.
+  "Test`ipe-edit--add-next-pair'.
 
 Using a 'word PAIR."
   ipe-test-add-options
@@ -82,7 +82,7 @@ Using a 'word PAIR."
   "C-u M-( ( s ( < RET")
 
 (ipe-test-def-kbd add-next-pair-2 ()
-  "Test `insert-pair-edit' `ipe-edit--add-next-pair'.
+  "Test`ipe-edit--add-next-pair'.
 
 Using a 'word PAIR.  Search (x2)"
   ipe-test-add-options
@@ -96,7 +96,7 @@ Using a 'word PAIR.  Search (x2)"
   "C-u M-( ( s s ( < RET")
 
 (ipe-test-def-kbd add-next-pair-3 ()
-  "Test `insert-pair-edit' `ipe-edit--add-next-pair'.
+  "Test`ipe-edit--add-next-pair'.
 
 Using a 'word PAIR.  With prefix arg."
   ipe-test-add-options
@@ -110,7 +110,7 @@ Using a 'word PAIR.  With prefix arg."
   "C-u M-( ( 2 s ( < RET")
 
 (ipe-test-def-kbd add-previous-pair-1 ()
-  "Test `insert-pair-edit' `ipe-edit--add-previous-pair'.
+  "Test`ipe-edit--add-previous-pair'.
 
 Using a 'word PAIR."
   ipe-test-add-options
@@ -124,7 +124,7 @@ Using a 'word PAIR."
   "C-u M-( ( r ( < RET")
 
 (ipe-test-def-kbd add-previous-pair-2 ()
-  "Test `insert-pair-edit' `ipe-edit--add-previous-pair'.
+  "Test`ipe-edit--add-previous-pair'.
 
 Using a 'word PAIR.  Search (x2)"
   ipe-test-add-options
@@ -138,7 +138,7 @@ Using a 'word PAIR.  Search (x2)"
   "C-u M-( ( r r ( < RET")
 
 (ipe-test-def-kbd add-previous-pair-3 ()
-  "Test `insert-pair-edit' `ipe-edit--add-previous-pair'.
+  "Test`ipe-edit--add-previous-pair'.
 
 Using a 'word PAIR.  With prefix arg."
   ipe-test-add-options
@@ -152,7 +152,7 @@ Using a 'word PAIR.  With prefix arg."
   "C-u M-( ( 2 r ( < RET")
 
 (ipe-test-def-kbd add-next-contents-1 ()
-  "Test `insert-pair-edit' `ipe-edit--add-next-contents'.
+  "Test`ipe-edit--add-next-contents'.
 
 Using a 'word PAIR."
   ipe-test-add-options
@@ -166,7 +166,7 @@ Using a 'word PAIR."
   "C-u M-( ( S RET")
 
 (ipe-test-def-kbd add-next-contents-2 ()
-  "Test `insert-pair-edit' `ipe-edit--add-next-contents'.
+  "Test`ipe-edit--add-next-contents'.
 
 Using a 'word PAIR.  Search (x2)"
   ipe-test-add-options
@@ -180,7 +180,7 @@ Using a 'word PAIR.  Search (x2)"
   "C-u M-( ( S S RET")
 
 (ipe-test-def-kbd add-next-contents-3 ()
-  "Test `insert-pair-edit' `ipe-edit--add-next-contents'.
+  "Test`ipe-edit--add-next-contents'.
 
 Using a 'word PAIR.  With prefix arg."
   ipe-test-add-options
@@ -194,7 +194,7 @@ Using a 'word PAIR.  With prefix arg."
   "C-u M-( ( 2 S RET")
 
 (ipe-test-def-kbd add-previous-contents-1 ()
-  "Test `insert-pair-edit' `ipe-edit--add-previous-contents'.
+  "Test`ipe-edit--add-previous-contents'.
 
 Using a 'word PAIR."
   ipe-test-add-options
@@ -208,7 +208,7 @@ Using a 'word PAIR."
   "C-u M-( ( R RET")
 
 (ipe-test-def-kbd add-previous-contents-2 ()
-  "Test `insert-pair-edit' `ipe-edit--add-previous-contents'.
+  "Test`ipe-edit--add-previous-contents'.
 
 Using a 'word PAIR.  Search (x2)"
   ipe-test-add-options
@@ -222,7 +222,7 @@ Using a 'word PAIR.  Search (x2)"
   "C-u M-( ( R R RET")
 
 (ipe-test-def-kbd add-previous-contents-3 ()
-  "Test `insert-pair-edit' `ipe-edit--add-previous-contents'.
+  "Test`ipe-edit--add-previous-contents'.
 
 Using a 'word PAIR.  With prefix arg."
   ipe-test-add-options

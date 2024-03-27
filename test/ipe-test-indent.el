@@ -4,7 +4,7 @@
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 1.0
+;; Version: 1.1
 ;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: internal local
@@ -64,7 +64,7 @@
   "Options used by `ipe-test-def-kbd' for `ipe-test-indent'.")
 
 (ipe-test-def-kbd indent-basic-insert-1 ()
-  "Test `insert-pair-edit' in with indents.
+  "Test `ipe-insert-pair-edit' in with indents.
 
 Using a 'line (+ :indent-function) PAIR in an empty buffer."
   ipe-test-indent-options
@@ -74,7 +74,7 @@ Using a 'line (+ :indent-function) PAIR in an empty buffer."
   "M-( /")
 
 (ipe-test-def-kbd indent-basic-insert-2 ()
-  "Test `insert-pair-edit' in with indents.
+  "Test `ipe-insert-pair-edit' in with indents.
 
 Using a 'line (+ :indent-function) PAIR on a single line."
   ipe-test-indent-options
@@ -84,7 +84,7 @@ Using a 'line (+ :indent-function) PAIR on a single line."
   "M-( / RET")
 
 (ipe-test-def-kbd indent-basic-insert-3 ()
-  "Test `insert-pair-edit' in with indents.
+  "Test `ipe-insert-pair-edit' in with indents.
 
 Using a 'line (+ :indent-function) PAIR with multiple line."
   ipe-test-indent-options
@@ -99,7 +99,7 @@ Using a 'line (+ :indent-function) PAIR with multiple line."
 
 ;; TODO: Fix 'extra' whitespace insertion
 (ipe-test-def-kbd indent-insert-1 ()
-  "Test `insert-pair-edit' in with indents.
+  "Test `ipe-insert-pair-edit' in with indents.
 
 Using a 'line (+ :indent-function) PAIR with indented line."
   ipe-test-indent-options
@@ -113,7 +113,7 @@ Using a 'line (+ :indent-function) PAIR with indented line."
   "M-( / RET")
 
 (ipe-test-def-kbd indent-insert-2 ()
-  "Test `insert-pair-edit' in with indents.
+  "Test `ipe-insert-pair-edit' in with indents.
 
 Using a 'line (+ :indent-function) PAIR with indented previous line."
   ipe-test-indent-options
@@ -129,7 +129,7 @@ Using a 'line (+ :indent-function) PAIR with indented previous line."
   "M-( / RET")
 
 (ipe-test-def-kbd indent-insert-3 ()
-  "Test `insert-pair-edit' in with indents.
+  "Test `ipe-insert-pair-edit' in with indents.
 
 Using a 'line (+ :indent-function) PAIR with indented line and movement."
   ipe-test-indent-options
@@ -147,7 +147,7 @@ Using a 'line (+ :indent-function) PAIR with indented line and movement."
   "M-( / C-p C-n RET")
 
 (ipe-test-def-kbd indent-insert-4 ()
-  "Test `insert-pair-edit' in with indents.
+  "Test `ipe-insert-pair-edit' in with indents.
 
 Using a 'line (+ :indent-function) PAIR with indented line and movement."
   ipe-test-indent-options
@@ -169,7 +169,7 @@ Using a 'line (+ :indent-function) PAIR with indented line and movement."
   "M-( / C-p C-n RET")
 
 (ipe-test-def-kbd indent-insert-5 ()
-  "Test `insert-pair-edit' in with indents.
+  "Test `ipe-insert-pair-edit' in with indents.
 
 Using a 'line (+ :indent-function) PAIR with multiple indented lines
 and movement."

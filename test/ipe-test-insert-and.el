@@ -4,7 +4,7 @@
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 1.0
+;; Version: 1.1
 ;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: internal local
@@ -65,7 +65,7 @@
   "Options used by `ipe-test-def-kbd' for `ipe-test-insert-and'.")
 
 (ipe-test-def-kbd insert-and-goto-open-1 ()
-  "Test `insert-pair-edit' \"Insert And... -> Goto Open\".
+  "Test `ipe-insert-pair-edit' \"Insert And... -> Goto Open\".
 
 Using a 'word PAIR."
   ipe-test-insert-and-options
@@ -75,7 +75,7 @@ Using a 'word PAIR."
   "M-( ( O")
 
 (ipe-test-def-kbd insert-and-goto-open-2 ()
-  "Test `insert-pair-edit' \"Insert And... -> Goto Open\".
+  "Test `ipe-insert-pair-edit' \"Insert And... -> Goto Open\".
 
 Using a 'word PAIR and a C-u argument."
   ipe-test-insert-and-options
@@ -85,7 +85,7 @@ Using a 'word PAIR and a C-u argument."
   "M-( ( C-u O")
 
 (ipe-test-def-kbd insert-and-goto-open-3 ()
-  "Test `insert-pair-edit' \"Insert And... -> Goto Open\".
+  "Test `ipe-insert-pair-edit' \"Insert And... -> Goto Open\".
 
 Using a 'word PAIR and a numeric argument."
   ipe-test-insert-and-options
@@ -95,7 +95,7 @@ Using a 'word PAIR and a numeric argument."
   "M-( ( C-3 O")
 
 (ipe-test-def-kbd insert-and-goto-close-1 ()
-  "Test `insert-pair-edit' \"Insert And... -> Goto Close\".
+  "Test `ipe-insert-pair-edit' \"Insert And... -> Goto Close\".
 
 Using a 'word PAIR."
   ipe-test-insert-and-options
@@ -105,7 +105,7 @@ Using a 'word PAIR."
   "M-( ( C")
 
 (ipe-test-def-kbd insert-and-goto-close-2 ()
-  "Test `insert-pair-edit' \"Insert And... -> Goto Close\".
+  "Test `ipe-insert-pair-edit' \"Insert And... -> Goto Close\".
 
 Using a 'word PAIR and a universal-argument."
   ipe-test-insert-and-options
@@ -115,7 +115,7 @@ Using a 'word PAIR and a universal-argument."
   "M-( ( C-u C")
 
 (ipe-test-def-kbd insert-and-goto-close-3 ()
-  "Test `insert-pair-edit' \"Insert And... -> Goto Close\".
+  "Test `ipe-insert-pair-edit' \"Insert And... -> Goto Close\".
 
 Using a 'word PAIR and a numeric argument."
   ipe-test-insert-and-options
@@ -125,7 +125,7 @@ Using a 'word PAIR and a numeric argument."
   "M-( ( C-3 C")
 
 (ipe-test-def-kbd insert-and-resume ()
-  "Test `insert-pair-edit' \"Insert And... -> Resume\".
+  "Test `ipe-insert-pair-edit' \"Insert And... -> Resume\".
 
 Using a 'word PAIR."
   ipe-test-insert-and-options
@@ -135,7 +135,7 @@ Using a 'word PAIR."
   "M-( ( U")
 
 (ipe-test-def-kbd insert-and-copy-text ()
-  "Test `insert-pair-edit' \"Insert And... -> Copy Text\".
+  "Test `ipe-insert-pair-edit' \"Insert And... -> Copy Text\".
 
 Using a 'word PAIR."
   ipe-test-insert-and-options
@@ -145,7 +145,7 @@ Using a 'word PAIR."
   "M-( ( Y M-e C-y")
 
 (ipe-test-def-kbd insert-and-kill-text-1 ()
-  "Test `insert-pair-edit' \"Insert And... -> Kill Text\".
+  "Test `ipe-insert-pair-edit' \"Insert And... -> Kill Text\".
 
 Using a 'word PAIR."
   ipe-test-insert-and-options
@@ -155,7 +155,7 @@ Using a 'word PAIR."
   "M-( ( K")
 
 (ipe-test-def-kbd insert-and-kill-text-2 ()
-  "Test `insert-pair-edit' \"Insert And... -> Kill Text\".
+  "Test `ipe-insert-pair-edit' \"Insert And... -> Kill Text\".
 
 Using a 'word PAIR at start-of-line."
   ipe-test-insert-and-options
@@ -165,7 +165,7 @@ Using a 'word PAIR at start-of-line."
   "M-( ( K")
 
 (ipe-test-def-kbd insert-and-kill-text-3 ()
-  "Test `insert-pair-edit' \"Insert And... -> Kill Text\".
+  "Test `ipe-insert-pair-edit' \"Insert And... -> Kill Text\".
 
 Using a 'word PAIR at end-of-line."
   ipe-test-insert-and-options
@@ -175,7 +175,7 @@ Using a 'word PAIR at end-of-line."
   "M-( ( K")
 
 (ipe-test-def-kbd insert-and-kill-text-4 ()
-  "Test `insert-pair-edit' \"Insert And... -> Kill Text\".
+  "Test `ipe-insert-pair-edit' \"Insert And... -> Kill Text\".
 
 Using a 'line PAIR."
   ipe-test-insert-and-options

@@ -4,7 +4,7 @@
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 1.0
+;; Version: 1.1
 ;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: internal local
@@ -101,7 +101,7 @@ This functions restores the `customize-set-variable' /
 	(symbol-function 'ipe-test-defn--customize-save-customized)))
 
 (ipe-test-def-kbd defn-add-pair-1 ()
-  "Test `insert-pair-edit' `ipe-defn--add-pair' function."
+  "Test `ipe-defn--add-pair' function."
   ipe-test-defn-options
   (lambda () (ipe-test-defn--setup))
   "The quick brown fox |jumps over the lazy dog."
@@ -110,7 +110,7 @@ This functions restores the `customize-set-variable' /
   (lambda () (ipe-test-defn--teardown)))
 
 (ipe-test-def-kbd defn-add-pair-2 ()
-  "Test `insert-pair-edit' `ipe-defn--add-pair' function.
+  "Test `ipe-defn--add-pair' function.
 
 This test overwrites an existing MNEMONIC definition."
   ipe-test-defn-options
@@ -121,7 +121,7 @@ This test overwrites an existing MNEMONIC definition."
   (lambda () (ipe-test-defn--teardown)))
 
 (ipe-test-def-kbd defn-delete-pair-1 ()
-  "Test `insert-pair-edit' `ipe-defn--delete-pair' function."
+  "Test `ipe-defn--delete-pair' function."
   ipe-test-defn-options
   (lambda () (ipe-test-defn--setup))
   "The quick brown fox |jumps over the lazy dog."
@@ -130,7 +130,7 @@ This test overwrites an existing MNEMONIC definition."
   (lambda () (ipe-test-defn--teardown)))
 
 (ipe-test-def-kbd defn-add-mode-pair-1 ()
-  "Test `insert-pair-edit' `ipe-defn--add-mode-pair' function.
+  "Test `ipe-defn--add-mode-pair' function.
 
 This tests a mode that uses a separate variable to define its pair
 definitions."
@@ -142,7 +142,7 @@ definitions."
   (lambda () (ipe-test-defn--teardown)))
 
 (ipe-test-def-kbd defn-add-mode-pair-2 ()
-  "Test `insert-pair-edit' `ipe-defn--add-mode-pair' function.
+  "Test `ipe-defn--add-mode-pair' function.
 
 This test overwrites an existing 'Mode-Specific' MNEMONIC definition.
 
@@ -156,7 +156,7 @@ definitions."
   (lambda () (ipe-test-defn--teardown)))
 
 (ipe-test-def-kbd defn-add-mode-pair-3 ()
-  "Test `insert-pair-edit' `ipe-defn--add-mode-pair' function.
+  "Test `ipe-defn--add-mode-pair' function.
 
 This tests a mode with 'inline' PAIR definitions."
   ipe-test-defn-options
@@ -167,7 +167,7 @@ This tests a mode with 'inline' PAIR definitions."
   (lambda () (ipe-test-defn--teardown)))
 
 (ipe-test-def-kbd defn-add-mode-pair-4 ()
-  "Test `insert-pair-edit' `ipe-defn--add-mode-pair' function.
+  "Test `ipe-defn--add-mode-pair' function.
 
 This test overwrites an existing 'Mode-Specific' MNEMONIC definition.
 
@@ -180,7 +180,7 @@ This tests a mode with 'inline' PAIR definitions."
   (lambda () (ipe-test-defn--teardown)))
 
 (ipe-test-def-kbd defn-delete-mode-pair-1 ()
-  "Test `insert-pair-edit' `ipe-defn--add-mode-pair' function.
+  "Test `ipe-defn--add-mode-pair' function.
 
 This tests a mode that uses a separate variable to define its PAIR
 definitions."
@@ -192,7 +192,7 @@ definitions."
   (lambda () (ipe-test-defn--teardown)))
 
 (ipe-test-def-kbd defn-delete-mode-pair-2 ()
-  "Test `insert-pair-edit' `ipe-defn--delete-mode-pair' function.
+  "Test `ipe-defn--delete-mode-pair' function.
 
 This tests a mode with 'inline' PAIR definitions."
   ipe-test-defn-options

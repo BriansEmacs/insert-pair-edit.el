@@ -4,7 +4,7 @@
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 1.0
+;; Version: 1.1
 ;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: convenience, tools
@@ -46,7 +46,7 @@
 ;; -------------------------------------------------------------------
 ;;; Code:
 
-(require 'ipe)
+(require 'ipe-)
 (require 'ipe-help)
 
 (defvar ipe-read--mnemonic-history '()
@@ -80,7 +80,7 @@ minibuffer."
   (when (= (minibuffer-depth) 0)
     (setq ipe-read--minibuffer-depth nil)
     (remove-hook 'minibuffer-exit-hook
-		 'ipe-read--pop-minibuffer-depth)))
+		 #'ipe-read--pop-minibuffer-depth)))
 
 (defun ipe-read--mnemonic-insert-and-exit-on-match (arg)
   "`self-insert-command' - but will exit minibuffer on `ipe' match.
@@ -131,7 +131,7 @@ the minibuffer immediately on typing a unique MNEMONIC."
   (setq ipe-read--minibuffer-depth
 	(cons (1+ (minibuffer-depth)) ipe-read--minibuffer-depth))
 
-  (add-hook 'minibuffer-exit-hook 'ipe-read--pop-minibuffer-depth)
+  (add-hook 'minibuffer-exit-hook #'ipe-read--pop-minibuffer-depth)
 
   (let* ((ipe--major-mode major-mode)
 	 (completion-extra-properties

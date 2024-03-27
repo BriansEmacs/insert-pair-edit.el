@@ -4,7 +4,7 @@
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 1.0
+;; Version: 1.1
 ;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: convenience, tools
@@ -47,8 +47,8 @@
 ;;;; Emacs < 26
 ;; -------------------------------------------------------------------
 
-(if (functionp 'caddr)
-    (defalias 'ipe-compat--caddr 'caddr)
+(if (functionp #'caddr)
+    (defalias 'ipe-compat--caddr #'caddr)
   (defun ipe-compat--caddr (x)
     "Insert Pair Edit (ipe) compatibility function.
 
@@ -57,8 +57,8 @@ Return the `car' of the `cdr' of the `cdr' of X.
 \(Introduced Emacs 26.)"
     (car (cdr (cdr x)))))
 
-(if (functionp 'cadddr)
-    (defalias 'ipe-compat--cadddr 'cadddr)
+(if (functionp #'cadddr)
+    (defalias 'ipe-compat--cadddr #'cadddr)
   (defun ipe-compat--cadddr (x)
     "Insert Pair Edit (ipe) compatibility function.
 
@@ -67,8 +67,8 @@ Return the `car' of the `cdr' of the `cdr' of the `cdr' of X.
 \(Introduced Emacs 26.)"
     (car (cdr (cdr (cdr x))))))
 
-(if (functionp 'mapcan)
-    (defalias 'ipe-compat--mapcan 'mapcan)
+(if (functionp #'mapcan)
+    (defalias 'ipe-compat--mapcan #'mapcan)
   (defun ipe-compat--mapcan (func sequence)
     "Insert Pair Edit (ipe) compatibility function.
 

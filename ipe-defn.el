@@ -4,7 +4,7 @@
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 19 December, 2020
-;; Version: 1.0
+;; Version: 1.1
 ;; Package: ipe
 ;; Package-Requires: ((emacs "24.4"))
 ;; Keywords: convenience, tools
@@ -37,7 +37,7 @@
 ;; `ipe-pairs' / `ipe-mode-pairs' variables.
 ;;
 ;; The `ipe-pairs' / `ipe-mode-pairs' variables are used by the
-;; `insert-pair-edit' command to look-up PAIRs.
+;; `ipe-insert-pair-edit' command to look-up PAIRs.
 ;;
 ;; The functions within this file offer an alternative to the
 ;; `custom'-izations available under the `ipe' group.  (See:
@@ -47,7 +47,7 @@
 ;;; Code:
 
 (require 'ipe-compat)
-(require 'ipe)
+(require 'ipe-)
 
 ;; -------------------------------------------------------------------
 ;;;; Variables
@@ -307,10 +307,10 @@ Returns t, if a `y' is input, nil otherwise."
   (if (and (display-popup-menus-p)
 	   last-input-event
 	   (listp last-nonmenu-event)
-	   (functionp 'x-popup-dialog))
-      (funcall 'x-popup-dialog t (list prompt
-				       '("Yes" . t)
-				       '("No" . nil)))
+	   (functionp #'x-popup-dialog))
+      (funcall #'x-popup-dialog t (list prompt
+					'("Yes" . t)
+					'("No" . nil)))
     (let* ((completion-extra-properties
 	    '(:annotation-function ipe-defn--annotate-y-or-n))
 	   (response (downcase
@@ -370,8 +370,8 @@ must enter a MNEMONICs which already exists within these variables."
 	 (completion-extra-properties
 	  '(:annotation-function ipe--mnemonic-annotate))
 	 (mnemonics (if mode
-			(mapcar 'car (ipe--mode-pairs mode))
-		      (mapcar 'car (ipe--pairs t)))))
+			(mapcar #'car (ipe--mode-pairs mode))
+		      (mapcar #'car (ipe--pairs t)))))
     (completing-read prompt mnemonics nil require-match)))
 
 (defun ipe-defn--read-movement (prompt default)
@@ -386,7 +386,7 @@ DEFAULT is used to specify the initial contents of the
 
   (let* ((completion-extra-properties
 	  '(:annotation-function ipe-defn--annotate-movement))
-	 (movements (mapcar 'ipe-compat--cadddr ipe-move-by-movements))
+	 (movements (mapcar #'ipe-compat--cadddr ipe-move-by-movements))
 	 (movement  (ipe-compat--cadddr
 		     (assoc default ipe-move-by-movements)))
 	 (initial   (cons movement 0))
@@ -526,7 +526,7 @@ DEFN."
       (ipe--pair-property-set defn :escapes escapes))
 
     ;; Read in flag indicating whether to insert PAIR or enter
-    ;; 'insert-pair-edit' mode.
+    ;; 'ipe-edit-mode'.
     (setq auto-insert (ipe--pair-property orig-defn :auto-insert))
 
     (when (ipe-defn--y-or-n-p "Auto-Insert? " auto-insert)
@@ -651,8 +651,8 @@ With prefix ARG, call `ipe-defn--ui-edit-pair'."
 	      (and (ipe--mode-pair mnemonic ipe--major-mode)
 		   (not (ipe-defn--y-or-n-p
 			 (format
-			  "The MNEMONIC '%s' is already defined in\
- as%s in MODE '%s'.  Define as Global PAIR anyway? "
+			  "The MNEMONIC '%s' is already defined as%s\
+ in MODE '%s'.  Define as Global PAIR anyway? "
 			  mnemonic
 			  (ipe--mnemonic-annotate mnemonic ipe--major-mode)
 			  ipe--major-mode)))))
@@ -1001,6 +1001,27 @@ The PAIR Definition is updated in `ipe-mode-pairs'."
 ;;;; UI Customization Functions
 ;; -------------------------------------------------------------------
 
+(defun ipe-defn--ui-add-pair-callback (_mode defn _orig-defn)
+  "The callback function used by the UI 'Add Pair'.
+
+This function is passed to `ipe-custom--edit-pair-defn' after calling
+`ipe-defn--ui-add-pair' to save the updated PAIR definition.
+
+DEFN is the definition of a PAIR as returned by
+`ipe-custom--edit-pair-defn'."
+
+  (when (or (not (ipe--pair (car defn) t))
+	    (ipe-defn--y-or-n-p
+	     (format
+	      "The MNEMONIC '%s' is already defined as the\
+ Global PAIR%s Overwrite? "
+	      (car defn)
+	      (ipe--mnemonic-annotate (car defn) t))))
+
+    (ipe-defn--update-pair-list 'ipe-pairs defn t)
+    (run-hooks 'ipe-defn--update-hook)
+    t))
+
 (defun ipe-defn--ui-add-pair ()
   "Add a new `ipe' PAIR Definition using custom-like widgets.
 
@@ -1012,12 +1033,44 @@ On \"Save\", the PAIR Definition is written back to `ipe-pairs'."
 
   (interactive)
 
-  (let* ((callback (lambda (_mode defn _orig-defn)
-		     (ipe-defn--update-pair-list 'ipe-pairs defn t)
-		     (run-hooks 'ipe-defn--update-hook)
-		     t)))
+  (ipe-custom--edit-pair-defn
+   nil
+   '("" "" "")
+   #'ipe-defn--ui-add-pair-callback))
 
-    (ipe-custom--edit-pair-defn nil '("" "" "") callback)))
+(defun ipe-defn--ui-add-mode-pair-callback (mode defn _orig-defn)
+  "The callback function used by the UI 'Add Mode Pair'.
+
+This function is passed to `ipe-custom--edit-pair-defn' after calling
+`ipe-defn--ui-add-mode-pair' to save the updated PAIR definition.
+
+MODE is the `major-mode` for which the PAIR definition is being
+created.
+
+DEFN is the definition of a PAIR as returned by
+`ipe-custom--edit-pair-defn'."
+
+  (when (or (and (ipe--mode-pair (car defn) mode)
+		 (ipe-defn--y-or-n-p
+		  (format
+		   "The MNEMONIC '%s' is already defined as%s\
+ in MODE '%s'.  Overwrite? "
+		   (car defn)
+		   (ipe--mnemonic-annotate (car defn) mode)
+		   mode)))
+	    (and (ipe--pair (car defn) t)
+		 (ipe-defn--y-or-n-p
+		  (format
+		   "The MNEMONIC '%s' is already defined as the\
+ Global PAIR%s Overwrite? "
+		   (car defn)
+		   (ipe--mnemonic-annotate (car defn) t))))
+	    (and (not (ipe--pair (car defn) t))
+		 (not (ipe--mode-pair (car defn) mode))))
+
+    (ipe-defn--update-mode-pair mode defn t)
+    (run-hooks 'ipe-defn--update-hook)
+    t))
 
 (defun ipe-defn--ui-add-mode-pair (&optional mode)
   "Add a Mode-Specific PAIR Definition using custom-like widgets.
@@ -1036,12 +1089,40 @@ On \"Save\" the PAIR Definition is written back to `ipe-mode-pairs'."
 		"Add new 'Insert Pair Edit' PAIR Definition for MODE: "
 		t)))
 
-  (let ((callback (lambda (mode defn _orig-defn)
-		    (ipe-defn--update-mode-pair mode defn t)
-		    (run-hooks 'ipe-defn--update-hook)
-		    t)))
+  (ipe-custom--edit-pair-defn
+   mode
+   '("" "" "")
+   #'ipe-defn--ui-add-mode-pair-callback))
 
-    (ipe-custom--edit-pair-defn mode '("" "" "") callback)))
+(defun ipe-defn--ui-edit-pair-callback (_mode defn orig-defn)
+  "The callback function used by the UI 'Edit Pair'.
+
+This function is passed to `ipe-custom--edit-pair-defn' after calling
+`ipe-defn--ui-edit-pair' to save the updated PAIR definition.
+
+ORIG-DEFN is the definition of a PAIR before it was edited by the
+widgets in `ipe-custom--edit-pair-defn'.
+
+DEFN is the definition of a PAIR as returned by
+`ipe-custom--edit-pair-defn'."
+
+  ;; Delete the old defn if the MNEMONIC changes.
+  (if (not (string= (car defn) (car orig-defn)))
+      (when (and (ipe--pair (car defn) t)
+		 (ipe-defn--y-or-n-p
+		  (format
+		   "The MNEMONIC '%s' is already defined as the\
+ Global PAIR%s Overwrite? "
+		   (car defn)
+		   (ipe--mnemonic-annotate (car defn) t))))
+	(ipe-defn--update-pair-list 'ipe-pairs
+				    (list (car orig-defn)))
+	(ipe-defn--update-pair-list 'ipe-pairs defn t)
+	(run-hooks 'ipe-defn--update-hook)
+	t)
+    (ipe-defn--update-pair-list 'ipe-pairs defn t)
+    (run-hooks 'ipe-defn--update-hook)
+    t))
 
 (defun ipe-defn--ui-edit-pair (&optional mnemonic)
   "Edit an `ipe' PAIR Definition using custom-like widgets.
@@ -1061,29 +1142,57 @@ On \"Save\" the PAIR Definition is written back to `ipe-pairs'."
 	   "Edit 'Insert Pair Edit' PAIR Definition for MNEMONIC: ")))
 
   (let* ((pair-defn (ipe--pair mnemonic t))
-	 (pair-defn (or pair-defn (list mnemonic "" "")))
-	 (callback
-	  (lambda (_mode defn orig-defn)
-	    ;; Delete the old defn if the MNEMONIC changes.
-	    (if (not (string= (car defn) (car orig-defn)))
-		(and (or (not (ipe--pair (car defn)))
-			 (ipe-defn--y-or-n-p
-			  (format
-			   "The MNEMONIC '%s' is already defined as %s Overwrite? "
-			   (car defn)
-			   (ipe--mnemonic-annotate (car defn) t))))
-		     (progn
-		       (ipe-defn--update-pair-list 'ipe-pairs
-						   (list (car orig-defn)))
-		       (ipe-defn--update-pair-list 'ipe-pairs
-						   defn t)
-		       (run-hooks 'ipe-defn--update-hook)
-		       t))
-	      (ipe-defn--update-pair-list 'ipe-pairs defn t)
-	      (run-hooks 'ipe-defn--update-hook)
-	      t))))
+	 (pair-defn (or pair-defn (list mnemonic "" ""))))
 
-    (ipe-custom--edit-pair-defn nil pair-defn callback)))
+    (ipe-custom--edit-pair-defn
+     nil
+     pair-defn
+     #'ipe-defn--ui-edit-pair-callback)))
+
+(defun ipe-defn--ui-edit-mode-pair-callback (mode defn orig-defn)
+  "The callback function used by the UI 'Edit Mode Pair'.
+
+This function is passed to `ipe-custom--edit-mode-pair-defn' after
+calling `ipe-defn--ui-add-mode-pair' to save the updated PAIR
+definition.
+
+MODE is the `major-mode` for which the PAIR definition is being
+edited.
+
+ORIG-DEFN is the definition of a PAIR as before it was edited by the
+widgets within `ipe-custom--edit-pair-defn'.
+
+DEFN is the definition of a PAIR as returned by
+`ipe-custom--edit-pair-defn'."
+
+  ;; Delete the old defn if the MNEMONIC changes.
+  (if (not (string= (car defn) (car orig-defn)))
+      (when (or (and (ipe--mode-pair (car defn) mode)
+		     (ipe-defn--y-or-n-p
+		      (format
+		       "The MNEMONIC '%s' is already defined as%s\
+ in MODE '%s'.  Overwrite? "
+		       (car defn)
+		       (ipe--mnemonic-annotate (car defn) mode)
+		       mode)))
+		(and (ipe--pair (car defn) t)
+		     (ipe-defn--y-or-n-p
+		      (format
+		       "The MNEMONIC '%s' is already defined the\
+ Global PAIR%s Overwrite? "
+		       (car defn)
+		       (ipe--mnemonic-annotate (car defn) mode))))
+		(and (not (ipe--mode-pair (car defn) mode))
+		     (not (ipe--pair (car defn) t))))
+
+	(ipe-defn--update-mode-pair mode
+				    (list (car orig-defn)))
+	(ipe-defn--update-mode-pair mode defn t)
+	(run-hooks 'ipe-defn--update-hook)
+	t)
+    (ipe-defn--update-mode-pair mode defn t)
+    (run-hooks 'ipe-defn--update-hook)
+    t))
 
 (defun ipe-defn--ui-edit-mode-pair (&optional mode mnemonic)
   "Edit a Mode-Specific PAIR Definition using custom-like widgets.
@@ -1109,31 +1218,12 @@ On \"Save\" the PAIR Definition is written back to `ipe-mode-pairs'."
 	   mode)))
 
   (let* ((pair-defn (ipe--pair mnemonic mode))
-	 (pair-defn (or pair-defn (list mnemonic "" "")))
-	 (callback
-	  (lambda (mode defn orig-defn)
-	    ;; Delete the old defn if the MNEMONIC changes.
-	    (if (not (string= (car defn)
-			      (car orig-defn)))
-		(and (or (not (ipe--mode-pair mode (car defn)))
-			 (ipe-defn--y-or-n-p
-			  (format
-			   "The MNEMONIC '%s' is already defined as%s\
- in mode '%s' Overwrite? "
-			   (car defn)
-			   (ipe--mnemonic-annotate (car defn) mode)
-			   mode)))
-		     (progn
-		       (ipe-defn--update-mode-pair mode
-						   (list (car orig-defn)))
-		       (ipe-defn--update-mode-pair mode defn t)
-		       (run-hooks 'ipe-defn--update-hook)
-		       t))
-	      (ipe-defn--update-mode-pair mode defn t)
-	      (run-hooks 'ipe-defn--update-hook)
-	      t))))
+	 (pair-defn (or pair-defn (list mnemonic "" ""))))
 
-    (ipe-custom--edit-pair-defn mode pair-defn callback)))
+    (ipe-custom--edit-pair-defn
+     mode
+     pair-defn
+     #'ipe-defn--ui-edit-mode-pair-callback)))
 
 (provide 'ipe-defn)
 

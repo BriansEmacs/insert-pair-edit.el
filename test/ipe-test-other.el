@@ -4,7 +4,7 @@
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 1.0
+;; Version: 1.1
 ;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: internal local
@@ -64,7 +64,7 @@
   "Options used by `ipe-test-def-kbd' for `ipe-test-other'.")
 
 (ipe-test-def-kbd other-replace-1 ()
-  "Test `insert-pair-edit-replace'.
+  "Test `ipe-insert-pair-edit-replace'.
 
 Using a 'word PAIR -> 'word PAIR."
   ipe-test-other-options
@@ -74,7 +74,7 @@ Using a 'word PAIR -> 'word PAIR."
   "M-( ( ( < RET")
 
 (ipe-test-def-kbd other-replace-2 ()
-  "Test `insert-pair-edit-replace' changing movement unit.
+  "Test `ipe-insert-pair-edit-replace' changing movement unit.
 
 Using a 'char PAIR -> 'word PAIR."
   ipe-test-other-options
@@ -84,7 +84,7 @@ Using a 'char PAIR -> 'word PAIR."
   "M-( ` ( { RET")
 
 (ipe-test-def-kbd other-replace-3 ()
-  "Test `insert-pair-edit-replace' changing movement unit.
+  "Test `ipe-insert-pair-edit-replace' changing movement unit.
 
 Using a 'char PAIR -> 'line PAIR."
   ipe-test-other-options
@@ -94,7 +94,7 @@ Using a 'char PAIR -> 'line PAIR."
   "M-( { ( [ RET")
 
 (ipe-test-def-kbd other-replace-4 ()
-  "Test `insert-pair-edit-replace' changing movement unit.
+  "Test `ipe-insert-pair-edit-replace' changing movement unit.
 
 Using a 'word PAIR -> 'char PAIR."
   ipe-test-other-options
@@ -104,7 +104,7 @@ Using a 'word PAIR -> 'char PAIR."
   "M-( { ( ` RET")
 
 (ipe-test-def-kbd other-replace-5 ()
-  "Test `insert-pair-edit-replace' changing movement unit.
+  "Test `ipe-insert-pair-edit-replace' changing movement unit.
 
 Using a 'line PAIR -> 'word PAIR."
   ipe-test-other-options
@@ -114,7 +114,7 @@ Using a 'line PAIR -> 'word PAIR."
   "M-( [ ( { RET")
 
 (ipe-test-def-kbd other-replace-6 ()
-  "Test `insert-pair-edit-replace' changing movement unit.
+  "Test `ipe-insert-pair-edit-replace' changing movement unit.
 
 Using a 'line PAIR -> 'char PAIR."
   ipe-test-other-options
@@ -124,7 +124,7 @@ Using a 'line PAIR -> 'char PAIR."
   "M-( [ ( ` RET")
 
 (ipe-test-def-kbd other-replace-7 ()
-  "Test `insert-pair-edit-replace'."
+  "Test `ipe-insert-pair-edit-replace'."
   ipe-test-other-options
   nil
   "The quick brown |fox jumps over the lazy dog."
@@ -132,7 +132,7 @@ Using a 'line PAIR -> 'char PAIR."
   "M-( ( RET C-u C-u C-u M-( ( [ RET")
 
 (ipe-test-def-kbd other-replace-8 ()
-  "Test `insert-pair-edit-replace'."
+  "Test `ipe-insert-pair-edit-replace'."
   ipe-test-other-options
   nil
   "The quick brown |fox jumps over the lazy dog."
@@ -140,7 +140,7 @@ Using a 'line PAIR -> 'char PAIR."
   "M-( ( RET C-u C-u C-u M-( ( ` RET")
 
 (ipe-test-def-kbd other-double-insert-1 ()
-  "Test `insert-pair-edit' inserting two pairs.
+  "Test `ipe-insert-pair-edit' inserting two pairs.
 
 Using a 'word PAIR."
   ipe-test-other-options
@@ -150,7 +150,7 @@ Using a 'word PAIR."
   "M-( ( RET M-( ( RET")
 
 (ipe-test-def-kbd other-double-insert-2 ()
-  "Test `insert-pair-edit' inserting two different pairs.
+  "Test `ipe-insert-pair-edit' inserting two different pairs.
 
 Using a 'word PAIR."
   ipe-test-other-options
@@ -160,7 +160,7 @@ Using a 'word PAIR."
   "M-( ( RET M-( < RET")
 
 (ipe-test-def-kbd other-triple-insert ()
-  "Test `insert-pair-edit' inserting three pairs.
+  "Test `ipe-insert-pair-edit' inserting three pairs.
 
 Using a 'word PAIR."
   ipe-test-other-options
@@ -170,7 +170,7 @@ Using a 'word PAIR."
   "M-( ( RET M-( < RET M-( ( RET")
 
 (ipe-test-def-kbd other-infix-update ()
-  "Test `insert-pair-edit' updating an :infix PAIR.
+  "Test `ipe-insert-pair-edit' updating an :infix PAIR.
 
 Using a 'line PAIR."
   ipe-test-other-options
@@ -184,7 +184,7 @@ Using a 'line PAIR."
   "M-( / C-n C-n RET C-u M-( / C-d")
 
 (ipe-test-def-kbd other-infix-replace ()
-  "Test `insert-pair-edit' replacing an :infix PAIR.
+  "Test `ipe-insert-pair-edit' replacing an :infix PAIR.
 
 Using a 'line PAIR and a 'word PAIR."
   ipe-test-other-options
@@ -199,7 +199,7 @@ Using a 'line PAIR and a 'word PAIR."
 
 (when (>= emacs-major-version 26)
   (ipe-test-def-kbd other-undo-1 ()
-    "Test `insert-pair-edit' undo.
+    "Test `ipe-insert-pair-edit' undo.
 
 Using multiple:
 
@@ -218,7 +218,7 @@ calls."
     "C-u M-( ( C-s C-s C-r C-r RET C-/")
 
   (ipe-test-def-kbd other-undo-2 ()
-    "Test `insert-pair-edit' undo.
+    "Test `ipe-insert-pair-edit' undo.
 
 Using:
 

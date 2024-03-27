@@ -4,7 +4,7 @@
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 1.0
+;; Version: 1.1
 ;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: convenience, tools
@@ -32,7 +32,7 @@
 ;;
 ;; This file defines the help text / functions used by the 'Insert
 ;; Pair Edit' package.  The 'Insert Pair Edit' package supplies the
-;; `insert-pair-edit' command which offers a more feature rich
+;; `ipe-insert-pair-edit' command which offers a more feature rich
 ;; alternative to the standard 'M-(' Emacs keybinding
 ;; (`insert-parentheses').
 ;;
@@ -52,14 +52,14 @@ closing (CLOSE) strings of a PAIR.
 
 PAIRs can be inserted, updated, deleted, and replaced by:
 
-  \\<global-map>'\\[insert-pair-edit]' -\
- (command: `insert-pair-edit')
-  `\\[insert-pair-edit-update]' -\
- (command: `insert-pair-edit-update')
-  `\\[insert-pair-edit-delete]' -\
- (command: `insert-pair-edit-delete')
-  `\\[insert-pair-edit-replace]' -\
- (command: `insert-pair-edit-replace')
+  \\<global-map>'\\[ipe-insert-pair-edit]' -\
+ (command: `ipe-insert-pair-edit')
+  `\\[ipe-insert-pair-edit-update]' -\
+ (command: `ipe-insert-pair-edit-update')
+  `\\[ipe-insert-pair-edit-delete]' -\
+ (command: `ipe-insert-pair-edit-delete')
+  `\\[ipe-insert-pair-edit-replace]' -\
+ (command: `ipe-insert-pair-edit-replace')
 
 Which prompt for, and then insert, update, delete or replace, PAIRs
 from the:
@@ -574,10 +574,10 @@ You are currently in the 'Insert Pair Edit' minor mode:
 
       (command: `ipe-edit-mode').
 
-This mode is generally launched by the function `insert-pair-edit',
-by typing:
+This mode is generally launched by the function
+`ipe-insert-pair-edit', by typing:
 
-   \\<global-map>`\\[insert-pair-edit]'
+   \\<global-map>`\\[ipe-insert-pair-edit]'
 
 Or from the 'Edit -> Pairs' menu.
 
@@ -626,10 +626,10 @@ This minor mode forms part of the 'Insert Pair Edit' (ipe) package.
 
 You are currently in the 'Insert Pair Edit' prompt.
 
-This prompt is generally launched by the function `insert-pair-edit',
-by typing:
+This prompt is generally launched by the function
+`ipe-insert-pair-edit', by typing:
 
-    '\\<global-map>\\[insert-pair-edit]'
+    '\\<global-map>\\[ipe-insert-pair-edit]'
 
 At this prompt you may either:
 

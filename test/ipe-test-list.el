@@ -4,7 +4,7 @@
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 1.0
+;; Version: 1.1
 ;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: internal local
@@ -74,7 +74,7 @@
   "Options used by `ipe-test-def-kbd' for `ipe-test-list'.")
 
 (ipe-test-def-kbd list-basic-insert-1 ()
-  "Test `insert-pair-edit' in an empty buffer.
+  "Test `ipe-insert-pair-edit' in an empty buffer.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -84,7 +84,7 @@ Using a 'list PAIR."
   "M-( {")
 
 (ipe-test-def-kbd list-basic-insert-2 ()
-  "Test `insert-pair-edit' at the start of buffer.
+  "Test `ipe-insert-pair-edit' at the start of buffer.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -94,7 +94,7 @@ Using a 'list PAIR."
   "M-( { RET")
 
 (ipe-test-def-kbd list-basic-insert-3 ()
-  "Test `insert-pair-edit' in the middle of a buffer.
+  "Test `ipe-insert-pair-edit' in the middle of a buffer.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -104,7 +104,7 @@ Using a 'list PAIR."
   "M-( { RET")
 
 (ipe-test-def-kbd list-basic-insert-4 ()
-  "Test `insert-pair-edit' at the end of buffer.
+  "Test `ipe-insert-pair-edit' at the end of buffer.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -114,7 +114,7 @@ Using a 'list PAIR."
   "M-( { RET")
 
 (ipe-test-def-kbd list-basic-insert-5 ()
-  "Test `insert-pair-edit' at 'offset' beginning of buffer.
+  "Test `ipe-insert-pair-edit' at 'offset' beginning of buffer.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -124,7 +124,7 @@ Using a 'list PAIR."
   "M-( { RET")
 
 (ipe-test-def-kbd list-basic-insert-6 ()
-  "Test `insert-pair-edit' at 'offset' end of buffer.
+  "Test `ipe-insert-pair-edit' at 'offset' end of buffer.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -134,7 +134,7 @@ Using a 'list PAIR."
   "M-( { RET")
 
 (ipe-test-def-kbd list-basic-prefix-insert-1 ()
-  "Test `insert-pair-edit' at with a numeric prefix.
+  "Test `ipe-insert-pair-edit' at with a numeric prefix.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -144,7 +144,7 @@ Using a 'list PAIR."
   "C-1 M-( { RET")
 
 (ipe-test-def-kbd list-basic-prefix-insert-2 ()
-  "Test `insert-pair-edit' with a '2' numeric prefix.
+  "Test `ipe-insert-pair-edit' with a '2' numeric prefix.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -154,7 +154,7 @@ Using a 'list PAIR."
   "C-2 M-( { RET")
 
 (ipe-test-def-kbd list-basic-prefix-insert-3 ()
-  "Test `insert-pair-edit' with a '3' numeric prefix.
+  "Test `ipe-insert-pair-edit' with a '3' numeric prefix.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -164,7 +164,7 @@ Using a 'list PAIR."
   "C-3 M-( { RET")
 
 (ipe-test-def-kbd list-basic-prefix-insert-4 ()
-  "Test `insert-pair-edit' with a '4' numeric prefix.
+  "Test `ipe-insert-pair-edit' with a '4' numeric prefix.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -174,7 +174,7 @@ Using a 'list PAIR."
   "C-4 M-( { RET")
 
 (ipe-test-def-kbd list-open-start-1 ()
-  "Test `insert-pair-edit' OPEN start.
+  "Test `ipe-insert-pair-edit' OPEN start.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -184,7 +184,7 @@ Using a 'list PAIR."
   "M-( { C-a RET")
 
 (ipe-test-def-kbd list-open-start-2 ()
-  "Test `insert-pair-edit' OPEN start.
+  "Test `ipe-insert-pair-edit' OPEN start.
 
 Using a 'list PAIR at start of buffer."
   ipe-test-list-options
@@ -194,7 +194,7 @@ Using a 'list PAIR at start of buffer."
   "M-( { C-a RET")
 
 (ipe-test-def-kbd list-open-start-3 ()
-  "Test `insert-pair-edit' OPEN start.
+  "Test `ipe-insert-pair-edit' OPEN start.
 
 Using a 'list PAIR at end of buffer."
   ipe-test-list-options
@@ -204,7 +204,7 @@ Using a 'list PAIR at end of buffer."
   "M-( { C-a RET")
 
 (ipe-test-def-kbd list-open-start-4 ()
-  "Test `insert-pair-edit' OPEN start.
+  "Test `ipe-insert-pair-edit' OPEN start.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -218,7 +218,7 @@ Using a 'list PAIR."
   "M-( { C-a C-a RET")
 
 (ipe-test-def-kbd list-open-up-1 ()
-  "Test `insert-pair-edit' OPEN up.
+  "Test `ipe-insert-pair-edit' OPEN up.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -228,7 +228,7 @@ Using a 'list PAIR."
   "M-( { C-p RET")
 
 (ipe-test-def-kbd list-open-up-2 ()
-  "Test `insert-pair-edit' OPEN up x2.
+  "Test `ipe-insert-pair-edit' OPEN up x2.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -238,7 +238,7 @@ Using a 'list PAIR."
   "M-( { C-p C-p RET")
 
 (ipe-test-def-kbd list-open-up-3 ()
-  "Test `insert-pair-edit' OPEN up x3.
+  "Test `ipe-insert-pair-edit' OPEN up x3.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -248,7 +248,7 @@ Using a 'list PAIR."
   "M-( { 3 C-p RET")
 
 (ipe-test-def-kbd list-open-up-4 ()
-  "Test `insert-pair-edit' OPEN up x4.
+  "Test `ipe-insert-pair-edit' OPEN up x4.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -258,7 +258,7 @@ Using a 'list PAIR."
   "M-( { C-u C-p RET")
 
 (ipe-test-def-kbd list-open-up-blank ()
-  "Test `insert-pair-edit' OPEN up with a blank list.
+  "Test `ipe-insert-pair-edit' OPEN up with a blank list.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -268,7 +268,7 @@ Using a 'list PAIR."
   "M-( { C-p RET")
 
 (ipe-test-def-kbd list-open-up-blank-2 ()
-  "Test `insert-pair-edit' OPEN up x2 with a blank list.
+  "Test `ipe-insert-pair-edit' OPEN up x2 with a blank list.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -278,7 +278,7 @@ Using a 'list PAIR."
   "M-( { C-p C-p RET")
 
 (ipe-test-def-kbd list-open-backward-1 ()
-  "Test `insert-pair-edit' OPEN backward.
+  "Test `ipe-insert-pair-edit' OPEN backward.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -288,7 +288,7 @@ Using a 'list PAIR."
   "M-( { C-b RET")
 
 (ipe-test-def-kbd list-open-backward-2 ()
-  "Test `insert-pair-edit' OPEN backward x2.
+  "Test `ipe-insert-pair-edit' OPEN backward x2.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -298,7 +298,7 @@ Using a 'list PAIR."
   "M-( { C-b C-b RET")
 
 (ipe-test-def-kbd list-open-backward-3 ()
-  "Test `insert-pair-edit' OPEN backward x3.
+  "Test `ipe-insert-pair-edit' OPEN backward x3.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -308,7 +308,7 @@ Using a 'list PAIR."
   "M-( { 3 C-b RET")
 
 (ipe-test-def-kbd list-open-backward-4 ()
-  "Test `insert-pair-edit' OPEN backward x4.
+  "Test `ipe-insert-pair-edit' OPEN backward x4.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -318,7 +318,7 @@ Using a 'list PAIR."
   "M-( { C-u C-b RET")
 
 (ipe-test-def-kbd list-open-backward-16 ()
-  "Test `insert-pair-edit' OPEN backward x16.
+  "Test `ipe-insert-pair-edit' OPEN backward x16.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -328,7 +328,7 @@ Using a 'list PAIR."
   "M-( { C-u C-u C-b RET")
 
 (ipe-test-def-kbd list-open-backward-beginning ()
-  "Test `insert-pair-edit' OPEN backward at beginning of buffer.
+  "Test `ipe-insert-pair-edit' OPEN backward at beginning of buffer.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -338,7 +338,7 @@ Using a 'list PAIR."
   "M-( { C-b RET")
 
 (ipe-test-def-kbd list-open-backward-blank ()
-  "Test `insert-pair-edit' OPEN backward with a blank list.
+  "Test `ipe-insert-pair-edit' OPEN backward with a blank list.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -348,7 +348,7 @@ Using a 'list PAIR."
   "M-( { C-b RET")
 
 (ipe-test-def-kbd list-open-backward-blank-2 ()
-  "Test `insert-pair-edit' OPEN backward x2 with a blank list.
+  "Test `ipe-insert-pair-edit' OPEN backward x2 with a blank list.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -358,7 +358,7 @@ Using a 'list PAIR."
   "M-( { C-b C-b RET")
 
 (ipe-test-def-kbd list-open-forward-1 ()
-  "Test `insert-pair-edit' OPEN forward.
+  "Test `ipe-insert-pair-edit' OPEN forward.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -368,7 +368,7 @@ Using a 'list PAIR."
   "M-( { M-f RET")
 
 (ipe-test-def-kbd list-open-forward-2 ()
-  "Test `insert-pair-edit' OPEN forward x2.
+  "Test `ipe-insert-pair-edit' OPEN forward x2.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -378,7 +378,7 @@ Using a 'list PAIR."
   "M-( { M-f M-f RET")
 
 (ipe-test-def-kbd list-open-forward-3 ()
-  "Test `insert-pair-edit' OPEN forward x3.
+  "Test `ipe-insert-pair-edit' OPEN forward x3.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -388,7 +388,7 @@ Using a 'list PAIR."
   "M-( { 3 M-f RET")
 
 (ipe-test-def-kbd list-open-forward-4 ()
-  "Test `insert-pair-edit' OPEN forward x4.
+  "Test `ipe-insert-pair-edit' OPEN forward x4.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -398,7 +398,7 @@ Using a 'list PAIR."
   "M-( { C-u M-f RET")
 
 (ipe-test-def-kbd list-open-forward-16 ()
-  "Test `insert-pair-edit' OPEN forward x16.
+  "Test `ipe-insert-pair-edit' OPEN forward x16.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -408,7 +408,7 @@ Using a 'list PAIR."
   "M-( { C-u C-u M-f RET")
 
 (ipe-test-def-kbd list-open-forward-end ()
-  "Test `insert-pair-edit' OPEN forward at the end of buffer.
+  "Test `ipe-insert-pair-edit' OPEN forward at the end of buffer.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -418,7 +418,7 @@ Using a 'list PAIR."
   "M-( { M-f RET")
 
 (ipe-test-def-kbd list-open-forward-blank ()
-  "Test `insert-pair-edit' OPEN forward with a blank list.
+  "Test `ipe-insert-pair-edit' OPEN forward with a blank list.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -428,7 +428,7 @@ Using a 'list PAIR."
   "M-( { M-f RET")
 
 (ipe-test-def-kbd list-open-forward-blank-2 ()
-  "Test `insert-pair-edit' OPEN forward x2 with a blank list.
+  "Test `ipe-insert-pair-edit' OPEN forward x2 with a blank list.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -438,7 +438,7 @@ Using a 'list PAIR."
   "M-( { M-f M-f RET")
 
 (ipe-test-def-kbd list-open-down-1 ()
-  "Test `insert-pair-edit' OPEN down.
+  "Test `ipe-insert-pair-edit' OPEN down.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -448,7 +448,7 @@ Using a 'list PAIR."
   "M-( { M-n RET")
 
 (ipe-test-def-kbd list-open-down-2 ()
-  "Test `insert-pair-edit' OPEN down x2.
+  "Test `ipe-insert-pair-edit' OPEN down x2.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -458,7 +458,7 @@ Using a 'list PAIR."
   "M-( { M-n M-n RET")
 
 (ipe-test-def-kbd list-open-down-3 ()
-  "Test `insert-pair-edit' OPEN down x3.
+  "Test `ipe-insert-pair-edit' OPEN down x3.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -468,7 +468,7 @@ Using a 'list PAIR."
   "M-( { 3 M-n RET")
 
 (ipe-test-def-kbd list-open-down-4 ()
-  "Test `insert-pair-edit' OPEN down x4.
+  "Test `ipe-insert-pair-edit' OPEN down x4.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -478,7 +478,7 @@ Using a 'list PAIR."
   "M-( { C-u M-n RET")
 
 (ipe-test-def-kbd list-open-down-blank ()
-  "Test `insert-pair-edit' OPEN down with a blank list.
+  "Test `ipe-insert-pair-edit' OPEN down with a blank list.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -488,7 +488,7 @@ Using a 'list PAIR."
   "M-( { M-n RET")
 
 (ipe-test-def-kbd list-open-down-blank-2 ()
-  "Test `insert-pair-edit' OPEN down x2 with a blank list.
+  "Test `ipe-insert-pair-edit' OPEN down x2 with a blank list.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -498,7 +498,7 @@ Using a 'list PAIR."
   "M-( { M-n M-n RET")
 
 (ipe-test-def-kbd list-open-down-blank-3 ()
-  "Test `insert-pair-edit' OPEN down x3 with a blank list.
+  "Test `ipe-insert-pair-edit' OPEN down x3 with a blank list.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -508,7 +508,7 @@ Using a 'list PAIR."
   "M-( { 3 M-n RET")
 
 (ipe-test-def-kbd list-open-down-blank-4 ()
-  "Test `insert-pair-edit' OPEN down x4 with a blank list.
+  "Test `ipe-insert-pair-edit' OPEN down x4 with a blank list.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -518,7 +518,7 @@ Using a 'list PAIR."
   "M-( { C-u M-n RET")
 
 (ipe-test-def-kbd list-open-end-1 ()
-  "Test `insert-pair-edit' OPEN end.
+  "Test `ipe-insert-pair-edit' OPEN end.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -528,7 +528,7 @@ Using a 'list PAIR."
   "M-( { M-e RET")
 
 (ipe-test-def-kbd list-open-end-2 ()
-  "Test `insert-pair-edit' OPEN end.
+  "Test `ipe-insert-pair-edit' OPEN end.
 
 Using a 'list PAIR at end of buffer."
   ipe-test-list-options
@@ -538,7 +538,7 @@ Using a 'list PAIR at end of buffer."
   "M-( { M-e M-e RET")
 
 (ipe-test-def-kbd list-open-end-3 ()
-  "Test `insert-pair-edit' OPEN end.
+  "Test `ipe-insert-pair-edit' OPEN end.
 
 Using a 'list PAIR at end of line."
   ipe-test-list-options
@@ -552,7 +552,7 @@ Using a 'list PAIR at end of line."
   "M-( { M-e M-e RET")
 
 (ipe-test-def-kbd list-open-end-4 ()
-  "Test `insert-pair-edit' OPEN end.
+  "Test `ipe-insert-pair-edit' OPEN end.
 
 Using a 'list PAIR with a numeric prefix."
   ipe-test-list-options
@@ -562,7 +562,7 @@ Using a 'list PAIR with a numeric prefix."
   "M-( { 2 M-e RET")
 
 (ipe-test-def-kbd list-close-start-1 ()
-  "Test `insert-pair-edit' CLOSE start.
+  "Test `ipe-insert-pair-edit' CLOSE start.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -572,7 +572,7 @@ Using a 'list PAIR."
   "M-( { M-a RET")
 
 (ipe-test-def-kbd list-close-start-2 ()
-  "Test `insert-pair-edit' CLOSE start.
+  "Test `ipe-insert-pair-edit' CLOSE start.
 
 Using a 'list PAIR at the start of buffer."
   ipe-test-list-options
@@ -582,7 +582,7 @@ Using a 'list PAIR at the start of buffer."
   "M-( { M-a M-a RET")
 
 (ipe-test-def-kbd list-close-start-3 ()
-  "Test `insert-pair-edit' CLOSE start.
+  "Test `ipe-insert-pair-edit' CLOSE start.
 
 Using a 'list PAIR at the beginning of line."
   ipe-test-list-options
@@ -596,7 +596,7 @@ Using a 'list PAIR at the beginning of line."
   "M-( { M-a M-a RET")
 
 (ipe-test-def-kbd list-close-start-4 ()
-  "Test `insert-pair-edit' CLOSE start.
+  "Test `ipe-insert-pair-edit' CLOSE start.
 
 Using a 'list PAIR with a numeric prefix."
   ipe-test-list-options
@@ -606,7 +606,7 @@ Using a 'list PAIR with a numeric prefix."
   "M-( { 2 M-a RET")
 
 (ipe-test-def-kbd list-close-up-1 ()
-  "Test `insert-pair-edit' CLOSE up.
+  "Test `ipe-insert-pair-edit' CLOSE up.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -616,7 +616,7 @@ Using a 'list PAIR."
   "M-( { M-p RET")
 
 (ipe-test-def-kbd list-close-up-2 ()
-  "Test `insert-pair-edit' CLOSE up x2.
+  "Test `ipe-insert-pair-edit' CLOSE up x2.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -626,7 +626,7 @@ Using a 'list PAIR."
   "M-( { M-p M-p RET")
 
 (ipe-test-def-kbd list-close-up-3 ()
-  "Test `insert-pair-edit' CLOSE up x3.
+  "Test `ipe-insert-pair-edit' CLOSE up x3.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -636,7 +636,7 @@ Using a 'list PAIR."
   "M-( { 3 M-p RET")
 
 (ipe-test-def-kbd list-close-up-4 ()
-  "Test `insert-pair-edit' CLOSE up x4.
+  "Test `ipe-insert-pair-edit' CLOSE up x4.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -646,7 +646,7 @@ Using a 'list PAIR."
   "M-( { C-u M-p RET")
 
 (ipe-test-def-kbd list-close-up-blank ()
-  "Test `insert-pair-edit' CLOSE up with a blank list.
+  "Test `ipe-insert-pair-edit' CLOSE up with a blank list.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -656,7 +656,7 @@ Using a 'list PAIR."
   "M-( { M-p RET")
 
 (ipe-test-def-kbd list-close-up-blank-2 ()
-  "Test `insert-pair-edit' CLOSE up x2 with a blank list.
+  "Test `ipe-insert-pair-edit' CLOSE up x2 with a blank list.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -666,7 +666,7 @@ Using a 'list PAIR."
   "M-( { M-p M-p RET")
 
 (ipe-test-def-kbd list-close-backward-1 ()
-  "Test `insert-pair-edit' CLOSE backward.
+  "Test `ipe-insert-pair-edit' CLOSE backward.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -676,7 +676,7 @@ Using a 'list PAIR."
   "M-( { M-b RET")
 
 (ipe-test-def-kbd list-close-backward-2 ()
-  "Test `insert-pair-edit' CLOSE backward x2.
+  "Test `ipe-insert-pair-edit' CLOSE backward x2.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -686,7 +686,7 @@ Using a 'list PAIR."
   "M-( { M-b M-b RET")
 
 (ipe-test-def-kbd list-close-backward-3 ()
-  "Test `insert-pair-edit' CLOSE backward x3.
+  "Test `ipe-insert-pair-edit' CLOSE backward x3.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -696,7 +696,7 @@ Using a 'list PAIR."
   "M-( { 3 M-b RET")
 
 (ipe-test-def-kbd list-close-backward-4 ()
-  "Test `insert-pair-edit' CLOSE backward x4.
+  "Test `ipe-insert-pair-edit' CLOSE backward x4.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -706,7 +706,7 @@ Using a 'list PAIR."
   "M-( { C-u M-b RET")
 
 (ipe-test-def-kbd list-close-backward-16 ()
-  "Test `insert-pair-edit' CLOSE backward x16.
+  "Test `ipe-insert-pair-edit' CLOSE backward x16.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -716,7 +716,7 @@ Using a 'list PAIR."
   "M-( { C-u C-u M-b RET")
 
 (ipe-test-def-kbd list-close-backward-beginning ()
-  "Test `insert-pair-edit' CLOSE backward at the beginning of buffer.
+  "Test `ipe-insert-pair-edit' CLOSE backward at the beginning of buffer.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -726,7 +726,7 @@ Using a 'list PAIR."
   "M-( { M-b RET")
 
 (ipe-test-def-kbd list-close-backward-blank ()
-  "Test `insert-pair-edit' CLOSE backward with a blank list.
+  "Test `ipe-insert-pair-edit' CLOSE backward with a blank list.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -736,7 +736,7 @@ Using a 'list PAIR."
   "M-( { M-b RET")
 
 (ipe-test-def-kbd list-close-backward-blank-2 ()
-  "Test `insert-pair-edit' CLOSE backward x2 with a blank list.
+  "Test `ipe-insert-pair-edit' CLOSE backward x2 with a blank list.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -746,7 +746,7 @@ Using a 'list PAIR."
   "M-( { M-b M-b RET")
 
 (ipe-test-def-kbd list-close-forward-1 ()
-  "Test `insert-pair-edit' CLOSE forward.
+  "Test `ipe-insert-pair-edit' CLOSE forward.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -756,7 +756,7 @@ Using a 'list PAIR."
   "M-( { C-f RET")
 
 (ipe-test-def-kbd list-close-forward-2 ()
-  "Test `insert-pair-edit' CLOSE forward x2.
+  "Test `ipe-insert-pair-edit' CLOSE forward x2.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -766,7 +766,7 @@ Using a 'list PAIR."
   "M-( { C-f C-f RET")
 
 (ipe-test-def-kbd list-close-forward-3 ()
-  "Test `insert-pair-edit' CLOSE forward x3.
+  "Test `ipe-insert-pair-edit' CLOSE forward x3.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -776,7 +776,7 @@ Using a 'list PAIR."
   "M-( { 3 C-f RET")
 
 (ipe-test-def-kbd list-close-forward-4 ()
-  "Test `insert-pair-edit' CLOSE forward x4.
+  "Test `ipe-insert-pair-edit' CLOSE forward x4.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -786,7 +786,7 @@ Using a 'list PAIR."
   "M-( { C-u C-f RET")
 
 (ipe-test-def-kbd list-close-forward-16 ()
-  "Test `insert-pair-edit' CLOSE forward x16.
+  "Test `ipe-insert-pair-edit' CLOSE forward x16.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -796,7 +796,7 @@ Using a 'list PAIR."
   "M-( { C-u C-u C-f RET")
 
 (ipe-test-def-kbd list-close-forward-end ()
-  "Test `insert-pair-edit' CLOSE forward at end of buffer.
+  "Test `ipe-insert-pair-edit' CLOSE forward at end of buffer.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -806,7 +806,7 @@ Using a 'list PAIR."
   "M-( { C-f RET")
 
 (ipe-test-def-kbd list-close-forward-blank ()
-  "Test `insert-pair-edit' CLOSE forward with a blank list.
+  "Test `ipe-insert-pair-edit' CLOSE forward with a blank list.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -816,7 +816,7 @@ Using a 'list PAIR."
   "M-( { C-f RET")
 
 (ipe-test-def-kbd list-close-forward-blank-2 ()
-  "Test `insert-pair-edit' CLOSE forward x2 with a blank list.
+  "Test `ipe-insert-pair-edit' CLOSE forward x2 with a blank list.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -826,7 +826,7 @@ Using a 'list PAIR."
   "M-( { C-f C-f RET")
 
 (ipe-test-def-kbd list-close-down-1 ()
-  "Test `insert-pair-edit' CLOSE down.
+  "Test `ipe-insert-pair-edit' CLOSE down.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -836,7 +836,7 @@ Using a 'list PAIR."
   "M-( { C-n RET")
 
 (ipe-test-def-kbd list-close-down-2 ()
-  "Test `insert-pair-edit' CLOSE down x2.
+  "Test `ipe-insert-pair-edit' CLOSE down x2.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -846,7 +846,7 @@ Using a 'list PAIR."
   "M-( { C-n C-n RET")
 
 (ipe-test-def-kbd list-close-down-3 ()
-  "Test `insert-pair-edit' CLOSE down x3.
+  "Test `ipe-insert-pair-edit' CLOSE down x3.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -856,7 +856,7 @@ Using a 'list PAIR."
   "M-( { 3 C-n RET")
 
 (ipe-test-def-kbd list-close-down-4 ()
-  "Test `insert-pair-edit' CLOSE down x4.
+  "Test `ipe-insert-pair-edit' CLOSE down x4.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -866,7 +866,7 @@ Using a 'list PAIR."
   "M-( { C-u C-n RET")
 
 (ipe-test-def-kbd list-close-down-blank ()
-  "Test `insert-pair-edit' CLOSE down with a blank list.
+  "Test `ipe-insert-pair-edit' CLOSE down with a blank list.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -876,7 +876,7 @@ Using a 'list PAIR."
   "M-( { C-n RET")
 
 (ipe-test-def-kbd list-close-down-blank-2 ()
-  "Test `insert-pair-edit' CLOSE down x2 with a blank list.
+  "Test `ipe-insert-pair-edit' CLOSE down x2 with a blank list.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -886,7 +886,7 @@ Using a 'list PAIR."
   "M-( { C-n C-n RET")
 
 (ipe-test-def-kbd list-close-down-blank-3 ()
-  "Test `insert-pair-edit' CLOSE down x3 with a blank list.
+  "Test `ipe-insert-pair-edit' CLOSE down x3 with a blank list.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -896,7 +896,7 @@ Using a 'list PAIR."
   "M-( { 3 C-n RET")
 
 (ipe-test-def-kbd list-close-down-blank-4 ()
-  "Test `insert-pair-edit' CLOSE down x4 with a blank list.
+  "Test `ipe-insert-pair-edit' CLOSE down x4 with a blank list.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -906,7 +906,7 @@ Using a 'list PAIR."
   "M-( { C-u C-n RET")
 
 (ipe-test-def-kbd list-close-end-1 ()
-  "Test `insert-pair-edit' CLOSE end.
+  "Test `ipe-insert-pair-edit' CLOSE end.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -916,7 +916,7 @@ Using a 'list PAIR."
   "M-( { C-e RET")
 
 (ipe-test-def-kbd list-close-end-2 ()
-  "Test `insert-pair-edit' CLOSE end.
+  "Test `ipe-insert-pair-edit' CLOSE end.
 
 Using a 'list PAIR at the start of buffer."
   ipe-test-list-options
@@ -926,7 +926,7 @@ Using a 'list PAIR at the start of buffer."
   "M-( { C-e RET")
 
 (ipe-test-def-kbd list-close-end-3 ()
-  "Test `insert-pair-edit' CLOSE end.
+  "Test `ipe-insert-pair-edit' CLOSE end.
 
 Using a 'list PAIR at the end of buffer."
   ipe-test-list-options
@@ -936,7 +936,7 @@ Using a 'list PAIR at the end of buffer."
   "M-( { C-e RET")
 
 (ipe-test-def-kbd list-close-end-4 ()
-  "Test `insert-pair-edit' CLOSE end x2.
+  "Test `ipe-insert-pair-edit' CLOSE end x2.
 
 Using a 'list PAIR."
   ipe-test-list-options
@@ -950,7 +950,7 @@ Using a 'list PAIR."
   "M-( { C-e C-e RET")
 
 (ipe-test-def-kbd list-close-end-5 ()
-  "Test `insert-pair-edit' CLOSE end.
+  "Test `ipe-insert-pair-edit' CLOSE end.
 
 Using a 'list PAIR with a numeric prefix."
   ipe-test-list-options

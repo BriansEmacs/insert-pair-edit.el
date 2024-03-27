@@ -4,7 +4,7 @@
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
 ;; Created: 28 June, 2020
-;; Version: 1.0
+;; Version: 1.1
 ;; Package: ipe
 ;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: convenience, tools
@@ -67,7 +67,7 @@
 ;; -------------------------------------------------------------------
 ;;; Code:
 
-(require 'ipe)
+(require 'ipe-)
 
 ;; -------------------------------------------------------------------
 ;;;; Utility Functions.
@@ -120,6 +120,7 @@ following positional properties:
     add before the :infix.
   * :indent-2 - A number which specifies the amount of whitespace to
     add after the :infix."
+
   (let* ((pair     (ipe--pair))
 	 (infix    (ipe--pair-infix-string pair))
 	 (indent-1 (ipe--pos-property n :indent-1))
@@ -145,6 +146,7 @@ following positional properties:
     add before the :infix.
   * :close-toggle - If eq t, adds a newline before the :close
     string."
+
   (let* ((pair         (ipe--pair))
 	 (close        (ipe--pair-close-string pair))
 	 (indent-1     (ipe--pos-property n :indent-1))
@@ -464,9 +466,10 @@ Movement is calculated from POINT."
 
     (point)))
 
-(setq ipe-move-by-movements
-      (append ipe-move-by-movements
-	      '((line ipe-line--move-by ipe-line--set "lines"))))
+(ipe-move-by-install 'line
+		     'ipe-line--move-by
+		     'ipe-line--set
+		     "lines")
 
 (provide 'ipe-line)
 
