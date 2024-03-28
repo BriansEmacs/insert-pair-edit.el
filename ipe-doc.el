@@ -6,7 +6,6 @@
 ;; Created: 23 March, 2024
 ;; Version: 1.1
 ;; Package: ipe
-;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: convenience, tools
 ;; Homepage: https://github.com/BriansEmacs/insert-pair-edit.el
 
@@ -134,29 +133,29 @@ within the demo."
 
     (delete-region (point-min) (point-max))
 
-    (insert (concat
-	     "Insert Pair Edit ipe - markdown mode\n"
-	     "\n"
-	     "Text Styles\n"
-	     "Bold\n"
-	     "Italic\n"
-	     "Monospace\n"
-	     "Strikethrough\n"
-	     "\n"
-	     "Lists\n"
-	     "One\n"
-	     "Two\n"
-	     "Three\n"
-	     "\n"
-	     "Checkboxes\n"
-	     "Item #1\n"
-	     "Item #2\n"
-	     "Item #3\n"
-	     "\n"
-	     "Blocks\n"
-	     "The quick brown\n"
-	     "fox jumps over\n"
-	     "the lazy dog.\n"))
+    (insert
+     "Insert Pair Edit ipe - markdown mode\n"
+     "\n"
+     "Text Styles\n"
+     "Bold\n"
+     "Italic\n"
+     "Monospace\n"
+     "Strikethrough\n"
+     "\n"
+     "Lists\n"
+     "One\n"
+     "Two\n"
+     "Three\n"
+     "\n"
+     "Checkboxes\n"
+     "Item #1\n"
+     "Item #2\n"
+     "Item #3\n"
+     "\n"
+     "Blocks\n"
+     "The quick brown\n"
+     "fox jumps over\n"
+     "the lazy dog.\n")
 
     (goto-char (point-min))
 

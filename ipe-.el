@@ -6,7 +6,6 @@
 ;; Created: 28 June, 2020
 ;; Version: 1.1
 ;; Package: ipe
-;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: convenience, tools
 ;; Homepage: https://github.com/BriansEmacs/insert-pair-edit.el
 
@@ -227,7 +226,7 @@ i.e. For a fictitious `xxx-mode':
     :set   \\='ipe-custom-pair-list-set
     :get   \\='ipe-custom-pair-list-get
     :type  \\='(ipe-custom-pair-list
-	   :tag \"PAIRs used by `ipe-insert-pair-edit' in `xxx-mode'.\"))"
+    :tag   \"PAIRs used by `ipe-insert-pair-edit' in `xxx-mode'.\"))"
 
   (if ipe-mode-pairs
       (if (not (assoc mode ipe-mode-pairs))

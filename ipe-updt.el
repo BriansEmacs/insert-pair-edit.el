@@ -6,7 +6,6 @@
 ;; Created: 30 December, 2023
 ;; Version: 1.1
 ;; Package: ipe
-;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: convenience, tools
 ;; Homepage: https://github.com/BriansEmacs/insert-pair-edit.el
 

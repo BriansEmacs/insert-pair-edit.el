@@ -6,7 +6,6 @@
 ;; Created: 28 June, 2020
 ;; Version: 1.1
 ;; Package: ipe
-;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: internal local
 ;; Homepage: https://github.com/BriansEmacs/insert-pair-edit.el
 

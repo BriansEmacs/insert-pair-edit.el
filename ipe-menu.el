@@ -6,7 +6,6 @@
 ;; Created: 28 June, 2020
 ;; Version: 1.1
 ;; Package: ipe
-;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: convenience, tools
 ;; Homepage: https://github.com/BriansEmacs/insert-pair-edit.el
 
@@ -1968,12 +1967,12 @@ updated according to the current buffers MAJOR-MODE."
 
   (ipe-menu--update)
 
-  (add-hook 'menu-bar-update-hook 'ipe-menu--update))
+  (add-hook 'menu-bar-update-hook #'ipe-menu--update))
 
 (defun ipe-menu--uninstall ()
   "Uninstall the menu bindings for the Insert Pair Edit mode."
 
-  (remove-hook 'menu-bar-update-hook 'ipe-menu--update)
+  (remove-hook 'menu-bar-update-hook #'ipe-menu--update)
 
   (define-key menu-bar-edit-menu [ipe]         nil)
 

@@ -235,36 +235,50 @@ elint against the `ipe' Emacs Lisp source code."
   (require 'package-lint)
 
   (let ((success t)
-        (file-success)
-	(dir default-directory))
+	(file-success)
+	(dir (expand-file-name ipe-base-dir))
+	(package-lint-main-file (expand-file-name "ipe.el")))
+
     (dolist (file ipe-build--elisp-files)
+
       (cd-absolute dir)
+
+      (setq file-success t)
+
       (let ((file-dir (file-name-parent-directory (expand-file-name file))))
 	(when (not (member file-dir load-path))
 	  (add-to-list 'load-path file-dir)))
-      (cd (file-name-parent-directory (expand-file-name file)))
-      (setq file-success t)
-      (when (not (elisp-lint-file (file-name-nondirectory file)))
+
+      ;; 'elisp-lint
+      (ipe-build--log 3 "elisp-lint:   %s" file)
+      (when (not (elisp-lint-file (expand-file-name file)))
 	(setq success      nil
-              file-success nil)
-        (with-temp-buffer
-	  (insert-file-contents (file-name-nondirectory file) t)
-	  (emacs-lisp-mode)
-	  (let ((checking-result (package-lint-buffer)))
-            (when checking-result
-	      (setq success      nil
-                    file-success nil)
-	      (dolist (result checking-result)
-	        (message "%s:%d:%d: %s %s"
-		         file
-		         (nth 0 result)
-		         (nth 1 result)
-		         (nth 2 result)
-		         (nth 3 result))))))
-	(if file-success
-	    (or (< ipe-build--verbose 2)
-		(elisp-lint--print 'green "%s OK" file))
-	  (elisp-lint--print 'red "%s FAIL" file))))
+	      file-success nil))
+
+      ;; 'package-lint
+      (ipe-build--log 3 "package-lint: %s" file)
+
+      (find-file (expand-file-name file))
+      (emacs-lisp-mode)
+      (indent-tabs-mode -1)
+
+      (let* ((checking-result (package-lint-buffer)))
+	(when checking-result
+	  (setq success      nil
+		file-success nil)
+	  (dolist (result checking-result)
+	    (message "%s:%d:%d: %s %s"
+		     file
+		     (nth 0 result)
+		     (nth 1 result)
+		     (nth 2 result)
+		     (nth 3 result)))))
+
+      ;; Log the result.
+      (if file-success
+	  (or (< ipe-build--verbose 2)
+	      (elisp-lint--print 'green "lint: %s: OK" file))
+	(elisp-lint--print 'red "lint: %s: FAIL" file)))
 
     (if success
 	(progn (when (> ipe-build--verbose 0)
@@ -291,8 +305,8 @@ Emacs Lisp lint agains the `ipe' Emacs Lisp test source code."
     (dolist (file ipe-build--test-elisp-files)
       (if (elisp-lint-file (expand-file-name file))
 	  (or (< ipe-build--verbose 2)
-	      (elisp-lint--print 'green "%s OK" file))
-	(elisp-lint--print 'red "%s FAIL" file)
+	      (elisp-lint--print 'green "lint: %s: OK" file))
+	(elisp-lint--print 'red "lint: %s: FAIL" file)
 	(setq success nil)))
 
     (if success
@@ -321,8 +335,8 @@ This function is called from the top level `ipe' `Makefile' to build the
   (let ((success t))
     (dolist (file ipe-build--elisp-files)
       (if (byte-compile-file file)
-	  (ipe-build--log 2 "%s OK" file)
-	(ipe-build--log 0 "%s FAIL" file)
+	  (ipe-build--log 2 "build: %s: OK" file)
+	(ipe-build--log 0 "build: %s: FAIL" file)
 	(setq success nil)))
 
     (if success

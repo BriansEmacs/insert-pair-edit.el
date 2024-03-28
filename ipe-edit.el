@@ -6,7 +6,6 @@
 ;; Created: 28 June, 2020
 ;; Version: 1.1
 ;; Package: ipe
-;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: convenience, tools
 ;; Homepage: https://github.com/BriansEmacs/insert-pair-edit.el
 
@@ -423,6 +422,9 @@ PAIRs are highlighted using:
   :init-val nil
   :lighter  " (<->)"
   :keymap   ipe-edit-mode-map
+
+  (add-hook 'ipe-defn--update-hook #'ipe-edit--defn-update 0 t)
+
   (when ipe-edit-mode
     (when (not (and ipe--mnemonic
 		    ipe--movement
@@ -465,8 +467,6 @@ defined within `ipe--pair-pos-list', exit `ipe-edit-mode'."
 
   (when ipe-edit-mode
     (ipe-edit--redisplay)))
-
-(add-hook 'ipe-defn--update-hook 'ipe-edit--defn-update)
 
 (defun ipe-edit--read-mnemonic (prompt &optional force)
   "Safely prompt the user for an `ipe' PAIR MNEMONIC.
