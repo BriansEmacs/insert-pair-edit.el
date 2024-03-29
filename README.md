@@ -113,22 +113,25 @@ _PAIR_ (of the given type) and remain in the current **Emacs** mode.
 git clone https://github.com/BriansEmacs/insert-pair-edit.el <path-to-download-dir>/ipe
 ```
 
-2. Or, download `ipe` from [MELPA](https://melpa.org): (_Pending MELPA Approval_)
+And add the following to your `.emacs` file:
+
+```
+(add-to-list 'load-path "<path-to-download-dir>/ipe"))
+(add-to-list 'load-path "<path-to-download-dir>/ipe/modes"))
+```
+
+2. Or, download `ipe` from [MELPA](https://melpa.org): (_Pending_)
 
 ```
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (package-initialize)
 (package-install 'ipe)
-(require 'ipe)
-(global-set-key (kbd "M-(") 'ipe-insert-pair-edit)
 ```
 
-And add the following to your `.emacs` file:
+3. And add the following to your `.emacs` file:
 
 ```
-(add-to-list 'load-path "<path-to-download-dir>/ipe"))
-(add-to-list 'load-path "<path-to-download-dir>/ipe/modes"))
 (require 'ipe)
 (global-set-key (kbd "M-(") 'ipe-insert-pair-edit)
 ```
