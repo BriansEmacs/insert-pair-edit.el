@@ -463,7 +463,7 @@ defined within `ipe--pair-pos-list', exit `ipe-edit-mode'."
       (ipe-edit-mode 1))))
 
 (defun ipe-edit--defn-update ()
-  "Run after updating a `ipe' PAIR Definition."
+  "Run after updating an `ipe' PAIR Definition."
 
   (when ipe-edit-mode
     (ipe-edit--redisplay)))

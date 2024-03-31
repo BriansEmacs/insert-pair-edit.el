@@ -14,7 +14,6 @@
 ;;
 ;; STYLE
 ;; - Check save-excursion usage.
-;; - Add MELPA conventions.
 ;; - Address TODO's.
 ;;
 ;; STRETCH

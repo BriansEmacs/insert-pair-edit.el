@@ -18,10 +18,10 @@
 @settitle Insert Pair Edit (ipe) Help 1.1
 
 @c *******************************************************************
-@c Copyright - TODO Check this for GNU... 
+@c Copyright
 @c *******************************************************************
 @copying
-Copyright @copyright{} 2023 Brian Kavanagh
+Copyright @copyright{} 2024 Brian Kavanagh
 
 @quotation
 Permission is granted to copy, distribute and/or modify this document
@@ -90,7 +90,7 @@ This documentation describes the 'Insert Pair Edit' (ipe)
 @chapter Overview
 @cindex Overview
 
-At it's simplest, the 'Insert Pair Edit' (ipe) package is an
+At its simplest, the 'Insert Pair Edit' (ipe) package is an
 @strong{Emacs} package that just supplies a command,
 @command{ipe-insert-pair-edit}.  This command can be used to position
 and insert two pieces of text into an @strong{Emacs} buffer: an
@@ -98,8 +98,8 @@ and insert two pieces of text into an @strong{Emacs} buffer: an
 this package, a `@sc{PAIR}'.)
 
 For example, the @command{ipe-insert-pair-edit} command can be used to
-position and insert an open parenthesis '(', and, a close parenthesis
-')', around a given piece of text.
+position and insert an open parenthesis ``('', and, a close parenthesis
+``)'', around a given piece of text.
 
 The particular @sc{PAIR} to be inserted by the
 @command{ipe-insert-pair-edit} command is identified by a customizable
@@ -132,7 +132,7 @@ Search for similar @sc{PAIR}s.
 @item
 Handle the editing / movement of multiple @sc{PAIR}s at once.
 @item
-Escape specific enclosing strings.
+Escape specific enclosed strings.
 @item
 Indent intervening lines.
 @item
@@ -243,7 +243,7 @@ And add the downloaded directory to the @command{'load-path}:
 @end example
 @end itemize
 
-And then add the following to your @code{.emacs} file:
+then add the following to your @code{.emacs} file:
 
 @example
 (require 'ipe)
@@ -258,6 +258,38 @@ For example, to bind @command{ipe-insert-pair-edit} to @key{META} +
 @example
 (global-set-key (kbd "M-(") 'ipe-insert-pair-edit)        
 @end example
+
+You may also want to:
+
+@itemize
+@item
+Enable the 'Insert Pair Edit' ``Pairs'' menu by adding the following
+to your @command{.emacs} file.
+
+@example
+(customize-save-variable 'ipe-menu-support-p t)
+@end example
+
+@item
+Add shortcut keybindings for the 'other' Major `ipe' commands:
+
+For example:
+
+@example
+(global-set-key (kbd "A-(") 'ipe-insert-pair-edit-update)
+(global-set-key (kbd "H-(") 'ipe-insert-pair-edit-delete)
+(global-set-key (kbd "s-(") 'ipe-insert-pair-edit-replace)
+@end example
+
+@item
+Load the 'example' modal PAIR mappings:
+
+@example
+(require 'ipe-html-mode)
+(require 'ipe-markdown-mode)
+(require 'ipe-textinfo-mode)
+@end example
+@end itemize
 
 To configure the package:
 
@@ -282,7 +314,7 @@ Enter:
 @end  example
 
 @item
-Or, select the:
+Or, if you've enabled the ``Pairs'' menu, select the:
 
 @example
 - Edit >
@@ -304,9 +336,9 @@ preferences. (@xref{Customization})
 @chapter Basic Usage
 @cindex Basic Usage
 
-The functionality supplied @command{ipe} package can be accessed in
-two main ways: using the @command{ipe-insert-pair-edit} command, or,
-using the @code{Edit} -> @code{Pairs} menu.
+The functionality supplied by the @command{ipe} package can be
+accessed in two main ways: using the @command{ipe-insert-pair-edit}
+command, or, using the @code{Edit} -> @code{Pairs} menu.
 
 @menu
 * Running ipe-insert-pair-edit::
@@ -462,6 +494,9 @@ PAIR}. (@xref{Replacing PAIRs})
 (Command: @command{ipe-insert-pair-edit-replace}) 
 @end table
 
+It is also possible to simply bind these _other_ commands to
+different keystrokes, if the User feels so inclinded.
+
 @c -------------------------------------------------------------------
 @node The 'Edit' -> 'Pairs' menu
 @c -------------------------------------------------------------------
@@ -489,11 +524,11 @@ PAIR}. (@xref{Replacing PAIRs})
 @end example
 
 If running @strong{Emacs} in a graphical environment which supports
-menus, the @command{ipe} package can add an extra
-@code{Pairs} menu item to the standard @strong{Emacs} @code{Edit} Menu.
+menus, the @command{ipe} package can add an extra @code{Pairs} menu
+item to the standard @strong{Emacs} @code{Edit} menu.
 
-@strong{NOTE}: The 'Insert Pair Edit' (ipe) menu bar is enabled using
-the @option{ipe-menu-support-p} option.  (Default: @strong{t}))
+@strong{NOTE}: The 'Insert Pair Edit' (ipe) menu item is enabled using
+the @option{ipe-menu-support-p} option.  (Default: @strong{nil}))
 
 The set of @sc{PAIR}s listed under the @code{Insert PAIR} /
 @code{Update PAIR} / @code{Delete PAIR} sub-menus will change
@@ -504,12 +539,12 @@ selected @sc{PAIR} into the current buffer around @sc{POINT}, and
 enter @command{ipe-edit-mode}.
 
 Selecting a menu item under @code{Update PAIR} will update the
-@emph{nearest} (@xref{Update Search Process}) @sc{PAIR} (of the given
-type) and enter @command{ipe-edit-mode}. 
+@emph{nearest} (@xref{Update Search Process}) @sc{PAIR} to @sc{POINT}
+(of the given type) and enter @command{ipe-edit-mode}.
 
 Selecting a menu item under @code{Delete PAIR} will delete the
-@emph{nearest} (@xref{Update Search Process}) @sc{PAIR} (of the given
-type) and remain in the current @strong{Emacs} mode. 
+@emph{nearest} (@xref{Update Search Process}) @sc{PAIR} to @sc{POINT}
+(of the given type) and remain in the current @strong{Emacs} mode. 
 
 @c -------------------------------------------------------------------
 @node Basic Mode Key Bindings
@@ -518,7 +553,8 @@ type) and remain in the current @strong{Emacs} mode.
 @cindex Basic Mode Key Bindings
 
 The following sections describe the basic key bindings (and associated
-commands) active when the @command{ipe-edit-mode} is activated.
+commands) that are active when the @command{ipe-edit-mode} is
+activated. 
 
 @menu
 * Basic Movement::          Keys to move OPEN and CLOSE overlays.
@@ -626,7 +662,7 @@ for a ``user defined'' keyset to be installed.
 (i.e. If using the pre-canned keyset, it is possible to activate both
 the @emph{Alphabetic} and the @emph{Arrows} options, and be able to
 move the @sc{OPEN} and @sc{CLOSE} overlays using both the alphabetic
-and arrows keys, or, the User can simply define the own preferred
+and arrows keys, or, the User can simply define their own preferred
 movement key bindings and use those instead.)
 
 @menu
@@ -1087,7 +1123,7 @@ move the @sc{OPEN} and @sc{CLOSE} overlays using alternate
 movements (i.e. ``by-char'' regardless of the current @emph{Movement
 Mode})
 
-@w{                                          @*
+@w{
 (Commands:                                   @*
   @command{ipe-mouse--open-forward-alt} /    @*
   @command{ipe-mouse--close-backward-alt} /  @*
@@ -1141,8 +1177,8 @@ Calling the @command{ipe-insert-pair-edit-update} command will search
 the current buffer for a @sc{PAIR} which matches the @sc{OPEN} and
 @sc{CLOSE} strings for the given @sc{MNEMONIC}.  It will replace the
 @sc{OPEN} and @sc{CLOSE} strings with overlays, which can then be
-moved using the standard 'Insert Pair Edit' (ipe) @xref{Basic
-Movement} commands.
+moved using the standard 'Insert Pair Edit' (ipe) commands
+(@xref{Basic Movement}).
 
 This command can be also be invoked by invoking the
 `universal-argument' (Generally bound to @key{C-u}), before a call to
@@ -1229,11 +1265,12 @@ up, a @sc{MNEMONIC} in the @command{customize}-able @var{ipe-pairs} /
 
 Calling the @command{ipe-insert-pair-edit-delete} command will search
 the current buffer for a @sc{PAIR} which matches the @sc{OPEN} and
-@sc{CLOSE} strings matching the given @sc{MNEMONIC}.  If a @sc{PAIR}
-is found, it will delete the @sc{OPEN} and @sc{CLOSE} strings.
+@sc{CLOSE} strings corresponding the given @sc{MNEMONIC}.  If a
+@sc{PAIR} is found, it will delete the @sc{OPEN} and @sc{CLOSE}
+strings.
 
-This command can be also be invoked by invoking two
-@command{universal-argument} (Generally bound to @key{C-u}) calls
+This command can be also be invoked by invoking the
+@command{universal-argument} (Generally bound to @key{C-u}), twice
 before a call to @command{ipe-insert-pair-edit}.
 
 For example, assuming that:
@@ -1301,10 +1338,10 @@ variables
 
 The @command{ipe-insert-pair-edit-replace} command will search the
 current buffer for a @sc{PAIR} which matches the @sc{OPEN} and
-@sc{CLOSE} strings matching the given @sc{MNEMONIC}.  If a @sc{PAIR}
-is found, it will replace the @sc{OPEN} and @sc{CLOSE} strings with
-overlays containing the new @sc{OPEN} and @sc{CLOSE} strings for the
-@sc{PAIR} identified by the second @sc{REPLACEMENT}
+@sc{CLOSE} strings corresponding the given @sc{MNEMONIC}.  If a
+@sc{PAIR} is found, it will replace the @sc{OPEN} and @sc{CLOSE}
+strings with overlays containing the new @sc{OPEN} and @sc{CLOSE}
+strings for the @sc{PAIR} identified by the second @sc{REPLACEMENT}
 @sc{MNEMONIC}.  These new @sc{OPEN} and @sc{CLOSE} strings can then be
 moved using the standard 'Insert Pair Edit' (ipe) basic movement
 (@xref{Basic Movement}) commands.
@@ -1413,8 +1450,8 @@ which @sc{POINT} is placed when a @sc{PAIR} is inserted, a custom
 'ipe--movement' Functions}) 
 @end itemize
 
-Each customization option (Using `customize', Using the ``Edit'' menu,
-or @emph{inline}) offers options to select the @emph{type} of
+Each customization option: (Using `customize'; Using the ``Edit''
+menu; or @emph{inline}) offers options to select the @emph{type} of
 @sc{PAIR} that is to be @emph{added}, @emph{edited}, or
 @emph{deleted}.
 
@@ -1467,12 +1504,12 @@ within the @var{ipe-mode-pairs} variable can be edited using standard
 }
 
 If running in a graphical environment which supports a menu bar, (and
-the @strong{Emacs} @command{menu-bar-mode} has been enabled,) the
+the @strong{Emacs} @command{menu-bar-mode} has been enabled) the
 'Insert Pair Edit' (ipe) package can be customized using the
 @strong{Emacs} menu bar.
 
-@strong{NOTE}: The 'Insert Pair Edit' (ipe) menu bar is enabled using
-the @option{ipe-menu-support-p} option. (Default: @strong{t})
+@strong{NOTE}: The 'Insert Pair Edit' (ipe) menu item is enabled using
+the @option{ipe-menu-support-p} option.  (Default: @strong{nil})
 
 The @code{Edit Pair Definitions >} sub-menu contains a number of
 sub-menus which can be used to @emph{Add}, @emph{Modify} and
@@ -1717,8 +1754,13 @@ text for @sc{PAIRs} with an @emph{Initial Movement} of ``by lines''.
 
 @item Menu:
 At this prompt, enter a string indicating the location of the newly
-defined @sc{PAIR} within the @code{Pairs -> Edit} menu.  (Sub-menus
-can be defined by using a ``/'' character as a separator.)
+defined @sc{PAIR} within the various 'Insert Pair Edit' (ipe)
+@code{Pairs -> Edit} sub-menus.  Setting this option will cause the
+@sc{PAIR} definition to appear within sub-menus under the 'Insert Pair
+Edit' sub-menus.  (Futher sub-menus can be defined by using a ``/''
+character as a separator within this menu string.)  If left blank, the
+@sc{PAIR} will appear at the root of the 'Insert Pair Edit' (ipe)
+sub-menus along with the other @emph{Global} @sc{PAIRs}.
 @end table
 
 @c -------------------------------------------------------------------
@@ -1976,7 +2018,7 @@ The (quick) brown (|fox) jumps (over) the lazy dog.
 Then, updating a @sc{PAIR} using the following keystrokes:
 
 @example
-@key{M-(} @key{(}
+@key{C-u} @key{M-(} @key{(}
 @end example
 
 Will enter @command{ipe-edit-mode} and edit the @key{(} @key{)}
@@ -2049,7 +2091,7 @@ The Quick Brown Fox |Jumps Over (The) Lazy Dog.
 Then, updating a @sc{PAIR} using the following keystrokes:
 
 @example
-@key{M-(} @key{(}
+@key{C-u} @key{M-(} @key{(}
 @end example
 
 Will enter @command{ipe-edit-mode} and edit the @key{(} @key{)}
@@ -2134,7 +2176,7 @@ The (quick) brown (|fox) jumps (over) the lazy dog.
 Then, updating a @sc{PAIR} using the following keystrokes:
 
 @example
-@key{M-(} @key{(}
+@key{C-u} @key{M-(} @key{(}
 @end example
 
 Will enter @command{ipe-edit-mode} and edit the @key{(} @key{)}
@@ -2167,7 +2209,7 @@ When in @command{ipe-edit-mode}, it is possible to edit multiple
 commands (@xref{Basic Movement}) will operate on all active
 @sc{PAIR}s, and all commands which edit the @sc{CONTENTS} of a
 @sc{PAIR} (@xref{Edit CONTENTS Commands}), will also operate
-on all active @sc{PAIR}s.
+on the @sc{CONTENTS} all active @sc{PAIR}s.
 
 Adding / removing multiple @sc{PAIR}s can be done in a number of
 different ways:
@@ -2281,7 +2323,7 @@ The quick brown (|fox) jumps over the lazy dog.
 Then, updating a @sc{PAIR} using the following keystrokes:
 
 @example
-@key{M-(} @key{(}
+@key{C-u} @key{M-(} @key{(}
 @end example
 
 Will enter @command{ipe-edit-mode} and edit the @key{(} @key{)}
@@ -2290,7 +2332,7 @@ Will enter @command{ipe-edit-mode} and edit the @key{(} @key{)}
 Moving the @sc{PAIR} forward two words using the following keystrokes:
 
 @example
-@key{C-f} @key{C-f}
+@key{M-f} @key{M-f}
 @end example
 
 Which will result in the buffer:
@@ -2317,7 +2359,7 @@ The quick brown (|fox) jumps (over) the lazy dog.
 Both of which can be moved one word forward using the keystroke:
 
 @example
-@key{C-f}
+@key{M-f}
 @end example
 
 Which will result in the buffer:
@@ -2385,7 +2427,7 @@ The (quick) brown (|fox) jumps (over) the lazy dog.
 Then, updating a @sc{PAIR} using the following keystrokes:
 
 @example
-@key{M-(} @key{(}
+@key{C-u} @key{M-(} @key{(}
 @end example
 
 Will enter @command{ipe-edit-mode} and edit the @key{(} @key{)}
@@ -2489,7 +2531,7 @@ The quick brown fox jumps over the lazy dog.
 Then, updating a @sc{PAIR} using the following keystrokes:
 
 @example
-@key{M-(} @key{(}
+@key{C-u} @key{M-(} @key{(}
 @end example
 
 Will enter @command{ipe-edit-mode} and edit the @key{(} @key{)}
@@ -2508,7 +2550,7 @@ the third line.
 Which will result in the buffer:
 
 @example
-The quick brown fox jumps over the lazy dog.a
+The quick brown fox jumps over the lazy dog.
 The quick brown (|fox) jumps over the lazy dog.
 The quick brown (fox) jumps over the lazy dog.
 @end example
@@ -3006,7 +3048,7 @@ The buffer contains the following text:
 To edit the @key{[} @key{]} @sc{PAIR}, you would enter the keystrokes:
 
 @example
-@key{M-(} @key{[}
+@key{C-u} @key{M-(} @key{[}
 @end example
 
 Which will edit the @key{[} @key{]} @sc{PAIR} around ``(a b c)'', and
@@ -3091,7 +3133,7 @@ The buffer contains the following text:
 To edit the @key{[} @key{]} @sc{PAIR}, you would enter the keystrokes:
 
 @example
-@key{M-(} @key{[}
+@key{C-u} @key{M-(} @key{[}
 @end example
 
 Which will edit the @key{[} @key{]} @sc{PAIR} around ``(a b c)'', and
@@ -3193,7 +3235,7 @@ The buffer contains the following text:
 To edit the @key{[} @key{]} @sc{PAIR}, you would enter the keystrokes:
 
 @example
-@key{M-(} @key{[}
+@key{C-u} @key{M-(} @key{[}
 @end example
 
 Which will edit the @key{[} @key{]} around ``e'', and enter
@@ -3283,7 +3325,7 @@ To insert and indent C-style comments around the text, you would enter
 the keystrokes:
 
 @example
-@key{C-u} @key{M-(} @key{/}
+@key{M-(} @key{/}
 @end example
 
 Which will insert a @code{/*} @code{*/} @sc{PAIR} around the
@@ -3345,6 +3387,14 @@ The quick brown fox jumps over the lazy dog.
   **   The quick brown fox jumps over the lazy dog.
   **   The quick brown fox jumps over the lazy dog. */
 The quick brown fox jumps over the lazy dog.
+@end example
+
+These actions can be reversed by the corresponding
+@command{ipe-edit--open-forward} / @command{ipe-edit--close-backward}
+commands:
+
+@example
+@key{M-f} @key{M-f} @key{M-b} @key{M-b}
 @end example
 
 @c -------------------------------------------------------------------
@@ -3433,8 +3483,8 @@ Aborting}) an 'Insert Pair Edit' (ipe) @sc{PAIR} into the buffer.
 
 If @strong{nil}, @sc{MARK} will not be set.
 
-If @strong{non}-nil, @sc{MARK}, this option is expected to be one of
-the following values:
+If @strong{non}-nil, this option is expected to be one of the
+following values:
 
 @itemize @bullet
 @item open-beg
@@ -3448,10 +3498,9 @@ the following values:
 @end itemize
 @end defopt
 
-@emph{Intermediate} and @emph{Advanced} (@xref{Types of PAIR
-Definition}) 'Insert Pair Edit' (ipe) @sc{PAIR}s can define the
-position at which to place @sc{POINT} on @emph{insert} of the
-@sc{PAIR} into the buffer 'per-@sc{PAIR}'.
+@emph{Advanced} (@xref{Types of PAIR Definition}) 'Insert Pair Edit'
+(ipe) @sc{PAIR}s can define the position at which to place @sc{POINT}
+on @emph{insert} of the @sc{PAIR} into the buffer 'per-@sc{PAIR}'.
 
 @c -------------------------------------------------------------------
 @node PAIRs With Empty OPEN / CLOSE
@@ -3625,7 +3674,7 @@ Changing the @sc{PAIR} using the keystrokes:
 @key{(} @key{[}
 @end example
 
-Which will result in the buffer:
+Will result in the buffer:
 
 @example
 The (quick [|brown (fox) jumps] over) the lazy dog.
@@ -3769,10 +3818,10 @@ then moved by the 'Insert Pair Edit' commands.
 Is a string placed at the end of a lexical unit, and then
 moved by the 'Insert Pair Edit' commands.
 @item @code{PLIST}
-Is a property list specifying a set of optional @emph{Advanced}
-options that can be included to specify extra configuration passed to
-@emph{specialised} movement functions. (see:
-@code{ipe-move-by-movements})  
+Is a property list specifying a set of optional @emph{Intermediate} /
+@emph{Advanced} options that can be included to specify extra
+configuration passed to @emph{specialised} movement functions. (see:
+@code{ipe-move-by-movements})
 
 Known PLIST properties are:
 
@@ -3813,7 +3862,7 @@ is either @strong{nil}, or a function used to indent the @sc{OPEN} and
 @item MENU
 Is a forward slash ('/') separated string of the names of the menus
 under which the @sc{PAIR} is displayed within the @strong{Emacs}
-'Insert Pair Edit' menus.
+'Insert Pair Edit' sub-menus.
 @end itemize
 @end itemize
 @end defun
@@ -3859,6 +3908,7 @@ For example, for a fictional @code{xxx-mode}, to create a set of
 (ipe-mode-pairs-add 'xxx-mode 'ipe-xxx-pairs)
 
 (provide 'ipe-xxx-mode)
+;;; ipe-xxx-mode.el ends here
 @end example
 
 @c -------------------------------------------------------------------
@@ -3868,7 +3918,7 @@ For example, for a fictional @code{xxx-mode}, to create a set of
 
 To bind an 'Insert Pair Edit' (ipe) PAIR directly to the key
 representing its @sc{MNEMONIC} (so that typing the @sc{MNEMONIC}
-inserts the @sc{PAIR}) use the function:
+inserts the @sc{PAIR}), use the function:
 
 @defun ipe-insert-pair-edit-cmd
 @end defun
@@ -4006,8 +4056,8 @@ commands, KEYSTROKES, against the BUFFER-TEXT within a temporary
 buffer, and compares the resulting text in the buffer after the
 commands have been run, to the EXPECTED result.
 
-For this test, the @command{ipe-insert-pair-edit} will be bound to
-@key{M-(}.
+For this test, the @command{ipe-insert-pair-edit} command will be
+bound to @key{M-(}.
 
 @itemize @bullet
 @item @code{NAME}
@@ -4032,6 +4082,15 @@ parsed by the @command{kbd} command.)
 Commands used to clean up the temporary test buffer.
 @end itemize
 @end defmac
+
+The text within both @code{BUFFER-TEXT} and @code{EXPECTED} can
+contain the characters:
+
+@itemize
+@item @key{|} - To represent the position of POINT.
+@item @key{@atchar{}} - To represent the position of MARK.
+@item @key{!} - To represent the position of a secondary ``multiple-cursors'' cursor.
+@end itemize
 
 @example
 (setq ipe-test-xxx-options

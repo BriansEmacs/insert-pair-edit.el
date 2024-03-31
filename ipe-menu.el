@@ -205,7 +205,7 @@ i.e.
 	 (prefix    (when (and menu (> (length menu) 0))
 		      (concat menu "/")))
 	 (path      (if prefix
-			(if (string-prefix-p prefix pair-menu)
+			(if (ipe--string-starts-with pair-menu prefix)
 			    (substring pair-menu (length prefix))
 			  nil)
 		      pair-menu))
@@ -1726,10 +1726,115 @@ MAJOR-MODE."
     km))
 
 ;; -------------------------------------------------------------------
+;;;; Menu cache:
+;; -------------------------------------------------------------------
+
+(defvar ipe-menu--cache '()
+  "A cache of the generated `ipe' menus.
+
+This variable is an alist of the form:
+
+  ((MODE . MODE-MENUS))
+
+Where:
+
+- MODE is either:
+  * A `major-mode', or;
+  * t (To define the default menus for modes without custom PAIRs.)
+- MODE-MENUS is an alist of the `ipe' menus for the mode, containing
+  entries:
+
+  (('insert-pair           . KEYMAP)
+   ('update-pair           . KEYMAP)
+   ('delete-pair           . KEYMAP)
+   ('edit-pair-defn        . KEYMAP)
+   ('edit-mode-pair-defn   . KEYMAP)
+   ('delete-pair-defn      . KEYMAP)
+   ('delete-mode-pair-defn . KEYMAP)
+   ('change-pair           . KEYMAP))
+
+The entries in this cache should be regenerated each time a new PAIR
+definition is added to `ipe'.")
+
+(defun ipe-menu--cache-p (mode menu)
+  "Non-nil if the MENU for MODE has already been generated.
+
+This function will check the `ipe-menu--cache' for an already created
+menu keymap for the given MENU.  If there are no 'Mode-Specific' PAIRS
+defined for the given MODE, it will simply check whether the DEFAULT
+Global PAIR MENU exists.
+
+MENU is expected to be one of: `insert-pair', `update-pair',
+`delete-pair', `edit-pair-defn', `edit-mode-pair-defn',
+`delete-pair-defn', `delete-mode-pair-defn', `change-pair'.
+
+If MODE is t, return non-nil if the DEFAULT Global PAIR MENU has been
+generated."
+
+  (let* ((mode-menus (car (ipe-compat--alist-get (symbol-name mode)
+						 ipe-menu--cache)))
+	 (mode-menu  (when mode-menus
+		       (car (ipe-compat--alist-get menu mode-menus)))))
+    (if (or mode-menu
+	    (and (not (ipe--mode-pairs mode))
+		 (ipe-compat--alist-get
+		  menu
+		  (ipe-compat--alist-get t ipe-menu--cache))))
+	t
+      nil)))
+
+(defun ipe-menu--cache-set (mode menu map)
+  "Set the MENU for MODE to MAP in the `ipe-menu--cache'.
+
+This function will set an entry within the `ipe-menu--cache' for a
+given menu keymap for the given MENU.
+
+MENU is expected to be one of: `insert-pair', `update-pair',
+`delete-pair', `edit-pair-defn', `edit-mode-pair-defn',
+`delete-pair-defn', `delete-mode-pair-defn', `change-pair'."
+
+  (let ((mode-menus (car (ipe-compat--alist-get (symbol-name mode)
+						ipe-menu--cache))))
+
+    (setq mode-menus
+	  (ipe--alist-update mode-menus
+			     menu
+			     map))
+
+    (setq ipe-menu--cache
+	  (ipe--alist-update ipe-menu--cache
+			     (symbol-name mode)
+			     mode-menus))))
+
+(defun ipe-menu--cache-get (mode menu)
+  "Get the MENU for MODE from the `ipe-menu--cache'.
+
+MENU is expected to be one of: `insert-pair', `update-pair',
+`delete-pair', `edit-pair-defn', `edit-mode-pair-defn',
+`delete-pair-defn', `delete-mode-pair-defn', `change-pair'.
+
+If there is no MODE specific MENU, return the default Global PAIRs
+MENU."
+
+  (let* ((mode-menus (car (ipe-compat--alist-get (symbol-name mode)
+						 ipe-menu--cache))))
+
+    (unless mode-menus
+      (setq mode-menus
+	    (car (ipe-compat--alist-get t ipe-menu--cache))))
+
+    (car (ipe-compat--alist-get menu mode-menus))))
+
+(defun ipe-menu--cache-clear ()
+  "Clear the `ipe-menu--cache'."
+
+  (setq ipe-menu--cache '()))
+
+;; -------------------------------------------------------------------
 ;;;; Menu update functions:
 ;; -------------------------------------------------------------------
 
-(defun ipe-menu--insert-pair-update ()
+(defun ipe-menu--insert-pair-update (mode)
   "Update the contents of the 'Insert PAIR' sub-menu.
 
 This updates the contents of the:
@@ -1739,18 +1844,23 @@ This updates the contents of the:
     - Insert PAIR >
       - ...
 
-Sub-menu based upon the current buffers MAJOR-MODE."
+Sub-menu based upon MODE."
+
+  (unless (ipe-menu--cache-p mode 'insert-pair)
+    (ipe-menu--cache-set mode
+			 'insert-pair
+			 (ipe-menu--insert-pair)))
 
   (define-key ipe-menu--emacs-edit-pairs-map [insert-pair]
 	      (list 'menu-item "Insert PAIR"
-		    (ipe-menu--insert-pair)
+		    (ipe-menu--cache-get mode 'insert-pair)
 		    :keys (if (where-is-internal 'ipe-insert-pair-edit)
 			      (substitute-command-keys "\\[ipe-insert-pair-edit]")
 			    "")
 		    :help "Insert an 'Insert Pair Edit' (ipe) PAIR."
 		    :enable '(ipe-menu--pairs-p))))
 
-(defun ipe-menu--update-pair-update ()
+(defun ipe-menu--update-pair-update (mode)
   "Update the contents of the 'Update PAIR' sub-menu.
 
 This updates the contents of the:
@@ -1760,11 +1870,16 @@ This updates the contents of the:
     - Update PAIR >
       - ...
 
-Sub-menu based upon the current buffers MAJOR-MODE."
+Sub-menu based upon MODE."
+
+  (unless (ipe-menu--cache-p mode 'update-pair)
+    (ipe-menu--cache-set mode
+			 'update-pair
+			 (ipe-menu--update-pair)))
 
   (define-key-after ipe-menu--emacs-edit-pairs-map [update-pair]
     (list 'menu-item "Update PAIR"
-	  (ipe-menu--update-pair)
+	  (ipe-menu--cache-get mode 'update-pair)
 	  :keys (if (where-is-internal 'ipe-insert-pair-edit-update)
 		    (substitute-command-keys "\\[ipe-insert-pair-edit-update]")
 		  (if (where-is-internal 'ipe-insert-pair-edit)
@@ -1775,7 +1890,7 @@ Sub-menu based upon the current buffers MAJOR-MODE."
 	  :enable '(ipe-menu--pairs-p))
     'insert-pair))
 
-(defun ipe-menu--delete-pair-update ()
+(defun ipe-menu--delete-pair-update (mode)
   "Update the contents of the 'Delete PAIR' sub-menu.
 
 This updates the contents of the:
@@ -1785,11 +1900,16 @@ This updates the contents of the:
     - Delete PAIR >
       - ...
 
-Sub-menu based up on the current buffers MAJOR-MODE."
+Sub-menu based upon MODE."
+
+  (unless (ipe-menu--cache-p mode 'delete-pair)
+    (ipe-menu--cache-set mode
+			 'delete-pair
+			 (ipe-menu--delete-pair)))
 
   (define-key-after ipe-menu--emacs-edit-pairs-map [delete-pair]
     (list 'menu-item "Delete PAIR"
-	  (ipe-menu--delete-pair)
+	  (ipe-menu--cache-get mode 'delete-pair)
 	  :keys (if (where-is-internal 'ipe-insert-pair-edit-delete)
 		    (substitute-command-keys "\\[ipe-insert-pair-edit-delete]")
 		  (if (where-is-internal 'ipe-insert-pair-edit)
@@ -1800,7 +1920,7 @@ Sub-menu based up on the current buffers MAJOR-MODE."
 	  :enable '(ipe-menu--pairs-p))
     'update-pair))
 
-(defun ipe-menu--edit-pair-defn-update ()
+(defun ipe-menu--edit-pair-defn-update (mode)
   "Update the contents of the 'Edit PAIR Definition' sub-menu.
 
 This updates the contents of the:
@@ -1811,16 +1931,21 @@ This updates the contents of the:
       - Edit PAIR Definition >
 	- ...
 
-Sub-menu based upon the current buffers MAJOR-MODE."
+Sub-menu based upon MODE."
+
+  (unless (ipe-menu--cache-p mode 'edit-pair-defn)
+    (ipe-menu--cache-set mode
+			 'edit-pair-defn
+			 (ipe-menu--edit-pair-defn)))
 
   (define-key-after ipe-menu--edit-pair-defns-map [edit-pair-defn]
     (list 'menu-item "Edit PAIR Definition"
-	  (ipe-menu--edit-pair-defn)
+	  (ipe-menu--cache-get mode 'edit-pair-defn)
 	  :help "Edit an 'Insert Pair Edit' (ipe) PAIR definition."
 	  :enable '(ipe-menu--pairs-p))
     'edit-current-pair-defn))
 
-(defun ipe-menu--edit-mode-pair-defn-update ()
+(defun ipe-menu--edit-mode-pair-defn-update (mode)
   "Update the 'Edit Mode-Specific PAIR Definition' sub-menu.
 
 This updates the contents of the:
@@ -1831,18 +1956,23 @@ This updates the contents of the:
       - Edit Mode-Specific PAIR Definition >
 	- ...
 
-Sub-menu based up the current buffers MAJOR-MODE."
+Sub-menu based upon MODE."
+
+  (unless (ipe-menu--cache-p mode 'edit-mode-pair-defn)
+    (ipe-menu--cache-set mode
+			 'edit-mode-pair-defn
+			 (ipe-menu--edit-mode-pair-defn)))
 
   (define-key-after ipe-menu--edit-pair-defns-map
     [edit-mode-pair-defn]
     (list 'menu-item "Edit Mode-Specific PAIR Definition"
-	  (ipe-menu--edit-mode-pair-defn)
+	  (ipe-menu--cache-get mode 'edit-mode-pair-defn)
 	  :help "Edit a Mode-Specific 'Insert Pair Edit' (ipe) PAIR\
  definition."
 	  :enable '(ipe-menu--mode-pairs-p major-mode))
     'edit-pair-defn))
 
-(defun ipe-menu--delete-pair-defn-update ()
+(defun ipe-menu--delete-pair-defn-update (mode)
   "Update the contents of the 'Delete PAIR Definition' sub-menu.
 
 This updates the contents of the:
@@ -1853,16 +1983,21 @@ This updates the contents of the:
       - Delete PAIR Definition >
 	- ...
 
-Sub-menu based upon the current buffers MAJOR-MODE."
+Sub-menu based upon MODE."
+
+  (unless (ipe-menu--cache-p mode 'delete-pair-defn)
+    (ipe-menu--cache-set mode
+			 'delete-pair-defn
+			 (ipe-menu--delete-pair-defn)))
 
   (define-key-after ipe-menu--edit-pair-defns-map [delete-pair-defn]
     (list 'menu-item "Delete PAIR Definition"
-	  (ipe-menu--delete-pair-defn)
+	  (ipe-menu--cache-get mode 'delete-pair-defn)
 	  :help "Delete an 'Insert Pair Edit' (ipe) PAIR definition."
 	  :enable '(ipe-menu--pairs-p))
     'delete-pair-defn))
 
-(defun ipe-menu--delete-mode-pair-defn-update ()
+(defun ipe-menu--delete-mode-pair-defn-update (mode)
   "Update the 'Delete Mode-Specific PAIR Definition' sub-menu.
 
 This updates the contents of the:
@@ -1873,18 +2008,23 @@ This updates the contents of the:
       - Delete Mode-Specific PAIR Definition >
 	- ...
 
-Sub-menu based upon the current buffers MAJOR-MODE."
+Sub-menu based upon MODE."
+
+  (unless (ipe-menu--cache-p mode 'delete-mode-pair-defn)
+    (ipe-menu--cache-set mode
+			 'delete-mode-pair-defn
+			 (ipe-menu--delete-mode-pair-defn)))
 
   (define-key-after ipe-menu--edit-pair-defns-map
     [delete-mode-pair-defn]
     (list 'menu-item "Delete Mode-Specific PAIR Definition"
-	  (ipe-menu--delete-mode-pair-defn)
+	  (ipe-menu--cache-get mode 'delete-mode-pair-defn)
 	  :help "Delete a Mode-Specific 'Insert Pair Edit' (ipe) PAIR\
  definition."
 	  :enable '(ipe-menu--mode-pairs-p major-mode))
     'delete-mode-pair-defn))
 
-(defun ipe-menu--change-pair-update ()
+(defun ipe-menu--change-pair-update (mode)
   "Update the contents of the 'Change PAIR' mode menu.
 
 This updates the contents of the:
@@ -1893,10 +2033,16 @@ This updates the contents of the:
   - Change PAIR >
     - ...
 
-Sub-menu based upon the current buffers MAJOR-MODE."
+Sub-menu based upon MODE."
+
+  (unless (ipe-menu--cache-p mode 'change-pair)
+    (ipe-menu--cache-set mode
+			 'change-pair
+			 (ipe-menu--change-pair)))
 
   (define-key-after ipe-menu--mode-map [change-pair]
-    (list 'menu-item "Change PAIR" (ipe-menu--change-pair)
+    (list 'menu-item "Change PAIR"
+	  (ipe-menu--cache-get mode 'change-pair)
 	  :keys (substitute-command-keys "\\<ipe-edit-mode-map>\
  \\[ipe-edit--change-pair]")
 	  :help "Replace the current 'Insert Pair Edit' (ipe) PAIR with\
@@ -1905,7 +2051,8 @@ Sub-menu based upon the current buffers MAJOR-MODE."
     'sep-3)
 
   (define-key-after ipe-menu--mouse-map [ipe-mouse-change-pair]
-    (list 'menu-item "Change PAIR" (ipe-menu--change-pair)
+    (list 'menu-item "Change PAIR"
+	  (ipe-menu--cache-get mode 'change-pair)
 	  :keys (substitute-command-keys "\\<ipe-edit-mode-map>\
  \\[ipe-edit--change-pair]")
 	  :help "Replace the current 'Insert Pair Edit' (ipe) PAIR with\
@@ -1930,23 +2077,28 @@ variable."
 	  :visible ipe-menu-display-in-edit-p
 	  :enable '(not ipe-edit-mode))))
 
-(defun ipe-menu--update ()
+(defun ipe-menu--update (&optional mode)
   "Update the Insert Pair Edit menus.
 
 Added to the `menu-bar-update-hook' to ensure that the `ipe' menus are
-updated according to the current buffers MAJOR-MODE."
+updated according to the current buffers MODE.
+
+If MODE is nil, update for the current `major-mode'."
 
   (condition-case nil
       (progn
+	(unless mode
+	  (setq mode major-mode))
+
 	(ipe-menu--emacs-edit-pairs-update)
-	(ipe-menu--insert-pair-update)
-	(ipe-menu--update-pair-update)
-	(ipe-menu--delete-pair-update)
-	(ipe-menu--edit-pair-defn-update)
-	(ipe-menu--edit-mode-pair-defn-update)
-	(ipe-menu--delete-pair-defn-update)
-	(ipe-menu--delete-mode-pair-defn-update)
-	(ipe-menu--change-pair-update))
+	(ipe-menu--insert-pair-update mode)
+	(ipe-menu--update-pair-update mode)
+	(ipe-menu--delete-pair-update mode)
+	(ipe-menu--edit-pair-defn-update mode)
+	(ipe-menu--edit-mode-pair-defn-update mode)
+	(ipe-menu--delete-pair-defn-update mode)
+	(ipe-menu--delete-mode-pair-defn-update mode)
+	(ipe-menu--change-pair-update mode))
     (t (progn (message "Error updating `ipe' menus.")))))
 
 ;; -------------------------------------------------------------------
@@ -1965,20 +2117,25 @@ updated according to the current buffers MAJOR-MODE."
   (define-key ipe-edit-mode-map [M-mouse-3]
 	      (ipe-menu--change-pair))
 
-  (ipe-menu--update)
+  (ipe-menu--cache-clear)
+  (ipe-menu--update t)
 
+  (add-hook 'ipe-defn--update-hook #'ipe-menu--cache-clear)
   (add-hook 'menu-bar-update-hook #'ipe-menu--update))
 
 (defun ipe-menu--uninstall ()
   "Uninstall the menu bindings for the Insert Pair Edit mode."
 
-  (remove-hook 'menu-bar-update-hook #'ipe-menu--update)
+  (remove-hook 'menu-bar-update-hook  #'ipe-menu--update)
+  (remove-hook 'ipe-defn--update-hook #'ipe-menu--cache-clear)
 
   (define-key menu-bar-edit-menu [ipe]         nil)
 
   (define-key ipe-edit-mode-map [M-mouse-3]    nil)
   (define-key ipe-edit-mode-map [mouse-3]      nil)
-  (define-key ipe-edit-mode-map [menu-bar ipe] nil))
+  (define-key ipe-edit-mode-map [menu-bar ipe] nil)
+
+  (ipe-menu--cache-clear))
 
 (when ipe-menu-support-p
   (ipe-menu--install))

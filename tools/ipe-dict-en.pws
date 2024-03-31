@@ -54,6 +54,7 @@ Redisplay
 SPC
 SYM
 Strikethrough
+TESTFN
 TexInfo
 TODO
 TODO's
@@ -130,6 +131,7 @@ gifs
 gmail
 goto
 grey
+html
 ia
 infixes
 init
@@ -197,7 +199,9 @@ substrings
 supertype
 sym
 symbolp
+testfn
 texi
+texinfo
 ui
 un
 unclosed

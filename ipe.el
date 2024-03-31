@@ -73,10 +73,29 @@
 ;; -------------------------------------------------------------------
 ;;; Installation:
 ;;
-;; Add the following to your `.emacs' file:
+;; At a minimum, add the following to your `.emacs' file:
 ;;
 ;;  (require 'ipe)
 ;;  (global-set-key (kbd "M-(") 'ipe-insert-pair-edit)
+;;
+;; You may also want to:
+;;
+;;   Enable the `ipe' "Pairs" Menu:
+;;
+;;     (customize-save-variable 'ipe-menu-support-p t)
+;;
+;;   Add shortcut keybindings for the 'other' Major `ipe' commands:
+;;
+;;     ;; Other Major `ipe' commands:
+;;     (global-set-key (kbd "A-(") 'ipe-insert-pair-edit-update)
+;;     (global-set-key (kbd "H-(") 'ipe-insert-pair-edit-delete)
+;;     (global-set-key (kbd "s-(") 'ipe-insert-pair-edit-replace)
+;;
+;;   Load the "example" modal PAIR mappings:
+;;
+;;     (require 'ipe-html-mode)
+;;     (require 'ipe-markdown-mode)
+;;     (require 'ipe-texinfo-mode)
 
 ;; -------------------------------------------------------------------
 ;;; Code:
@@ -84,9 +103,8 @@
 (require 'ipe-)
 (require 'ipe-updt)
 (require 'ipe-edit)
-
-(when ipe-mouse-support-p (require 'ipe-mouse))
-(when ipe-menu-support-p  (require 'ipe-menu))
+(require 'ipe-mouse)
+(require 'ipe-menu)
 
 (defgroup ipe nil
   "Insert Pair Edit customizations.

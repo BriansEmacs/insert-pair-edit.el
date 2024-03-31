@@ -687,7 +687,8 @@ With prefix ARG, call `ipe-defn--ui-edit-pair'."
 		   (ipe--pair-advanced-p pair))
 	      (setq defn (ipe-defn--read-advanced defn))))
 
-	  (ipe-defn--update-pair-list 'ipe-pairs defn t))))))
+	  (ipe-defn--update-pair-list 'ipe-pairs defn t)
+	  (run-hooks 'ipe-defn--update-hook))))))
 
 (defun ipe-defn--edit-current-pair (arg)
   "Interactively edit the current `ipe' PAIR Definition.
@@ -989,6 +990,7 @@ The PAIR Definition is updated in `ipe-mode-pairs'."
 	(setcar defn new-mnemonic)
 	(ipe-defn--update-mode-pair mode defn t)
 	(run-hooks 'ipe-defn--update-hook)
+
 	(message
 	 "Changed MNEMONIC for 'Insert Pair Edit' PAIR %s to '%s'\
  in mode '%s'"

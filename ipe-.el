@@ -346,7 +346,7 @@ See (package: `ipe-mouse') for other bindings."
   :set   'ipe-custom--mouse-set
   :type  '(boolean))
 
-(defcustom ipe-menu-support-p t
+(defcustom ipe-menu-support-p nil
   "Whether to include menu support in `ipe-edit-mode' minor-mode.
 
 If non-nil, the Insert Pair Edit `ipe-edit-mode' minor mode will

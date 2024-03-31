@@ -113,7 +113,7 @@ _PAIR_ (of the given type) and remain in the current **Emacs** mode.
 git clone https://github.com/BriansEmacs/insert-pair-edit.el <path-to-download-dir>/ipe
 ```
 
-And add the following to your `.emacs` file:
+  And add the following to your `.emacs` file:
 
 ```
 (add-to-list 'load-path "<path-to-download-dir>/ipe"))
@@ -134,6 +134,20 @@ And add the following to your `.emacs` file:
 ```
 (require 'ipe)
 (global-set-key (kbd "M-(") 'ipe-insert-pair-edit)
+```
+
+4. You may also want to enable the `ipe` "Pairs" menu:
+
+```
+(customize-save-variable 'ipe-menu-support-p t)
+```
+
+5. And load the "example" modal PAIR mappings:
+
+```
+(require 'ipe-html-mode)
+(require 'ipe-markdown-mode)
+(require 'ipe-texinfo-mode)
 ```
 
 ----------------------------------------------------------------------

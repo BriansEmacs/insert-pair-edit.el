@@ -36,11 +36,32 @@
 ;;; Code:
 
 ;; -------------------------------------------------------------------
-;;;; Emacs < 24
+;;;; Emacs < 25
 ;; -------------------------------------------------------------------
 
 (when (<= emacs-major-version 23)
   (error "Insert Pair Edit (ipe) requires Emacs >= 24.3"))
+
+;; (if (functionp #'alist-get)
+;;     (defalias 'ipe-compat--alist-get #'alist-get)
+
+(defun ipe-compat--alist-get (key alist
+				  &optional default remove testfn)
+  "Insert Pair Edit (ipe) compatibility function.
+
+Find the first element of ALIST whose `car' equals KEY, and return its
+`cdr'.
+
+If KEY is not found in ALIST, return DEFAULT.
+
+If TESTFN is supplied, compare KEY using TESTFN.
+
+\(Introduced in Emacs 25.)"
+  (ignore remove)
+  (let ((x (if (not testfn)
+	       (assq key alist)
+	     (assoc key alist testfn))))
+    (if x (cdr x) default)))
 
 ;; -------------------------------------------------------------------
 ;;;; Emacs < 26
