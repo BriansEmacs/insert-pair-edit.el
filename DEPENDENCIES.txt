@@ -12,5 +12,5 @@ ipe +
     |              |             +-> ipe-line -+
     |              |             +-> ipe-list -+
     |              +-------------+-> ipe-defn -+
-    +----------------------------+->-ipe-updt -+-> ipe- +-> ipe-custom
-                                                        +-> ipe-compat
+    +----------------------------+->-ipe-updt -+-> ipe-core +-> ipe-custom
+                                                            +-> ipe-compat

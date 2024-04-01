@@ -236,14 +236,15 @@ Or, download the @command{ipe} package from:
 
 @url{https://github.com/BriansEmacs/insert-pair-edit.el}
 
-And add the downloaded directory to the @command{'load-path}:
+And add the downloaded package to the @command{'load-path}:
 
 @example
 (add-to-list 'load-path "<path-to-ipe-download-dir>") 
+(add-to-list 'load-path "<path-to-ipe-download-dir>/modes") 
 @end example
 @end itemize
 
-then add the following to your @code{.emacs} file:
+Then, add the following to your @code{.emacs} file:
 
 @example
 (require 'ipe)
@@ -311,7 +312,7 @@ Enter:
 
 @example
 @code{ipe}
-@end  example
+@end example
 
 @item
 Or, if you've enabled the ``Pairs'' menu, select the:

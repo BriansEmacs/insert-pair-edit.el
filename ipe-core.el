@@ -1,4 +1,4 @@
-;;; ipe-.el --- Insert Pair Edit - core library -*- lexical-binding: t; -*-
+;;; ipe-core.el --- Insert Pair Edit - core library -*- lexical-binding: t; -*-
 ;; Copyright (C) 2023 Brian Kavanagh
 
 ;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
@@ -3441,6 +3441,6 @@ the echo area for the user."
 		    (assoc ipe--movement ipe-move-by-movements))
 		   "'.")))
 
-(provide 'ipe-)
+(provide 'ipe-core)
 
-;;; ipe-.el ends here
+;;; ipe-core.el ends here

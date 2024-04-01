@@ -107,20 +107,22 @@ _PAIR_ (of the given type) and remain in the current **Emacs** mode.
 ----------------------------------------------------------------------
 ## Installation:
 
-1. Download the `insert-pair-edit` project source:
+1a. Download the `insert-pair-edit` project source:
 
 ```
 git clone https://github.com/BriansEmacs/insert-pair-edit.el <path-to-download-dir>/ipe
 ```
 
-  And add the following to your `.emacs` file:
+And add the following to your `.emacs` file:
 
 ```
 (add-to-list 'load-path "<path-to-download-dir>/ipe"))
 (add-to-list 'load-path "<path-to-download-dir>/ipe/modes"))
 ```
 
-2. Or, download `ipe` from [MELPA](https://melpa.org): (_Pending_)
+Or:
+
+1b. Download `ipe` from [MELPA](https://melpa.org): (_Pending_)
 
 ```
 (require 'package)
@@ -129,20 +131,20 @@ git clone https://github.com/BriansEmacs/insert-pair-edit.el <path-to-download-d
 (package-install 'ipe)
 ```
 
-3. And add the following to your `.emacs` file:
+2. Add the following to your `.emacs` file:
 
 ```
 (require 'ipe)
 (global-set-key (kbd "M-(") 'ipe-insert-pair-edit)
 ```
 
-4. You may also want to enable the `ipe` "Pairs" menu:
+3. You may also want to enable the `ipe` "Pairs" menu:
 
 ```
 (customize-save-variable 'ipe-menu-support-p t)
 ```
 
-5. And load the "example" modal PAIR mappings:
+4. You may also want to load the "example" modal PAIR mappings:
 
 ```
 (require 'ipe-html-mode)
@@ -153,20 +155,22 @@ git clone https://github.com/BriansEmacs/insert-pair-edit.el <path-to-download-d
 ----------------------------------------------------------------------
 ## Further Help
 
-After installation: from the Emacs `Edit` menu:
+After installation: 
+
+From the keyboard:
+
+```
+M-x ipe-help
+M-x ipe-help-info
+```
+
+From the Emacs `Edit` menu:
 
 ```
 Edit >
   Pairs >
     Info
     Help
-```
-
-From the keyboard:
-
-```
-M-x ipe-help
-M-x ipe-help--info
 ```
 
 ----------------------------------------------------------------------

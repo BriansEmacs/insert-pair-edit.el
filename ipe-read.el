@@ -45,7 +45,7 @@
 ;; -------------------------------------------------------------------
 ;;; Code:
 
-(require 'ipe-)
+(require 'ipe-core)
 (require 'ipe-help)
 
 (defvar ipe-read--mnemonic-history '()
@@ -166,7 +166,7 @@ list of possible MNEMONICs is obtained from the `car's of the
 	 (help
 	  (propertize
 	   (substitute-command-keys
-	    "(\\<ipe-read--minibuffer-keymap>\\[ipe-help--prompt]\
+	    "(\\<ipe-read--minibuffer-keymap>\\[ipe-help-prompt]\
  - Help) - ")
 	   'face 'font-lock-doc-face))
 	 (read-prompt (concat help prompt)))

@@ -125,8 +125,8 @@ work with multiple cursors."
 	 ipe-edit--update-previous-open
 	 ipe-edit--update-previous-pair
 	 ipe-help
-	 ipe-help--info
-	 ipe-help--mode-help
+	 ipe-help-info
+	 ipe-help-edit-mode
 	 ipe-test-run))
 
       (mapc

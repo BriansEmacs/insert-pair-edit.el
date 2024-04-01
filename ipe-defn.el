@@ -46,7 +46,7 @@
 ;;; Code:
 
 (require 'ipe-compat)
-(require 'ipe-)
+(require 'ipe-core)
 
 ;; -------------------------------------------------------------------
 ;;;; Variables

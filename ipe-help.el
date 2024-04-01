@@ -322,12 +322,12 @@ All 'ipe-edit-mode' key bindings can be edited via:
   `\\[ipe-edit--options]' - Display the 'Insert Pair Edit'\
  `customize'-ation options.
 	(command: `ipe-edit--options')
-  `\\[ipe-help--info]' - Display the 'Insert Pair Edit' (ipe)\
+  `\\[ipe-help-info]' - Display the 'Insert Pair Edit' (ipe)\
  info file.
-	(command: `ipe-help--info')
-  `\\[ipe-help--mode-help]' - Display help on the commands\
+	(command: `ipe-help-info')
+  `\\[ipe-help-edit-mode]' - Display help on the commands\
  available within `ipe-edit-mode'.
-	(command: `ipe-help--mode-help')
+	(command: `ipe-help-edit-mode')
 
 PAIRs are highlighted using:
 
@@ -554,7 +554,7 @@ PAIRs are highlighted using:
 				 'ipe-help--info-button)
 	(insert " \n\n")))))
 
-(defun ipe-help--mode-help ()
+(defun ipe-help-edit-mode ()
   "Display help for the 'Insert Pair Edit' minor mode.
 
 \(command `ipe-edit-mode')"
@@ -564,7 +564,7 @@ PAIRs are highlighted using:
   (with-help-window "*Help*"
     (set-buffer standard-output)
     (setq-local tab-width 8)
-    (help-setup-xref (list #'ipe-help--mode-help) t)
+    (help-setup-xref (list #'ipe-help-edit-mode) t)
     (insert (substitute-command-keys
 	     (concat "'Insert Pair Edit' Help
 ------------------------
@@ -610,7 +610,7 @@ This minor mode forms part of the 'Insert Pair Edit' (ipe) package.
 " ipe-help--help-more-7)))
     ""))
 
-(defun ipe-help--prompt ()
+(defun ipe-help-prompt ()
   "Display the 'Insert Pair Edit' prompt help."
 
   (interactive)
@@ -618,7 +618,7 @@ This minor mode forms part of the 'Insert Pair Edit' (ipe) package.
   (with-help-window "*Help*"
     (set-buffer standard-output)
     (setq-local tab-width 8)
-    (help-setup-xref (list #'ipe-help--prompt) t)
+    (help-setup-xref (list #'ipe-help-prompt) t)
     (insert (substitute-command-keys
 	     (concat "'Insert Pair Edit' Prompt Help
 ------------------------------
@@ -645,12 +645,12 @@ Or, use one the following key bindings:
 	    PAIR.
 	    (command: `minibuffer-keyboard-quit')
 
-    '\\[ipe-help--prompt]' -\
+    '\\[ipe-help-prompt]' -\
  Display this Help.
-	    (command: `ipe-help--prompt')
-    '\\[ipe-help--info]' -\
+	    (command: `ipe-help-prompt')
+    '\\[ipe-help-info]' -\
  Display the 'Insert Pair Edit' Info.
-	    (command: `ipe-help--info')
+	    (command: `ipe-help-info')
     '\\[ipe-edit--options]' -\
  Customize the 'Insert Pair Edit' options.
 	    (command: `ipe-edit--options')
@@ -680,7 +680,7 @@ Or, use one the following key bindings:
 ")))
     ""))
 
-(defun ipe-help--info ()
+(defun ipe-help-info ()
   "Display the 'Insert Pair Edit' info help."
 
   (interactive)
@@ -726,7 +726,7 @@ Or, use one the following key bindings:
 
 (define-button-type 'ipe-help--info-button
   :supertype 'help-xref
-  'help-function 'ipe-help--info)
+  'help-function 'ipe-help-info)
 
 (provide 'ipe-help)
 

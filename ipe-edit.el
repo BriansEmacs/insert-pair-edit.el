@@ -85,7 +85,7 @@
 ;; -------------------------------------------------------------------
 ;;; Code:
 
-(require 'ipe-)
+(require 'ipe-core)
 (require 'ipe-read)
 (require 'ipe-updt)
 (require 'ipe-defn)
@@ -406,12 +406,12 @@ Insert Pair Edit minor mode - Other:
   `\\[ipe-edit--options]' - Display the Insert Pair Edit\
  `customize'-ation options.
 	(command: `ipe-edit--options')
-  `\\[ipe-help--mode-help]' - Display help on the commands\
+  `\\[ipe-help-edit-mode]' - Display help on the commands\
  available within `ipe-edit-mode'.
-	(command: `ipe-help--mode-help')
-  `\\[ipe-help--info]' - Display the Insert Pair Edit (ipe)\
+	(command: `ipe-help-edit-mode')
+  `\\[ipe-help-info]' - Display the Insert Pair Edit (ipe)\
  info file.
-	(command: `ipe-help--info')
+	(command: `ipe-help-info')
 
 PAIRs are highlighted using:
 
@@ -2138,8 +2138,8 @@ This function will also be called by `customize' when the
 
   (ipe-edit--key 43 'ipe-edit--abort)
   (ipe-edit--key 44 'ipe-edit--options)
-  (ipe-edit--key 45 'ipe-help--info)
-  (ipe-edit--key 46 'ipe-help--mode-help)
+  (ipe-edit--key 45 'ipe-help-info)
+  (ipe-edit--key 46 'ipe-help-edit-mode)
 
   ;; Default bindings.
   (define-key ipe-edit-mode-map (kbd "C-g")
@@ -2166,9 +2166,9 @@ This function will also be called by `customize' when the
 		 ipe-read--minibuffer-keymap)
   (ipe-edit--key 44 'ipe-edit--options
 		 ipe-read--minibuffer-keymap)
-  (ipe-edit--key 45 'ipe-help--info
+  (ipe-edit--key 45 'ipe-help-info
 		 ipe-read--minibuffer-keymap)
-  (ipe-edit--key 46 'ipe-help--prompt
+  (ipe-edit--key 46 'ipe-help-prompt
 		 ipe-read--minibuffer-keymap)
 
   ;; Remove existing basic movement keymappings.

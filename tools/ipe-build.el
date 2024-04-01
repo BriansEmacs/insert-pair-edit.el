@@ -23,7 +23,7 @@
 
 (defvar ipe-build--elisp-files
   '("ipe.el"
-    "ipe-.el"
+    "ipe-core.el"
     "ipe-char.el"
     "ipe-compat.el"
     "ipe-custom.el"

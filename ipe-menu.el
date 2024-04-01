@@ -1023,7 +1023,7 @@ This changes based upon the current buffers MAJOR-MODE."
 
     (define-key-after km [pairs--info]
       '(menu-item
-	"Info" ipe-help--info
+	"Info" ipe-help-info
 	:help "Display the 'Insert Pair Edit' (ipe) info file."))
 
     (define-key-after km [pairs--help]
@@ -1263,13 +1263,13 @@ It defines menu-items to call various `ipe-edit--*' functions."
 
     (define-key-after km [info]
       '(menu-item
-	"Info" ipe-help--info
+	"Info" ipe-help-info
 	:help "Display the 'Insert Pair Edit' (ipe) info file.")
       'options)
 
     (define-key-after km [help]
       '(menu-item
-	"Help" ipe-help--mode-help
+	"Help" ipe-help-edit-mode
 	:help "Display the 'Insert Pair Edit' (ipe) help.")
       'info)
 
@@ -1343,7 +1343,7 @@ It defines menu-items to perform basic `ipe-edit--*' functions.
 
     (define-key-after km [ipe-mouse-help]
       '(menu-item
-	"Help" ipe-help--mode-help
+	"Help" ipe-help-edit-mode
 	:help "Display the 'Insert Pair Edit' (ipe) help.")
       'ipe-mouse-abort)
 

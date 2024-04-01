@@ -38,35 +38,35 @@
 ;;
 ;; Executing the `ipe-insert-pair-edit' command will first prompt the
 ;; user to enter a `customize'-able MNEMONIC (See: `ipe-pairs' /
-;; `ipe-mode-pairs'), that selects a 'major-mode dependent' PAIR to be
-;; inserted around point.  The PAIR consists of OPEN and CLOSE strings
-;; which delimit text in some fashion.
+;; `ipe-mode-pairs').  Entering a valid MNEMONIC will select a
+;; 'major-mode dependent' PAIR.  The PAIR consists of OPEN and CLOSE
+;; strings which delimit text in some fashion.
 ;;
 ;; The OPEN and CLOSE strings are then added to the buffer as
 ;; overlays, and the "Insert Pair Edit (ipe)" (`ipe-edit-mode') minor
 ;; mode is activated.
 ;;
-;; The `ipe-edit-mode' supplies commands to interactively and
-;; independently move the overlays representing the OPEN and CLOSE
-;; strings for the inserted PAIR about the buffer, and to either
-;; insert (`ipe-edit--insert-pair'), or discard (`ipe-edit--abort')
-;; them once they have been correctly positioned.
+;; The "Insert Pair Edit (ipe)" minor mode supplies a large set of
+;; commands to interactively and independently move the overlays
+;; representing the OPEN and CLOSE strings for the inserted PAIR about
+;; the buffer, and to either insert (`ipe-edit--insert-pair'), or
+;; discard (`ipe-edit--abort') them once they have been correctly
+;; positioned.
 ;;
-;; Movement of the OPEN and CLOSE overlays is based upon 'movement
-;; units'.  The 'movement units' are either: characters, words, lines,
-;; or lists (S-expressions).  (For the full list of movement / editing
-;; commands, see the documentation for `ipe-edit-mode'.)
+;; Further help can be found after installation, from either:
 ;;
-;; Certain characters between the OPEN and CLOSE overlays can also be
-;; ESCAPE-d.  These characters will be replaced by overlays, which
-;; will be updated by the `ipe-edit-mode' movement commands, and
-;; inserted when the `ipe-edit--insert-pair' command is invoked.
+;; * the keyboard:
 ;;
-;; Additional commands are supplied to operate on the CONTENTS of the
-;; PAIR (i.e. the text between the OPEN and CLOSE overlays.)  Text can
-;; be copied, deleted, replaced and case converted.
+;;   M-x ipe-help
+;;   M-x ipe-help-info
 ;;
-;; Full Emacs Menu and Mouse support is included.
+;; * or, (if `ipe-menu-support-p' is enabled), from the Emacs `Edit`
+;;   menu:
+;;
+;;   Edit >
+;;     Pairs >
+;;       Info
+;;       Help
 ;;
 ;; Customizations for the mode can be found under the `ipe' group.
 
@@ -80,13 +80,14 @@
 ;;
 ;; You may also want to:
 ;;
-;;   Enable the `ipe' "Pairs" Menu:
+;;   Enable the `ipe' "Pairs" and "Insert Pair Edit" Menus:
 ;;
 ;;     (customize-save-variable 'ipe-menu-support-p t)
 ;;
 ;;   Add shortcut keybindings for the 'other' Major `ipe' commands:
 ;;
-;;     ;; Other Major `ipe' commands:
+;;   e.g.
+;;
 ;;     (global-set-key (kbd "A-(") 'ipe-insert-pair-edit-update)
 ;;     (global-set-key (kbd "H-(") 'ipe-insert-pair-edit-delete)
 ;;     (global-set-key (kbd "s-(") 'ipe-insert-pair-edit-replace)
@@ -96,11 +97,12 @@
 ;;     (require 'ipe-html-mode)
 ;;     (require 'ipe-markdown-mode)
 ;;     (require 'ipe-texinfo-mode)
+;;
 
 ;; -------------------------------------------------------------------
 ;;; Code:
 
-(require 'ipe-)
+(require 'ipe-core)
 (require 'ipe-updt)
 (require 'ipe-edit)
 (require 'ipe-mouse)
@@ -132,6 +134,7 @@ Once selected, this command will:
 - Find its matching counterpart (OPEN and CLOSE strings may be
   nested), and;
 - Delete both the OPEN and CLOSE string from the buffer."
+
   (interactive (list (ipe-edit--read-mnemonic "Delete PAIR: ")))
 
   (save-excursion
@@ -185,6 +188,7 @@ If the selected REPLACE-ment PAIR has a different lexical unit, the
 initial movement of OPEN and CLOSE parts of the REPLACE-ment PAIR will
 also be by characters, lines, or lists (depending on the
 `customize'-ation for the given PAIR.)"
+
   (interactive (list (ipe-edit--read-mnemonic "Replace PAIR: ")
 		     (let ((ipe--mnemonic nil))
 		       (ipe-edit--read-mnemonic "With PAIR: "))))
@@ -250,6 +254,7 @@ If the selected PAIR has a different lexical unit, the initial
 movement of OPEN and CLOSE parts of the PAIR is by characters, lines,
 or lists (S-expressions) (depending on the `customize'-ation for the
 given PAIR.)"
+
   (interactive (list (ipe-edit--read-mnemonic "Update PAIR: ")))
   (ipe-insert-pair-edit-replace mnemonic mnemonic))
 
@@ -322,6 +327,7 @@ prefix ARGs, this will call:
   `ipe-insert-pair-edit-replace'
 
 With REPLACE specifying the MNEMONIC of the replacement PAIR."
+
   (interactive
    (list
     current-prefix-arg
@@ -442,6 +448,7 @@ prefix ARGs, this will call:
   `ipe-insert-pair-edit-delete'
 
 With MNEMONIC specifying the PAIR to be deleted."
+
   (interactive "P")
   (let ((cmd (substring-no-properties (this-command-keys))))
     (setq ipe--mnemonic
