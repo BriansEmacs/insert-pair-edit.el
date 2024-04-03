@@ -1859,7 +1859,9 @@ within `ipe--pair-pos-list', the POS-CLOSE of the first entry will be
     (dotimes (j (- (ipe--pos-count) i 1))
       (let ((n (+ i j 1)))
 	(when (> (ipe--pos-close i) (ipe--pos-open n))
-	  (ipe--pos-open-set n (ipe--pos-close i)))))))
+	  (if (> (ipe--pos-close i) (ipe--pos-close n))
+	      (ipe--pos-close-set i (ipe--pos-open n))
+	    (ipe--pos-open-set n (ipe--pos-close i))))))))
 
 (defun ipe--pos-list-singular ()
   "Ensure there is only one `ipe' PAIR Position defined.
@@ -1868,8 +1870,31 @@ This adjusts the `ipe--pair-pos-list' so that it contains, at most,
 one entry."
 
   (when ipe--pair-pos-list
-    (dotimes (n (1- (ipe--pos-count)))
-      (ipe--pair-pos-hide (1+ n)))))
+    (let ((count (1- (ipe--pos-count))))
+      (dotimes (n count)
+	(ipe--pair-pos-hide (- count n))))))
+
+(defun ipe--pos-list-nearest (pos)
+  "Return the index of the `ipe' PAIR closest to POS.
+
+This searches the `ipe--pair-pos-list' for the nearest PAIR to POS."
+
+  (let ((distance (point-max))
+	(nearest  0))
+    (dotimes (n (ipe--pos-count))
+      (if (and (<= (ipe--pos-open n) pos)
+	       (<  pos (ipe--pos-close n)))
+	  (setq nearest  n
+		distance 0)
+	(if (and (<= pos (ipe--pos-open n))
+		 (<  (- (ipe--pos-open n) pos) distance))
+	    (setq nearest n
+		  distance (- (ipe--pos-open n) pos))
+	  (if (and (<= (ipe--pos-close n) pos)
+		   (< (- pos (ipe--pos-close n) distance)))
+	      (setq nearest n
+		    distance (- pos (ipe--pos-close n)))))))
+    nearest))
 
 ;; -------------------------------------------------------------------
 ;;;; PAIR Position aware buffer editing functions:
@@ -2034,6 +2059,34 @@ replaced.)"
 
 	(insert (substring string len len-string))))
       inserted)))
+
+(defun ipe--pos-recenter (n &optional close)
+  "Recenter the window so that the `N'th `ipe' PAIR is visible.
+
+If CLOSE is non-nil, ensure that the `N'th CLOSE overlay is visible.
+If CLOSE is nil, ensure that the `N'th OPEN overlay is visible."
+
+  (if close
+      (progn
+	(when (or (<  (ipe--pos-close n) (window-start))
+		  (>= (point)            (window-end)))
+	  (goto-char (ipe--pos-close n))
+	  (recenter))
+
+	(when (or (>  (ipe--pos-close n) (window-end))
+		  (<= (point)            (window-start)))
+	  (goto-char (ipe--pos-close n))
+	  (recenter)))
+
+    (when (or (<  (ipe--pos-open n) (window-start))
+	      (>= (point)           (window-end)))
+      (goto-char (ipe--pos-open n))
+      (recenter))
+
+    (when (or (>  (ipe--pos-open n) (window-end))
+	      (<= (point)           (window-start)))
+      (goto-char (ipe--pos-open n))
+      (recenter))))
 
 (defun ipe--insert-overlay (overlay pos-point)
   "Insert OVERLAY into the buffer.
@@ -2359,13 +2412,7 @@ overlay will not display an `'after-string'."
 				       1))))
 
     ;; Re-display the overlays in the new positions.
-    (when (< (ipe--pos-open 0) (window-start))
-      (goto-char (ipe--pos-open 0))
-      (recenter 0))
-
-    (when (> (ipe--pos-open 0) (window-end))
-      (goto-char (ipe--pos-open 0))
-      (recenter -1))))
+    (ipe--pos-recenter 0)))
 
 ;; -------------------------------------------------------------------
 ;;;; CLOSE strings:
@@ -2526,14 +2573,8 @@ and do not display an `'after-string' as part of the CLOSE overlay."
 				      (ipe--pos-open n)
 				      1))))
 
-    ;; Redisplay the overlays in the new positions.
-    (when (< (ipe--pos-close 0) (window-start))
-      (goto-char (ipe--pos-close 0))
-      (recenter 0))
-
-    (when (> (ipe--pos-close 0) (window-end))
-      (goto-char (ipe--pos-close 0))
-      (recenter -1))))
+    ;; Re-display the overlays in the new positions.
+    (ipe--pos-recenter 0)))
 
 ;; -------------------------------------------------------------------
 ;;;; Infixes:

@@ -273,6 +273,9 @@ All 'ipe-edit-mode' key bindings can be edited via:
   `\\[ipe-edit--delete-first-pair]' -\
  Remove the first PAIR from the buffer.
 	(command: `ipe-edit--delete-first-pair')
+  `\\[ipe-edit--delete-all-pairs]' -\
+ Remove all PAIRs from the buffer.
+	(command: `ipe-edit--delete-all-pairs')
   `\\[ipe-edit--delete-last-pair]' -\
  Remove the last PAIR from the buffer.
 	(command: `ipe-edit--delete-last-pair')"

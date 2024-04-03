@@ -204,14 +204,7 @@ also be by characters, lines, or lists (depending on the
       (ipe--undo-abort)
 
     (ipe-edit-mode t)
-
-    (when (< (ipe--pos-open 0) (window-start))
-      (goto-char (ipe--pos-open 0))
-      (recenter -1))
-
-    (when (> (ipe--pos-open 0) (window-end))
-      (goto-char (ipe--pos-open 0))
-      (recenter 1))))
+    (ipe--pos-recenter 0)))
 
 (defun ipe-insert-pair-edit-update (mnemonic)
   "Update the position of an Insert Pair Edit PAIR.

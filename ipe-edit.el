@@ -366,6 +366,9 @@ Insert Pair Edit minor mode - Multiple PAIRs:
   `\\[ipe-edit--delete-first-pair]' -\
  Remove the first PAIR from the buffer.
 	(command: `ipe-edit--delete-first-pair')
+  `\\[ipe-edit--delete-all-pairs]' -\
+ Remove all PAIRs from the buffer.
+	(command: `ipe-edit--delete-all-pairs')
   `\\[ipe-edit--delete-last-pair]' -\
  Remove the last PAIR from the buffer.
 	(command: `ipe-edit--delete-last-pair')
@@ -1155,7 +1158,8 @@ commands."
 				 (ipe--pos-open n)
 				 (+ (ipe--pos-close n) len-close))))
 
-    (ipe-edit--redisplay)))
+    (ipe-edit--redisplay)
+    (ipe--pos-recenter (1- (ipe--pos-count)) t)))
 
 (defun ipe-edit--update-next-contents ()
   "Insert `ipe' OPEN & CLOSE and search forward for enclosed text.
@@ -1194,7 +1198,8 @@ This command is used within the Insert Pair Edit (ipe) minor-mode
 		  (ipe--pos-property-set n :initial-n n))
 	      (ipe--pair-pos-hide n))))))
 
-    (ipe-edit--redisplay)))
+    (ipe-edit--redisplay)
+    (ipe--pos-recenter (1- (ipe--pos-count)) t)))
 
 (defun ipe-edit--update-next-open (arg)
   "Insert `ipe' OPEN overlay and edit the next OPEN string.
@@ -1248,7 +1253,8 @@ with an overlay that can be moved by the `ipe-edit-mode' commands."
 				 (ipe--pos-open n)
 				 (+ (ipe--pos-close n) len-close))))
 
-    (ipe-edit--redisplay)))
+    (ipe-edit--redisplay)
+    (ipe--pos-recenter 0)))
 
 (defun ipe-edit--update-next-close (arg)
   "Insert `ipe' CLOSE overlay and edit the next CLOSE string.
@@ -1300,9 +1306,10 @@ with an overlay that can be moved by the `ipe-edit-mode' commands."
 	(ipe-updt--delete-at-pos pair
 				 n
 				 (ipe--pos-open n)
-				 (ipe--pos-close n)))))
+				 (ipe--pos-close n))))
 
-  (ipe-edit--redisplay))
+    (ipe-edit--redisplay)
+    (ipe--pos-recenter (1- (ipe--pos-count)) t)))
 
 (defun ipe-edit--update-previous-pair (arg)
   "Insert `ipe' OPEN & CLOSE and edit the previous `ipe' PAIR.
@@ -1363,7 +1370,8 @@ commands."
 				 (ipe--pos-open n)
 				 (+ (ipe--pos-close n) len-close))))
 
-    (ipe-edit--redisplay)))
+    (ipe-edit--redisplay)
+    (ipe--pos-recenter 0)))
 
 (defun ipe-edit--update-previous-contents ()
   "Insert `ipe' OPEN & CLOSE and search backward for enclosed text.
@@ -1400,7 +1408,8 @@ This command is used within the Insert Pair Edit (ipe) minor-mode
 		  (ipe--pos-property-set n :initial-n n))
 	      (ipe--pair-pos-hide n))))))
 
-    (ipe-edit--redisplay)))
+    (ipe-edit--redisplay)
+    (ipe--pos-recenter 0)))
 
 (defun ipe-edit--update-previous-open (arg)
   "Insert `ipe' OPEN overlay and edit the previous OPEN string.
@@ -1455,7 +1464,8 @@ with an overlay that can be moved by the `ipe-edit-mode' commands."
 				 (ipe--pos-open n)
 				 (+ (ipe--pos-close n) len-close))))
 
-    (ipe-edit--redisplay)))
+    (ipe-edit--redisplay)
+    (ipe--pos-recenter 0)))
 
 (defun ipe-edit--update-previous-close (arg)
   "Insert `ipe' CLOSE overlay and edit the previous CLOSE string.
@@ -1510,7 +1520,8 @@ with an overlay that can be moved by the `ipe-edit-mode' commands."
 				 (ipe--pos-open n)
 				 (ipe--pos-close n))))
 
-    (ipe-edit--redisplay)))
+    (ipe-edit--redisplay)
+    (ipe--pos-recenter (1- (ipe--pos-count)) t)))
 
 ;; -------------------------------------------------------------------
 ;;;;; 'Multiple' Commands.
@@ -1562,7 +1573,8 @@ With a prefix ARG, search for the `ARG'th OPEN and CLOSE."
 	      (ipe--pos-point        n (ipe--pos-close n))
 	      (ipe--pos-property-set n :point-close point-close))
 
-	    (ipe-edit--redisplay))
+	    (ipe-edit--redisplay)
+	    (ipe--pos-recenter n t))
 
 	(message "Could not find %s"
 		 (ipe--mnemonic-describe ipe--mnemonic))))))
@@ -1616,7 +1628,9 @@ With a prefix ARG, search for the `ARG'th OPEN and CLOSE backward."
 	    (when (numberp point-close)
 	      (ipe--pos-point n (ipe--pos-close n))
 	      (ipe--pos-property-set n :point-close point-close))
-	    (ipe-edit--redisplay))
+
+	    (ipe-edit--redisplay)
+	    (ipe--pos-recenter 0))
 
 	(message "Could not find %s"
 		 (ipe--mnemonic-describe ipe--mnemonic))))))
@@ -1654,7 +1668,8 @@ With a prefix ARG, search for the `ARG'th matching contents."
 				     :initial-n   new
 				     :point-open  point-open
 				     :point-close point-close)
-	      (ipe-edit--redisplay))
+	      (ipe-edit--redisplay)
+	      (ipe--pos-recenter new t))
 
 	  (message "Could not find string '%s'" substring))))))
 
@@ -1679,6 +1694,7 @@ With a prefix ARG, search for the `ARG'th matching contents."
 					  (ipe--pos-close n)))
 	   (point-open  (ipe--pos-property n :point-open))
 	   (point-close (ipe--pos-property n :point-close)))
+
       (save-excursion
 	(goto-char (ipe--pos-open 0))
 	(if (search-backward substring nil t units)
@@ -1690,7 +1706,8 @@ With a prefix ARG, search for the `ARG'th matching contents."
 				     :initial-n   new
 				     :point-open  point-open
 				     :point-close point-close)
-	      (ipe-edit--redisplay))
+	      (ipe-edit--redisplay)
+	      (ipe--pos-recenter 0))
 
 	  (message "Could not find string '%s'" substring))))))
 
@@ -1723,6 +1740,22 @@ CLOSE."
 		 0)))
 	(ipe--pair-pos-hide n)
 	(ipe-edit--redisplay)))))
+
+(defun ipe-edit--delete-all-pairs ()
+  "Remove all `ipe' OPEN & CLOSE overlays.
+
+This command is used within the Insert Pair Edit (ipe) minor-mode
+\(command: `ipe-edit-mode') to remove all of the OPEN and CLOSE
+overlays for `ipe' PAIRs within the buffer, without changing the
+buffer.
+
+As there are no remaining `ipe' PAIRS after this command is run, it
+will exit (command: `ipe-edit-mode'."
+
+  (interactive)
+  (when (ipe-edit--mode-check)
+    (ipe--undo-accept)
+    (ipe-edit--abort)))
 
 (defun ipe-edit--delete-last-pair (arg)
   "Remove the last `ipe' OPEN & CLOSE overlay.
@@ -1947,20 +1980,21 @@ another window."
    (kbd "r")     ; 30. Add PAIR (Search Backward)
    (kbd "S")     ; 31. Add CONTENTS (Search Forward)
    (kbd "R")     ; 32. Add CONTENTS (Search Backward)
-   (kbd "C-d")   ; 33. Delete PAIR (First)
-   (kbd "DEL")   ; 34. Delete PAIR (Last)
-   (kbd "C-+")   ; 35. Add PAIR Definition...
-   (kbd "M-+")   ; 36. Add Mode-Specific PAIR Definition...
-   (kbd "=")     ; 37. Edit Current PAIR Definition...
-   (kbd "C-%")   ; 38. Edit MNEMONIC Definition...
-   (kbd "M-%")   ; 39. Edit Mode-Specific MNEMONIC Definition...
-   (kbd "C-*")   ; 40. Delete PAIR Definition...
-   (kbd "M-*")   ; 41. Delete Mode-Specific PAIR Definition...
-   (kbd "\\")    ; 42. Toggle ESCAPEs
-   (kbd "q")     ; 43. Abort
-   (kbd "C-o")   ; 44. Options
-   (kbd "M-h")   ; 45. Info
-   (kbd "?")     ; 46. Help
+   (kbd "M-d")   ; 33. Delete PAIR (First)
+   (kbd "C-d")   ; 34. Delete PAIR (All)
+   (kbd "DEL")   ; 35. Delete PAIR (Last)
+   (kbd "C-+")   ; 36. Add PAIR Definition...
+   (kbd "M-+")   ; 37. Add Mode-Specific PAIR Definition...
+   (kbd "=")     ; 38. Edit Current PAIR Definition...
+   (kbd "C-%")   ; 39. Edit MNEMONIC Definition...
+   (kbd "M-%")   ; 40. Edit Mode-Specific MNEMONIC Definition...
+   (kbd "C-*")   ; 41. Delete PAIR Definition...
+   (kbd "M-*")   ; 42. Delete Mode-Specific PAIR Definition...
+   (kbd "\\")    ; 43. Toggle ESCAPEs
+   (kbd "q")     ; 44. Abort
+   (kbd "C-o")   ; 45. Options
+   (kbd "M-h")   ; 46. Info
+   (kbd "?")     ; 47. Help
    )
   "Key bindings for interactive functions within `ipe-edit-mode'.
 
@@ -2009,6 +2043,7 @@ Pair Edit' functions."
     (key-sequence :tag "Add CONTENTS (Search Forward)             ")
     (key-sequence :tag "Add CONTENTS (Search Backward)            ")
     (key-sequence :tag "Delete PAIR (First)                       ")
+    (key-sequence :tag "Delete PAIR (All)                         ")
     (key-sequence :tag "Delete PAIR (Last)                        ")
     (key-sequence :tag "Add PAIR Definition...                    ")
     (key-sequence :tag "Add Mode-Specific PAIR Definition...      ")
@@ -2122,24 +2157,25 @@ This function will also be called by `customize' when the
   (ipe-edit--key 31 'ipe-edit--add-next-contents)
   (ipe-edit--key 32 'ipe-edit--add-previous-contents)
   (ipe-edit--key 33 'ipe-edit--delete-first-pair)
-  (ipe-edit--key 34 'ipe-edit--delete-last-pair)
+  (ipe-edit--key 34 'ipe-edit--delete-all-pairs)
+  (ipe-edit--key 35 'ipe-edit--delete-last-pair)
 
   ;; Edit PAIR Definitions >
-  (ipe-edit--key 35 'ipe-defn--edit-pair)
-  (ipe-edit--key 36 'ipe-defn--edit-mode-pair)
-  (ipe-edit--key 37 'ipe-defn--edit-current-pair)
-  (ipe-edit--key 38 'ipe-defn--change-pair-mnemonic)
-  (ipe-edit--key 39 'ipe-defn--change-mode-pair-mnemonic)
-  (ipe-edit--key 40 'ipe-defn--delete-pair)
-  (ipe-edit--key 41 'ipe-defn--delete-mode-pair)
+  (ipe-edit--key 36 'ipe-defn--edit-pair)
+  (ipe-edit--key 37 'ipe-defn--edit-mode-pair)
+  (ipe-edit--key 38 'ipe-defn--edit-current-pair)
+  (ipe-edit--key 39 'ipe-defn--change-pair-mnemonic)
+  (ipe-edit--key 40 'ipe-defn--change-mode-pair-mnemonic)
+  (ipe-edit--key 41 'ipe-defn--delete-pair)
+  (ipe-edit--key 42 'ipe-defn--delete-mode-pair)
 
   ;; Other commands.
-  (ipe-edit--key 42 'ipe-edit--toggle-escapes)
+  (ipe-edit--key 43 'ipe-edit--toggle-escapes)
 
-  (ipe-edit--key 43 'ipe-edit--abort)
-  (ipe-edit--key 44 'ipe-edit--options)
-  (ipe-edit--key 45 'ipe-help-info)
-  (ipe-edit--key 46 'ipe-help-edit-mode)
+  (ipe-edit--key 44 'ipe-edit--abort)
+  (ipe-edit--key 45 'ipe-edit--options)
+  (ipe-edit--key 46 'ipe-help-info)
+  (ipe-edit--key 47 'ipe-help-edit-mode)
 
   ;; Default bindings.
   (define-key ipe-edit-mode-map (kbd "C-g")
@@ -2152,23 +2188,23 @@ This function will also be called by `customize' when the
 	      'ipe-edit--insert-pair)
 
   ;; Set up ipe minibuffer bindings.
-  (ipe-edit--key 35 'ipe-defn--edit-pair
+  (ipe-edit--key 36 'ipe-defn--edit-pair
 		 ipe-read--minibuffer-keymap)
-  (ipe-edit--key 36 'ipe-defn--edit-mode-pair
+  (ipe-edit--key 37 'ipe-defn--edit-mode-pair
 		 ipe-read--minibuffer-keymap)
-  (ipe-edit--key 38 'ipe-defn--change-pair-mnemonic
+  (ipe-edit--key 39 'ipe-defn--change-pair-mnemonic
 		 ipe-read--minibuffer-keymap)
-  (ipe-edit--key 39 'ipe-defn--change-mode-pair-mnemonic
+  (ipe-edit--key 40 'ipe-defn--change-mode-pair-mnemonic
 		 ipe-read--minibuffer-keymap)
-  (ipe-edit--key 40 'ipe-defn--delete-pair
+  (ipe-edit--key 41 'ipe-defn--delete-pair
 		 ipe-read--minibuffer-keymap)
-  (ipe-edit--key 41 'ipe-defn--delete-mode-pair
+  (ipe-edit--key 42 'ipe-defn--delete-mode-pair
 		 ipe-read--minibuffer-keymap)
-  (ipe-edit--key 44 'ipe-edit--options
+  (ipe-edit--key 45 'ipe-edit--options
 		 ipe-read--minibuffer-keymap)
-  (ipe-edit--key 45 'ipe-help-info
+  (ipe-edit--key 46 'ipe-help-info
 		 ipe-read--minibuffer-keymap)
-  (ipe-edit--key 46 'ipe-help-prompt
+  (ipe-edit--key 47 'ipe-help-prompt
 		 ipe-read--minibuffer-keymap)
 
   ;; Remove existing basic movement keymappings.

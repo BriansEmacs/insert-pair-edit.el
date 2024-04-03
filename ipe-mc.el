@@ -95,8 +95,7 @@ work with multiple cursors."
 	 ipe-edit--contents-upcase
 	 ipe-edit--contents-yank
 	 ipe-edit--delete-first-pair
-	 ipe-edit--delete-first-pair
-	 ipe-edit--delete-last-pair
+	 ipe-edit--delete-all-pairs
 	 ipe-edit--delete-last-pair
 	 ipe-edit--ia-copy-text
 	 ipe-edit--ia-goto-close

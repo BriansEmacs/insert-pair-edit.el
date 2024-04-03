@@ -1853,6 +1853,114 @@ Reduce to empty buffer."
   "(|)()()"
   "C-u M-( ( C-k")
 
+(ipe-test-def-kbd mc-delete-first-1 ()
+  "Test `ipe-edit--delete-first-pair' with multiple-cursors.
+
+Using a 'word PAIR with multiple-cursors. Delete first two."
+  ipe-test-mc-options
+  nil
+  '("The quick brown fox |jumps over the lazy dog."
+    "The quick brown fox !jumps over the lazy dog."
+    "The quick brown fox !jumps over the lazy dog."
+    "The quick brown fox !jumps over the lazy dog."
+    "The quick brown fox !jumps over the lazy dog.")
+  '("The quick brown fox |jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox (!jumps) over the lazy dog."
+    "The quick brown fox (!jumps) over the lazy dog."
+    "The quick brown fox (!jumps) over the lazy dog.")
+  "M-( ( M-d M-d RET")
+
+(ipe-test-def-kbd mc-delete-first-2 ()
+  "Test `ipe-edit--delete-first-pair' with multiple-cursors.
+
+Using a 'word PAIR with multiple-cursors. Delete 2nd and 4th"
+  ipe-test-mc-options
+  nil
+  '("The quick brown fox |jumps over the lazy dog."
+    "The quick brown fox !jumps over the lazy dog."
+    "The quick brown fox !jumps over the lazy dog."
+    "The quick brown fox !jumps over the lazy dog."
+    "The quick brown fox !jumps over the lazy dog.")
+  '("The quick brown fox (|jumps) over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox (!jumps) over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox (!jumps) over the lazy dog.")
+  "M-( ( 4 M-d 2 M-d RET")
+
+(ipe-test-def-kbd mc-delete-first-3 ()
+  "Test `ipe-edit--delete-first-pair' with multiple-cursors.
+
+Using a 'word PAIR with multiple-cursors. Delete 3rd and 1st."
+  ipe-test-mc-options
+  nil
+  '("The quick brown fox |jumps over the lazy dog."
+    "The quick brown fox !jumps over the lazy dog."
+    "The quick brown fox !jumps over the lazy dog."
+    "The quick brown fox !jumps over the lazy dog."
+    "The quick brown fox !jumps over the lazy dog.")
+  '("The quick brown fox |jumps over the lazy dog."
+    "The quick brown fox (!jumps) over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox (!jumps) over the lazy dog."
+    "The quick brown fox (!jumps) over the lazy dog.")
+  "M-( ( 3 M-d 1 M-d RET")
+
+(ipe-test-def-kbd mc-delete-all-1 ()
+  "Test `ipe-edit--delete-all-pairs' with multiple-cursors.
+
+Using a 'word PAIR with multiple-cursors. Primary cursor is first."
+  ipe-test-mc-options
+  nil
+  '("The quick brown fox |jumps over the lazy dog."
+    "The quick brown fox !jumps over the lazy dog."
+    "The quick brown fox !jumps over the lazy dog."
+    "The quick brown fox !jumps over the lazy dog."
+    "The quick brown fox !jumps over the lazy dog.")
+  '("The quick brown fox |jumps over the lazy dog."
+    "The quick brown fox !jumps over the lazy dog."
+    "The quick brown fox !jumps over the lazy dog."
+    "The quick brown fox !jumps over the lazy dog."
+    "The quick brown fox !jumps over the lazy dog.")
+  "M-( ( C-d")
+
+(ipe-test-def-kbd mc-delete-all-2 ()
+  "Test `ipe-edit--delete-all-pairs' with multiple-cursors.
+
+Using a 'word PAIR with multiple-cursors. Primary cursor is last."
+  ipe-test-mc-options
+  nil
+  '("The quick brown fox !jumps over the lazy dog."
+    "The quick brown fox !jumps over the lazy dog."
+    "The quick brown fox !jumps over the lazy dog."
+    "The quick brown fox !jumps over the lazy dog."
+    "The quick brown fox |jumps over the lazy dog.")
+  '("The quick brown fox !jumps over the lazy dog."
+    "The quick brown fox !jumps over the lazy dog."
+    "The quick brown fox !jumps over the lazy dog."
+    "The quick brown fox !jumps over the lazy dog."
+    "The quick brown fox |jumps over the lazy dog.")
+  "M-( ( C-d")
+
+(ipe-test-def-kbd mc-delete-all-3 ()
+  "Test `ipe-edit--delete-all-pairs' with region.
+
+Using a 'word PAIR.  Region is middle three lines."
+  ipe-test-mc-options
+  nil
+  '("The quick brown fox jumps over the lazy dog."
+    "|The quick brown fox (jumps) over the lazy dog."
+    "The quick brown fox (jumps) over the lazy dog."
+    "The quick brown fox (jumps) over the lazy dog.@"
+    "The quick brown fox jumps over the lazy dog.")
+  '("The quick brown fox jumps over the lazy dog."
+    "The quick brown fox |jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog.")
+  "C-u M-( ( C-d")
+
 (ipe-test-def-kbd mc-delete-last-1 ()
   "Test `ipe-edit--delete-last-pair' with multiple-cursors.
 
@@ -1906,60 +2014,6 @@ Using a 'word PAIR with multiple-cursors."
     "The quick brown fox (!jumps) over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
   "M-( ( 3 DEL 1 DEL RET")
-
-(ipe-test-def-kbd mc-delete-first-1 ()
-  "Test `ipe-edit--delete-first-pair' with multiple-cursors.
-
-Using a 'word PAIR with multiple-cursors."
-  ipe-test-mc-options
-  nil
-  '("The quick brown fox |jumps over the lazy dog."
-    "The quick brown fox !jumps over the lazy dog."
-    "The quick brown fox !jumps over the lazy dog."
-    "The quick brown fox !jumps over the lazy dog."
-    "The quick brown fox !jumps over the lazy dog.")
-  '("The quick brown fox |jumps over the lazy dog."
-    "The quick brown fox jumps over the lazy dog."
-    "The quick brown fox (!jumps) over the lazy dog."
-    "The quick brown fox (!jumps) over the lazy dog."
-    "The quick brown fox (!jumps) over the lazy dog.")
-  "M-( ( C-d C-d RET")
-
-(ipe-test-def-kbd mc-delete-first-2 ()
-  "Test `ipe-edit--delete-first-pair' with multiple-cursors.
-
-Using a 'word PAIR with multiple-cursors."
-  ipe-test-mc-options
-  nil
-  '("The quick brown fox |jumps over the lazy dog."
-    "The quick brown fox !jumps over the lazy dog."
-    "The quick brown fox !jumps over the lazy dog."
-    "The quick brown fox !jumps over the lazy dog."
-    "The quick brown fox !jumps over the lazy dog.")
-  '("The quick brown fox (|jumps) over the lazy dog."
-    "The quick brown fox jumps over the lazy dog."
-    "The quick brown fox (!jumps) over the lazy dog."
-    "The quick brown fox jumps over the lazy dog."
-    "The quick brown fox (!jumps) over the lazy dog.")
-  "M-( ( 4 C-d 2 C-d RET")
-
-(ipe-test-def-kbd mc-delete-first-3 ()
-  "Test `ipe-edit--delete-first-pair' with multiple-cursors.
-
-Using a 'word PAIR with multiple-cursors."
-  ipe-test-mc-options
-  nil
-  '("The quick brown fox |jumps over the lazy dog."
-    "The quick brown fox !jumps over the lazy dog."
-    "The quick brown fox !jumps over the lazy dog."
-    "The quick brown fox !jumps over the lazy dog."
-    "The quick brown fox !jumps over the lazy dog.")
-  '("The quick brown fox |jumps over the lazy dog."
-    "The quick brown fox (!jumps) over the lazy dog."
-    "The quick brown fox jumps over the lazy dog."
-    "The quick brown fox (!jumps) over the lazy dog."
-    "The quick brown fox (!jumps) over the lazy dog.")
-  "M-( ( 3 C-d 1 C-d RET")
 
 (provide 'ipe-test-mc)
 

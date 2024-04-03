@@ -94,7 +94,7 @@ PAIRs."
   :type  'boolean)
 
 ;; -------------------------------------------------------------------
-;;;; Utility functions for :visible:
+;;;; Utility functions for :visible
 ;; -------------------------------------------------------------------
 
 (defun ipe-menu--pairs-p ()
@@ -116,6 +116,10 @@ PAIRs defined for the given MODE within `ipe-mode-pairs'."
 (defun ipe-menu--escapes-p ()
   "Return non-nil if the current Insert Pair Edit PAIR has ESCAPES."
   (ipe--pair-escapes (ipe--pair)))
+
+(defun ipe-menu--multiple-p ()
+  "Return non-nil if there is more than one ipe PAIR."
+  (> (ipe--pos-count) 1))
 
 (defun ipe-menu--text (mnemonic &optional mode)
   "Return the text displayed in an Insert Pair Edit menu.
@@ -335,9 +339,9 @@ suitable Emacs `'menu-item' structure.
   and which adds a `'menu-item' suitable for use within an Emacs menu
   to the given KEYMAP."
 
-  (let ((sub-menus   (ipe-menu--get-sub-menus   pairs menu-path))
-	(menu-pairs  (ipe-menu--get-menu-pairs pairs menu-path))
-	(i           1))
+  (let ((sub-menus  (ipe-menu--get-sub-menus   pairs menu-path))
+	(menu-pairs (ipe-menu--get-menu-pairs pairs menu-path))
+	(i          1))
 
     ;; Add next-level sub-menus.
     (mapc (lambda (sub-menu)
@@ -699,19 +703,37 @@ It defines menu-items to add delete extra PAIRs.
       '(menu-item "--" nil)
       'add-contents-backward)
 
-    (define-key-after km [delete-first-pair]
-      '(menu-item
-	"Delete PAIR (First)" ipe-edit--delete-first-pair
-	:help "Remove the first 'Insert Pair Edit' (ipe) PAIR from the\
+    (define-key-after km [delete-pair]
+      (list 'menu-item
+	    "Delete PAIR" 'ipe-edit--delete-all-pairs
+	    :visible (not (ipe-menu--multiple-p))
+	    :help "Remove the 'Insert Pair Edit' (ipe) PAIR from the\
  buffer.")
       'sep-1)
 
-    (define-key-after km [delete-last-pair]
-      '(menu-item
-	"Delete PAIR (Last)" ipe-edit--delete-last-pair
-	:help "Remove the last 'Insert Pair Edit' (ipe) PAIR from the\
+    (define-key-after km [delete-first-pair]
+      (list 'menu-item
+	    "Delete PAIR (First)" 'ipe-edit--delete-first-pair
+	    :visible (ipe-menu--multiple-p)
+	    :help "Remove the first 'Insert Pair Edit' (ipe) PAIR from the\
+ buffer.")
+      'delete-pair)
+
+    (define-key-after km [delete-all-pairs]
+      (list 'menu-item
+	    "Delete PAIR (All)" 'ipe-edit--delete-all-pairs
+	    :visible (ipe-menu--multiple-p)
+	    :help "Remove all 'Insert Pair Edit' (ipe) PAIRs from the\
  buffer.")
       'delete-first-pair)
+
+    (define-key-after km [delete-last-pair]
+      (list 'menu-item
+	    "Delete PAIR (Last)" 'ipe-edit--delete-last-pair
+	    :visible (ipe-menu--multiple-p)
+	    :help "Remove the last 'Insert Pair Edit' (ipe) PAIR from the\
+ buffer.")
+      'delete-all-pairs)
 
     km))
 
@@ -1301,10 +1323,7 @@ It defines menu-items to perform basic `ipe-edit--*' functions.
   (let ((km (make-sparse-keymap "Insert Pair Edit")))
 
     (define-key km [ipe-mouse-insert]
-		'(menu-item
-		  "Insert PAIR" ipe-edit--insert-pair
-		  :help "Insert the 'Insert Pair Edit' (ipe) OPEN and CLOSE\
- into the buffer and exit 'ipe-edit-mode'."))
+		'(menu-item "Insert PAIR" ipe-edit--insert-pair))
 
     (define-key-after km [ipe-mouse-ia]
       (list 'menu-item "Insert And" ipe-menu--insert-and-map)
@@ -1314,13 +1333,9 @@ It defines menu-items to perform basic `ipe-edit--*' functions.
       '(menu-item "--" nil)
       'ipe-mouse-ia)
 
-    (define-key-after km [ipe-mouse-delete-pair]
-      (list 'menu-item "Delete PAIR" 'ipe-edit--delete-first-pair)
-      'ipe-mouse-sep-1)
-
     (define-key-after km [ipe-mouse-change-pair]
       (list 'menu-item "Change PAIR" (ipe-menu--change-pair))
-      'ipe-mouse-delete-pair)
+      'ipe-mouse-sep-1)
 
     (define-key-after km [ipe-mouse-edit-contents]
       (list 'menu-item "Edit CONTENTS" ipe-menu--edit-contents-map)
@@ -1330,21 +1345,39 @@ It defines menu-items to perform basic `ipe-edit--*' functions.
       (list 'menu-item "Next / Previous" ipe-menu--next-prev-map)
       'ipe-mouse-edit-contents)
 
-    (define-key-after km [ipe-mouse-sep-2]
-      '(menu-item "--" nil)
+    (define-key-after km [ipe-mouse-delete-pair]
+      (list 'menu-item "Delete PAIR" 'ipe-edit--delete-all-pairs
+	    :visible '(not (ipe-menu--multiple-p)))
       'ipe-mouse-next-prev)
 
+    (let ((delete-km (make-sparse-keymap "Delete")))
+
+      (define-key delete-km [first]
+		  (list 'menu-item "First" 'ipe-edit--delete-first-pair))
+
+      (define-key-after delete-km [all]
+	(list 'menu-item "All" 'ipe-edit--delete-all-pairs)
+	'ipe-mouse-delete-first-pair)
+
+      (define-key-after delete-km [last]
+	(list 'menu-item "Last" 'ipe-edit--delete-last-pair)
+	'ipe-mouse-delete-all-pairs)
+
+      (define-key-after km [ipe-mouse-delete]
+	(list 'menu-item "Delete PAIR" delete-km
+	      :visible '(ipe-menu--multiple-p))
+	'ipe-mouse-delete))
+
+    (define-key-after km [ipe-mouse-sep-2]
+      '(menu-item "--" nil)
+      'ipe-mouse-delete)
+
     (define-key-after km [ipe-mouse-abort]
-      '(menu-item
-	"Abort" ipe-edit--abort
-	:help "Exit 'ipe-edit-mode' without inserting OPEN and CLOSE to\
- the buffer.")
+      '(menu-item "Abort" ipe-edit--abort)
       'ipe-mouse-sep-2)
 
     (define-key-after km [ipe-mouse-help]
-      '(menu-item
-	"Help" ipe-help-edit-mode
-	:help "Display the 'Insert Pair Edit' (ipe) help.")
+      '(menu-item "Help" ipe-help-edit-mode)
       'ipe-mouse-abort)
 
     km))
@@ -2058,7 +2091,7 @@ Sub-menu based upon MODE."
 	  :help "Replace the current 'Insert Pair Edit' (ipe) PAIR with\
  another PAIR."
 	  :enable '(ipe-menu--pairs-p))
-    'ipe-mouse-delete-pair))
+    'ipe-mouse-sep-1))
 
 (defun ipe-menu--emacs-edit-pairs-update ()
   "Add 'Pairs' sub-menu to the 'Edit' menu.

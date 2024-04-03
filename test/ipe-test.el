@@ -193,6 +193,10 @@ first character difference between the two lines."
   (let*
       ((actual      (substring-no-properties buffer-actual))
        (expected    (substring-no-properties buffer-expected))
+       (mc-point    (regexp-quote ipe-test--mc-point-indicator))
+       (expected-mc (replace-regexp-in-string mc-point
+					      ""
+					      expected))
        (compare     (compare-strings actual   0 (length actual)
 				     expected 0 (length expected)))
        (same        (if (integerp compare) (1- (abs compare)) 0))
@@ -201,14 +205,9 @@ first character difference between the two lines."
        (line        (number-to-string lineno))
        (actual-line (ipe-test--get-string-line actual lineno)))
 
-    (if (equal actual expected)
-	;; TODO: compare-strings *with* 'face properties.
-	(concat "\n"
-		"\n"
-
-		"\tHighlighting differs at line: " line "\n"
-		"\n"
-		"\t\tActual:  '" actual-line "'")
+    (when (and (not (equal actual expected))
+	       (or (featurep 'multiple-cursors)
+		   (not (equal actual expected-mc))))
       (let*
 	  ((expected-lines   (ipe-test--count-string-lines expected))
 	   (expected-line    (ipe-test--get-string-line expected lineno))
@@ -498,16 +497,20 @@ added to each position indicated."
 
   (let ((buffer-text (cadr  (assoc name ipe-test--buffer-text-alist)))
 	(keystrokes  (ipe-compat--caddr
-                      (assoc name ipe-test--buffer-text-alist))))
-    (with-current-buffer (get-buffer-create "*ipe-test-buffer-keys*")
-      (setq buffer-read-only nil)
-      (delete-region (point-min) (point-max))
-      (insert keystrokes)
-      (goto-char (point-min))
-      (setq buffer-read-only t))
-    (split-window-vertically)
-    (switch-to-buffer-other-window "*ipe-test-buffer-keys*")
-    (shrink-window-if-larger-than-buffer)
+		      (assoc name ipe-test--buffer-text-alist))))
+    (if (stringp keystrokes)
+        (progn
+	  (with-current-buffer (get-buffer-create "*ipe-test-buffer-keys*")
+	    (setq buffer-read-only nil)
+	    (delete-region (point-min) (point-max))
+	    (insert keystrokes)
+	    (goto-char (point-min))
+	    (setq buffer-read-only t))
+          (split-window-vertically)
+          (switch-to-buffer-other-window "*ipe-test-buffer-keys*")
+          (shrink-window-if-larger-than-buffer))
+      (when (get-buffer "*ipe-test-buffer-keys*")
+        (kill-buffer "*ipe-test-buffer-keys*")))
 
     (with-current-buffer (get-buffer-create "*ipe-test-buffer*")
       (setq buffer-read-only nil)
@@ -517,7 +520,8 @@ added to each position indicated."
 	(insert buffer-text))
       (ipe-test--set-point))
     (switch-to-buffer-other-window "*ipe-test-buffer*")
-    (message (replace-regexp-in-string "%" "%%" keystrokes))))
+    (when (stringp keystrokes)
+      (message (replace-regexp-in-string "%" "%%" keystrokes)))))
 
 (defun ipe-test--ert-test-buffer (test-name)
   "Display, in another window, the BUFFER-TEXT for ipe-test TEST-NAME.

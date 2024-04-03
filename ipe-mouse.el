@@ -40,6 +40,10 @@
 ;;  [mouse-3]        - Display the 'Insert Pair Edit' Context Menu.
 ;;  [drag-mouse-1]   - Move both the `ipe' OPEN and CLOSE strings.
 ;;
+;;  [C-mouse-1]      - Add an `ipe' PAIR around mouse click POS.
+;;  [C-mouse-2]      - Remove `ipe' PAIR closest to mouse click POS.
+;;  [C-drag-mouse-1] - Add an `ipe' PAIR around a region.
+;;
 ;;  [wheel-up]       - Move the `ipe' OPEN string backwards.
 ;;  [wheel-down]     - Move the `ipe' CLOSE string forwards.
 ;;  [C-wheel-up]     - Move the `ipe' OPEN string forwards.
@@ -96,13 +100,15 @@ specified by a mouse click EVENT."
   (interactive "e")
   (when (and (ipe-mouse--mode-check)
 	     (mouse-event-p event))
-    (ipe--pos-list-singular)
-    (ipe--open-init 0 (posn-point (cadr event)) 1)
 
-    (when (> (ipe--pos-open 0) (ipe--pos-close 0))
-      (ipe--close-init 0 (posn-point (cadr event)) 1))
+    (let ((pos (posn-point (cadr event))))
+      (ipe--pos-list-singular)
+      (ipe--open-init 0 pos 1)
 
-    (ipe--pair-pos-redisplay)))
+      (when (> (ipe--pos-open 0) (ipe--pos-close 0))
+	(ipe--close-init 0 pos 1))
+
+      (ipe--pair-pos-redisplay))))
 
 (defun ipe-mouse--close (event)
   "Move the `ipe' CLOSE string to the mouse position given in EVENT.
@@ -114,28 +120,29 @@ specified by a mouse click EVENT."
   (interactive "e")
   (when (and (ipe-mouse--mode-check)
 	     (mouse-event-p event))
-    (ipe--pos-list-singular)
-    (ipe--close-init 0 (posn-point (cadr event)) 1)
 
-    (when (< (ipe--pos-close 0) (ipe--pos-open 0))
-      (ipe--open-init 0 (posn-point (cadr event)) 1))
+    (let ((pos (posn-point (cadr event))))
+      (ipe--pos-list-singular)
+      (ipe--close-init 0 pos 1)
 
-    (ipe--pair-pos-redisplay)))
+      (when (< (ipe--pos-close 0) (ipe--pos-open 0))
+	(ipe--open-init 0 pos 1))
 
-(defun ipe-mouse--drag (event)
+      (ipe--pair-pos-redisplay))))
+
+(defun ipe-mouse--region (event)
   "Move the `ipe' OPEN and CLOSE to beginning and end of a mouse drag.
 
 This command is used within the Insert Pair Edit (ipe) minor-mode
 \(command: `ipe-edit-mode') to move the OPEN overlay and CLOSE
-overlays of a PAIR to the region specified by the start and finish of
-a mouse drag event.
-
-EVENT is the mouse drag event."
+overlay of a PAIR to the region specified by the start and finish of
+a mouse drag EVENT."
 
   (interactive "e")
   (when (and (ipe-mouse--mode-check)
 	     (mouse-event-p event)
 	     (= (length event) 3))
+
     (ipe--pos-list-singular)
     (let* ((p1  (posn-point (cadr event)))
 	   (p2  (posn-point (ipe-compat--caddr event)))
@@ -145,6 +152,71 @@ EVENT is the mouse drag event."
       (when (and beg end)
 	(ipe--open-init 0 (+ beg 1) 1)
 	(ipe--close-init 0 end 1)
+
+	(ipe--pair-pos-redisplay)))))
+
+(defun ipe-mouse--add-pair (event)
+  "Add a new `ipe' PAIR at the mouse position given in EVENT.
+
+This command is used within the Insert Pair Edit (ipe) minor-mode
+\(command: `ipe-edit-mode') to add a new PAIR at a position specified
+by a mouse click EVENT."
+
+  (interactive "e")
+  (when (and (ipe-mouse--mode-check)
+	     (mouse-event-p event))
+
+    (let ((pos (posn-point (cadr event)))
+	  (n   (ipe--pos-count)))
+      (ipe--pair-pos-init n pos 1)
+      (ipe--pos-point n (ipe--pos-open n))
+      (ipe--pair-pos-redisplay))))
+
+(defun ipe-mouse--delete-pair (event)
+  "Delete the `ipe' PAIR closest to the mouse position given in EVENT.
+
+This command is used within the Insert Pair Edit (ipe) minor-mode
+\(command: `ipe-edit-mode') to delete a PAIR from a position specified
+by a mouse click EVENT."
+
+  (interactive "e")
+  (when (and (ipe-mouse--mode-check)
+	     (mouse-event-p event))
+
+    (let* ((pos (posn-point (cadr event)))
+	   (n   (ipe--pos-list-nearest pos)))
+      (if (<= (ipe--pos-count) 1)
+	  (progn
+	    (ipe--undo-accept)
+	    (ipe-edit--abort))
+	(ipe--pair-pos-hide n)
+	(ipe-edit--redisplay)))))
+
+(defun ipe-mouse--add-pair-region (event)
+  "Add an `ipe' PAIR around the beginning and end of a mouse drag.
+
+This command is used within the Insert Pair Edit (ipe) minor-mode
+\(command: `ipe-edit-mode') to add a PAIR of OPEN and CLOSE overlays
+to the region specified by the start and finish of a mouse drag EVENT.
+
+This function will not remove existing PAIRs."
+
+  (interactive "e")
+  (when (and (ipe-mouse--mode-check)
+	     (mouse-event-p event)
+	     (= (length event) 3))
+
+    (let* ((p1  (posn-point (cadr event)))
+	   (p2  (posn-point (ipe-compat--caddr event)))
+	   (beg (if (and p1 p2 (< p1 p2)) p1 p2))
+	   (end (if (and p1 p2 (< p1 p2)) p2 p1))
+	   (n   (ipe--pos-count)))
+
+      (when (and beg end)
+	(ipe--open-init n (+ beg 1) 1)
+	(ipe--close-init n end 1)
+	(ipe--pos-property-set n :initial-n n)
+	(ipe--pos-point n (ipe--pos-open n))
 
 	(ipe--pair-pos-redisplay)))))
 
@@ -326,7 +398,18 @@ the `ipe-move-by-movements' list."
   (define-key ipe-edit-mode-map [mouse-2]
 	      'ipe-mouse--close)
   (define-key ipe-edit-mode-map [drag-mouse-1]
-	      'ipe-mouse--drag)
+	      'ipe-mouse--region)
+
+  (define-key ipe-edit-mode-map [C-down-mouse-1]
+	      'self-insert-command)
+  (define-key ipe-edit-mode-map [C-mouse-1]
+	      'ipe-mouse--add-pair)
+  (define-key ipe-edit-mode-map [C-down-mouse-2]
+	      'self-insert-command)
+  (define-key ipe-edit-mode-map [C-mouse-2]
+	      'ipe-mouse--delete-pair)
+  (define-key ipe-edit-mode-map [C-drag-mouse-1]
+	      'ipe-mouse--add-pair-region)
 
   (define-key ipe-edit-mode-map [wheel-up]
 	      'ipe-mouse--open-backward)
@@ -360,6 +443,11 @@ the `ipe-move-by-movements' list."
 	  '([mouse-1]
 	    [mouse-2]
 	    [drag-mouse-1]
+	    [C-mouse-1]
+	    [C-down-mouse-1]
+	    [C-mouse-2]
+	    [C-down-mouse-2]
+	    [C-drag-mouse-1]
 	    [wheel-up]
 	    [wheel-down]
 	    [S-wheel-up]

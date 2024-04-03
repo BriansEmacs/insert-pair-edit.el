@@ -87,6 +87,7 @@
     ipe-test-list
     ipe-test-matching
     ipe-test-mc
+    ipe-test-menu
     ipe-test-missing
     ipe-test-options
     ipe-test-other
@@ -217,6 +218,9 @@ code."
   ;; Load ERT Tests.
   (dolist (test ipe-build--ert-tests)
     (require test))
+
+  (setq ipe-menu-support-p t)
+  (ipe-menu--install)
 
   (ipe-test-run-all-and-exit (< ipe-build--verbose 2)))
 
