@@ -116,8 +116,8 @@ git clone https://github.com/BriansEmacs/insert-pair-edit.el <path-to-download-d
 And add the following to your `.emacs` file:
 
 ```
-(add-to-list 'load-path "<path-to-download-dir>/ipe"))
-(add-to-list 'load-path "<path-to-download-dir>/ipe/modes"))
+(add-to-list 'load-path "<path-to-download-dir>/ipe")
+(add-to-list 'load-path "<path-to-download-dir>/ipe/modes")
 ```
 
 Or:
