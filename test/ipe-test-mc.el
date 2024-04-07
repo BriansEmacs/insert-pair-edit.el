@@ -1548,7 +1548,7 @@ Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
   nil
   "@The (quick) brown (fox) jumps (over) the (lazy) dog.|"
-  "The <start>|quick<end> brown <start>!fox<end> jumps <start>!over<end> the <start>!lazy<end> dog."
+  "The |<start>quick<end> brown !<start>fox<end> jumps !<start>over<end> the !<start>lazy<end> dog."
   "C-u M-( ( ( S RET")
 
 (ipe-test-def-kbd mc-edit-replace-region ()
@@ -1558,7 +1558,7 @@ Using a 'word PAIR with multiple-cursors."
   ipe-test-mc-options
   nil
   "@The (quick) brown (fox) jumps (over) the (lazy) dog.|"
-  "The <start>|quick<end> brown <start>!fox<end> jumps <start>!over<end> the <start>!lazy<end> dog."
+  "The |<start>quick<end> brown !<start>fox<end> jumps !<start>over<end> the !<start>lazy<end> dog."
   "C-u C-u C-u M-( ( S RET")
 
 (ipe-test-def-kbd mc-auto-insert ()
@@ -1850,7 +1850,7 @@ Reduce to empty buffer."
   ipe-test-mc-options
   nil
   "@(The)(quick)(brown)|"
-  "(|)()()"
+  "|()()()"
   "C-u M-( ( C-k")
 
 (ipe-test-def-kbd mc-delete-first-1 ()

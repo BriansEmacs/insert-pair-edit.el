@@ -170,7 +170,7 @@ Using a 'word PAIR at end-of-line."
   ipe-test-insert-and-options
   nil
   "The quick brown fox jumps over the lazy dog|"
-  "The quick brown fox jumps over the lazy <start>|<end>"
+  "The quick brown fox jumps over the lazy <start><end>|"
   "M-( ( K")
 
 (ipe-test-def-kbd insert-and-kill-text-4 ()

@@ -23,6 +23,7 @@ ESCAPEs
 FN
 FUNC
 I'th
+J'th
 INFIX'es
 INFIXES
 IPE
@@ -128,6 +129,7 @@ funcall
 functionp
 gif
 gifs
+github
 gmail
 goto
 grey

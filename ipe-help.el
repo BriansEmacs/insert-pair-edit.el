@@ -618,12 +618,8 @@ This minor mode forms part of the 'Insert Pair Edit' (ipe) package.
 
   (interactive)
 
-  (with-help-window "*Help*"
-    (set-buffer standard-output)
-    (setq-local tab-width 8)
-    (help-setup-xref (list #'ipe-help-prompt) t)
-    (insert (substitute-command-keys
-	     (concat "'Insert Pair Edit' Prompt Help
+  (let ((help-text (substitute-command-keys
+		    (concat "'Insert Pair Edit' Prompt Help
 ------------------------------
 
 You are currently in the 'Insert Pair Edit' prompt.
@@ -680,8 +676,14 @@ Or, use one the following key bindings:
  Delete a Mode-Specific 'Insert Pair Edit' PAIR Definition.
 	    (command: `ipe-defn--delete-mode-pair')
 
-")))
-    ""))
+"))))
+
+    (with-help-window "*Help*"
+      (set-buffer standard-output)
+      (setq-local tab-width 8)
+      (help-setup-xref (list #'ipe-help-prompt) t)
+      (insert help-text)
+      "")))
 
 (defun ipe-help-info ()
   "Display the 'Insert Pair Edit' info help."

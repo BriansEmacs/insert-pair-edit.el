@@ -539,12 +539,12 @@ ERT results buffer."
 (defun ipe-test--occur-failed ()
   "Run `occur' to search for failed test strings within *ert*."
   (interactive)
-  (occur "^F"))
+  (occur "^F "))
 
 (progn
   (define-key ert-results-mode-map (kbd "e")
 	      'ipe-test--ert-test-buffer)
-  (define-key ert-results-mode-map (kbd "o")
+  (define-key ert-results-mode-map (kbd "f")
 	      'ipe-test--occur-failed))
 
 (provide 'ipe-test)

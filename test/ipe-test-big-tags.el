@@ -408,7 +408,7 @@ Using a 'word PAIR."
   ipe-test-big-tags-options
   nil
   "The quick brown fox jumps over the lazy dog.|"
-  "The quick brown fox jumps over the lazy dog.<start-of-tag>|<end-of-tag>"
+  "The quick brown fox jumps over the lazy dog.<start-of-tag><end-of-tag>|"
   "M-( ( M-f RET")
 
 (ipe-test-def-kbd big-tag-open-forward-blank ()

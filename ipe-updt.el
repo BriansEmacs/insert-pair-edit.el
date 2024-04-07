@@ -159,7 +159,7 @@ string, or nil, if no OPEN string is found."
 	(when (and (> (length infix) 0)
 		   prev
 		   (or (= (length open) 0)
-		       (ipe--string-starts-with infix open)))
+		       (ipe--string-starts-with-p infix open)))
 	  (setq prev (ipe-updt--previous-infix-beg prev infix close bound))))
 
       prev)))
@@ -228,8 +228,8 @@ If no INFIX is found in a line before POS, return POS."
 	  ;; If the previous line also contains a CLOSE, we have gone
 	  ;; too far back.
 	  (when (and infix-prev
-		     (ipe--to-eol-contains (+ infix-prev (length infix))
-					   close))
+		     (ipe--to-eol-contains-p (+ infix-prev (length infix))
+					     close))
 	    (setq infix-prev nil)))
 
 	(if (or (not infix-prev)
@@ -628,7 +628,7 @@ POS if no line starting with INFIX was found."
 			      (min (ipe--eol (point)) bound)
 			    (ipe--eol (point))))
 
-	  (if (ipe--to-eol-contains (+ infix-pos (length infix)) close)
+	  (if (ipe--to-eol-contains-p (+ infix-pos (length infix)) close)
 	      (setq infix-pos nil)
 	    (forward-line 1)
 	    (setq infix-pos (ipe--infix-pos (point) infix)))))
@@ -830,7 +830,7 @@ If no PAIR is found, return nil."
 		 ((zerop (+ len-close len-infix))
 		  (ipe--close-init-pos 0 beg))
 
-		 ((ipe--string-starts-with infix close)
+		 ((ipe--string-starts-with-p infix close)
 		  (let* ((close-init (ipe--close-init-pos 0 (+ beg len-open)))
 			 (next-infix (ipe-updt--next-infix-end (+ beg len-open)
 							       infix
@@ -1207,10 +1207,10 @@ Return the number of characters deleted from the buffer."
 			  (if (or (region-active-p)
 				  (and (<= beg-open pos)
 				       (<  pos end-open)))
-			      pos-open
+			      beg-open
 			    (if (and (<= beg-close pos)
 				     (<  pos pos-close))
-				pos-close
+				beg-close
 			      (if (>= pos (point-max))
 				  'eob
 				pos))))
@@ -1243,7 +1243,8 @@ Return the number of characters deleted from the buffer."
 
     ;; Delete CLOSE + indents.
     (unless (zerop len-close)
-      (setq deleted (ipe--pos-delete beg-close pos-close)))
+      (setq deleted (+ deleted
+		       (ipe--pos-delete beg-close pos-close))))
 
     ;; Delete ESCAPE's.
     (when (ipe--pair-escapes pair)
@@ -1334,11 +1335,14 @@ recorded in `ipe--pair-pos-list'."
 
 	      (when (and pos-open pos-close
 			 (<= pos-close end))
-		(let ((deleted (ipe-updt--delete-pair pair nil
-						      pos-open pos-close
-						      set-pair-p)))
-		  (setq pos-close (- pos-close deleted)
-			end       (- end       deleted)))))))
+		(save-excursion
+		  (goto-char pos-open)
+
+		  (let ((deleted (ipe-updt--delete-pair pair nil
+							pos-open pos-close
+							set-pair-p)))
+		    (setq pos-close (- pos-close deleted)
+			  end       (- end       deleted))))))))
 
       ;; Not a region, use the 'nearest' PAIR.
       (let ((pos-pair (ipe-updt--find-pair pair (point))))
@@ -1347,7 +1351,8 @@ recorded in `ipe--pair-pos-list'."
 
 	;; Check if we have found a 'nearest' PAIR.
 	(when (and pos-open pos-close)
-	  (ipe-updt--delete-pair pair nil pos-open pos-close
+	  (ipe-updt--delete-pair pair nil
+				 pos-open pos-close
 				 set-pair-p))))
 
     (unless (and pos-open pos-close)

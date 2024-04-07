@@ -58,12 +58,15 @@
     (ipe-pairs
      '(("("  "((((("  ")))))")
        ("{"  "{{{{{"  "}}}}}")
-       ("<"  "<"      ">")
-       ("'"  "'"      "'"    (:escapes (("'" "\\'"))))
-       ("\"" "\""     "\""   (:escapes (("\"" "\\\""))))
-       (";"  "<-- "   " -->" (:movement line :infix " -- "))
-       ("*"  "/*"     "*/"   (:movement line :infix "**"))
-       ("1"  "/*"     "*/"   (:movement line))))
+       ("["  "["      "]"     (:movement char))
+       ("<"  "<"      ">"     (:movement char))
+       ("1"  "[[[[["  "]]]]]" (:movement char))
+       ("2"  "<<<<<"  ">>>>>" (:movement char))
+       ("'"  "'"      "'"     (:escapes (("'" "\\'"))))
+       ("\"" "\""     "\""    (:escapes (("\"" "\\\""))))
+       (";"  "<-- "   " -->"  (:movement line :infix " -- "))
+       ("*"  "/*"     "*/"    (:movement line :infix "**"))
+       ("/"  "/*"     "*/"    (:movement line))))
     (ipe-mode-pairs        nil))
   "Options used by `ipe-test-def-kbd' for `ipe-test-update'.")
 
@@ -417,6 +420,106 @@ Large tag nested PAIRs."
   "(((((|<>)))))"
   "C-u M-( ( ( < RET")
 
+(ipe-test-def-kbd update-region-1 ()
+  "Test `ipe-insert-pair-edit-update' with a region.
+
+Small region over complete tight PAIRs."
+  ipe-test-update-options
+  nil
+  "[][][][]|[]@[][][][]"
+  "[][][][]|<>[][][][]"
+  "C-u M-( [ ( < RET")
+
+(ipe-test-def-kbd update-region-2 ()
+  "Test `ipe-insert-pair-edit-update' with a region.
+
+Small region over complete separated PAIRs."
+  ipe-test-update-options
+  nil
+  "[a][b][c][d]|[e]@[f][g][h][i]"
+  "[a][b][c][d]|<e>[f][g][h][i]"
+  "C-u M-( [ ( < RET")
+
+(ipe-test-def-kbd update-region-3 ()
+  "Test `ipe-insert-pair-edit-update' with a region.
+
+Medium region over complete PAIRs."
+  ipe-test-update-options
+  nil
+  "[][][]|[][][]@[][][]"
+  "[][][]<|><!><!>[][][]"
+  "C-u M-( [ ( < O")
+
+(ipe-test-def-kbd update-region-4 ()
+  "Test `ipe-insert-pair-edit-update' with a region.
+
+Medium region over complete PAIRs."
+  ipe-test-update-options
+  nil
+  "[a][b][c]|[d][e][f]@[g][h][i]"
+  "[a][b][c]<|d><!e><!f>[g][h][i]"
+  "C-u M-( [ ( < O")
+
+(ipe-test-def-kbd update-region-5 ()
+  "Test `ipe-insert-pair-edit-update' with a region.
+
+Meidum region over incomplete PAIRs."
+  ipe-test-update-options
+  nil
+  "[][][|][][][][@][][]"
+  "[][][]<|><!><!>[][][]"
+  "C-u M-( [ ( < O")
+
+(ipe-test-def-kbd update-region-6 ()
+  "Test `ipe-insert-pair-edit-update' with a region.
+
+Full buffer over complete PAIRs."
+  ipe-test-update-options
+  nil
+  "|[][][][][x][][][][]@"
+  "<|><!><!><!><!x><!><!><!><!>"
+  "C-u M-( [ ( < O")
+
+(ipe-test-def-kbd update-region-7 ()
+  "Test `ipe-insert-pair-edit-update' with a region.
+
+Start of buffer over complete PAIRs."
+  ipe-test-update-options
+  nil
+  "|[a][b][c][d][e]@[f][g][h][i]"
+  "<|a><!b><!c><!d><!e>[f][g][h][i]"
+  "C-u M-( [ ( < O")
+
+(ipe-test-def-kbd update-region-8 ()
+  "Test `ipe-insert-pair-edit-update' with a region.
+
+End of buffer over complete PAIRs."
+  ipe-test-update-options
+  nil
+  "[a][b][c][d]|[e][f][g][h][i]@"
+  "[a][b][c][d]<|e><!f><!g><!h><!i>"
+  "C-u M-( [ ( < O")
+
+(ipe-test-def-kbd update-region-9 ()
+  "Test `ipe-insert-pair-edit-update' with a region.
+
+Entier buffer over complete PAIRs."
+  ipe-test-update-options
+  nil
+  "|[a][b][c][d][e][f][g][h][i]@"
+  "<|a><!b><!c><!d><!e><!f><!g><!h><!i>"
+  "C-u M-( [ ( < O")
+
+(ipe-test-def-kbd update-region-10 ()
+  "Test `ipe-insert-pair-edit-update' with a region.
+
+Entier buffer over complete PAIRs."
+  ipe-test-update-options
+  nil
+  "|[[[[[a]]]]][[[[[b]]]]][[[[[c]]]]][[[[[d]]]]][[[[[e]]]]][[[[[f]]]]][[[[[g]]]]][[[[[h]]]]][[[[[i]]]]]@"
+  "<<<<<|a>>>>><<<<<!b>>>>><<<<<!c>>>>><<<<<!d>>>>><<<<<!e>>>>><<<<<!f>>>>><<<<<!g>>>>><<<<<!h>>>>><<<<<!i>>>>>"
+  "C-u M-( 1 ( 2 O")
+
 (ipe-test-def-kbd update-infix-1 ()
   "Test `ipe-insert-pair-edit-update' with infixed line.
 
@@ -499,7 +602,7 @@ Minimal buffer + toggled OPEN + CLOSE + indents, no infix."
     "    |   ."
     "    */")
   '("|.")
-  "C-u M-( 1 C-d")
+  "C-u M-( / C-d")
 
 (ipe-test-def-kbd update-infix-8 ()
   "Test `ipe-insert-pair-edit-update' with infixed line.
@@ -650,7 +753,7 @@ no-infix."
     "The quick brown fox |jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.")
-  "C-u M-( 1 C-d")
+  "C-u M-( / C-d")
 
 (ipe-test-def-kbd update-infix-16 ()
   "Test `ipe-insert-pair-edit-update' with infixed line.
@@ -696,7 +799,7 @@ non-infixed line to infixed line."
     "    **    The quick brown fox jumps over the lazy dog."
     "    */"
     "The quick brown fox jumps over the lazy dog.")
-  "C-u M-( 1 ( * RET")
+  "C-u M-( / ( * RET")
 
 (ipe-test-def-kbd update-infix-18 ()
   "Test `ipe-insert-pair-edit-update' with infixed line.
@@ -719,7 +822,7 @@ infixed line to non-infixed line."
     "        The quick brown fox jumps over the lazy dog."
     "    */"
     "The quick brown fox jumps over the lazy dog.")
-  "C-u M-( * ( 1 RET")
+  "C-u M-( * ( / RET")
 
 (ipe-test-def-kbd update-infix-19 ()
   "Test `ipe-insert-pair-edit-update' with infixed line.

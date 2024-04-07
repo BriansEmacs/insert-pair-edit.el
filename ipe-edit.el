@@ -1562,7 +1562,7 @@ With a prefix ARG, search for the `ARG'th OPEN and CLOSE."
 	    (ipe-updt--delete-pair pair nil
 				   (car pos-pair) (cdr pos-pair) t)
 
-	    (when (ipe--pos-contains (1- n) (ipe--pos-point (1- n)))
+	    (when (ipe--pos-contains-p (1- n) (ipe--pos-point (1- n)))
 	      (ipe--pos-point n (+ (ipe--pos-open n)
 				   (- (ipe--pos-point (1- n))
 				      (ipe--pos-open (1- n))))))
@@ -1619,7 +1619,7 @@ With a prefix ARG, search for the `ARG'th OPEN and CLOSE backward."
 	    (goto-char (car pos-pair))
 	    (ipe-updt--delete-pair pair nil
 				   (car pos-pair) (cdr pos-pair) t)
-	    (when (ipe--pos-contains (1- n) (ipe--pos-point (1- n)))
+	    (when (ipe--pos-contains-p (1- n) (ipe--pos-point (1- n)))
 	      (ipe--pos-point n
 			      (+ (ipe--pos-open n)
 				 (- (ipe--pos-point (1- n))
@@ -2513,7 +2513,7 @@ or
 This variable is expected to be set by
   `ipe-edit--movement-keysets-set'."
   :group 'ipe
-  :tag   "Insert Pair Edit - Movement Keys"
+  :tag   "Insert Pair Edit - Movement keys"
   :link  '(function-link ipe-insert-pair-edit)
   :link  '(emacs-commentary-link "ipe-edit.el")
   :type  '(choice

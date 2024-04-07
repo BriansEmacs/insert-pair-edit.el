@@ -1,12 +1,18 @@
+[![Github actions badge][github-actions-badge]][github-actions-link]
+
+  [github-actions-badge]: https://github.com/BriansEmacs/insert-pair-edit.el/actions/workflows/melpazoid.yml/badge.svg
+  [github-actions-link]: https://github.com/BriansEmacs/insert-pair-edit.el/actions/workflows/melpazoid.yml
+
 ![Insert Pair Edit](doc/insert-pair-edit.gif)
 
 ----------------------------------------------------------------------
 # insert-pair-edit
 
-This project defines a 
-[GNU Emacs](https://www.gnu.org/software/emacs/) package, `ipe`.  This
-package supplies commands that are a more feature rich alternative to
-the standard `M-(` **Emacs** keybinding, (`insert-parentheses`).
+
+This project defines a [GNU Emacs](https://www.gnu.org/software/emacs/) 
+package, `ipe` (_"`i`"nsert-"`p`"air-"`e`"dit_).  This package supplies
+commands that are a more feature rich alternative to the standard `M-(`
+**Emacs** keybinding, (`insert-parentheses`).
 
 ----------------------------------------------------------------------
 ## Overview
@@ -39,8 +45,8 @@ surround the text to be enclosed by the _PAIR_.
 ![ipe-edit-mode Commands](doc/ipe-edit-mode-menu.png)
 
 After adding the _OPEN_ and _CLOSE_ overlays into the buffer, the
-`ipe-insert-pair-edit` command starts `ipe-edit-mode` to enter the
-**Insert Pair Edit (ipe)** minor mode.
+`ipe-insert-pair-edit` command starts the **Insert Pair Edit**
+minor mode (`ipe-edit-mode`)
 
 The **Insert Pair Edit (ipe)** minor mode supplies commands to
 move these _OPEN_ and _CLOSE_ overlays about the buffer.  When
@@ -73,24 +79,23 @@ The set of _PAIRs_ available for editing are defined _per-major-mode_.
 
 Example _PAIR Definitions_ are supplied for:
 
+* Markdown
 * TexInfo
 * HTML
-* Markdown
 
 -------------------------------------------------------------------
 ## Pairs Menu
 
 ![Insert Pair Edit Menu](doc/insert-pair-edit-menu.png)
 
-Most of the functionality of the **Insert Pair Edit (ipe)** package
-can also be accessed via the **Emacs** menubar.  If running **Emacs**
-in an environment which supports menus, the `ipe` package
-can add an extra `Pairs` sub-menu to the standard **Emacs** `Edit`
-menu item.
+Most of the functionality of the `ipe` package can also be accessed
+via the **Emacs** menubar.  If running **Emacs** in an environment
+which supports menus, the `ipe` package can add an extra `Pairs`
+sub-menu to the standard **Emacs** `Edit` menu item.
 
-The set of _PAIRs_ listed under the `Pairs` -> `Insert PAIR` /
-`Update PAIR` / `Delete PAIR` sub-menus will change dynamically based
-upon the current buffer's `major-mode`.
+If the `Pairs` menu is enabled, the set of _PAIRs_ listed under the
+`Pairs` -> `Insert PAIR` / `Update PAIR` / `Delete PAIR` sub-menus
+will change dynamically based upon the current buffer's `major-mode`.
 
 ![Insert Pair Edit Menu](doc/insert-pair-edit-mode-menu.png)
 
@@ -107,7 +112,7 @@ _PAIR_ (of the given type) and remain in the current **Emacs** mode.
 ----------------------------------------------------------------------
 ## Installation:
 
-1a. Download the `insert-pair-edit` project source:
+1a. Download the `insert-pair-edit.el` project source:
 
 ```
 git clone https://github.com/BriansEmacs/insert-pair-edit.el <path-to-download-dir>/ipe
@@ -115,16 +120,16 @@ git clone https://github.com/BriansEmacs/insert-pair-edit.el <path-to-download-d
 
 And add the following to your `.emacs` file:
 
-```
-(add-to-list 'load-path "<path-to-download-dir>/ipe"))
-(add-to-list 'load-path "<path-to-download-dir>/ipe/modes"))
+```lisp
+(add-to-list 'load-path "<path-to-download-dir>/ipe")
+(add-to-list 'load-path "<path-to-download-dir>/ipe/modes")
 ```
 
 Or:
 
-1b. Download `ipe` from [MELPA](https://melpa.org): (_Pending_)
+1b. Download the `ipe` package from [MELPA](https://melpa.org): (_Pending_)
 
-```
+```lisp
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (package-initialize)
@@ -133,23 +138,30 @@ Or:
 
 2. Add the following to your `.emacs` file:
 
-```
+```lisp
 (require 'ipe)
 (global-set-key (kbd "M-(") 'ipe-insert-pair-edit)
 ```
 
 3. You may also want to enable the `ipe` "Pairs" menu:
 
-```
+```lisp
 (customize-save-variable 'ipe-menu-support-p t)
 ```
 
-4. You may also want to load the "example" modal PAIR mappings:
+4. You may also want to bind the other `ipe` commands:
 
+```lisp
+(global-set-key (kbd "A-(") 'ipe-insert-pair-edit-update)
+(global-set-key (kbd "H-(") 'ipe-insert-pair-edit-delete)
 ```
-(require 'ipe-html-mode)
+
+5. You may also want to load the "example" modal PAIR mappings:
+
+```lisp
 (require 'ipe-markdown-mode)
 (require 'ipe-texinfo-mode)
+(require 'ipe-html-mode)
 ```
 
 ----------------------------------------------------------------------
@@ -159,12 +171,12 @@ After installation:
 
 From the keyboard:
 
-```
+```lisp
 M-x ipe-help
 M-x ipe-help-info
 ```
 
-From the Emacs `Edit` menu:
+(If you have enabled `ipe-menu-support-p`) From the Emacs `Edit` menu:
 
 ```
 Edit >

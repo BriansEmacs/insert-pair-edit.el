@@ -385,7 +385,7 @@ of the form:
   - Options
   - Info
   - Help"
-  :group 'ipe-advanced
+  :group 'ipe
   :tag   "Insert Pair Edit - Include menus."
   :link  '(function-link ipe-insert-pair-edit)
   :link  '(emacs-commentary-link "ipe-menu.el")
@@ -896,7 +896,7 @@ Where:
 ;;;; Utility functions:
 ;; -------------------------------------------------------------------
 
-(defun ipe--string-starts-with (string prefix)
+(defun ipe--string-starts-with-p (string prefix)
   "Return non-nil if STRING begins with PREFIX."
 
   (when string
@@ -1049,7 +1049,7 @@ If POS is nil, return the `end-of-line' of the line containing POINT."
     (end-of-line)
     (point)))
 
-(defun ipe--to-eol-contains (pos string)
+(defun ipe--to-eol-contains-p (pos string)
   "Return t if the text between POS and EOL contain STRING.
 
 If text between POS and and the `end-of-line' does not contain STRING,
@@ -1825,16 +1825,72 @@ If POS, return the original value, and set :point to POS."
       (ipe--pos-property-set n :point pos))
     ipe-point))
 
-(defun ipe--pos-overlap (n)
-  "Return t if the `N'th `ipe' OPEN and CLOSE Position is the same."
-
-  (equal (ipe--pos-open n) (ipe--pos-close n)))
-
-(defun ipe--pos-contains (n pos)
+(defun ipe--pos-contains-p (n pos)
   "Return t if POS is within the `N'th `ipe' OPEN and CLOSE Position."
 
   (and (<= (ipe--pos-open n) pos)
        (<= pos (ipe--pos-close n))))
+
+(defun ipe--pos-adjacent-p (n)
+  "Return t if the `N'th `ipe' OPEN and CLOSE are adjacent."
+
+  (= (ipe--pos-open n) (ipe--pos-close n)))
+
+(defun ipe--pos-adjacent-2-p (i j)
+  "Return t if two `ipe' PAIRs are adjacent.
+
+This will return t, if the CLOSE string for the `I'th `ipe' PAIR is at
+the some position as the OPEN string for the `J'th `ipe' PAIR."
+
+  (= (ipe--pos-close i) (ipe--pos-open j)))
+
+(defun ipe--pos-eob1-p (n)
+  "Return t if the `N'th `ipe' PAIR surrounds the char at the eob.
+
+This will return t, if the OPEN string for the `N'th PAIR and the
+CLOSE string for the `N'th PAIR surround the last character in the
+buffer.  This predicate is needed so that we can concatenate the OPEN
+and CLOSE overlays used to display PAIRs at the end of the buffer, as
+we need special processing to display around the final character."
+
+  (and (=  (1- (point-max))   (ipe--pos-open n))
+       (>= (ipe--pos-close n) (point-max))))
+
+(defun ipe--pos-eob1-2-p (i j)
+  "Return t if two `ipe' PAIRs surround the char at the eob.
+
+This will return t, if the CLOSE string for the `I'th `ipe' PAIR and
+the OPEN string for the `J'th `ipe' PAIR surround the last character
+in the buffer.  This predicate is needed so that we can concatenate
+the OPEN and CLOSE overlays used to display PAIRs at the end of the
+buffer, as we need special processing to display around the final
+character."
+
+  (and (>= i 0) (>= j 0)
+       (= (ipe--pos-close i) (1- (point-max)))
+       (= (ipe--pos-open j)  (point-max))))
+
+(defun ipe--pos-list-nearest (pos)
+  "Return the index of the `ipe' PAIR closest to POS.
+
+This searches the `ipe--pair-pos-list' for the nearest PAIR to POS."
+
+  (let ((distance (point-max))
+	(nearest  0))
+    (dotimes (n (ipe--pos-count))
+      (if (and (<= (ipe--pos-open n) pos)
+	       (<  pos (ipe--pos-close n)))
+	  (setq nearest  n
+		distance 0)
+	(if (and (<= pos (ipe--pos-open n))
+		 (<  (- (ipe--pos-open n) pos) distance))
+	    (setq nearest n
+		  distance (- (ipe--pos-open n) pos))
+	  (if (and (<= (ipe--pos-close n) pos)
+		   (< (- pos (ipe--pos-close n) distance)))
+	      (setq nearest n
+		    distance (- pos (ipe--pos-close n)))))))
+    nearest))
 
 (defun ipe--pos-list-normalize ()
   "Adjust the `ipe' PAIR Positions so there are no overlaps.
@@ -1873,28 +1929,6 @@ one entry."
     (let ((count (1- (ipe--pos-count))))
       (dotimes (n count)
 	(ipe--pair-pos-hide (- count n))))))
-
-(defun ipe--pos-list-nearest (pos)
-  "Return the index of the `ipe' PAIR closest to POS.
-
-This searches the `ipe--pair-pos-list' for the nearest PAIR to POS."
-
-  (let ((distance (point-max))
-	(nearest  0))
-    (dotimes (n (ipe--pos-count))
-      (if (and (<= (ipe--pos-open n) pos)
-	       (<  pos (ipe--pos-close n)))
-	  (setq nearest  n
-		distance 0)
-	(if (and (<= pos (ipe--pos-open n))
-		 (<  (- (ipe--pos-open n) pos) distance))
-	    (setq nearest n
-		  distance (- (ipe--pos-open n) pos))
-	  (if (and (<= (ipe--pos-close n) pos)
-		   (< (- pos (ipe--pos-close n) distance)))
-	      (setq nearest n
-		    distance (- pos (ipe--pos-close n)))))))
-    nearest))
 
 ;; -------------------------------------------------------------------
 ;;;; PAIR Position aware buffer editing functions:
@@ -2102,8 +2136,8 @@ position when POINT = IPE-POINT.
 - `'before' means that the text is to be inserted before the IPE-POINT
   and the value of :point should be changed.
 - a number N means that the text to be inserted will contain
-  IPE-POINT, and that the value of :point property should be
-  offset by N from the insertion point.
+  IPE-POINT, and that the value of :point property should be offset by
+  N from the insertion point.
 - `'after' means that the text is to be inserted after the IPE-POINT
   and the value of :point should NOT be changed.
 
@@ -3181,14 +3215,14 @@ Return the number of characters inserted into the buffer."
       (ipe--pos-open-set n pos-open)
 
       ;; Adjust concatenated OPEN overlay positions.
-      (let ((offset    0)
-	    (open-list (ipe--pos-property n :open-list))
-	    (insert-n  n))
-	(while open-list
+      (let ((open-list (ipe--pos-property n :open-list))
+	    (insert-n  n)
+	    (offset    0))
+	(while (and open-list (< insert-n (ipe--pos-count)))
 	  (setq offset    (+ offset (car open-list))
 		open-list (cdr open-list))
 	  (ipe--pos-close-set insert-n (+ (ipe--pos-open n) offset))
-	  (when open-list
+	  (when (and open-list (< (1+ insert-n) (ipe--pos-count)))
 	    (setq offset    (+ offset (car open-list))
 		  open-list (cdr open-list)
 		  insert-n  (1+ insert-n))
@@ -3214,18 +3248,18 @@ Return the number of characters inserted into the buffer."
       (ipe--pos-close-set n pos-close)
 
       ;; Adjust concatenated CLOSE overlay positions.
-      (let ((offset    0)
-	    (close-list (ipe--pos-property n :close-list))
-	    (insert-n  n))
-	(while close-list
+      (let ((close-list (ipe--pos-property n :close-list))
+	    (insert-n  n)
+	    (offset    0))
+	(while (and close-list (< (1+ insert-n) (ipe--pos-count)))
 	  (setq offset     (+ offset (car close-list))
-		close-list (cdr close-list))
-	  (ipe--pos-close-set insert-n (+ (ipe--pos-close n) offset))
+		close-list (cdr close-list)
+		insert-n   (1+ insert-n))
+	  (ipe--pos-open-set insert-n (+ (ipe--pos-close n) offset))
 	  (when close-list
-	    (setq offset    (+ offset (car close-list))
-		  close-list (cdr close-list)
-		  insert-n  (1+ insert-n))
-	    (ipe--pos-open-set insert-n (+ (ipe--pos-close n) offset)))))
+	    (setq offset     (+ offset (car close-list))
+		  close-list (cdr close-list))
+	    (ipe--pos-close-set insert-n (+ (ipe--pos-close n) offset)))))
 
       (ipe--pos-property-set n :close-list nil)
 
@@ -3270,7 +3304,8 @@ Remove the overlays (`ipe--open-overlays' / `ipe--close-overlays' /
 This will reconfigure the `ipe' overlays (`ipe--open-overlays' /
 `ipe--close-overlays' / `ipe--infix-overlays' /
 `ipe--escape-overlays') to match the positions currently stored within
-the `ipe--pair-pos-list'."
+the `ipe--pair-pos-list'.  If there are multiple PAIRs, this may
+require some concatenation of adjacent overlays."
 
   (ipe--pos-list-normalize)
 
@@ -3291,42 +3326,60 @@ the `ipe--pair-pos-list'."
       (funcall move-by pair n 'open  'redisplay 0 0 0)
       (funcall move-by pair n 'close 'redisplay 0 0 0)
 
+      ;; An empty OPEN within an INFIX causes us problems.
       (setq open-infix
 	    (if (and (= (length (ipe--pair-open-string pair)) 0)
 		     (> (length (ipe--pos-infix-display n)) 0))
 		(ipe--pos-infix-display n)
 	      (ipe--pos-open-display n)))
 
+      ;; A PAIR at the end-of-buffer causes us problems.
+      (setq eobc (if (or (ipe--pos-eob1-p n)
+			 (ipe--pos-eob1-2-p (1- n) n))
+		     (buffer-substring (1- (point-max)) (point-max))
+		   nil)
+	    no-after-p (>= (ipe--pos-close n) (point-max)))
+
       (cond
        ;; LAST_OPEN = OPEN = CLOSE (concatenate OPEN overlay)
-       ((and (not (equal display-n n))
-	     (equal (ipe--pos-close display-n) (ipe--pos-open n))
-	     (ipe--pos-overlap n)
+       ((and (not (= display-n n))
+	     (or (ipe--pos-adjacent-2-p display-n n)
+		 (ipe--pos-eob1-2-p     display-n n))
+	     (or (ipe--pos-adjacent-p n)
+		 (ipe--pos-eob1-p     n))
 	     (not close))
 	(setq open-list (append (ipe--pos-property display-n :open-list)
 				(list (length open-infix)
-				      (length (ipe--pos-close-display n))))
+				      (+ (length eobc)
+					 (length (ipe--pos-close-display n)))))
 	      open      (concat open
 				open-infix
+				eobc
 				(ipe--pos-close-display n))
 	      close     nil))
 
        ;; LAST_CLOSE = OPEN = CLOSE (concatenate CLOSE overlay)
-       ((and (not (equal display-n n))
-	     (equal (ipe--pos-close display-n) (ipe--pos-open n))
-	     (ipe--pos-overlap n)
+       ((and (not (= display-n n))
+	     (or (ipe--pos-adjacent-2-p display-n n)
+		 (ipe--pos-eob1-2-p     display-n n))
+	     (or (ipe--pos-adjacent-p n)
+		 (ipe--pos-eob1-p     n))
 	     close)
 	(setq close-list (append (ipe--pos-property display-n :close-list)
 				 (list (length open-infix)
-				       (length (ipe--pos-close-display n))))
+				       (+ (length eobc)
+					  (length (ipe--pos-close-display n)))))
 	      open       nil
 	      close      (concat close
-				 open-infix
+				 (if (ipe--pos-adjacent-2-p display-n n)
+				     (concat open-infix eobc)
+				   (concat eobc open-infix))
 				 (ipe--pos-close-display n))))
 
        ;; LAST_OPEN = OPEN (concatenate just the OPEN overlay)
-       ((and (not (equal display-n n))
-	     (equal (ipe--pos-open display-n) (ipe--pos-open n)))
+       ((and (not (= display-n n))
+	     (ipe--pos-adjacent-p   display-n)
+	     (ipe--pos-adjacent-2-p display-n n))
 	(setq open-list (append (ipe--pos-property display-n :open-list)
 				(list (length open-infix)))
 	      open      (concat open open-infix)
@@ -3338,8 +3391,8 @@ the `ipe--pair-pos-list'."
 	      display-n  n))
 
        ;; LAST_CLOSE = OPEN (concatenate just the CLOSE overlay)
-       ((and (not (equal display-n n))
-	     (equal (ipe--pos-close display-n) (ipe--pos-open n)))
+       ((and (not (= display-n n))
+	     (ipe--pos-adjacent-2-p display-n n))
 	(setq open-list  nil
 	      close-list (append (ipe--pos-property display-n :close-list)
 				 (list (length open-infix)))
@@ -3352,43 +3405,14 @@ the `ipe--pair-pos-list'."
 	      close      (ipe--pos-close-display n)
 	      display-n  n))
 
-       ;; LAST_OPEN = OPEN - 1 at eob (concatenate OPEN overlay)
-       ((and (> n 0)
-	     (equal (ipe--pos-open display-n) (1- (ipe--pos-open n)))
-	     (>=    (ipe--pos-close n) (point-max)))
-	(setq eobc       (if (<= (- n display-n) 1)
-			     (buffer-substring (1- (point-max)) (point-max))
-			   "")
-	      open       (concat open eobc (ipe--pos-close-display n))
-	      close      nil
-	      no-after-p t))
-
-       ;; LAST_CLOSE = OPEN - 1 at eob (concatenate CLOSE overlay)
-       ((and (> n 0)
-	     (equal (ipe--pos-close display-n) (1- (ipe--pos-open n)))
-	     (>=    (ipe--pos-close n) (point-max)))
-	(setq eobc       (if (<= (- n display-n) 1)
-			     (buffer-substring (1- (point-max)) (point-max))
-			   "")
-	      open       nil
-	      close      (concat close eobc
-				 (ipe--pos-open-display n)
-				 (ipe--pos-close-display n))
-	      no-after-p t))
-
-       ;; OPEN = CLOSE - 1 at end of buffer (concatenate OPEN overlay)
-       ((and (equal (ipe--pos-open display-n) (1- (ipe--pos-close n)))
-	     (>=    (ipe--pos-close n) (point-max)))
-	(setq eobc       (buffer-substring (1- (point-max)) (point-max))
-	      open       (concat open-infix eobc
-				 (ipe--pos-close-display n))
-	      close      nil
-	      no-after-p t))
-
        ;; OPEN = CLOSE (concatenate OPEN overlay)
-       ((ipe--pos-overlap n)
-	(setq open-list  (list (length (ipe--pos-open-display n)))
-	      open       (concat open-infix (ipe--pos-close-display n))
+       ((or (ipe--pos-adjacent-p n)
+	    (ipe--pos-eob1-p     n))
+	(setq open-list  (list (+ (length eobc)
+				  (length (ipe--pos-close-display n))))
+	      open       (concat open-infix
+				 eobc
+				 (ipe--pos-close-display n))
 	      close      nil
 	      display-n  n))
 
@@ -3414,7 +3438,7 @@ the `ipe--pair-pos-list'."
 	    close-list nil)
 
       (if open
-	  (ipe--open-show display-n open no-after-p)
+	  (ipe--open-show display-n open (and (not close) no-after-p))
 	(ipe--open-hide n))
 
       (ipe--infixes-update n)

@@ -209,7 +209,7 @@ i.e.
 	 (prefix    (when (and menu (> (length menu) 0))
 		      (concat menu "/")))
 	 (path      (if prefix
-			(if (ipe--string-starts-with pair-menu prefix)
+			(if (ipe--string-starts-with-p pair-menu prefix)
 			    (substring pair-menu (length prefix))
 			  nil)
 		      pair-menu))
