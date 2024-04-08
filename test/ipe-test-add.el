@@ -192,6 +192,20 @@ Using a 'word PAIR.  With prefix arg."
     "The quick brown fox (((!((jumps))))) over the lazy dog.")
   "C-u M-( ( 2 S RET")
 
+(ipe-test-def-kbd add-next-contents-4 ()
+  "Test`ipe-edit--add-next-contents'.
+
+Using a 'word PAIR.  No next CONTENTS."
+  ipe-test-add-options
+  nil
+  '("The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox (((|((jumps))))) over the lazy dog.")
+  '("The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox (((|((jumps))))) over the lazy dog.")
+  "C-u M-( ( S RET")
+
 (ipe-test-def-kbd add-previous-contents-1 ()
   "Test`ipe-edit--add-previous-contents'.
 
@@ -233,6 +247,20 @@ Using a 'word PAIR.  With prefix arg."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox (((|((jumps))))) over the lazy dog.")
   "C-u M-( ( 2 R RET")
+
+(ipe-test-def-kbd add-previous-contents-4 ()
+  "Test`ipe-edit--add-previous-contents'.
+
+Using a 'word PAIR.  No previous CONTENTS."
+  ipe-test-add-options
+  nil
+  '("The quick brown fox (((|((jumps))))) over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog.")
+  '("The quick brown fox (((|((jumps))))) over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog.")
+  "C-u M-( ( R RET")
 
 (provide 'ipe-test-add)
 

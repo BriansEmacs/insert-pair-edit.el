@@ -23,11 +23,11 @@ ESCAPEs
 FN
 FUNC
 I'th
-J'th
 INFIX'es
 INFIXES
 IPE
 Infixes
+J'th
 KEYMAP
 Kavanagh
 KeyMaps
@@ -56,9 +56,9 @@ SPC
 SYM
 Strikethrough
 TESTFN
-TexInfo
 TODO
 TODO's
+TexInfo
 UI
 Unrecognised
 Upcase
@@ -167,6 +167,7 @@ minibuffers
 nconc
 nd
 nonmenu
+nsert
 nthcdr
 numberp
 odisplay
@@ -174,8 +175,8 @@ overlayp
 paren
 plist
 pluggable
-png
 pname
+png
 pos
 posn
 postfix

@@ -1183,20 +1183,27 @@ This command is used within the Insert Pair Edit (ipe) minor-mode
 			   (length (ipe--pos-close-insert n))))
 	     (substring (buffer-substring (ipe--pos-open n)
 					  (ipe--pos-close n)))
-	     (end       (+ (ipe--pos-close n) inserted)))
-	(ipe--pair-pos-insert n)
-	(ipe--set-point n)
+	     (end       (+ (ipe--pos-close n) inserted))
+	     (next))
 
 	;; Search for a match to the wrapped sub-string.
 	(when (> (length substring) 0)
 	  (save-excursion
 	    (goto-char end)
-	    (if (search-forward substring nil t)
-		(progn
-		  (ipe--pos-open-set     n (match-beginning 0))
-		  (ipe--pos-close-set    n (match-end 0))
-		  (ipe--pos-property-set n :initial-n n))
-	      (ipe--pair-pos-hide n))))))
+	    (when (search-forward substring nil t)
+	      (setq next t))))
+
+	(when next
+	  (ipe--pair-pos-insert n)
+	  (ipe--set-point       n)
+
+	  (save-excursion
+	    (goto-char end)
+	    (search-forward substring nil t)
+
+	    (ipe--pos-open-set     n (match-beginning 0))
+	    (ipe--pos-close-set    n (match-end 0))
+	    (ipe--pos-property-set n :initial-n n)))))
 
     (ipe-edit--redisplay)
     (ipe--pos-recenter (1- (ipe--pos-count)) t)))
@@ -1394,22 +1401,22 @@ This command is used within the Insert Pair Edit (ipe) minor-mode
       (let* ((substring (buffer-substring (ipe--pos-open n)
 					  (ipe--pos-close n)))
 	     (beg       (ipe--pos-open n)))
-	(ipe--pair-pos-insert n)
-	(ipe--set-point n)
 
 	;; Search for a match to the wrapped sub-string.
 	(unless (or (bobp) (= (length substring) 0))
 	  (save-excursion
 	    (goto-char (- beg 1))
-	    (if (search-backward substring nil t)
-		(progn
-		  (ipe--pos-open-set     n (match-beginning 0))
-		  (ipe--pos-close-set    n (match-end 0))
-		  (ipe--pos-property-set n :initial-n n))
-	      (ipe--pair-pos-hide n))))))
+	    (when (search-backward substring nil t)
+	      (progn
+		(ipe--pair-pos-insert n)
+		(ipe--set-point n)
 
-    (ipe-edit--redisplay)
-    (ipe--pos-recenter 0)))
+		(ipe--pos-open-set     n (match-beginning 0))
+		(ipe--pos-close-set    n (match-end 0))
+		(ipe--pos-property-set n :initial-n n))))))
+
+      (ipe-edit--redisplay)
+      (ipe--pos-recenter 0))))
 
 (defun ipe-edit--update-previous-open (arg)
   "Insert `ipe' OPEN overlay and edit the previous OPEN string.
@@ -1550,8 +1557,13 @@ With a prefix ARG, search for the `ARG'th OPEN and CLOSE."
 	   (infix       (ipe--pair-infix-string pair))
 	   (escapes     (ipe--pair-escapes      pair))
 	   (close       (ipe--pair-close-string pair))
-	   (pos-pair    (ipe-updt--next-pair beg open infix close escapes
-					     (point-max) units))
+	   (pos-pair    (ipe-updt--next-pair beg
+					     open
+					     infix
+					     close
+					     escapes
+					     (point-max)
+					     units))
 	   (point-open  (ipe--pos-property (1- n) :point-open))
 	   (point-close (ipe--pos-property (1- n) :point-close)))
 
@@ -1562,10 +1574,12 @@ With a prefix ARG, search for the `ARG'th OPEN and CLOSE."
 	    (ipe-updt--delete-pair pair nil
 				   (car pos-pair) (cdr pos-pair) t)
 
-	    (when (ipe--pos-contains-p (1- n) (ipe--pos-point (1- n)))
-	      (ipe--pos-point n (+ (ipe--pos-open n)
-				   (- (ipe--pos-point (1- n))
-				      (ipe--pos-open (1- n))))))
+	    (when (and (not (equal (ipe--pos-point (1- n)) 'eob))
+		       (ipe--pos-contains-p (1- n) (ipe--pos-point (1- n))))
+	      (ipe--pos-point n
+			      (+ (ipe--pos-open n)
+				 (- (ipe--pos-point (1- n))
+				    (ipe--pos-open (1- n))))))
 
 	    (ipe--pos-property-set n :point-open point-open)
 
@@ -1617,16 +1631,21 @@ With a prefix ARG, search for the `ARG'th OPEN and CLOSE backward."
       (if pos-pair
 	  (save-excursion
 	    (goto-char (car pos-pair))
+
 	    (ipe-updt--delete-pair pair nil
 				   (car pos-pair) (cdr pos-pair) t)
-	    (when (ipe--pos-contains-p (1- n) (ipe--pos-point (1- n)))
+
+	    (when (and (not (equal (ipe--pos-point (1- n)) 'eob))
+		       (ipe--pos-contains-p (1- n) (ipe--pos-point (1- n))))
 	      (ipe--pos-point n
 			      (+ (ipe--pos-open n)
 				 (- (ipe--pos-point (1- n))
 				    (ipe--pos-open (1- n))))))
+
 	    (ipe--pos-property-set n :point-open point-open)
+
 	    (when (numberp point-close)
-	      (ipe--pos-point n (ipe--pos-close n))
+	      (ipe--pos-point        n (ipe--pos-close n))
 	      (ipe--pos-property-set n :point-close point-close))
 
 	    (ipe-edit--redisplay)

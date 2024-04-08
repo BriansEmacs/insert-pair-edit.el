@@ -10,7 +10,6 @@
 ;; FEATURES
 ;; - Question Delete PAIR.
 ;; - Highlight Delete PAIR.
-;; - Add C-mouse-1 / C-mouse-2 actions (add / remove multiple PAIRs)
 ;;
 ;; STYLE
 ;; - Check save-excursion usage.

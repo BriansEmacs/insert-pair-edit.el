@@ -533,6 +533,20 @@ Using a 'word PAIR.  Search (x2)"
     "The quick brown fox (((((jumps))))) over the lazy dog.")
   "M-( ( M-s M-s RET")
 
+(ipe-test-def-kbd adjust-next-contents-3 ()
+  "Test `ipe-edit--update-next-contents'.
+
+Using a 'word PAIR.  No next CONTENTS."
+  ipe-test-adjust-options
+  nil
+  '("The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox |jumps over the lazy dog.")
+  '("The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox (((((|jumps))))) over the lazy dog.")
+  "M-( ( M-s RET")
+
 (ipe-test-def-kbd adjust-previous-contents-1 ()
   "Test `ipe-edit--update-previous-contents'.
 
@@ -560,6 +574,20 @@ Using a 'word PAIR.  Search (x2)"
     "The quick brown fox (((((jumps))))) over the lazy dog."
     "The quick brown fox (((((|jumps))))) over the lazy dog.")
   "M-( ( M-r M-r RET")
+
+(ipe-test-def-kbd adjust-previous-contents-3 ()
+  "Test `ipe-edit--update-previous-contents'.
+
+Using a 'word PAIR.  No previous CONTENTS."
+  ipe-test-adjust-options
+  nil
+  '("The quick brown fox |jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog.")
+  '("The quick brown fox (((((|jumps))))) over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog.")
+  "M-( ( M-r RET")
 
 ;; ----------------------------------------------------------------------
 ;; Infixes
