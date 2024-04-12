@@ -855,6 +855,9 @@ This function returns a value suitable to be set as an
 
   (set sym (ipe-custom--mode-pairs-set defn)))
 
+(declare-function ipe-mouse--install   "ipe-mouse" ())
+(declare-function ipe-mouse--uninstall "ipe-mouse" ())
+
 (defun ipe-custom--mouse-set (sym defn)
   "`customize' :set function for `ipe-mouse-support-p'.
 
@@ -870,6 +873,9 @@ This function calls either `ipe-mouse--install' or
 	(ipe-mouse--install))
     (when (functionp #'ipe-mouse--uninstall)
       (ipe-mouse--uninstall))))
+
+(declare-function ipe-menu--install   "ipe-menu" ())
+(declare-function ipe-menu--uninstall "ipe-menu" ())
 
 (defun ipe-custom--menu-set (sym defn)
   "`customize' :set function for `ipe-menu-support-p'.
