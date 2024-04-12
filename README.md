@@ -52,7 +52,7 @@ The **Insert Pair Edit (ipe)** minor mode supplies commands to
 move these _OPEN_ and _CLOSE_ overlays about the buffer.  When
 positioned correctly, these _OPEN_ and _CLOSE_ overlays can then
 either be inserted `<RET>` (`ipe-edit--insert-pair`), or discarded
-`C-g` (`ipe-edit--abort`).
+`<C-g>` (`ipe-edit--abort`).
 
 The **Insert Pair Edit (ipe)** minor mode also supplies additional
 commands to:

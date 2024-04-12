@@ -1035,10 +1035,10 @@ Where:
 (defun ipe-updt--find-pair (pair pos &optional min max)
   "Search for the nearest `ipe' PAIR.
 
-If `ipe-update-forward-first' is non-nil, searches forward from POS
+If `ipe-update-forward-first-p' is non-nil, searches forward from POS
 for the nearest OPEN and CLOSE of the `ipe' PAIR.
 
-If `ipe-update-forward-first' is nil, searches backward from POS for
+If `ipe-update-forward-first-p' is nil, searches backward from POS for
 the nearest OPEN and CLOSE of the `ipe' PAIR.
 
 It takes into account:
@@ -1067,7 +1067,7 @@ If no PAIR is found, return nil."
 	 (close   (ipe--pair-close-string pair))
 	 (search  (if (zerop (length open)) pos (1+ pos)))
 	 (start
-	  (if ipe-update-forward-first
+	  (if ipe-update-forward-first-p
 	      (or (ipe-updt--previous-close pos close escapes
 					    (or min (point-min)))
 		  min
@@ -1077,7 +1077,7 @@ If no PAIR is found, return nil."
 		max
 		search))))
 
-    (if ipe-update-forward-first
+    (if ipe-update-forward-first-p
 	(or (ipe-updt--next-pair start open infix close escapes max 1)
 	    (ipe-updt--previous-pair pos open infix
 				     close escapes min max 1))
@@ -1293,7 +1293,7 @@ as the `N'th `ipe' PAIR."
 If the REGION is NOT active, this function will search for the nearest
 matching OPEN and CLOSE strings for the `ipe' PAIR identified by
 MNEMONIC.  (The direction of search is determined by the value of the
-`ipe-update-forward-first' variable.)  These strings (and any
+`ipe-update-forward-first-p' variable.)  These strings (and any
 associated `INFIX'es / `ESCAPE's) will then be deleted from the
 buffer.
 

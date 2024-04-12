@@ -362,7 +362,7 @@ suitable Emacs `'menu-item' structure.
     ;; Add this-level menu-items.
     (mapc (lambda (pair)
 	    (funcall menu-item-fn keymap (car pair)))
-	  menu-pairs)))
+	  (sort menu-pairs (ipe--pair-sort-by)))))
 
 (defun ipe-menu--change-pair-menu-item (keymap mnemonic)
   "Add a \"Change PAIR\" `'menu-item' for an `ipe' PAIR to KEYMAP.

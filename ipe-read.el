@@ -101,8 +101,7 @@ within `ipe-mode-pair' / `ipe-pair'.  If it does, call
       (exit-minibuffer))))
 
 (defvar ipe-read--minibuffer-keymap
-  (let ((keymap (make-sparse-keymap)))
-    (set-keymap-parent keymap minibuffer-local-must-match-map)
+  (let ((keymap (copy-keymap minibuffer-local-must-match-map)))
     (define-key keymap [remap self-insert-command]
 		'ipe-read--mnemonic-insert-and-exit-on-match)
     keymap)

@@ -53,6 +53,7 @@
     (ipe--escapes-show-p        t)
     (ipe-prefix-moves-close-p   t)
     (ipe-edit--movement-keysets '(modifiers))
+    (ipe-update-forward-first-p nil)
     (ipe-pairs
      '(("'"  "'"  "'"
 	(:escapes (("'" "\\'"))))

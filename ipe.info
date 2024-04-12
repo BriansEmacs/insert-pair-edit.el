@@ -1022,7 +1022,7 @@ would then use the keystroke:
 
    *NOTE*: The ‘ipe-insert-pair-edit-update’ command will search for the
 _nearest_ (*Note Update Search Process::) PAIR to POINT. The direction
-of the search is determined by the option ‘ipe-update-forward-first’.
+of the search is determined by the option ‘ipe-update-forward-first-p’.
 
 
 File: ipe.info,  Node: Deleting PAIRs,  Next: Replacing PAIRs,  Prev: Updating PAIRs,  Up: Other Major Commands
@@ -1071,7 +1071,7 @@ OPEN and CLOSE strings.
 
    NOTE: The ‘ipe-insert-pair-edit-delete’ command will search for the
 _nearest_ (*Note Update Search Process::) PAIR to POINT. The direction
-of the search is determined by the ‘ipe-update-forward-first’ option.
+of the search is determined by the ‘ipe-update-forward-first-p’ option.
 
 
 File: ipe.info,  Node: Replacing PAIRs,  Prev: Deleting PAIRs,  Up: Other Major Commands
@@ -1130,7 +1130,7 @@ the keystrokes:
 
    NOTE: The ‘ipe-insert-pair-edit-replace’ command will search for the
 _nearest_ (*Note Update Search Process::) PAIR to POINT. The direction
-of the search is determined by the ‘ipe-update-forward-first’ option.
+of the search is determined by the ‘ipe-update-forward-first-p’ option.
 
 
 File: ipe.info,  Node: Customization,  Next: Other ipe-edit-mode Commands,  Prev: Other Major Commands,  Up: Top
@@ -2969,9 +2969,9 @@ PAIR (or, if the _region_ is active, for all the PAIRs within the
 _region_.)
 
    The direction of the search is determined by the
-‘ipe-update-forward-first’ option.  (Default: *nil*)
+‘ipe-update-forward-first-p’ option.  (Default: *nil*)
 
- -- User Option: ipe-update-forward-first
+ -- User Option: ipe-update-forward-first-p
 
      If nil, the PAIR to be updated by any of the
      _ipe-insert-pair-edit-*_ commands will be searched for by:
@@ -3492,53 +3492,53 @@ Node: Changing PAIRs28836
 Node: Mouse Movement30170
 Node: Other Major Commands32562
 Node: Updating PAIRs33016
-Node: Deleting PAIRs35277
-Node: Replacing PAIRs37051
-Node: Customization39429
-Node: Types of PAIR Definition40090
-Node: Customization Using 'customize'41195
-Node: Customization Using the 'Pairs' Menu42336
-Node: Inline Customization45957
-Node: Inline Customization Prompts47974
-Node: Display Customization52690
-Node: Other ipe-edit-mode Commands54199
-Node: Insert And... Commands54638
-Node: Edit CONTENTS Commands56089
-Node: Next / Previous Commands58056
-Node: Next / Previous PAIRs58362
-Node: Next / Previous CONTENTS59815
-Node: Next / Previous OPEN / CLOSE61579
-Node: Multiple PAIRs Commands63741
-Node: Adding Multiple PAIRs Using the Emacs Region64621
-Node: Adding Multiple PAIRs Using insert-pair-edit66157
-Node: Adding Multiple PAIRs Using Existing OPEN / CLOSE68012
-Node: Adding Multiple PAIRs Using PAIR CONTENT70685
-Node: Adding Multiple PAIRs Using the Mouse73898
-Node: Removing PAIRs76121
-Node: Escaping Text within a PAIR77599
-Node: Other Features79974
-Node: Line Movement80455
-Node: Line Movement - Forward / Backward81462
-Node: Line Movement - Beginning / End83654
-Node: List Movement86132
-Node: List Movement - Forward / Backward86886
-Node: List Movement - Up / Down88712
-Node: List Movement - Beginning / End90762
-Node: Defining line PAIRs with an INFIX92484
-Node: Auto Insertion95873
-Node: Positioning POINT and MARK97191
-Node: PAIRs With Empty OPEN / CLOSE99203
-Node: Updating Existing PAIRs100357
-Node: Update Search Process101043
-Node: Update PAIR Matching102792
-Node: Updates on a Region104092
-Node: Development105544
-Node: Creating 'ipe-mode-pairs' PAIRs Using Emacs Lisp105844
-Node: Binding MNEMONICs to Keys111657
-Node: Defining Custom 'ipe--movement' Functions112609
-Node: Adding 'ipe' ERTs (Emacs Regression Tests)115424
-Node: Running 'ipe' ERTs (Emacs Regression Tests)118017
-Node: Index118957
+Node: Deleting PAIRs35279
+Node: Replacing PAIRs37055
+Node: Customization39435
+Node: Types of PAIR Definition40096
+Node: Customization Using 'customize'41201
+Node: Customization Using the 'Pairs' Menu42342
+Node: Inline Customization45963
+Node: Inline Customization Prompts47980
+Node: Display Customization52696
+Node: Other ipe-edit-mode Commands54205
+Node: Insert And... Commands54644
+Node: Edit CONTENTS Commands56095
+Node: Next / Previous Commands58062
+Node: Next / Previous PAIRs58368
+Node: Next / Previous CONTENTS59821
+Node: Next / Previous OPEN / CLOSE61585
+Node: Multiple PAIRs Commands63747
+Node: Adding Multiple PAIRs Using the Emacs Region64627
+Node: Adding Multiple PAIRs Using insert-pair-edit66163
+Node: Adding Multiple PAIRs Using Existing OPEN / CLOSE68018
+Node: Adding Multiple PAIRs Using PAIR CONTENT70691
+Node: Adding Multiple PAIRs Using the Mouse73904
+Node: Removing PAIRs76127
+Node: Escaping Text within a PAIR77605
+Node: Other Features79980
+Node: Line Movement80461
+Node: Line Movement - Forward / Backward81468
+Node: Line Movement - Beginning / End83660
+Node: List Movement86138
+Node: List Movement - Forward / Backward86892
+Node: List Movement - Up / Down88718
+Node: List Movement - Beginning / End90768
+Node: Defining line PAIRs with an INFIX92490
+Node: Auto Insertion95879
+Node: Positioning POINT and MARK97197
+Node: PAIRs With Empty OPEN / CLOSE99209
+Node: Updating Existing PAIRs100363
+Node: Update Search Process101049
+Node: Update PAIR Matching102802
+Node: Updates on a Region104102
+Node: Development105554
+Node: Creating 'ipe-mode-pairs' PAIRs Using Emacs Lisp105854
+Node: Binding MNEMONICs to Keys111667
+Node: Defining Custom 'ipe--movement' Functions112619
+Node: Adding 'ipe' ERTs (Emacs Regression Tests)115434
+Node: Running 'ipe' ERTs (Emacs Regression Tests)118027
+Node: Index118967
 
 End Tag Table
 

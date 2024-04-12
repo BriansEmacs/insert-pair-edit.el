@@ -62,6 +62,7 @@
   '((ipe-move-point-on-insert   nil)
     (ipe-prefix-moves-close-p   t)
     (ipe-edit--movement-keysets '(modifiers))
+    (ipe-update-forward-first-p nil)
     (ipe-pairs
      '(("("  "(((((" ")))))")
        ("<"  "<"     ">")
@@ -110,7 +111,7 @@ With nested PAIRs."
   ipe-test-adjust-options
   nil
   "The (((((|quick (((((brown))))) fox))))) jumps (((((over (((((the))))) lazy))))) dog."
-  "The (((((|quick (((((brown))))) fox))))) jumps <over (((((the))))) lazy> dog."
+  "The (((((|quick <brown> fox))))) jumps (((((over (((((the))))) lazy))))) dog."
   "C-u M-( ( C-s ( < RET")
 
 (ipe-test-def-kbd adjust-next-pair-5 ()
@@ -180,7 +181,7 @@ With nested PAIRS (outer)."
   ipe-test-adjust-options
   nil
   "The quick (((((|brown (((((fox))))) jumps))))) over (((((the))))) lazy dog."
-  "The quick (((((|brown (((((fox))))) jumps))))) over <the> lazy dog."
+  "The quick (((((|brown <fox> jumps))))) over (((((the))))) lazy dog."
   "C-u M-( ( C-s ( < RET")
 
 (ipe-test-def-kbd adjust-next-pair-12 ()
@@ -189,9 +190,29 @@ With nested PAIRS (outer)."
 To nested PAIR."
   ipe-test-adjust-options
   nil
-  "The quick (((((|brown))))) fox (((((jumps (((((over))))) the))))) lazy dog."
-  "The quick (((((|brown))))) fox <jumps (((((over))))) the> lazy dog."
+  "The (((((quick (((((|brown))))) fox))))) (((((jumps (((((over))))) the))))) lazy dog."
+  "The (((((quick (((((|brown))))) fox))))) <jumps (((((over))))) the> lazy dog."
   "C-u M-( ( C-s ( < RET")
+
+(ipe-test-def-kbd adjust-next-pair-13 ()
+  "Test `ipe-edit--update-next-pair'.
+
+To nested PAIR (x2)."
+  ipe-test-adjust-options
+  nil
+  "The (((((quick (((((|brown))))) fox))))) (((((jumps (((((over))))) the))))) lazy dog."
+  "The (((((quick (((((|brown))))) fox))))) (((((jumps <over> the))))) lazy dog."
+  "C-u M-( ( C-s C-s ( < RET")
+
+(ipe-test-def-kbd adjust-next-pair-14 ()
+  "Test `ipe-edit--update-next-pair'.
+
+To nested PAIR (x3) (No third PAIR)."
+  ipe-test-adjust-options
+  nil
+  "The (((((quick (((((|brown))))) fox))))) (((((jumps (((((over))))) the))))) lazy dog."
+  "The (((((quick (((((|brown))))) fox))))) (((((jumps <over> the))))) lazy dog."
+  "C-u M-( ( C-s C-s C-s ( < RET")
 
 (ipe-test-def-kbd adjust-previous-pair-1 ()
   "Test `ipe-edit--update-previous-pair'."
@@ -297,8 +318,8 @@ With nested PAIRS (inner)."
 With nested PAIRS (outer)."
   ipe-test-adjust-options
   nil
-  "The quick (((((brown))))) fox (((((jumps (((((over))))) |the))))) lazy dog."
-  "The quick (((((brown))))) fox <jumps (((((over))))) |the> lazy dog."
+  "The (((((quick (((((brown))))) fox))))) (((((jumps (((((over))))) |the))))) lazy dog."
+  "The (((((quick (((((brown))))) fox))))) <jumps (((((over))))) |the> lazy dog."
   "C-u M-( ( C-r ( < RET")
 
 (ipe-test-def-kbd adjust-previous-pair-12 ()
@@ -307,9 +328,29 @@ With nested PAIRS (outer)."
 To nested PAIR."
   ipe-test-adjust-options
   nil
-  "The quick (((((brown (((((fox))))) jumps))))) over (((((|the))))) lazy |dog."
-  "The quick (((((brown <fox> jumps))))) over (((((|the))))) lazy |dog."
+  "The quick (((((brown (((((fox))))) jumps))))) (((((|over (((((the))))) lazy))))) dog."
+  "The quick (((((brown <fox> jumps))))) (((((|over (((((the))))) lazy))))) dog."
   "C-u M-( ( C-r ( < RET")
+
+(ipe-test-def-kbd adjust-previous-pair-13 ()
+  "Test `ipe-edit--update-previous-pair'.
+
+To nested PAIR. (x2)"
+  ipe-test-adjust-options
+  nil
+  "The quick (((((brown (((((fox))))) jumps))))) (((((|over (((((the))))) lazy))))) dog."
+  "The quick <brown (((((fox))))) jumps> (((((|over (((((the))))) lazy))))) dog."
+  "C-u M-( ( C-r C-r ( < RET")
+
+(ipe-test-def-kbd adjust-previous-pair-14 ()
+  "Test `ipe-edit--update-previous-pair'.
+
+To nested PAIR. (x3) (No third PAIR)"
+  ipe-test-adjust-options
+  nil
+  "The quick (((((brown (((((fox))))) jumps))))) (((((|over (((((the))))) lazy))))) dog."
+  "The quick <brown (((((fox))))) jumps> (((((|over (((((the))))) lazy))))) dog."
+  "C-u M-( ( C-r C-r ( < RET")
 
 ;; TODO: Add extra NEXT-OPEN / NEXT-CLOSE cases as per NEXT-PAIR /
 ;; PREVIOUS-PAIR.  i.e. Start of buffer / end-of-buffer / :escapes.

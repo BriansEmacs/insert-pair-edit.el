@@ -50,9 +50,9 @@
 
 (defvar ipe-test-matching-options
   '((ipe-move-point-on-insert   nil)
-    (ipe--escapes-show-p        t)
     (ipe-prefix-moves-close-p   t)
     (ipe-edit--movement-keysets '(modifiers))
+    (ipe-update-forward-first-p nil)
     (ipe-pairs '(("("  "(" ")")))
     (ipe-mode-pairs nil))
   "Options used by `ipe-test-def-kbd' for `ipe-test-matching'.")

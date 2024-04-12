@@ -866,9 +866,9 @@ This function calls either `ipe-mouse--install' or
 
   (set sym defn)
   (if defn
-      (when (functionp 'ipe-mouse--install)
+      (when (functionp #'ipe-mouse--install)
 	(ipe-mouse--install))
-    (when (functionp 'ipe-mouse--uninstall)
+    (when (functionp #'ipe-mouse--uninstall)
       (ipe-mouse--uninstall))))
 
 (defun ipe-custom--menu-set (sym defn)
@@ -882,10 +882,24 @@ This function calls either `ipe-menu--install' or
 
   (set sym defn)
   (if defn
-      (when (functionp 'ipe-menu--install)
+      (when (functionp #'ipe-menu--install)
 	(ipe-menu--install))
-    (when (functionp 'ipe-menu--uninstall)
+    (when (functionp #'ipe-menu--uninstall)
       (ipe-menu--uninstall))))
+
+(defun ipe-custom--pair-sort-set (sym defn)
+  "`customize' :set function for `ipe-pair-sort'.
+
+SYM is the symbol being set.
+DEFN the value returned by the `ipe-pair-sort' widget.
+
+This function flushes the menu cache and re-installs
+the menus."
+
+  (set sym defn)
+  (when (and ipe-menu-support-p
+	     (functionp #'ipe-menu--install))
+    (ipe-menu--install)))
 
 ;; -------------------------------------------------------------------
 ;;;; Widget definitions.

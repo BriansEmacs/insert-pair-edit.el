@@ -59,6 +59,7 @@
   '((ipe-move-point-on-insert   nil)
     (ipe-prefix-moves-close-p   t)
     (ipe-edit--movement-keysets '(modifiers))
+    (ipe-update-forward-first-p nil)
     (ipe-pairs
      '(("(" "<start-of-tag>" "<end-of-tag>")
        ("[" "["              "]")))

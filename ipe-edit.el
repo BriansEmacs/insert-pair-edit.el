@@ -1138,16 +1138,35 @@ commands."
 	     (infix     (ipe--pair-infix-string pair))
 	     (escapes   (ipe--pair-escapes      pair))
 	     (close     (ipe--pair-close-string pair))
+	     (len-open  (length (ipe--pos-open-insert n)))
 	     (len-close (length (ipe--pos-close-insert n)))
-	     (pair-pos  (ipe-updt--next-pair (+ (ipe--pos-close n) len-close)
+	     (pair-pos  (ipe-updt--next-pair (+ (ipe--pos-open n) len-open)
 					     open
 					     infix
 					     close
 					     escapes
 					     (point-max)
 					     units))
-	     (pos-open  (when pair-pos (car pair-pos)))
-	     (end-close (when pair-pos (cdr pair-pos))))
+	     (pos-open  (car pair-pos))
+	     (end-close (cdr pair-pos)))
+
+	;; Check if we have matched an existing PAIR, and try again.
+	(when (and pos-open
+		   end-close
+		   (or (= pos-open (ipe--pos-open n))
+		       (= pos-open (ipe--pos-close n))
+		       (= len-close 0)
+		       (= end-close (+ (ipe--pos-close n) len-close))))
+	  (setq pair-pos (ipe-updt--next-pair (+ (ipe--pos-close n)
+						 len-close)
+					      open
+					      infix
+					      close
+					      escapes
+					      (point-max)
+					      units))
+	  (setq pos-open (car pair-pos)
+		end-close (cdr pair-pos)))
 
 	(when (and pos-open end-close)
 	  (ipe--pos-open-set  n pos-open)
@@ -1365,8 +1384,8 @@ commands."
 						     (ipe--pos-open n)
 						   nil)
 						 units))
-	     (pos-open  (when pair-pos (car pair-pos)))
-	     (end-close (when pair-pos (cdr pair-pos))))
+	     (pos-open  (car pair-pos))
+	     (end-close (cdr pair-pos)))
 
 	(when (and pos-open end-close)
 	  (ipe--pos-open-set  n pos-open)
@@ -1842,6 +1861,8 @@ definitions, this command will also remove the overlays for the INFIX
     (ipe--pair-pos-hide n))
   (setq ipe--pair-pos-list nil)
   (ipe--undo-abort)
+  (recenter)
+  (ipe--pos-hrecenter (point))
   (ipe-edit-mode -1))
 
 (defun ipe-edit--options ()
@@ -1964,119 +1985,6 @@ another window."
 ;;;; Minor Mode Keymap.
 ;; -------------------------------------------------------------------
 
-(defcustom ipe-edit-mode-keys
-  (list
-   (kbd "RET")   ; 0. Insert PAIR
-   (kbd "O")     ; 1. Insert And Goto OPEN
-   (kbd "C")     ; 2. Insert And Goto CLOSE
-   (kbd "U")     ; 3. Insert And Resume
-   (kbd "Y")     ; 4. Insert And Copy Text
-   (kbd "K")     ; 5. Insert And Kill Text
-   (kbd "(")     ; 6. Change PAIR
-   (kbd "m")     ; 7. Change Movement
-   (kbd "c")     ; 8. Change Movement By Characters
-   (kbd "w")     ; 9. Change Movement By Words
-   (kbd "l")     ; 10. Change Movement By Lines
-   (kbd "x")     ; 11. Change Movement By List
-   (kbd "C-k")   ; 12. Edit CONTENTS Kill
-   (kbd "M-w")   ; 13. Edit CONTENTS Copy
-   (kbd "C-y")   ; 14. Edit CONTENTS Yank
-   (kbd "%")     ; 15. Edit CONTENTS Replace
-   (kbd "C-SPC") ; 16. Edit CONTENTS Trim
-   (kbd "M-u")   ; 17. Edit CONTENTS Upcase
-   (kbd "M-c")   ; 18. Edit CONTENTS Capitalize
-   (kbd "M-l")   ; 19. Edit CONTENTS Downcase
-   (kbd "C-s")   ; 20. Next PAIR
-   (kbd "M-s")   ; 21. Next CONTENTS
-   (kbd "M->")   ; 22. Next OPEN
-   (kbd "C->")   ; 23. Next CLOSE
-   (kbd "C-r")   ; 24. Previous PAIR
-   (kbd "M-r")   ; 25. Previous CONTENTS
-   (kbd "C-<")   ; 26. Previous OPEN
-   (kbd "M-<")   ; 27. Previous CLOSE
-   (kbd "M-(")   ; 28. Add PAIR (At Point)
-   (kbd "s")     ; 29. Add PAIR (Search Forward)
-   (kbd "r")     ; 30. Add PAIR (Search Backward)
-   (kbd "S")     ; 31. Add CONTENTS (Search Forward)
-   (kbd "R")     ; 32. Add CONTENTS (Search Backward)
-   (kbd "M-d")   ; 33. Delete PAIR (First)
-   (kbd "C-d")   ; 34. Delete PAIR (All)
-   (kbd "DEL")   ; 35. Delete PAIR (Last)
-   (kbd "C-+")   ; 36. Add PAIR Definition...
-   (kbd "M-+")   ; 37. Add Mode-Specific PAIR Definition...
-   (kbd "=")     ; 38. Edit Current PAIR Definition...
-   (kbd "C-%")   ; 39. Edit MNEMONIC Definition...
-   (kbd "M-%")   ; 40. Edit Mode-Specific MNEMONIC Definition...
-   (kbd "C-*")   ; 41. Delete PAIR Definition...
-   (kbd "M-*")   ; 42. Delete Mode-Specific PAIR Definition...
-   (kbd "\\")    ; 43. Toggle ESCAPEs
-   (kbd "q")     ; 44. Abort
-   (kbd "C-o")   ; 45. Options
-   (kbd "M-h")   ; 46. Info
-   (kbd "?")     ; 47. Help
-   )
-  "Key bindings for interactive functions within `ipe-edit-mode'.
-
-This list contains the key bindings for the interactive functions
-available within `ipe-edit-mode'.  These key bindings are activated
-when the `ipe-edit-mode' minor mode is activated by one of the 'Insert
-Pair Edit' functions."
-  :group 'ipe-advanced
-  :tag   "Insert Pair Edit - `ipe-edit-mode' key bindings."
-  :link  '(function-link ipe-insert-pair-edit)
-  :link  '(emacs-commentary-link "ipe-edit.el")
-  :type
-  '(list
-    :tag "`ipe-edit-mode' Key Bindings"
-    (key-sequence :tag "Insert PAIR                               ")
-    (key-sequence :tag "Insert And Goto OPEN                      ")
-    (key-sequence :tag "Insert And Goto CLOSE                     ")
-    (key-sequence :tag "Insert And Resume                         ")
-    (key-sequence :tag "Insert And Copy Text                      ")
-    (key-sequence :tag "Insert And Kill Text                      ")
-    (key-sequence :tag "Change PAIR                               ")
-    (key-sequence :tag "Change Movement                           ")
-    (key-sequence :tag "Change Movement By Characters             ")
-    (key-sequence :tag "Change Movement By Words                  ")
-    (key-sequence :tag "Change Movement By Lines                  ")
-    (key-sequence :tag "Change Movement By List                   ")
-    (key-sequence :tag "Edit CONTENTS Kill                        ")
-    (key-sequence :tag "Edit CONTENTS Copy                        ")
-    (key-sequence :tag "Edit CONTENTS Yank                        ")
-    (key-sequence :tag "Edit CONTENTS Replace                     ")
-    (key-sequence :tag "Edit CONTENTS Upcase                      ")
-    (key-sequence :tag "Edit CONTENTS Trim                        ")
-    (key-sequence :tag "Edit CONTENTS Capitalize                  ")
-    (key-sequence :tag "Edit CONTENTS Downcase                    ")
-    (key-sequence :tag "Next PAIR                                 ")
-    (key-sequence :tag "Next CONTENTS                             ")
-    (key-sequence :tag "Next OPEN                                 ")
-    (key-sequence :tag "Next CLOSE                                ")
-    (key-sequence :tag "Previous PAIR                             ")
-    (key-sequence :tag "Previous CONTENTS                         ")
-    (key-sequence :tag "Previous OPEN                             ")
-    (key-sequence :tag "Previous CLOSE                            ")
-    (key-sequence :tag "Add PAIR (At Point)                       ")
-    (key-sequence :tag "Add PAIR (Search Forward)                 ")
-    (key-sequence :tag "Add PAIR (Search Backward)                ")
-    (key-sequence :tag "Add CONTENTS (Search Forward)             ")
-    (key-sequence :tag "Add CONTENTS (Search Backward)            ")
-    (key-sequence :tag "Delete PAIR (First)                       ")
-    (key-sequence :tag "Delete PAIR (All)                         ")
-    (key-sequence :tag "Delete PAIR (Last)                        ")
-    (key-sequence :tag "Add PAIR Definition...                    ")
-    (key-sequence :tag "Add Mode-Specific PAIR Definition...      ")
-    (key-sequence :tag "Edit Current PAIR Definition...           ")
-    (key-sequence :tag "Edit MNEMONIC Definition...               ")
-    (key-sequence :tag "Edit Mode-Specific MNEMONIC Definition... ")
-    (key-sequence :tag "Delete PAIR Definition...                 ")
-    (key-sequence :tag "Delete Mode-Specific PAIR Definition...   ")
-    (key-sequence :tag "Toggle ESCAPEs                            ")
-    (key-sequence :tag "Abort                                     ")
-    (key-sequence :tag "Options                                   ")
-    (key-sequence :tag "Info                                      ")
-    (key-sequence :tag "Help                                      ")))
-
 (defun ipe-edit--key (pos fn &optional keymap)
   "Define a key within `ipe-edit-mode-map' via `ipe-edit-mode-keys'.
 
@@ -2085,8 +1993,10 @@ customizable list, as the key definition for the interactive function
 FN, within either the `ipe-edit-mode-map', or, if KEYMAP is non-nil,
 within KEYMAP."
 
-  (define-key (if keymap keymap ipe-edit-mode-map)
-	      (nth pos ipe-edit-mode-keys) fn))
+  (let ((key (nth pos ipe-edit-mode-keys))
+	(km  (or keymap ipe-edit-mode-map)))
+    (when (and key (> (length key) 0))
+      (define-key km key fn))))
 
 (defun ipe-edit--keymap-init ()
   "Initialize the `ipe-edit-mode-map' keymap.
@@ -2383,17 +2293,28 @@ This function will also be called by `customize' when the
 		(nth 11 ipe-edit--custom-movement-keyset)
 		'ipe-edit--close-end)))
 
-(ipe-edit--keymap-init)
-
 ;; -------------------------------------------------------------------
-;;;; Movement Key Customization.
+;;;; Key Customization.
 ;; -------------------------------------------------------------------
 
-(defun ipe-edit--movement-keysets-set (sym defns)
+(defun ipe-edit--mode-keys-set (sym defn)
+  "`customize' :set function for `ipe-edit-mode-keys-set'.
+
+SYM is the symbol being set.
+DEFN is the value to which to set SYM.
+
+This function ensure that the newly changed keys are installed via
+`ipe-edit--keymap-init'."
+
+  (custom-set-default sym defn)
+  (when (functionp 'ipe-edit--keymap-init)
+    (ipe-edit--keymap-init)))
+
+(defun ipe-edit--movement-keysets-set (sym defn)
   "`customize' :set function for `ipe-edit--movement-keysets'.
 
 SYM is the symbol being set.
-DEFNS is the value to which to set SYM.
+DEFN is the value to which to set SYM.
 
 This function `:set's the value of the `ipe-edit--movement-keysets' /
 `ipe-edit--custom-movement-keyset' internal variables from the
@@ -2406,30 +2327,144 @@ into a list of symbols (`'modifiers', `'alpha', `'arrow', `'wasd',
 variable, or; it will take the list of custom key definitions and add
 them to the `ipe-edit--custom-movement-keyset' variable."
 
-  (if (= (length defns) 12)
+  (if (= (length defn) 12)
       (progn
-	(custom-set-default sym defns)
+	(custom-set-default sym defn)
 	(setq ipe-edit--movement-keysets '(custom))
-	(setq ipe-edit--custom-movement-keyset defns))
+	(setq ipe-edit--custom-movement-keyset defn))
 
     (setq ipe-edit--movement-keysets nil)
 
-    (when (nth 0 defns)
+    (when (nth 0 defn)
       (add-to-list 'ipe-edit--movement-keysets 'modifiers))
-    (when (nth 1 defns)
+    (when (nth 1 defn)
       (add-to-list 'ipe-edit--movement-keysets 'alpha))
-    (when (nth 2 defns)
+    (when (nth 2 defn)
       (add-to-list 'ipe-edit--movement-keysets 'arrow))
-    (when (nth 3 defns)
+    (when (nth 3 defn)
       (add-to-list 'ipe-edit--movement-keysets 'wasd))
-    (when (nth 4 defns)
+    (when (nth 4 defn)
       (add-to-list 'ipe-edit--movement-keysets 'vi))
 
     (if (> (length ipe-edit--movement-keysets) 0)
-	(custom-set-default sym defns)
+	(custom-set-default sym defn)
       (add-to-list 'ipe-edit--movement-keysets 'modifiers)
       (custom-set-default sym '(t nil nil nil nil))))
   (ipe-edit--keymap-init))
+
+(defcustom ipe-edit-mode-keys
+  (list
+   (kbd "RET")   ; 0. Insert PAIR
+   (kbd "O")     ; 1. Insert And Goto OPEN
+   (kbd "C")     ; 2. Insert And Goto CLOSE
+   (kbd "U")     ; 3. Insert And Resume
+   (kbd "Y")     ; 4. Insert And Copy Text
+   (kbd "K")     ; 5. Insert And Kill Text
+   (kbd "(")     ; 6. Change PAIR
+   (kbd "m")     ; 7. Change Movement
+   (kbd "c")     ; 8. Change Movement By Characters
+   (kbd "w")     ; 9. Change Movement By Words
+   (kbd "l")     ; 10. Change Movement By Lines
+   (kbd "x")     ; 11. Change Movement By List
+   (kbd "C-k")   ; 12. Edit CONTENTS Kill
+   (kbd "M-w")   ; 13. Edit CONTENTS Copy
+   (kbd "C-y")   ; 14. Edit CONTENTS Yank
+   (kbd "%")     ; 15. Edit CONTENTS Replace
+   (kbd "C-SPC") ; 16. Edit CONTENTS Trim
+   (kbd "M-u")   ; 17. Edit CONTENTS Upcase
+   (kbd "M-c")   ; 18. Edit CONTENTS Capitalize
+   (kbd "M-l")   ; 19. Edit CONTENTS Downcase
+   (kbd "C-s")   ; 20. Next PAIR
+   (kbd "M-s")   ; 21. Next CONTENTS
+   (kbd "M->")   ; 22. Next OPEN
+   (kbd "C->")   ; 23. Next CLOSE
+   (kbd "C-r")   ; 24. Previous PAIR
+   (kbd "M-r")   ; 25. Previous CONTENTS
+   (kbd "C-<")   ; 26. Previous OPEN
+   (kbd "M-<")   ; 27. Previous CLOSE
+   (kbd "M-(")   ; 28. Add PAIR (At Point)
+   (kbd "s")     ; 29. Add PAIR (Search Forward)
+   (kbd "r")     ; 30. Add PAIR (Search Backward)
+   (kbd "S")     ; 31. Add CONTENTS (Search Forward)
+   (kbd "R")     ; 32. Add CONTENTS (Search Backward)
+   (kbd "M-d")   ; 33. Delete PAIR (First)
+   (kbd "C-d")   ; 34. Delete PAIR (All)
+   (kbd "DEL")   ; 35. Delete PAIR (Last)
+   (kbd "C-+")   ; 36. Add PAIR Definition...
+   (kbd "M-+")   ; 37. Add Mode-Specific PAIR Definition...
+   (kbd "=")     ; 38. Edit Current PAIR Definition...
+   (kbd "C-%")   ; 39. Edit MNEMONIC Definition...
+   (kbd "M-%")   ; 40. Edit Mode-Specific MNEMONIC Definition...
+   (kbd "C-*")   ; 41. Delete PAIR Definition...
+   (kbd "M-*")   ; 42. Delete Mode-Specific PAIR Definition...
+   (kbd "\\")    ; 43. Toggle ESCAPEs
+   (kbd "q")     ; 44. Abort
+   (kbd "C-o")   ; 45. Options
+   (kbd "M-h")   ; 46. Info
+   (kbd "?")     ; 47. Help
+   )
+  "Key bindings for interactive functions within `ipe-edit-mode'.
+
+This list contains the key bindings for the interactive functions
+available within `ipe-edit-mode'.  These key bindings are activated
+when the `ipe-edit-mode' minor mode is activated by one of the 'Insert
+Pair Edit' functions."
+  :group 'ipe-advanced
+  :tag   "Insert Pair Edit - `ipe-edit-mode' key bindings."
+  :link  '(function-link ipe-insert-pair-edit)
+  :link  '(emacs-commentary-link "ipe-edit.el")
+  :set   'ipe-edit--mode-keys-set
+  :type
+  '(list
+    :tag "`ipe-edit-mode' Key Bindings"
+    (key-sequence :tag "Insert PAIR                               ")
+    (key-sequence :tag "Insert And Goto OPEN                      ")
+    (key-sequence :tag "Insert And Goto CLOSE                     ")
+    (key-sequence :tag "Insert And Resume                         ")
+    (key-sequence :tag "Insert And Copy Text                      ")
+    (key-sequence :tag "Insert And Kill Text                      ")
+    (key-sequence :tag "Change PAIR                               ")
+    (key-sequence :tag "Change Movement                           ")
+    (key-sequence :tag "Change Movement By Characters             ")
+    (key-sequence :tag "Change Movement By Words                  ")
+    (key-sequence :tag "Change Movement By Lines                  ")
+    (key-sequence :tag "Change Movement By List                   ")
+    (key-sequence :tag "Edit CONTENTS Kill                        ")
+    (key-sequence :tag "Edit CONTENTS Copy                        ")
+    (key-sequence :tag "Edit CONTENTS Yank                        ")
+    (key-sequence :tag "Edit CONTENTS Replace                     ")
+    (key-sequence :tag "Edit CONTENTS Upcase                      ")
+    (key-sequence :tag "Edit CONTENTS Trim                        ")
+    (key-sequence :tag "Edit CONTENTS Capitalize                  ")
+    (key-sequence :tag "Edit CONTENTS Downcase                    ")
+    (key-sequence :tag "Next PAIR                                 ")
+    (key-sequence :tag "Next CONTENTS                             ")
+    (key-sequence :tag "Next OPEN                                 ")
+    (key-sequence :tag "Next CLOSE                                ")
+    (key-sequence :tag "Previous PAIR                             ")
+    (key-sequence :tag "Previous CONTENTS                         ")
+    (key-sequence :tag "Previous OPEN                             ")
+    (key-sequence :tag "Previous CLOSE                            ")
+    (key-sequence :tag "Add PAIR (At Point)                       ")
+    (key-sequence :tag "Add PAIR (Search Forward)                 ")
+    (key-sequence :tag "Add PAIR (Search Backward)                ")
+    (key-sequence :tag "Add CONTENTS (Search Forward)             ")
+    (key-sequence :tag "Add CONTENTS (Search Backward)            ")
+    (key-sequence :tag "Delete PAIR (First)                       ")
+    (key-sequence :tag "Delete PAIR (All)                         ")
+    (key-sequence :tag "Delete PAIR (Last)                        ")
+    (key-sequence :tag "Add PAIR Definition...                    ")
+    (key-sequence :tag "Add Mode-Specific PAIR Definition...      ")
+    (key-sequence :tag "Edit Current PAIR Definition...           ")
+    (key-sequence :tag "Edit MNEMONIC Definition...               ")
+    (key-sequence :tag "Edit Mode-Specific MNEMONIC Definition... ")
+    (key-sequence :tag "Delete PAIR Definition...                 ")
+    (key-sequence :tag "Delete Mode-Specific PAIR Definition...   ")
+    (key-sequence :tag "Toggle ESCAPEs                            ")
+    (key-sequence :tag "Abort                                     ")
+    (key-sequence :tag "Options                                   ")
+    (key-sequence :tag "Info                                      ")
+    (key-sequence :tag "Help                                      ")))
 
 (defcustom ipe-edit-movement-keysets '(nil t t nil nil)
   "Movement key sets for `ipe-edit-mode' minor mode.
@@ -2556,6 +2591,8 @@ This variable is expected to be set by
 		 (key-sequence :tag "Move CLOSE Down Key     ")
 		 (key-sequence :tag "Move CLOSE End Key      ")))
   :set 'ipe-edit--movement-keysets-set)
+
+(ipe-edit--keymap-init)
 
 (provide 'ipe-edit)
 

@@ -1275,7 +1275,7 @@ keystroke:
 @strong{NOTE}: The @command{ipe-insert-pair-edit-update} command will
 search for the @emph{nearest} (@xref{Update Search Process}) @sc{PAIR}
 to @sc{POINT}.  The direction of the search is determined by the
-option @option{ipe-update-forward-first}.
+option @option{ipe-update-forward-first-p}.
 
 @c -------------------------------------------------------------------
 @node Deleting PAIRs
@@ -1343,7 +1343,7 @@ The quick brown |fox jumps over the lazy dog.
 @sc{NOTE}: The @command{ipe-insert-pair-edit-delete} command will
 search for the @emph{nearest} (@xref{Update Search Process}) @sc{PAIR}
 to @sc{POINT}.  The direction of the search is determined by the
-@option{ipe-update-forward-first} option.
+@option{ipe-update-forward-first-p} option.
 
 @c -------------------------------------------------------------------
 @node Replacing PAIRs
@@ -1423,7 +1423,7 @@ The quick brown [|fox] jumps over the lazy dog.
 @sc{NOTE}: The @command{ipe-insert-pair-edit-replace} command will
 search for the @emph{nearest} (@xref{Update Search Process}) @sc{PAIR}
 to @sc{POINT}.  The direction of the search is determined by the
-@option{ipe-update-forward-first} option.
+@option{ipe-update-forward-first-p} option.
 
 @c -------------------------------------------------------------------
 @node Customization
@@ -3717,9 +3717,9 @@ All locate the @sc{PAIR}s to be updated by searching for the
 the @sc{PAIR}s within the @emph{region}.)
 
 The direction of the search is determined by the
-@option{ipe-update-forward-first} option.  (Default: @strong{nil})
+@option{ipe-update-forward-first-p} option.  (Default: @strong{nil})
 
-@defopt{ipe-update-forward-first}
+@defopt{ipe-update-forward-first-p}
 
 If nil, the @sc{PAIR} to be updated by any of the
 @emph{ipe-insert-pair-edit-*} commands will be searched for by:

@@ -416,6 +416,7 @@ menus.
   :group 'ipe-advanced
   :tag   "Insert Pair Edit - PAIR sort order."
   :link  '(function-link ipe-insert-pair-edit)
+  :set   'ipe-custom--pair-sort-set
   :type  '(radio
 	   (const :tag "Sort by MNEMONIC" sort-by-mnemonic)
 	   (const :tag "Sort by OPEN"     sort-by-open)
@@ -464,7 +465,7 @@ within the Emacs \"Edit\" menu.
 		   (const   :tag "Off" nil)
 		   (integer :tag "Characters to display")))
 
-(defcustom ipe-update-forward-first nil
+(defcustom ipe-update-forward-first-p nil
   "Whether to search forward or backward when updating.
 
 If nil, `ipe-insert-pair-edit-update' / `ipe-insert-pair-edit-delete'
@@ -2094,6 +2095,26 @@ replaced.)"
 	(insert (substring string len len-string))))
       inserted)))
 
+(defun ipe--pos-hrecenter (pos)
+  "Recenter window horizontally around POS."
+
+  (let* ((window (get-buffer-window))
+	 (w      (window-width window))
+	 (page))
+
+    (when (or truncate-lines
+	      (and truncate-partial-width-windows
+		   (< w truncate-partial-width-windows)))
+      (save-excursion
+	(goto-char pos)
+	(when
+	    (or (<= (- (1- (current-column)) (window-hscroll window)) 0)
+		(>= (- (1- (current-column)) (window-hscroll window)) w))
+	  (setq page (/ (1- (current-column)) w))))
+
+      (when page
+	(set-window-hscroll window (* page w))))))
+
 (defun ipe--pos-recenter (n &optional close)
   "Recenter the window so that the `N'th `ipe' PAIR is visible.
 
@@ -2110,7 +2131,9 @@ If CLOSE is nil, ensure that the `N'th OPEN overlay is visible."
 	(when (or (>  (ipe--pos-close n) (window-end))
 		  (<= (point)            (window-start)))
 	  (goto-char (ipe--pos-close n))
-	  (recenter)))
+	  (recenter))
+
+	(ipe--pos-hrecenter (ipe--pos-close n)))
 
     (when (or (<  (ipe--pos-open n) (window-start))
 	      (>= (point)           (window-end)))
@@ -2120,7 +2143,9 @@ If CLOSE is nil, ensure that the `N'th OPEN overlay is visible."
     (when (or (>  (ipe--pos-open n) (window-end))
 	      (<= (point)           (window-start)))
       (goto-char (ipe--pos-open n))
-      (recenter))))
+      (recenter))
+
+    (ipe--pos-hrecenter (ipe--pos-open n))))
 
 (defun ipe--insert-overlay (overlay pos-point)
   "Insert OVERLAY into the buffer.
@@ -2608,7 +2633,7 @@ and do not display an `'after-string' as part of the CLOSE overlay."
 				      1))))
 
     ;; Re-display the overlays in the new positions.
-    (ipe--pos-recenter 0)))
+    (ipe--pos-recenter 0 t)))
 
 ;; -------------------------------------------------------------------
 ;;;; Infixes:

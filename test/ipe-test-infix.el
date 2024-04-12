@@ -52,6 +52,7 @@
   '((ipe-move-point-on-insert   nil)
     (ipe-prefix-moves-close-p   t)
     (ipe-edit--movement-keysets '(modifiers))
+    (ipe-update-forward-firsto-p nil)
     (ipe-pairs
      '(("<" "<-- " " -->" (:movement line :infix " -- "))
        ("[" "[" "]"       (:movement line :infix "-"))))
