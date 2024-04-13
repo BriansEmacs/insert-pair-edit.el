@@ -119,6 +119,15 @@ package."
   :link '(function-link ipe-insert-pair-edit)
   :link '(function-link ipe-edit-mode))
 
+(defun ipe-options ()
+  "Call `customize-group' for `ipe'.
+
+This command is used to display a `customize' buffer containing
+customization for the `ipe' customization group."
+
+  (interactive)
+  (customize-group "ipe"))
+
 (defun ipe-insert-pair-edit-delete (mnemonic)
   "Delete the OPEN and CLOSE strings of an Insert Pair Edit PAIR.
 

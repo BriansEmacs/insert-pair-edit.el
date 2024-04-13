@@ -236,6 +236,60 @@ characters."
 	    (ipe-menu--get-sub-menu pair menu))
 	  pairs))))
 
+(defun ipe-menu--create-sub-menu (pairs menu-path menu-item-fn)
+  "Generate a SUB-MENU for the `ipe' PAIRS under MENU-PATH.
+
+Where:
+
+- PAIRS is a list of Insert Pair Edit (ipe) PAIR definitions (see:
+  `ipe-pairs')
+- MENU-PATH is a `/'-separated string, representing the path to the
+  sub-menu being generated from the PAIRS list.
+- MENU-ITEM-FN is a function used to generate the `'menu-items' within
+  the returned SUB-MENU for each eligible PAIR within PAIRS.
+
+Eligible definitions within PAIRS are determined by querying the :menu
+property of the PAIR.  If the value of the :menu property for the
+given PAIR matches MENU-PATH, a `'menu-item' for the given PAIR is
+added to the returned KEYMAP by calling MENU-ITEM-FN to generate a
+suitable Emacs `'menu-item' structure.
+
+- MENU-ITEM-FN is expected to be a function which takes two arguments:
+
+  (MENU-ITEM-FN KEYMAP MNEMONIC)
+
+  and which adds a `'menu-item' suitable for use within an Emacs menu
+  to the given KEYMAP.
+
+The `ipe-menu--create-sub-menu' function will recursively descend the
+`/'-separated SUB-MENUs within PAIRs to generate further sub-menus,
+and will returns a list:
+
+  (\\='menu-item MENU-NAME KEYMAP)
+
+Suitable for use as an Emacs menu.
+
+- MENU-NAME is the last `/'-separated string within MENU-PATH.  This
+  is the name of the menu displayed by the Emacs UI within the
+  menu-bar.
+- KEYMAP is the recursive set of sub-menus generated from the `ipe'
+  PAIRS using the MENU-ITEM-FN."
+
+  (let ((menu-keymap (make-sparse-keymap menu-path))
+	(menu-name   (replace-regexp-in-string ".*/" "" menu-path)))
+
+    ;; Generate the keymap for the `menu-path'.
+    (ipe-menu--sub-menu-keymap pairs
+			       menu-keymap
+			       menu-path
+			       menu-item-fn)
+
+    ;; Return the `menu-keymap' as a sub-menu.
+    (list 'menu-item
+	  menu-name
+	  menu-keymap
+	  :help (concat ":menu group for \"" menu-name "\""))))
+
 ;; -------------------------------------------------------------------
 ;;;; Sub-menu maps:
 ;; -------------------------------------------------------------------
@@ -830,10 +884,10 @@ definition."
 	      (if (ipe--mode-pair ipe--mnemonic major-mode)
 		  (ipe-defn--ui-edit-mode-pair major-mode ipe--mnemonic)
 		(ipe-defn--ui-edit-pair ipe--mnemonic)))
-	    :keys (if (where-is-internal 'ipe-defn--edit-current-pair
+	    :keys (if (where-is-internal 'ipe-edit--edit-current-pair
 					 ipe-edit-mode-map)
 		      (substitute-command-keys "\\<ipe-edit-mode-map>\
- \\[ipe-defn--edit-current-pair]")
+ \\[ipe-edit--edit-current-pair]")
 		    "")
 	    :help "Edits the currently active 'Insert Pair Edit' (ipe) PAIR\
  definition."
@@ -1040,7 +1094,7 @@ This changes based upon the current buffers MAJOR-MODE."
 
     (define-key-after km [pairs--options]
       '(menu-item
-	"Options" ipe-edit--options
+	"Options" ipe-options
 	:help "Customize 'Insert Pair Edit' (ipe)."))
 
     (define-key-after km [pairs--info]
@@ -1279,7 +1333,7 @@ It defines menu-items to call various `ipe-edit--*' functions."
     ;; Help / Configuration Commands.
     (define-key-after km [options]
       '(menu-item
-	"Options" ipe-edit--options
+	"Options" ipe-options
 	:help "Customize 'Insert Pair Edit' (ipe).")
       'abort)
 
@@ -1395,60 +1449,6 @@ It defines menu-items to perform basic `ipe-edit--*' functions.
 ;; -------------------------------------------------------------------
 ;;;; Dynamically generated menus:
 ;; -------------------------------------------------------------------
-
-(defun ipe-menu--create-sub-menu (pairs menu-path menu-item-fn)
-  "Generate a SUB-MENU for the `ipe' PAIRS under MENU-PATH.
-
-Where:
-
-- PAIRS is a list of Insert Pair Edit (ipe) PAIR definitions (see:
-  `ipe-pairs')
-- MENU-PATH is a `/'-separated string, representing the path to the
-  sub-menu being generated from the PAIRS list.
-- MENU-ITEM-FN is a function used to generate the `'menu-items' within
-  the returned SUB-MENU for each eligible PAIR within PAIRS.
-
-Eligible definitions within PAIRS are determined by querying the :menu
-property of the PAIR.  If the value of the :menu property for the
-given PAIR matches MENU-PATH, a `'menu-item' for the given PAIR is
-added to the returned KEYMAP by calling MENU-ITEM-FN to generate a
-suitable Emacs `'menu-item' structure.
-
-- MENU-ITEM-FN is expected to be a function which takes two arguments:
-
-  (MENU-ITEM-FN KEYMAP MNEMONIC)
-
-  and which adds a `'menu-item' suitable for use within an Emacs menu
-  to the given KEYMAP.
-
-The `ipe-menu--create-sub-menu' function will recursively descend the
-`/'-separated SUB-MENUs within PAIRs to generate further sub-menus,
-and will returns a list:
-
-  (\\='menu-item MENU-NAME KEYMAP)
-
-Suitable for use as an Emacs menu.
-
-- MENU-NAME is the last `/'-separated string within MENU-PATH.  This
-  is the name of the menu displayed by the Emacs UI within the
-  menu-bar.
-- KEYMAP is the recursive set of sub-menus generated from the `ipe'
-  PAIRS using the MENU-ITEM-FN."
-
-  (let ((menu-keymap (make-sparse-keymap menu-path))
-	(menu-name   (replace-regexp-in-string ".*/" "" menu-path)))
-
-    ;; Generate the keymap for the `menu-path'.
-    (ipe-menu--sub-menu-keymap pairs
-			       menu-keymap
-			       menu-path
-			       menu-item-fn)
-
-    ;; Return the `menu-keymap' as a sub-menu.
-    (list 'menu-item
-	  menu-name
-	  menu-keymap
-	  :help (concat ":menu group for \"" menu-name "\""))))
 
 (defun ipe-menu--insert-pair-menu-item (keymap mnemonic)
   "Add an \"Insert\" `'menu-item' for an `ipe' PAIR to a KEYMAP.

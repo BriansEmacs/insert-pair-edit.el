@@ -12,7 +12,6 @@
 ;; - Highlight Delete PAIR.
 ;;
 ;; STYLE
-;; - Check save-excursion usage.
 ;; - Address TODO's.
 ;;
 ;; STRETCH
@@ -20,16 +19,12 @@
 ;;
 ;; TESTING
 ;; - Add extra tests for 'indention functions.
-;; - Add tests for search 'forward first' on update.
 ;; - Search for Emacs code coverage tool.
 ;;
 ;; DOCUMENTATION
 ;; - Check documentation consistency.
 ;; - Check licensing / copyright headers.
 ;; - Check standard formats for .texi files.
-;;
-;; BUILD
-;; - Check elisp conventions / other linters.
 ;;
 ;; RELEASE
 ;; - Line-by-Line code check.

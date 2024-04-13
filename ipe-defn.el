@@ -105,7 +105,6 @@ definition with MNEMONIC."
 If ALL is non-nil, simply return all of symbols which end with the
 postfix `*-mode'"
 
-  (interactive)
   (if all
       (let ((modes nil))
 	;; Search for all the symbols which end with `-mode'.
@@ -663,14 +662,18 @@ With prefix ARG, call `ipe-defn--ui-edit-pair'."
       ;; Read in OPEN and CLOSE strings.
       (let ((pair (ipe--pair mnemonic))
 	    (open)
-	    (close))
+	    (close)
+	    (open-initial "")
+	    (close-initial ""))
 
 	(when pair
 	  (setq open  (ipe--pair-open-string  pair)
-		close (ipe--pair-close-string pair)))
+		close (ipe--pair-close-string pair)
+		open-initial (cons open 0)
+		close-initial (cons close 0)))
 
-	(setq open  (read-from-minibuffer "OPEN: "  open)
-	      close (read-from-minibuffer "CLOSE: " close))
+	(setq open  (read-from-minibuffer "OPEN: "  open-initial)
+	      close (read-from-minibuffer "CLOSE: " close-initial))
 
 	(setq open  (substring-no-properties open)
 	      close (substring-no-properties close))
@@ -691,7 +694,7 @@ With prefix ARG, call `ipe-defn--ui-edit-pair'."
 	  (run-hooks 'ipe-defn--update-hook))))))
 
 (defun ipe-defn--edit-current-pair (arg)
-  "Interactively edit the current `ipe' PAIR Definition.
+  "Edit the current `ipe' PAIR Definition.
 
 This function will act as per `ipe-defn--edit-pair', but will use the
 currently active Insert Pair Edit PAIR rather than prompting for a
@@ -700,7 +703,6 @@ MNEMONIC.
 With prefix ARG, call either `ipe-defn--ui-edit-pair' or
 `ipe-defn--ui-edit-mode-pair'."
 
-  (interactive "P")
   (if (ipe--mode-pair ipe--mnemonic major-mode)
       (ipe-defn--edit-mode-pair arg major-mode ipe--mnemonic)
     (ipe-defn--edit-pair arg ipe--mnemonic)))
@@ -776,13 +778,18 @@ With prefix ARG, call `ipe-defn--ui-edit-mode-pair'."
       ;; Read in OPEN and CLOSE strings.
       (let ((pair (ipe--pair mnemonic ipe--major-mode))
 	    (open)
-	    (close))
+	    (close)
+	    (open-initial "")
+	    (close-initial ""))
+
 	(when pair
 	  (setq open  (ipe--pair-open-string  pair)
-		close (ipe--pair-close-string pair)))
+		close (ipe--pair-close-string pair)
+		open-initial (cons open 0)
+		close-initial (cons close 0)))
 
-	(setq open  (read-from-minibuffer "OPEN: "  open)
-	      close (read-from-minibuffer "CLOSE: " close))
+	(setq open  (read-from-minibuffer "OPEN: "  open-initial)
+	      close (read-from-minibuffer "CLOSE: " close-initial))
 
 	(setq open  (substring-no-properties open)
 	      close (substring-no-properties close))

@@ -71,7 +71,6 @@ work with multiple cursors."
 	 ipe-defn--change-pair-mnemonic
 	 ipe-defn--delete-mode-pair
 	 ipe-defn--delete-pair
-	 ipe-defn--edit-current-pair
 	 ipe-defn--edit-mode-pair
 	 ipe-defn--edit-pair
 	 ipe-edit--abort
@@ -97,6 +96,7 @@ work with multiple cursors."
 	 ipe-edit--delete-first-pair
 	 ipe-edit--delete-all-pairs
 	 ipe-edit--delete-last-pair
+	 ipe-edit--edit-current-pair
 	 ipe-edit--ia-copy-text
 	 ipe-edit--ia-goto-close
 	 ipe-edit--ia-goto-open
@@ -113,7 +113,6 @@ work with multiple cursors."
 	 ipe-edit--open-end
 	 ipe-edit--open-forward
 	 ipe-edit--open-up
-	 ipe-edit--options
 	 ipe-edit--toggle-escapes
 	 ipe-edit--update-next-close
 	 ipe-edit--update-next-contents
@@ -126,6 +125,7 @@ work with multiple cursors."
 	 ipe-help
 	 ipe-help-info
 	 ipe-help-edit-mode
+	 ipe-options
 	 ipe-test-run))
 
       (mapc

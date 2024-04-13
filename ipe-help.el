@@ -287,15 +287,15 @@ All 'ipe-edit-mode' key bindings can be edited via:
 
 'Insert Pair Edit' minor mode - Edit PAIR Definitions:
 
-  \\<ipe-edit-mode-map>`\\[ipe-defn--edit-pair]' - Add / Edit the\
+   \\<ipe-edit-mode-map>``\\[ipe-edit--edit-current-pair]' - \
+ Edit the definition of the currently active PAIR.
+	(command: `ipe-edit--edit-current-pair')
+   \\[ipe-defn--edit-pair]' - Add / Edit the\
  definition of a global PAIR.
 	(command: `ipe-defn--edit-pair')
   `\\[ipe-defn--edit-mode-pair]' - Add / Edit the definition of a\
  modal PAIR.
 	(command: `ipe-defn--edit-mode-pair')
-  `\\[ipe-defn--edit-current-pair]' - Edit the definition of the\
- currently active PAIR.
-	(command: `ipe-defn--edit-current-pair')
   `\\[ipe-defn--change-pair-mnemonic]' - Change the MNEMONIC of\
  an existing global PAIR.
 	(command: `ipe-defn--change-pair-mnemonic')
@@ -322,9 +322,9 @@ All 'ipe-edit-mode' key bindings can be edited via:
   `\\[ipe-edit--toggle-escapes]' - Turn on/off the processing\
  of ESCAPES for the current PAIR.
 	(command: `ipe-edit--toggle-escapes')
-  `\\[ipe-edit--options]' - Display the 'Insert Pair Edit'\
+  `\\[ipe-options]' - Display the 'Insert Pair Edit'\
  `customize'-ation options.
-	(command: `ipe-edit--options')
+	(command: `ipe-options')
   `\\[ipe-help-info]' - Display the 'Insert Pair Edit' (ipe)\
  info file.
 	(command: `ipe-help-info')
@@ -351,22 +351,26 @@ PAIRs are highlighted using:
     (set-buffer standard-output)
     (setq-local tab-width 8)
     (help-setup-xref (list #'ipe-help) t)
-    (insert (substitute-command-keys ipe-help--help-text))
-    (goto-char (point-max)))
+    (insert (substitute-command-keys ipe-help--help-text)))
 
-  (save-excursion
-    (with-current-buffer (get-buffer "*Help*")
-      (let ((buffer-read-only nil))
-	(setq-local tab-width 8)
-	(goto-char (point-min))
-	(forward-line 3)
-	(help-insert-xref-button "[More 'Insert Pair Edit' Commands (1)]"
-				 'ipe-help--more-1-button)
-	(insert "       ")
-	(help-insert-xref-button "['Insert Pair Edit' Info]"
-				 'ipe-help--info-button)
-	(insert " \n\n")))
-    ""))
+  (with-current-buffer (get-buffer "*Help*")
+    (let ((buffer-read-only nil))
+      (setq-local tab-width 8)
+      (goto-char (point-min))
+      (forward-line 3)
+      (help-insert-xref-button
+       "[More 'Insert Pair Edit' Commands (1)]"
+       'ipe-help--more-1-button)
+      (insert "       ")
+      (help-insert-xref-button "['Insert Pair Edit' Info]"
+			       'ipe-help--info-button)
+      (insert " \n\n")
+
+      (goto-char (point-min))
+      (forward-button 1)
+      (set-window-point
+       (get-buffer-window (current-buffer)) (point))))
+  "")
 
 (defun ipe-help--more-1 ()
   "Display more help for the 'Insert Pair Edit' package.
@@ -379,21 +383,25 @@ PAIRs are highlighted using:
     (set-buffer standard-output)
     (setq-local tab-width 8)
     (help-setup-xref (list #'ipe-help--more-1) t)
-    (insert (substitute-command-keys ipe-help--help-more-1))
-    (goto-char (point-max)))
+    (insert (substitute-command-keys ipe-help--help-more-1)))
 
-  (save-excursion
-    (with-current-buffer (get-buffer "*Help*")
-      (let ((buffer-read-only nil))
-	(setq-local tab-width 8)
-	(goto-char (point-min))
-	(forward-line 3)
-	(help-insert-xref-button "[More 'Insert Pair Edit' Commands (2)]"
-				 'ipe-help--more-2-button)
-	(insert "       ")
-	(help-insert-xref-button "['Insert Pair Edit' Info]"
-				 'ipe-help--info-button)
-	(insert " \n\n")))))
+  (with-current-buffer (get-buffer "*Help*")
+    (let ((buffer-read-only nil))
+      (setq-local tab-width 8)
+      (goto-char (point-min))
+      (forward-line 3)
+      (help-insert-xref-button
+       "[More 'Insert Pair Edit' Commands (2)]"
+       'ipe-help--more-2-button)
+      (insert "       ")
+      (help-insert-xref-button "['Insert Pair Edit' Info]"
+			       'ipe-help--info-button)
+      (insert " \n\n")
+
+      (goto-char (point-min))
+      (forward-button 1)
+      (set-window-point
+       (get-buffer-window (current-buffer)) (point)))))
 
 (defun ipe-help--more-2 ()
   "Display more help for the 'Insert Pair Edit' package.
@@ -406,21 +414,25 @@ PAIRs are highlighted using:
     (set-buffer standard-output)
     (setq-local tab-width 8)
     (help-setup-xref (list #'ipe-help--more-2) t)
-    (insert (substitute-command-keys ipe-help--help-more-2))
-    (goto-char (point-max)))
+    (insert (substitute-command-keys ipe-help--help-more-2)))
 
-  (save-excursion
-    (with-current-buffer (get-buffer "*Help*")
-      (let ((buffer-read-only nil))
-	(setq-local tab-width 8)
-	(goto-char (point-min))
-	(forward-line 3)
-	(help-insert-xref-button "[More 'Insert Pair Edit' Commands (3)]"
-				 'ipe-help--more-3-button)
-	(insert "       ")
-	(help-insert-xref-button "['Insert Pair Edit' Info]"
-				 'ipe-help--info-button)
-	(insert " \n\n")))))
+  (with-current-buffer (get-buffer "*Help*")
+    (let ((buffer-read-only nil))
+      (setq-local tab-width 8)
+      (goto-char (point-min))
+      (forward-line 3)
+      (help-insert-xref-button
+       "[More 'Insert Pair Edit' Commands (3)]"
+       'ipe-help--more-3-button)
+      (insert "       ")
+      (help-insert-xref-button "['Insert Pair Edit' Info]"
+			       'ipe-help--info-button)
+      (insert " \n\n")
+
+      (goto-char (point-min))
+      (forward-button 1)
+      (set-window-point
+       (get-buffer-window (current-buffer)) (point)))))
 
 (defun ipe-help--more-3 ()
   "Display more help for the 'Insert Pair Edit' package.
@@ -433,21 +445,25 @@ PAIRs are highlighted using:
     (set-buffer standard-output)
     (setq-local tab-width 8)
     (help-setup-xref (list #'ipe-help--more-3) t)
-    (insert (substitute-command-keys ipe-help--help-more-3))
-    (goto-char (point-max)))
+    (insert (substitute-command-keys ipe-help--help-more-3)))
 
-  (save-excursion
-    (with-current-buffer (get-buffer "*Help*")
-      (let ((buffer-read-only nil))
-	(setq-local tab-width 8)
-	(goto-char (point-min))
-	(forward-line 3)
-	(help-insert-xref-button "[More 'Insert Pair Edit' Commands (4)]"
-				 'ipe-help--more-4-button)
-	(insert "       ")
-	(help-insert-xref-button "['Insert Pair Edit' Info]"
-				 'ipe-help--info-button)
-	(insert " \n\n")))))
+  (with-current-buffer (get-buffer "*Help*")
+    (let ((buffer-read-only nil))
+      (setq-local tab-width 8)
+      (goto-char (point-min))
+      (forward-line 3)
+      (help-insert-xref-button
+       "[More 'Insert Pair Edit' Commands (4)]"
+       'ipe-help--more-4-button)
+      (insert "       ")
+      (help-insert-xref-button "['Insert Pair Edit' Info]"
+			       'ipe-help--info-button)
+      (insert " \n\n")
+
+      (goto-char (point-min))
+      (forward-button 1)
+      (set-window-point
+       (get-buffer-window (current-buffer)) (point)))))
 
 (defun ipe-help--more-4 ()
   "Display more help for the 'Insert Pair Edit' package.
@@ -460,21 +476,25 @@ PAIRs are highlighted using:
     (set-buffer standard-output)
     (setq-local tab-width 8)
     (help-setup-xref (list #'ipe-help--more-4) t)
-    (insert (substitute-command-keys ipe-help--help-more-4))
-    (goto-char (point-max)))
+    (insert (substitute-command-keys ipe-help--help-more-4)))
 
-  (save-excursion
-    (with-current-buffer (get-buffer "*Help*")
-      (let ((buffer-read-only nil))
-	(setq-local tab-width 8)
-	(goto-char (point-min))
-	(forward-line 3)
-	(help-insert-xref-button "[More 'Insert Pair Edit' Commands (5)]"
-				 'ipe-help--more-5-button)
-	(insert "       ")
-	(help-insert-xref-button "['Insert Pair Edit' Info]"
-				 'ipe-help--info-button)
-	(insert " \n\n")))))
+  (with-current-buffer (get-buffer "*Help*")
+    (let ((buffer-read-only nil))
+      (setq-local tab-width 8)
+      (goto-char (point-min))
+      (forward-line 3)
+      (help-insert-xref-button
+       "[More 'Insert Pair Edit' Commands (5)]"
+       'ipe-help--more-5-button)
+      (insert "       ")
+      (help-insert-xref-button "['Insert Pair Edit' Info]"
+			       'ipe-help--info-button)
+      (insert " \n\n")
+
+      (goto-char (point-min))
+      (forward-button 1)
+      (set-window-point
+       (get-buffer-window (current-buffer)) (point)))))
 
 (defun ipe-help--more-5 ()
   "Display more help for the 'Insert Pair Edit' package.
@@ -487,21 +507,25 @@ PAIRs are highlighted using:
     (set-buffer standard-output)
     (setq-local tab-width 8)
     (help-setup-xref (list #'ipe-help--more-5) t)
-    (insert (substitute-command-keys ipe-help--help-more-5))
-    (goto-char (point-max)))
+    (insert (substitute-command-keys ipe-help--help-more-5)))
 
-  (save-excursion
-    (with-current-buffer (get-buffer "*Help*")
-      (let ((buffer-read-only nil))
-	(setq-local tab-width 8)
-	(goto-char (point-min))
-	(forward-line 3)
-	(help-insert-xref-button "[More 'Insert Pair Edit' Commands (6)]"
-				 'ipe-help--more-6-button)
-	(insert "       ")
-	(help-insert-xref-button "['Insert Pair Edit' Info]"
-				 'ipe-help--info-button)
-	(insert " \n\n")))))
+  (with-current-buffer (get-buffer "*Help*")
+    (let ((buffer-read-only nil))
+      (setq-local tab-width 8)
+      (goto-char (point-min))
+      (forward-line 3)
+      (help-insert-xref-button
+       "[More 'Insert Pair Edit' Commands (6)]"
+       'ipe-help--more-6-button)
+      (insert "       ")
+      (help-insert-xref-button "['Insert Pair Edit' Info]"
+			       'ipe-help--info-button)
+      (insert " \n\n")
+
+      (goto-char (point-min))
+      (forward-button 1)
+      (set-window-point
+       (get-buffer-window (current-buffer)) (point)))))
 
 (defun ipe-help--more-6 ()
   "Display more help for the 'Insert Pair Edit' package.
@@ -517,18 +541,23 @@ PAIRs are highlighted using:
     (insert (substitute-command-keys ipe-help--help-more-6))
     (goto-char (point-max)))
 
-  (save-excursion
-    (with-current-buffer (get-buffer "*Help*")
-      (let ((buffer-read-only nil))
-	(setq-local tab-width 8)
-	(goto-char (point-min))
-	(forward-line 3)
-	(help-insert-xref-button "[More 'Insert Pair Edit' Commands (7)]"
-				 'ipe-help--more-7-button)
-	(insert "       ")
-	(help-insert-xref-button "['Insert Pair Edit' Info]"
-				 'ipe-help--info-button)
-	(insert " \n\n")))))
+  (with-current-buffer (get-buffer "*Help*")
+    (let ((buffer-read-only nil))
+      (setq-local tab-width 8)
+      (goto-char (point-min))
+      (forward-line 3)
+      (help-insert-xref-button
+       "[More 'Insert Pair Edit' Commands (7)]"
+       'ipe-help--more-7-button)
+      (insert "       ")
+      (help-insert-xref-button "['Insert Pair Edit' Info]"
+			       'ipe-help--info-button)
+      (insert " \n\n")
+
+      (goto-char (point-min))
+      (forward-button 1)
+      (set-window-point
+       (get-buffer-window (current-buffer)) (point)))))
 
 (defun ipe-help--more-7 ()
   "Display more help for the 'Insert Pair Edit' package.
@@ -541,21 +570,24 @@ PAIRs are highlighted using:
     (set-buffer standard-output)
     (setq-local tab-width 8)
     (help-setup-xref (list #'ipe-help--more-7) t)
-    (insert (substitute-command-keys ipe-help--help-more-7))
-    (goto-char (point-max)))
+    (insert (substitute-command-keys ipe-help--help-more-7)))
 
-  (save-excursion
-    (with-current-buffer (get-buffer "*Help*")
-      (let ((buffer-read-only nil))
-	(setq-local tab-width 8)
-	(goto-char (point-min))
-	(forward-line 3)
-	(help-insert-xref-button "['Insert Pair Edit' Help]"
-				 'ipe-help--help-button)
-	(insert "                    ")
-	(help-insert-xref-button "['Insert Pair Edit' Info]"
-				 'ipe-help--info-button)
-	(insert " \n\n")))))
+  (with-current-buffer (get-buffer "*Help*")
+    (let ((buffer-read-only nil))
+      (setq-local tab-width 8)
+      (goto-char (point-min))
+      (forward-line 3)
+      (help-insert-xref-button "['Insert Pair Edit' Help]"
+			       'ipe-help--help-button)
+      (insert "                    ")
+      (help-insert-xref-button "['Insert Pair Edit' Info]"
+			       'ipe-help--info-button)
+      (insert " \n\n")
+
+      (goto-char (point-min))
+      (forward-button 1)
+      (set-window-point
+       (get-buffer-window (current-buffer)) (point)))))
 
 (defun ipe-help-edit-mode ()
   "Display help for the 'Insert Pair Edit' minor mode.
@@ -564,16 +596,22 @@ PAIRs are highlighted using:
 
   (interactive)
 
-  (with-help-window "*Help*"
-    (set-buffer standard-output)
-    (setq-local tab-width 8)
-    (help-setup-xref (list #'ipe-help-edit-mode) t)
-    (insert (substitute-command-keys
-	     (concat "'Insert Pair Edit' Help
+  (let ((edit-mode ipe-edit-mode))
+    (with-help-window "*Help*"
+      (set-buffer standard-output)
+      (setq-local tab-width 8)
+      (help-setup-xref (list #'ipe-help-edit-mode) t)
+      (insert (substitute-command-keys
+	       (concat "'Insert Pair Edit' Help
 ------------------------
+"
 
-You are currently in the 'Insert Pair Edit' minor mode:
-
+		       (if edit-mode "
+You are currently in the 'Insert Pair Edit' minor mode:"
+			 "
+The help describes the:
+")
+		       "
       (command: `ipe-edit-mode').
 
 This mode is generally launched by the function
@@ -611,7 +649,7 @@ This minor mode forms part of the 'Insert Pair Edit' (ipe) package.
 ---
 
 " ipe-help--help-more-7)))
-    ""))
+      "")))
 
 (defun ipe-help-prompt ()
   "Display the 'Insert Pair Edit' prompt help."
@@ -621,8 +659,6 @@ This minor mode forms part of the 'Insert Pair Edit' (ipe) package.
   (let ((help-text (substitute-command-keys
 		    (concat "'Insert Pair Edit' Prompt Help
 ------------------------------
-
-You are currently in the 'Insert Pair Edit' prompt.
 
 This prompt is generally launched by the function
 `ipe-insert-pair-edit', by typing:
@@ -650,9 +686,9 @@ Or, use one the following key bindings:
     '\\[ipe-help-info]' -\
  Display the 'Insert Pair Edit' Info.
 	    (command: `ipe-help-info')
-    '\\[ipe-edit--options]' -\
+    '\\[ipe-options]' -\
  Customize the 'Insert Pair Edit' options.
-	    (command: `ipe-edit--options')
+	    (command: `ipe-options')
 
     '\\[ipe-defn--edit-pair]' -\
  Create a new 'Insert Pair Edit' PAIR Definition.

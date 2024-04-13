@@ -56,6 +56,7 @@
     "test/ipe-test-defn.el"
     "test/ipe-test-edit.el"
     "test/ipe-test-escape.el"
+    "test/ipe-test-forward-first.el"
     "test/ipe-test-indent.el"
     "test/ipe-test-infix.el"
     "test/ipe-test-insert-and.el"

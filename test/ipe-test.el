@@ -319,6 +319,7 @@ BUFFER-TEXT - Starting text within the temporary buffer.
 EXPECTED - Expected text within the temporary buffer after test
   completion.
 BODY - Commands to be executed against the temporary buffer."
+
   (declare (indent defun))
   (when (or (functionp 'multiple-cursors-mode)
 	    (not (string= "mc-" (substring (symbol-name name) 0 3))))
@@ -380,6 +381,7 @@ EXPECTED - Expected text within the temporary buffer after test
 KEYSTROKES - The keystrokes to be executed as user input against the
   temporary buffer.
 TEARDOWN - Commands used to clean up the temporary test buffer."
+
   (declare (indent defun))
   (when ipe-test--buffer-text-alist-p
     (setq ipe-test--buffer-text-alist
@@ -488,6 +490,7 @@ to the according to the position indicated.
 If BUFFER-TEXT contains one or more `ipe-test--mc-point-indicator's,
 `multiple-cursors-mode' will be activated, and a `mc' cursor will be
 added to each position indicated."
+
   (interactive (list (completing-read "IPE Test: "
 				      (ipe-test--names)
 				      nil
@@ -499,18 +502,18 @@ added to each position indicated."
 	(keystrokes  (ipe-compat--caddr
 		      (assoc name ipe-test--buffer-text-alist))))
     (if (stringp keystrokes)
-        (progn
+	(progn
 	  (with-current-buffer (get-buffer-create "*ipe-test-buffer-keys*")
 	    (setq buffer-read-only nil)
 	    (delete-region (point-min) (point-max))
 	    (insert keystrokes)
 	    (goto-char (point-min))
 	    (setq buffer-read-only t))
-          (split-window-vertically)
-          (switch-to-buffer-other-window "*ipe-test-buffer-keys*")
-          (shrink-window-if-larger-than-buffer))
+	  (split-window-vertically)
+	  (switch-to-buffer-other-window "*ipe-test-buffer-keys*")
+	  (shrink-window-if-larger-than-buffer))
       (when (get-buffer "*ipe-test-buffer-keys*")
-        (kill-buffer "*ipe-test-buffer-keys*")))
+	(kill-buffer "*ipe-test-buffer-keys*")))
 
     (with-current-buffer (get-buffer-create "*ipe-test-buffer*")
       (setq buffer-read-only nil)
@@ -528,6 +531,7 @@ added to each position indicated."
 
 As a default, use the symbol at POINT, or, the test at point if in the
 ERT results buffer."
+
   (interactive (list (ert-read-test-name-at-point
 		      "Find ipe-test definition: ")))
   (let ((ipe-test-name
@@ -538,8 +542,13 @@ ERT results buffer."
 
 (defun ipe-test--occur-failed ()
   "Run `occur' to search for failed test strings within *ert*."
+
   (interactive)
-  (occur "^F "))
+
+  (if (eq major-mode 'ert-results-mode)
+      (occur "^F ")
+    (message "This command should only be run from within\
+ `ert-results-mode'.")))
 
 (progn
   (define-key ert-results-mode-map (kbd "e")

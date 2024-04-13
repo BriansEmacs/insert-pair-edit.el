@@ -74,7 +74,6 @@
 Move backward to the beginning of a defun.  With UNITS, do it that
 many times."
 
-  (interactive "P")
   (let ((done t))
     (if (< units 0)
 	(ipe-dotimes (- units)
@@ -91,7 +90,6 @@ many times."
 Move forward UNITS number of balanced groups of parentheses.  If it is
 impossible to go the full number of UNITS, got as far as possible."
 
-  (interactive "P")
   (if (< units 0)
       (ipe-list--backward-list (- units))
     (let ((done t))
@@ -110,7 +108,6 @@ impossible to go the full number of UNITS, got as far as possible."
 Move backward UNITS number of balanced groups of parentheses.  If it
 is impossible to go the full number of UNITS, got as far as possible."
 
-  (interactive "P")
   (if (< units 0)
       (ipe-list--forward-list (- units))
     (let ((done t))
@@ -129,7 +126,6 @@ is impossible to go the full number of UNITS, got as far as possible."
 Move up UNITS number of balanced groups of parentheses.  If it is
 impossible to go the full number of UNITS, got as far as possible."
 
-  (interactive "P")
   (let ((done t))
     (if (< units 0)
 	(progn
@@ -149,7 +145,6 @@ impossible to go the full number of UNITS, got as far as possible."
 Move down UNITS number of balanced groups of parentheses.  If it is
 impossible to go the full number of UNITS, got as far as possible."
 
-  (interactive "P")
   (let ((done t))
     (if (< units 0)
 	(progn
@@ -177,7 +172,6 @@ impossible to go the full number of UNITS, got as far as possible."
 Move forwards to the end of a defun.  With UNITS, do it that
 many times."
 
-  (interactive "P")
   (let ((done t))
     (if (< units 0)
 	(ipe-dotimes (- units)

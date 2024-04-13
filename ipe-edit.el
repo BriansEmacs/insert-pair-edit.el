@@ -381,9 +381,9 @@ Insert Pair Edit minor mode - Edit PAIR Definitions:
   `\\[ipe-defn--edit-mode-pair]' - Add / Edit the definition of a\
  modal PAIR.
 	(command: `ipe-defn--edit-mode-pair')
-  `\\[ipe-defn--edit-current-pair]' - Edit the definition of the\
+  `\\[ipe-edit--edit-current-pair]' - Edit the definition of the\
  currently active PAIR.
-	(command: `ipe-defn--edit-current-pair')
+	(command: `ipe-edit--edit-current-pair')
   `\\[ipe-defn--change-pair-mnemonic]' - Change the MNEMONIC of\
  an existing global PAIR.
 	(command: `ipe-defn--change-pair-mnemonic')
@@ -406,9 +406,9 @@ Insert Pair Edit minor mode - Other:
  of the :escapes option for the
 	current PAIR.
 	(command: `ipe-edit--toggle-escapes')
-  `\\[ipe-edit--options]' - Display the Insert Pair Edit\
+  `\\[ipe-options]' - Display the Insert Pair Edit\
  `customize'-ation options.
-	(command: `ipe-edit--options')
+	(command: `ipe-options')
   `\\[ipe-help-edit-mode]' - Display help on the commands\
  available within `ipe-edit-mode'.
 	(command: `ipe-help-edit-mode')
@@ -449,8 +449,8 @@ PAIRs are highlighted using:
 	  t
 	(ipe-edit-mode -1)
 	nil)
-    (message (concat "This command should only be run from within\
- `ipe-edit-mode'."))
+    (message "This command should only be run from within\
+ `ipe-edit-mode'.")
     nil))
 
 (defun ipe-edit--redisplay ()
@@ -1825,6 +1825,20 @@ CLOSE."
 	(ipe--pair-pos-hide n)
 	(ipe-edit--redisplay)))))
 
+(defun ipe-edit--edit-current-pair (arg)
+  "Edit the current `ipe' PAIR Definition.
+
+This function will act as per `ipe-defn--edit-pair', but will use the
+currently active Insert Pair Edit PAIR rather than prompting for a
+MNEMONIC.
+
+With prefix ARG, call either `ipe-defn--ui-edit-pair' or
+`ipe-defn--ui-edit-mode-pair'."
+
+  (interactive "P")
+  (when (ipe-edit--mode-check)
+    (ipe-defn--edit-current-pair arg)))
+
 ;; -------------------------------------------------------------------
 ;;;;; 'Other' Commands.
 ;; -------------------------------------------------------------------
@@ -1864,16 +1878,6 @@ definitions, this command will also remove the overlays for the INFIX
   (recenter)
   (ipe--pos-hrecenter (point))
   (ipe-edit-mode -1))
-
-(defun ipe-edit--options ()
-  "Call `customize-group' for `ipe'.
-
-This command is used within the Insert Pair Edit (ipe) minor-mode
-\(command: `ipe-edit-mode') to display a `customize' buffer containing
-customization for the `ipe' customization group."
-
-  (interactive)
-  (customize-group "ipe"))
 
 ;; -------------------------------------------------------------------
 ;;;; Debugging Commands.
@@ -2092,7 +2096,7 @@ This function will also be called by `customize' when the
   ;; Edit PAIR Definitions >
   (ipe-edit--key 36 'ipe-defn--edit-pair)
   (ipe-edit--key 37 'ipe-defn--edit-mode-pair)
-  (ipe-edit--key 38 'ipe-defn--edit-current-pair)
+  (ipe-edit--key 38 'ipe-edit--edit-current-pair)
   (ipe-edit--key 39 'ipe-defn--change-pair-mnemonic)
   (ipe-edit--key 40 'ipe-defn--change-mode-pair-mnemonic)
   (ipe-edit--key 41 'ipe-defn--delete-pair)
@@ -2102,7 +2106,7 @@ This function will also be called by `customize' when the
   (ipe-edit--key 43 'ipe-edit--toggle-escapes)
 
   (ipe-edit--key 44 'ipe-edit--abort)
-  (ipe-edit--key 45 'ipe-edit--options)
+  (ipe-edit--key 45 'ipe-options)
   (ipe-edit--key 46 'ipe-help-info)
   (ipe-edit--key 47 'ipe-help-edit-mode)
 
@@ -2129,7 +2133,7 @@ This function will also be called by `customize' when the
 		 ipe-read--minibuffer-keymap)
   (ipe-edit--key 42 'ipe-defn--delete-mode-pair
 		 ipe-read--minibuffer-keymap)
-  (ipe-edit--key 45 'ipe-edit--options
+  (ipe-edit--key 45 'ipe-options
 		 ipe-read--minibuffer-keymap)
   (ipe-edit--key 46 'ipe-help-info
 		 ipe-read--minibuffer-keymap)
