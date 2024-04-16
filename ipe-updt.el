@@ -1342,7 +1342,9 @@ recorded in `ipe--pair-pos-list'."
 							pos-open pos-close
 							set-pair-p)))
 		    (setq pos-close (- pos-close deleted)
-			  end       (- end       deleted))))))))
+			  end       (- end       deleted)))))))
+
+	  (setq mark-active nil))
 
       ;; Not a region, use the 'nearest' PAIR.
       (let ((pos-pair (ipe-updt--find-pair pair (point))))

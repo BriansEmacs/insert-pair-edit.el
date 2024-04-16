@@ -287,10 +287,10 @@ All 'ipe-edit-mode' key bindings can be edited via:
 
 'Insert Pair Edit' minor mode - Edit PAIR Definitions:
 
-   \\<ipe-edit-mode-map>``\\[ipe-edit--edit-current-pair]' - \
+   \\<ipe-edit-mode-map>`\\[ipe-edit--edit-current-pair]' - \
  Edit the definition of the currently active PAIR.
 	(command: `ipe-edit--edit-current-pair')
-   \\[ipe-defn--edit-pair]' - Add / Edit the\
+  `\\[ipe-defn--edit-pair]' - Add / Edit the\
  definition of a global PAIR.
 	(command: `ipe-defn--edit-pair')
   `\\[ipe-defn--edit-mode-pair]' - Add / Edit the definition of a\
