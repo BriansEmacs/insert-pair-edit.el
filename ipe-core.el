@@ -3181,7 +3181,7 @@ The initial position is determined lexical units derived from POS and
 			   :close nil)
 
     ;; Set up the initial OPEN / CLOSE Positions.
-    (if mark-active
+    (if (region-active-p)
 	(progn (ipe--open-init  n (region-beginning) 1)
 	       (ipe--close-init n (region-end) 1))
       (ipe--open-init n pos arg)

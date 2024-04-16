@@ -114,6 +114,7 @@ dups
 el
 elisp
 emacs
+emph
 eob
 eobc
 eobp
@@ -154,12 +155,14 @@ len
 linters
 listp
 loaddefs
+lt
 makeinfo
 mapatoms
 mapc
 mapcan
 mapcar
 mc
+md
 melpa
 memq
 ment
