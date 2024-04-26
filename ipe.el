@@ -59,12 +59,14 @@
 ;;
 ;;   M-x ipe-help
 ;;   M-x ipe-help-info
+;;   M-x ipe-options
 ;;
 ;; * or, (if `ipe-menu-support-p' is enabled), from the Emacs `Edit`
 ;;   menu:
 ;;
 ;;   Edit >
 ;;     Pairs >
+;;       Options
 ;;       Info
 ;;       Help
 ;;

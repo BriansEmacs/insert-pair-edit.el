@@ -107,89 +107,91 @@ Cursor at end of buffer."
   "The quick brown () jumps over the lazy dog.|"
   "C-u M-( ( C-k RET")
 
-(ipe-test-def-kbd contents-copy-1 ()
-  "Test `ipe-edit--contents-copy' function."
-  ipe-test-contents-options
-  nil
-  "The quick brown |fox jumps over the lazy dog."
-  "The quick brown (fox|fox) jumps over the lazy dog."
-  "M-( ( M-w RET C-y")
+;; Headless ERT has problems with Kill Ring <= 24.
+(when (> emacs-major-version 24)
+  (ipe-test-def-kbd contents-copy-1 ()
+    "Test `ipe-edit--contents-copy' function."
+    ipe-test-contents-options
+    nil
+    "The quick brown |fox jumps over the lazy dog."
+    "The quick brown (fox|fox) jumps over the lazy dog."
+    "M-( ( M-w RET C-y")
 
-(ipe-test-def-kbd contents-copy-2 ()
-  "Test `ipe-edit--contents-copy' function."
-  ipe-test-contents-options
-  nil
-  "|The quick brown fox jumps over the lazy dog."
-  "The quick brown fox jumps over the lazy dog.|The quick brown fox jumps over the lazy dog."
-  "M-( < M-w C-d C-y")
+  (ipe-test-def-kbd contents-copy-2 ()
+    "Test `ipe-edit--contents-copy' function."
+    ipe-test-contents-options
+    nil
+    "|The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog.|The quick brown fox jumps over the lazy dog."
+    "M-( < M-w C-d C-y")
 
-(ipe-test-def-kbd contents-copy-3 ()
-  "Test `ipe-edit--contents-copy' function.
+  (ipe-test-def-kbd contents-copy-3 ()
+    "Test `ipe-edit--contents-copy' function.
 
 Cursor at start of buffer."
-  ipe-test-contents-options
-  nil
-  "|The quick brown (fox) jumps over the lazy dog."
-  "fox|The quick brown (fox) jumps over the lazy dog."
-  "C-u M-( ( M-w RET C-y")
+    ipe-test-contents-options
+    nil
+    "|The quick brown (fox) jumps over the lazy dog."
+    "fox|The quick brown (fox) jumps over the lazy dog."
+    "C-u M-( ( M-w RET C-y")
 
-(ipe-test-def-kbd contents-copy-4 ()
-  "Test `ipe-edit--contents-copy' function.
+  (ipe-test-def-kbd contents-copy-4 ()
+    "Test `ipe-edit--contents-copy' function.
 
 Cursor at end of buffer."
-  ipe-test-contents-options
-  nil
-  "The quick brown (fox) jumps over the lazy dog.|"
-  "The quick brown (fox) jumps over the lazy dog.fox|"
-  "C-u M-( ( M-w RET C-y")
+    ipe-test-contents-options
+    nil
+    "The quick brown (fox) jumps over the lazy dog.|"
+    "The quick brown (fox) jumps over the lazy dog.fox|"
+    "C-u M-( ( M-w RET C-y")
 
-(ipe-test-def-kbd contents-paste-1 ()
-  "Test `ipe-edit--contents-paste' function."
-  ipe-test-contents-options
-  nil
-  "The quick brown |fox jumps over the lazy dog."
-  "The quick brown |fox (fox) over the lazy dog."
-  "M-( ( M-w C-f M-f C-y RET")
+  (ipe-test-def-kbd contents-paste-1 ()
+    "Test `ipe-edit--contents-paste' function."
+    ipe-test-contents-options
+    nil
+    "The quick brown |fox jumps over the lazy dog."
+    "The quick brown |fox (fox) over the lazy dog."
+    "M-( ( M-w C-f M-f C-y RET")
 
-(ipe-test-def-kbd contents-paste-2 ()
-  "Test `ipe-edit--contents-paste' function."
-  ipe-test-contents-options
-  nil
-  '("The quick brown |fox jumps over the lazy dog."
-    "xxx"
-    "The quick brown fox jumps over the lazy dog.")
-  '("The quick brown |fox jumps over the lazy dog."
-    "The quick brown fox jumps over the lazy dog."
-    "The quick brown fox jumps over the lazy dog.")
-  "M-( < M-w M-n C-y C-d")
+  (ipe-test-def-kbd contents-paste-2 ()
+    "Test `ipe-edit--contents-paste' function."
+    ipe-test-contents-options
+    nil
+    '("The quick brown |fox jumps over the lazy dog."
+      "xxx"
+      "The quick brown fox jumps over the lazy dog.")
+    '("The quick brown |fox jumps over the lazy dog."
+      "The quick brown fox jumps over the lazy dog."
+      "The quick brown fox jumps over the lazy dog.")
+    "M-( < M-w M-n C-y C-d")
 
-(ipe-test-def-kbd contents-paste-3 ()
-  "Test `ipe-edit--contents-paste' function.
+  (ipe-test-def-kbd contents-paste-3 ()
+    "Test `ipe-edit--contents-paste' function.
 
 Cursor at beginning of buffer."
-  ipe-test-contents-options
-  nil
-  "|The quick brown (fox) jumps over the lazy dog."
-  "|The quick brown fox (fox) over the lazy dog."
-  "C-u M-( ( M-w C-f M-f C-y RET")
+    ipe-test-contents-options
+    nil
+    "|The quick brown (fox) jumps over the lazy dog."
+    "|The quick brown fox (fox) over the lazy dog."
+    "C-u M-( ( M-w C-f M-f C-y RET")
 
-(ipe-test-def-kbd contents-paste-4 ()
-  "Test `ipe-edit--contents-paste' function.
+  (ipe-test-def-kbd contents-paste-4 ()
+    "Test `ipe-edit--contents-paste' function.
 
 Cursor at end of buffer."
-  ipe-test-contents-options
-  nil
-  "The quick brown (fox) jumps over the lazy dog.|"
-  "The quick brown fox (fox) over the lazy dog.|"
-  "C-u M-( ( M-w C-f M-f C-y RET")
+    ipe-test-contents-options
+    nil
+    "The quick brown (fox) jumps over the lazy dog.|"
+    "The quick brown fox (fox) over the lazy dog.|"
+    "C-u M-( ( M-w C-f M-f C-y RET")
 
-(ipe-test-def-kbd contents-replace-1 ()
-  "Test `ipe-edit--contents-replace' function."
-  ipe-test-contents-options
-  nil
-  "The quick brown |fox jumps over the lazy dog."
-  "The quick brown (|dog) jumps over the lazy dog."
-  "M-( ( % x C-a C-k dog RET RET")
+  (ipe-test-def-kbd contents-replace-1 ()
+    "Test `ipe-edit--contents-replace' function."
+    ipe-test-contents-options
+    nil
+    "The quick brown |fox jumps over the lazy dog."
+    "The quick brown (|dog) jumps over the lazy dog."
+    "M-( ( % x C-a C-k dog RET RET"))
 
 (ipe-test-def-kbd contents-replace-2 ()
   "Test `ipe-edit--contents-replace' function.

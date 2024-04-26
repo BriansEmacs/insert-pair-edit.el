@@ -304,6 +304,15 @@ i.e.
 	- Move the `ipe' OPEN string to mouse click POS.
   \\[ipe-mouse--close] \
 	- Move the `ipe' CLOSE string to mouse click POS.
+  \\[ipe-mouse--init] \
+	- Surround the current lexical unit with a PAIR.
+  \\[ipe-mouse--region] \
+	- Move both the `ipe' OPEN and CLOSE strings.
+
+  \\[ipe-mouse--add-pair] \
+	- Add an `ipe' PAIR around mouse click POS.
+  \\[ipe-mouse--delete-pair] \
+	- Remove `ipe' PAIR closest to mouse click POS.
 
   \\[ipe-mouse--open-backward] \
 	- Move the `ipe' OPEN string backwards.
@@ -323,20 +332,12 @@ i.e.
   \\[ipe-mouse--close-forward-alt] \
 	- Move the `ipe' CLOSE string forwards (by char).
   \\[ipe-mouse--close-backward-alt] \
-	p- Move the `ipe' CLOSE string backwards (by char).
+	- Move the `ipe' CLOSE string backwards (by char).
 
   \\[ipe-mouse--next-movement] \
 	- Set movement to the next movement.
   \\[ipe-mouse--previous-movement] \
 	- Set movement to the previous movement.
-
-  \\[ipe-mouse--drag] \
-	- Move both the `ipe' OPEN and CLOSE strings.
-
-Insert Pair Edit Context Menu (Mouse 3)
------------------------------------------
-
-\\{ipe-menu--mouse-map}\
 
 See (package: `ipe-mouse') for other bindings."
   :group 'ipe-advanced
@@ -347,13 +348,33 @@ See (package: `ipe-mouse') for other bindings."
   :type  '(boolean))
 
 (defcustom ipe-menu-support-p nil
-  "Whether to include menu support in `ipe-edit-mode' minor-mode.
+  "Whether to include menu support for the `ipe' package.
 
-If non-nil, the Insert Pair Edit `ipe-edit-mode' minor mode will
-include bindings for menu-bar actions.
+If non-nil, this option will cause the addition of both:
 
-A new menu item ('Insert Pair Edit') will provide a set of sub-menus
-of the form:
+1. An extra `Pairs' sub-menu item to the standard Emacs `Edit' menu.
+
+This new menu item will provide a set of sub-menus of the form:
+
+- Edit >
+  - Pairs >
+    - Insert PAIR >
+      - <OPEN> ... <CLOSE>
+      - ...
+    - Update PAIR >
+      - <OPEN> ... <CLOSE>
+      - ...
+    - Delete PAIR >
+      - <OPEN> ... <CLOSE>
+      - ...
+    - Edit PAIR Definitions >
+      - ...
+    - Options
+    - Info
+    - Help
+
+2. Within the `ipe-edit-mode' minor mode, a new menu item ('Insert
+Pair Edit') that will provide a set of sub-menus of the form:
 
 - Insert Pair Edit >
   - Insert PAIR
@@ -2095,6 +2116,23 @@ replaced.)"
 	(insert (substring string len len-string))))
       inserted)))
 
+(defun ipe--pos-hvisible-p (pos)
+  "Return t, if POS is horizontally visible."
+
+  (let* ((window (get-buffer-window))
+	 (w      (window-width window)))
+
+    (if (or truncate-lines
+	    (and truncate-partial-width-windows
+		 (< w truncate-partial-width-windows)))
+	(save-excursion
+	  (goto-char pos)
+	  (if (or (<  (- (current-column) (window-hscroll window)) 0)
+		  (>= (- (current-column) (window-hscroll window)) w))
+	      nil
+	    t))
+      t)))
+
 (defun ipe--pos-hrecenter (pos)
   "Recenter window horizontally around POS."
 
@@ -2115,6 +2153,23 @@ replaced.)"
       (when page
 	(set-window-hscroll window (* page w))))))
 
+(defun ipe--pos-visible-p (pos)
+  "Return t, if POS is visible."
+
+  (cond
+   ((or (<  pos     (window-start))
+	(>= (point) (window-end)))
+    nil)
+
+   ((or (>  pos     (window-end))
+	(<  (point) (window-start)))
+    nil)
+
+   ((not (ipe--pos-hvisible-p pos))
+    nil)
+
+   (t t)))
+
 (defun ipe--pos-recenter (n &optional close)
   "Recenter the window so that the `N'th `ipe' PAIR is visible.
 
@@ -2122,30 +2177,17 @@ If CLOSE is non-nil, ensure that the `N'th CLOSE overlay is visible.
 If CLOSE is nil, ensure that the `N'th OPEN overlay is visible."
 
   (if close
-      (progn
-	(when (or (<  (ipe--pos-close n) (window-start))
-		  (>= (point)            (window-end)))
+      (when (not (ipe--pos-visible-p (ipe--pos-close n)))
+	(save-excursion
 	  (goto-char (ipe--pos-close n))
 	  (recenter))
-
-	(when (or (>  (ipe--pos-close n) (window-end))
-		  (<= (point)            (window-start)))
-	  (goto-char (ipe--pos-close n))
-	  (recenter))
-
 	(ipe--pos-hrecenter (ipe--pos-close n)))
 
-    (when (or (<  (ipe--pos-open n) (window-start))
-	      (>= (point)           (window-end)))
-      (goto-char (ipe--pos-open n))
-      (recenter))
-
-    (when (or (>  (ipe--pos-open n) (window-end))
-	      (<= (point)           (window-start)))
-      (goto-char (ipe--pos-open n))
-      (recenter))
-
-    (ipe--pos-hrecenter (ipe--pos-open n))))
+    (when (not (ipe--pos-visible-p (ipe--pos-open n)))
+      (save-excursion
+	(goto-char (ipe--pos-open n))
+	(recenter))
+      (ipe--pos-hrecenter (ipe--pos-open n)))))
 
 (defun ipe--insert-overlay (overlay pos-point)
   "Insert OVERLAY into the buffer.

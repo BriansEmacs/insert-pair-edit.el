@@ -148,7 +148,12 @@ All 'ipe-edit-mode' key bindings can be edited via:
   `\\[ipe-edit--ia-kill-text]' - Insert OPEN and CLOSE, exit\
  'ipe-edit-mode', and kill the text
 	between the OPEN and CLOSE.
-	(command: `ipe-edit--ia-kill-text')
+	(command: `ipe-edit--ia-kill-text')"
+  "Help text for `ipe-help'.")
+
+(defconst ipe-help--help-more-3
+  "The 'Insert Pair Edit' (ipe) Package - Additional Commands #3
+-------------------------------------------------------------
 
 'Insert Pair Edit' minor mode - Change Movement:
 
@@ -170,8 +175,8 @@ All 'ipe-edit-mode' key bindings can be edited via:
 	(command: `ipe-edit--movement-by-list')"
   "Help text for `ipe-help'.")
 
-(defconst ipe-help--help-more-3
-  "The 'Insert Pair Edit' (ipe) Package - Additional Commands #3
+(defconst ipe-help--help-more-4
+  "The 'Insert Pair Edit' (ipe) Package - Additional Commands #4
 -------------------------------------------------------------
 
 'Insert Pair Edit' minor mode - Edit CONTENTs:
@@ -207,8 +212,8 @@ All 'ipe-edit-mode' key bindings can be edited via:
 	(command: `ipe-edit--contents-downcase')"
   "Help text for `ipe-help'.")
 
-(defconst ipe-help--help-more-4
-  "The 'Insert Pair Edit' (ipe) Package - Additional Commands #4
+(defconst ipe-help--help-more-5
+  "The 'Insert Pair Edit' (ipe) Package - Additional Commands #5
 -------------------------------------------------------------
 
 'Insert Pair Edit' minor mode - Next / Previous:
@@ -246,8 +251,8 @@ All 'ipe-edit-mode' key bindings can be edited via:
 	(command: `ipe-edit--update-previous-close')"
   "Help text for `ipe-help'.")
 
-(defconst ipe-help--help-more-5
-  "The 'Insert Pair Edit' (ipe) Package - Additional Commands #5
+(defconst ipe-help--help-more-6
+  "The 'Insert Pair Edit' (ipe) Package - Additional Commands #6
 -------------------------------------------------------------
 
 'Insert Pair Edit' minor mode - Multiple PAIRs:
@@ -270,6 +275,14 @@ All 'ipe-edit-mode' key bindings can be edited via:
  Add another PAIR to the buffer by searching backward for text
 	between OPEN and CLOSE.
 	(command: `ipe-edit--add-previous-contents')
+
+  `\\[ipe-edit--insert-first-pair]' -\
+ Add the first PAIR to the buffer.
+	(command: `ipe-edit--insert-first-pair')
+  `\\[ipe-edit--insert-last-pair]' -\
+ Add the last PAIR to the buffer.
+	(command: `ipe-edit--insert-last-pair')
+
   `\\[ipe-edit--delete-first-pair]' -\
  Remove the first PAIR from the buffer.
 	(command: `ipe-edit--delete-first-pair')
@@ -281,13 +294,13 @@ All 'ipe-edit-mode' key bindings can be edited via:
 	(command: `ipe-edit--delete-last-pair')"
   "Help text for `ipe-help'.")
 
-(defconst ipe-help--help-more-6
-  "The 'Insert Pair Edit' (ipe) Package - Additional Commands #6
+(defconst ipe-help--help-more-7
+  "The 'Insert Pair Edit' (ipe) Package - Additional Commands #7
 -------------------------------------------------------------
 
 'Insert Pair Edit' minor mode - Edit PAIR Definitions:
 
-   \\<ipe-edit-mode-map>`\\[ipe-edit--edit-current-pair]' - \
+  \\<ipe-edit-mode-map>`\\[ipe-edit--edit-current-pair]' - \
  Edit the definition of the currently active PAIR.
 	(command: `ipe-edit--edit-current-pair')
   `\\[ipe-defn--edit-pair]' - Add / Edit the\
@@ -310,8 +323,8 @@ All 'ipe-edit-mode' key bindings can be edited via:
 	(command: `ipe-defn--delete-mode-pair')"
   "Help text for `ipe-help'.")
 
-(defconst ipe-help--help-more-7
-  "The 'Insert Pair Edit' (ipe) Package - Additional Commands #7
+(defconst ipe-help--help-more-8
+  "The 'Insert Pair Edit' (ipe) Package - Additional Commands #8
 -------------------------------------------------------------
 
 'Insert Pair Edit' minor mode - Other:
@@ -322,6 +335,10 @@ All 'ipe-edit-mode' key bindings can be edited via:
   `\\[ipe-edit--toggle-escapes]' - Turn on/off the processing\
  of ESCAPES for the current PAIR.
 	(command: `ipe-edit--toggle-escapes')
+  `\\[ipe-edit--recenter-pair]' - Recenter the display around\
+ the current PAIR.
+	(command: `ipe-edit--recenter-pair')
+
   `\\[ipe-options]' - Display the 'Insert Pair Edit'\
  `customize'-ation options.
 	(command: `ipe-options')
@@ -577,6 +594,37 @@ PAIRs are highlighted using:
       (setq-local tab-width 8)
       (goto-char (point-min))
       (forward-line 3)
+      (help-insert-xref-button
+       "[More 'Insert Pair Edit' Commands (8)]"
+       'ipe-help--more-8-button)
+      (insert "       ")
+      (help-insert-xref-button "['Insert Pair Edit' Info]"
+			       'ipe-help--info-button)
+      (insert " \n\n")
+
+      (goto-char (point-min))
+      (forward-button 1)
+      (set-window-point
+       (get-buffer-window (current-buffer)) (point)))))
+
+(defun ipe-help--more-8 ()
+  "Display more help for the 'Insert Pair Edit' package.
+
+\(command `ipe-edit-mode')"
+
+  (interactive)
+
+  (with-help-window "*Help*"
+    (set-buffer standard-output)
+    (setq-local tab-width 8)
+    (help-setup-xref (list #'ipe-help--more-8) t)
+    (insert (substitute-command-keys ipe-help--help-more-8)))
+
+  (with-current-buffer (get-buffer "*Help*")
+    (let ((buffer-read-only nil))
+      (setq-local tab-width 8)
+      (goto-char (point-min))
+      (forward-line 3)
       (help-insert-xref-button "['Insert Pair Edit' Help]"
 			       'ipe-help--help-button)
       (insert "                    ")
@@ -648,7 +696,10 @@ This minor mode forms part of the 'Insert Pair Edit' (ipe) package.
 " ipe-help--help-more-6 "
 ---
 
-" ipe-help--help-more-7)))
+" ipe-help--help-more-7 "
+---
+
+" ipe-help--help-more-8)))
       "")))
 
 (defun ipe-help-prompt ()
@@ -764,6 +815,10 @@ Or, use one the following key bindings:
 (define-button-type 'ipe-help--more-7-button
   :supertype 'help-xref
   'help-function 'ipe-help--more-7)
+
+(define-button-type 'ipe-help--more-8-button
+  :supertype 'help-xref
+  'help-function 'ipe-help--more-8)
 
 (define-button-type 'ipe-help--info-button
   :supertype 'help-xref

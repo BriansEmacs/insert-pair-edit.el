@@ -10,6 +10,8 @@
 ;; FEATURES
 ;; - Question Delete PAIR.
 ;; - Highlight Delete PAIR.
+;; - Add 'Movement Toggle' function to switch bindings for OPEN /
+;;   CLOSE.
 ;;
 ;; STYLE
 ;; - Address TODO's.
@@ -24,7 +26,6 @@
 ;; DOCUMENTATION
 ;; - Check documentation consistency.
 ;; - Check licensing / copyright headers.
-;; - Check standard formats for .texi files.
 ;;
 ;; RELEASE
 ;; - Line-by-Line code check.

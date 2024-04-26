@@ -180,15 +180,17 @@ Delete PAIR after cursor."
   (concat "<menu-bar> <edit> <ipe> <insert-pair> <mnemonic-(> "
 	  "<menu-bar> <ipe> <insert-and> <resume>"))
 
-(ipe-test-def-kbd menu-ia-copy-text ()
-  "Test `ipe-edit--ia-copy-text' using the Insert Pair Edit menu."
-  ipe-test-menu-options
-  nil
-  "The quick brown fox |jumps over the lazy dog."
-  "The quick brown fox (jumps|jumps) over the lazy dog."
-  (concat "<menu-bar> <edit> <ipe> <insert-pair> <mnemonic-(> "
-	  "<menu-bar> <ipe> <insert-and> <copy-text> "
-	  "C-y"))
+;; Headless ERT has problems with Kill Ring <= 24.
+(when (> emacs-major-version 24)
+  (ipe-test-def-kbd menu-ia-copy-text ()
+    "Test `ipe-edit--ia-copy-text' using the Insert Pair Edit menu."
+    ipe-test-menu-options
+    nil
+    "The quick brown fox |jumps over the lazy dog."
+    "The quick brown fox (jumps|jumps) over the lazy dog."
+    (concat "<menu-bar> <edit> <ipe> <insert-pair> <mnemonic-(> "
+	    "<menu-bar> <ipe> <insert-and> <copy-text> "
+	    "C-y")))
 
 (ipe-test-def-kbd menu-ia-kill-text ()
   "Test `ipe-edit--ia-kill-text' using the Insert Pair Edit menu."
@@ -409,38 +411,40 @@ Delete PAIR after cursor."
 ;;;;; "Edit CONTENTS >" tests.
 ;; -------------------------------------------------------------------
 
-(ipe-test-def-kbd menu-edit-contents-kill ()
-  "Test `ipe-edit--contents-kill' using the Insert Pair Edit menu."
-  ipe-test-menu-options
-  nil
-  "The quick brown fox (|jumps) over the lazy dog."
-  "The quick brown fox (|) over the lazy dog."
-  (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
-	  "<menu-bar> <ipe> <edit-contents> <kill> "
-	  "<menu-bar> <ipe> <insert-pair>"))
+;; Headless ERT has problems with Kill Ring <= 24.
+(when (> emacs-major-version 24)
+  (ipe-test-def-kbd menu-edit-contents-kill ()
+    "Test `ipe-edit--contents-kill' using the Insert Pair Edit menu."
+    ipe-test-menu-options
+    nil
+    "The quick brown fox (|jumps) over the lazy dog."
+    "The quick brown fox (|) over the lazy dog."
+    (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
+	    "<menu-bar> <ipe> <edit-contents> <kill> "
+	    "<menu-bar> <ipe> <insert-pair>"))
 
-(ipe-test-def-kbd menu-edit-contents-copy ()
-  "Test `ipe-edit--contents-copy' using the Insert Pair Edit menu."
-  ipe-test-menu-options
-  nil
-  "The quick brown fox (|jumps) over the lazy dog."
-  "The quick brown fox (jumps|jumps) over the lazy dog."
-  (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
-	  "<menu-bar> <ipe> <edit-contents> <copy> "
-	  "<menu-bar> <ipe> <insert-pair> "
-	  "<menu-bar> <edit> <paste>"))
+  (ipe-test-def-kbd menu-edit-contents-copy ()
+    "Test `ipe-edit--contents-copy' using the Insert Pair Edit menu."
+    ipe-test-menu-options
+    nil
+    "The quick brown fox (|jumps) over the lazy dog."
+    "The quick brown fox (jumps|jumps) over the lazy dog."
+    (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
+	    "<menu-bar> <ipe> <edit-contents> <copy> "
+	    "<menu-bar> <ipe> <insert-pair> "
+	    "<menu-bar> <edit> <paste>"))
 
-(ipe-test-def-kbd menu-edit-contents-paste ()
-  "Test `ipe-edit--contents-paste' using the Insert Pair Edit menu."
-  ipe-test-menu-options
-  nil
-  "The quick brown fox (|jumps) over the lazy dog."
-  "The quick brown fox |jumps (jumps) the lazy dog."
-  (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
-	  "<menu-bar> <ipe> <edit-contents> <copy> "
-	  "<menu-bar> <ipe> <open-forward> "
-	  "<menu-bar> <ipe> <edit-contents> <paste> "
-	  "<menu-bar> <ipe> <insert-pair>"))
+  (ipe-test-def-kbd menu-edit-contents-paste ()
+    "Test `ipe-edit--contents-paste' using the Insert Pair Edit menu."
+    ipe-test-menu-options
+    nil
+    "The quick brown fox (|jumps) over the lazy dog."
+    "The quick brown fox |jumps (jumps) the lazy dog."
+    (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
+	    "<menu-bar> <ipe> <edit-contents> <copy> "
+	    "<menu-bar> <ipe> <open-forward> "
+	    "<menu-bar> <ipe> <edit-contents> <paste> "
+	    "<menu-bar> <ipe> <insert-pair>")))
 
 (ipe-test-def-kbd menu-edit-contents-replace ()
   "Test `ipe-edit--contents-replace' using the Insert Pair Edit menu."
@@ -620,6 +624,102 @@ Delete PAIR after cursor."
 	  "<menu-bar> <ipe> <change-pair> <mnemonic-[> "
 	  "<menu-bar> <ipe> <insert-pair>"))
 
+(ipe-test-def-kbd menu-insert-first-pair-1 ()
+  "Test `ipe-edit--delete-all-pairs' using the Insert Pair Edit menu."
+  ipe-test-menu-options
+  nil
+  '("The quick brown fox |jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog.")
+  '("The quick brown fox |(jumps) over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog.")
+  (concat "<menu-bar> <edit> <ipe> <insert-pair> <mnemonic-(> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <insert-first> "
+	  "<menu-bar> <ipe> <multiple> <delete-all>"))
+
+(ipe-test-def-kbd menu-insert-first-pair-2 ()
+  "Test `ipe-edit--insert-first-pair' using the Insert Pair Edit menu.
+
+x3."
+  ipe-test-menu-options
+  nil
+  '("The quick brown fox |jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog.")
+  '("The quick brown fox |(jumps) over the lazy dog."
+    "The quick brown fox (jumps) over the lazy dog."
+    "The quick brown fox (jumps) over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog.")
+  (concat "<menu-bar> <edit> <ipe> <insert-pair> <mnemonic-(> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <insert-first> "
+	  "<menu-bar> <ipe> <multiple> <insert-first> "
+	  "<menu-bar> <ipe> <multiple> <insert-first> "
+	  "<menu-bar> <ipe> <multiple> <delete-all>"))
+
+(ipe-test-def-kbd menu-insert-last-pair-1 ()
+  "Test `ipe-edit--insert-last-pair' using the Insert Pair Edit menu."
+  ipe-test-menu-options
+  nil
+  '("The quick brown fox |jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog.")
+  '("The quick brown fox |jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox (jumps) over the lazy dog.")
+  (concat "<menu-bar> <edit> <ipe> <insert-pair> <mnemonic-(> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <insert-last> "
+	  "<menu-bar> <ipe> <multiple> <delete-all>"))
+
+(ipe-test-def-kbd menu-insert-last-pair-2 ()
+  "Test `ipe-edit--insert-last-pair' using the Insert Pair Edit menu.
+
+x3."
+  ipe-test-menu-options
+  nil
+  '("The quick brown fox |jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog.")
+  '("The quick brown fox |jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox (jumps) over the lazy dog."
+    "The quick brown fox (jumps) over the lazy dog."
+    "The quick brown fox (jumps) over the lazy dog.")
+  (concat "<menu-bar> <edit> <ipe> <insert-pair> <mnemonic-(> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <insert-last> "
+	  "<menu-bar> <ipe> <multiple> <insert-last> "
+	  "<menu-bar> <ipe> <multiple> <insert-last> "
+	  "<menu-bar> <ipe> <multiple> <delete-all>"))
+
 (ipe-test-def-kbd menu-delete-pair ()
   "Test `ipe-edit--delete-all-pairs'using the Insert Pair Edit menu."
   ipe-test-menu-options
@@ -636,7 +736,7 @@ Delete PAIR after cursor."
   "The (quick) |(brown) (fox) (jumps) (over) (the)@ (lazy) dog."
   "The (quick) |brown !(fox) !(jumps) !(over) !(the) (lazy) dog."
   (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
-	  "<menu-bar> <ipe> <multiple> <delete-first-pair> "
+	  "<menu-bar> <ipe> <multiple> <delete-first> "
 	  "<menu-bar> <ipe> <insert-pair>"))
 
 (ipe-test-def-kbd menu-delete-all-pairs ()
@@ -646,7 +746,7 @@ Delete PAIR after cursor."
   "The (quick) |(brown) (fox) (jumps) (over) (the)@ (lazy) dog."
   "The (quick) |brown fox jumps over the (lazy) dog."
   (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
-	  "<menu-bar> <ipe> <multiple> <delete-all-pairs>"))
+	  "<menu-bar> <ipe> <multiple> <delete-all>"))
 
 (ipe-test-def-kbd menu-delete-last-pair ()
   "Test `ipe-edit--delete-last-pair'using the Insert Pair Edit menu."
@@ -655,7 +755,7 @@ Delete PAIR after cursor."
   "The (quick) |(brown) (fox) (jumps) (over) (the)@ (lazy) dog."
   "The (quick) |(brown) !(fox) !(jumps) !(over) the (lazy) dog."
   (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
-	  "<menu-bar> <ipe> <multiple> <delete-last-pair> "
+	  "<menu-bar> <ipe> <multiple> <delete-last> "
 	  "<menu-bar> <ipe> <insert-pair>"))
 
 ;; -------------------------------------------------------------------
@@ -669,7 +769,176 @@ Delete PAIR after cursor."
   "The quick brown fox |jumps over the lazy dog."
   "The quick brown fox (|jumps) over the lazy dog."
   (concat "<menu-bar> <edit> <ipe> <insert-pair> <mnemonic-(> "
-	  "<mouse-3> <ipe-mouse-insert>"))
+	  "<mouse-3> <ipe-mouse-insert-pair>"))
+
+(ipe-test-def-kbd menu-mouse-3-insert-first-pair-1 ()
+  "Test `ipe-edit--insert-first-pair' using the `ipe' mouse-3 menu."
+  ipe-test-menu-options
+  nil
+  '("The quick brown fox |jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog.")
+  '("The quick brown fox |(jumps) over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog.")
+  (concat "<menu-bar> <edit> <ipe> <insert-pair> <mnemonic-(> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<mouse-3> <ipe-mouse-insert> <first> "
+	  "<mouse-3> <ipe-mouse-delete> <all>"))
+
+(ipe-test-def-kbd menu-mouse-3-insert-first-pair-2 ()
+  "Test `ipe-edit--insert-first-pair' using the `ipe' mouse-3 menu.
+
+x3."
+  ipe-test-menu-options
+  nil
+  '("The quick brown fox |jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog.")
+  '("The quick brown fox |(jumps) over the lazy dog."
+    "The quick brown fox (jumps) over the lazy dog."
+    "The quick brown fox (jumps) over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog.")
+  (concat "<menu-bar> <edit> <ipe> <insert-pair> <mnemonic-(> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<mouse-3> <ipe-mouse-insert> <first> "
+	  "<mouse-3> <ipe-mouse-insert> <first> "
+	  "<mouse-3> <ipe-mouse-insert> <first> "
+	  "<mouse-3> <ipe-mouse-delete> <all>"))
+
+(ipe-test-def-kbd menu-mouse-3-insert-last-pair-1 ()
+  "Test `ipe-edit--insert-last-pair' using the `ipe' mouse-3 menu."
+  ipe-test-menu-options
+  nil
+  '("The quick brown fox |jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog.")
+  '("The quick brown fox |jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox (jumps) over the lazy dog.")
+  (concat "<menu-bar> <edit> <ipe> <insert-pair> <mnemonic-(> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<mouse-3> <ipe-mouse-insert> <last> "
+	  "<mouse-3> <ipe-mouse-delete> <all>"))
+
+(ipe-test-def-kbd menu-mouse-3-insert-last-pair-2 ()
+  "Test `ipe-edit--insert-last-pair' using the `ipe' mouse-3 menu.
+
+x3."
+  ipe-test-menu-options
+  nil
+  '("The quick brown fox |jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog.")
+  '("The quick brown fox |jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox (jumps) over the lazy dog."
+    "The quick brown fox (jumps) over the lazy dog."
+    "The quick brown fox (jumps) over the lazy dog.")
+  (concat "<menu-bar> <edit> <ipe> <insert-pair> <mnemonic-(> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<mouse-3> <ipe-mouse-insert> <last> "
+	  "<mouse-3> <ipe-mouse-insert> <last> "
+	  "<mouse-3> <ipe-mouse-insert> <last> "
+	  "<mouse-3> <ipe-mouse-delete> <all>"))
+
+(ipe-test-def-kbd menu-mouse-3-insert-all ()
+  "Test `ipe-edit--insert-pair' using the `ipe' mouse-3 menu.
+
+Multiple PAIRs."
+  ipe-test-menu-options
+  nil
+  '("The quick brown fox |jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog.")
+  '("The quick brown fox (|jumps) over the lazy dog."
+    "The quick brown fox (!jumps) over the lazy dog."
+    "The quick brown fox (!jumps) over the lazy dog."
+    "The quick brown fox (!jumps) over the lazy dog."
+    "The quick brown fox (!jumps) over the lazy dog.")
+  (concat "<menu-bar> <edit> <ipe> <insert-pair> <mnemonic-(> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<mouse-3> <ipe-mouse-insert> <all>"))
+
+(ipe-test-def-kbd menu-mouse-3-first-pair-multiple-1 ()
+  "Test `ipe-edit--*-first-pair' using the `ipe' mouse-3 menu."
+  ipe-test-menu-options
+  nil
+  '("The quick brown fox |jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog.")
+  '("The quick brown fox |(jumps) over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox (jumps) over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox (!jumps) over the lazy dog.")
+  (concat "<menu-bar> <edit> <ipe> <insert-pair> <mnemonic-(> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<mouse-3> <ipe-mouse-insert> <first> "
+	  "<mouse-3> <ipe-mouse-delete> <first> "
+	  "<mouse-3> <ipe-mouse-insert> <first> "
+	  "<mouse-3> <ipe-mouse-delete> <first> "
+	  "<mouse-3> <ipe-mouse-insert> <first>"))
+
+(ipe-test-def-kbd menu-mouse-3-last-pair-multiple-1 ()
+  "Test `ipe-edit--*-first-pair' using the `ipe' mouse-3 menu."
+  ipe-test-menu-options
+  nil
+  '("The quick brown fox |jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox jumps over the lazy dog.")
+  '("The quick brown fox |jumps over the lazy dog."
+    "The quick brown fox (jumps) over the lazy dog."
+    "The quick brown fox jumps over the lazy dog."
+    "The quick brown fox (jumps) over the lazy dog."
+    "The quick brown fox jumps over the lazy dog.")
+  (concat "<menu-bar> <edit> <ipe> <insert-pair> <mnemonic-(> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<menu-bar> <ipe> <multiple> <add-contents-forward> "
+	  "<mouse-3> <ipe-mouse-delete> <last> "
+	  "<mouse-3> <ipe-mouse-insert> <last> "
+	  "<mouse-3> <ipe-mouse-delete> <last> "
+	  "<mouse-3> <ipe-mouse-insert> <last> "
+	  "<mouse-3> <ipe-mouse-delete> <last>"))
 
 ;; -------------------------------------------------------------------
 ;;;;; "Insert And..." tests.
@@ -702,24 +971,26 @@ Delete PAIR after cursor."
   (concat "<menu-bar> <edit> <ipe> <insert-pair> <mnemonic-(> "
 	  "<mouse-3> <ipe-mouse-ia> <resume>"))
 
-(ipe-test-def-kbd menu-mouse-3-ia-copy-text ()
-  "Test `ipe-edit--ia-copy-text' using the `ipe' mouse-3 menu."
-  ipe-test-menu-options
-  nil
-  "The quick brown fox |jumps over the lazy dog."
-  "The quick brown fox (jumps|jumps) over the lazy dog."
-  (concat "<menu-bar> <edit> <ipe> <insert-pair> <mnemonic-(> "
-	  "<mouse-3> <ipe-mouse-ia> <copy-text>"
-	  "C-y"))
+;; Headless ERT has problems with Kill Ring <= 24.
+(when (> emacs-major-version 24)
+  (ipe-test-def-kbd menu-mouse-3-ia-copy-text ()
+    "Test `ipe-edit--ia-copy-text' using the `ipe' mouse-3 menu."
+    ipe-test-menu-options
+    nil
+    "The quick brown fox |jumps over the lazy dog."
+    "The quick brown fox (jumps|jumps) over the lazy dog."
+    (concat "<menu-bar> <edit> <ipe> <insert-pair> <mnemonic-(> "
+	    "<mouse-3> <ipe-mouse-ia> <copy-text> "
+	    "C-y"))
 
-(ipe-test-def-kbd menu-mouse-3-ia-kill-text ()
-  "Test `ipe-edit--ia-kill-text' using the `ipe' mouse-3 menu."
-  ipe-test-menu-options
-  nil
-  "The quick brown fox |jumps over the lazy dog."
-  "The quick brown fox (|) over the lazy dog."
-  (concat "<menu-bar> <edit> <ipe> <insert-pair> <mnemonic-(> "
-	  "<mouse-3> <ipe-mouse-ia> <kill-text>"))
+  (ipe-test-def-kbd menu-mouse-3-ia-kill-text ()
+    "Test `ipe-edit--ia-kill-text' using the `ipe' mouse-3 menu."
+    ipe-test-menu-options
+    nil
+    "The quick brown fox |jumps over the lazy dog."
+    "The quick brown fox (|) over the lazy dog."
+    (concat "<menu-bar> <edit> <ipe> <insert-pair> <mnemonic-(> "
+	    "<mouse-3> <ipe-mouse-ia> <kill-text>")))
 
 ;; -------------------------------------------------------------------
 ;;;;; "Change PAIR >" tests.
@@ -733,44 +1004,46 @@ Delete PAIR after cursor."
   "The quick brown fox [|jumps] over the lazy dog."
   (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
 	  "<mouse-3> <ipe-mouse-change-pair> <mnemonic-[> "
-	  "<mouse-3> <ipe-mouse-insert>"))
+	  "<mouse-3> <ipe-mouse-insert-pair>"))
 
 ;; -------------------------------------------------------------------
 ;;;;; "Edit CONTENTS >" tests.
 ;; -------------------------------------------------------------------
 
-(ipe-test-def-kbd menu-mouse-3-edit-contents-kill ()
-  "Test `ipe-edit--contents-kill' using the `ipe' mouse-3 menu."
-  ipe-test-menu-options
-  nil
-  "The quick brown fox (|jumps) over the lazy dog."
-  "The quick brown fox (|) over the lazy dog."
-  (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
-	  "<mouse-3> <ipe-mouse-edit-contents> <kill> "
-	  "<mouse-3> <ipe-mouse-insert>"))
+;; Headless ERT has problems with Kill Ring <= 24.
+(when (> emacs-major-version 24)
+  (ipe-test-def-kbd menu-mouse-3-edit-contents-kill ()
+    "Test `ipe-edit--contents-kill' using the `ipe' mouse-3 menu."
+    ipe-test-menu-options
+    nil
+    "The quick brown fox (|jumps) over the lazy dog."
+    "The quick brown fox (|) over the lazy dog."
+    (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
+	    "<mouse-3> <ipe-mouse-edit-contents> <kill> "
+	    "<mouse-3> <ipe-mouse-insert-pair>"))
 
-(ipe-test-def-kbd menu-mouse-3-edit-contents-copy ()
-  "Test `ipe-edit--contents-copy' using the `ipe' mouse-3 menu."
-  ipe-test-menu-options
-  nil
-  "The quick brown fox (|jumps) over the lazy dog."
-  "The quick brown fox (jumps|jumps) over the lazy dog."
-  (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
-	  "<mouse-3> <ipe-mouse-edit-contents> <copy> "
-	  "<mouse-3> <ipe-mouse-insert> "
-	  "<menu-bar> <edit> <paste>"))
+  (ipe-test-def-kbd menu-mouse-3-edit-contents-copy ()
+    "Test `ipe-edit--contents-copy' using the `ipe' mouse-3 menu."
+    ipe-test-menu-options
+    nil
+    "The quick brown fox (|jumps) over the lazy dog."
+    "The quick brown fox (jumps|jumps) over the lazy dog."
+    (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
+	    "<mouse-3> <ipe-mouse-edit-contents> <copy> "
+	    "<mouse-3> <ipe-mouse-insert-pair> "
+	    "<menu-bar> <edit> <paste>"))
 
-(ipe-test-def-kbd menu-mouse-3-edit-contents-paste ()
-  "Test `ipe-edit--contents-paste' using the `ipe' mouse-3 menu."
-  ipe-test-menu-options
-  nil
-  "The quick brown fox (|jumps) over the lazy dog."
-  "The quick brown fox |jumps (jumps) the lazy dog."
-  (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
-	  "<mouse-3> <ipe-mouse-edit-contents> <copy> "
-	  "<menu-bar> <ipe> <open-forward> "
-	  "<mouse-3> <ipe-mouse-edit-contents> <paste> "
-	  "<mouse-3> <ipe-mouse-insert>"))
+  (ipe-test-def-kbd menu-mouse-3-edit-contents-paste ()
+    "Test `ipe-edit--contents-paste' using the `ipe' mouse-3 menu."
+    ipe-test-menu-options
+    nil
+    "The quick brown fox (|jumps) over the lazy dog."
+    "The quick brown fox |jumps (jumps) the lazy dog."
+    (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
+	    "<mouse-3> <ipe-mouse-edit-contents> <copy> "
+	    "<menu-bar> <ipe> <open-forward> "
+	    "<mouse-3> <ipe-mouse-edit-contents> <paste> "
+	    "<mouse-3> <ipe-mouse-insert-pair>")))
 
 (ipe-test-def-kbd menu-mouse-3-edit-contents-replace ()
   "Test `ipe-edit--contents-replace' using the `ipe' mouse-3 menu."
@@ -781,7 +1054,7 @@ Delete PAIR after cursor."
   (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
 	  "<mouse-3> <ipe-mouse-edit-contents> <replace> "
 	  "walks RET "
-	  "<mouse-3> <ipe-mouse-insert>"))
+	  "<mouse-3> <ipe-mouse-insert-pair>"))
 
 (ipe-test-def-kbd menu-mouse-3-edit-contents-trim ()
   "Test `ipe-edit--contents-trim' using the `ipe' mouse-3 menu."
@@ -791,7 +1064,7 @@ Delete PAIR after cursor."
   "The quick brown fox (|jumps) over the lazy dog."
   (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
 	  "<mouse-3> <ipe-mouse-edit-contents> <trim> "
-	  "<mouse-3> <ipe-mouse-insert>"))
+	  "<mouse-3> <ipe-mouse-insert-pair>"))
 
 (ipe-test-def-kbd menu-mouse-3-edit-contents-upcase ()
   "Test `ipe-edit--contents-upcase' using the `ipe' mouse-3 menu."
@@ -801,7 +1074,7 @@ Delete PAIR after cursor."
   "The quick brown (FOX |JUMPS OVER) the lazy dog."
   (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
 	  "<mouse-3> <ipe-mouse-edit-contents> <upcase> "
-	  "<mouse-3> <ipe-mouse-insert>"))
+	  "<mouse-3> <ipe-mouse-insert-pair>"))
 
 (ipe-test-def-kbd menu-mouse-3-edit-contents-capitalize ()
   "Test `ipe-edit--contents-capitalize' using the `ipe' mouse-3 menu."
@@ -811,7 +1084,7 @@ Delete PAIR after cursor."
   "The quick brown (Fox |Jumps Over) the lazy dog."
   (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
 	  "<mouse-3> <ipe-mouse-edit-contents> <capitalize> "
-	  "<mouse-3> <ipe-mouse-insert>"))
+	  "<mouse-3> <ipe-mouse-insert-pair>"))
 
 (ipe-test-def-kbd menu-mouse-3-edit-contents-downcase ()
   "Test `ipe-edit--contents-downcase' using the `ipe' mouse-3 menu."
@@ -821,7 +1094,7 @@ Delete PAIR after cursor."
   "THE QUICK BROWN (fox |jumps over) THE LAZY DOG."
   (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
 	  "<mouse-3> <ipe-mouse-edit-contents> <downcase> "
-	  "<mouse-3> <ipe-mouse-insert>"))
+	  "<mouse-3> <ipe-mouse-insert-pair>"))
 
 ;; -------------------------------------------------------------------
 ;;;;; "Next / Previous >" tests.
@@ -836,7 +1109,7 @@ Delete PAIR after cursor."
   (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
 	  "<mouse-3> <ipe-mouse-next-prev> <next-pair> "
 	  "<mouse-3> <ipe-mouse-change-pair> <mnemonic-[> "
-	  "<mouse-3> <ipe-mouse-insert>"))
+	  "<mouse-3> <ipe-mouse-insert-pair>"))
 
 (ipe-test-def-kbd menu-mouse-3-next-contents ()
   "Test `ipe-edit--update-next-contents' using the `ipe' mouse-3 menu."
@@ -846,7 +1119,7 @@ Delete PAIR after cursor."
   "(the) quick brown fox |jumps over (the) lazy dog."
   (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
 	  "<mouse-3> <ipe-mouse-next-prev> <next-contents> "
-	  "<mouse-3> <ipe-mouse-insert>"))
+	  "<mouse-3> <ipe-mouse-insert-pair>"))
 
 (ipe-test-def-kbd menu-mouse-3-next-open ()
   "Test `ipe-edit--update-next-open' using the `ipe' mouse-3 menu."
@@ -857,7 +1130,7 @@ Delete PAIR after cursor."
   (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
 	  "<mouse-3> <ipe-mouse-next-prev> <next-open> "
 	  "<mouse-3> <ipe-mouse-change-pair> <mnemonic-[> "
-	  "<mouse-3> <ipe-mouse-insert>"))
+	  "<mouse-3> <ipe-mouse-insert-pair>"))
 
 (ipe-test-def-kbd menu-mouse-3-next-close ()
   "Test `ipe-edit--update-next-close' using the `ipe' mouse-3 menu."
@@ -879,7 +1152,7 @@ Delete PAIR after cursor."
   (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
 	  "<mouse-3> <ipe-mouse-next-prev> <previous-pair> "
 	  "<mouse-3> <ipe-mouse-change-pair> <mnemonic-[> "
-	  "<mouse-3> <ipe-mouse-insert>"))
+	  "<mouse-3> <ipe-mouse-insert-pair>"))
 
 (ipe-test-def-kbd menu-mouse-3-previous-contents ()
   "Test `ipe-edit--update-previous-contents' using the `ipe' mouse-3 menu."
@@ -889,7 +1162,7 @@ Delete PAIR after cursor."
   "(the) quick brown fox |jumps over (the) lazy dog."
   (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
 	  "<mouse-3> <ipe-mouse-next-prev> <previous-contents> "
-	  "<mouse-3> <ipe-mouse-insert>"))
+	  "<mouse-3> <ipe-mouse-insert-pair>"))
 
 (ipe-test-def-kbd menu-mouse-3-previous-open ()
   "Test `ipe-edit--update-previous-open' using the `ipe' mouse-3 menu."
@@ -900,7 +1173,7 @@ Delete PAIR after cursor."
   (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
 	  "<mouse-3> <ipe-mouse-next-prev> <previous-open> "
 	  "<mouse-3> <ipe-mouse-change-pair> <mnemonic-[> "
-	  "<mouse-3> <ipe-mouse-insert>"))
+	  "<mouse-3> <ipe-mouse-insert-pair>"))
 
 (ipe-test-def-kbd menu-mouse-3-previous-close ()
   "Test `ipe-edit--update-previous-close' using the `ipe' mouse-3 menu."
@@ -911,7 +1184,7 @@ Delete PAIR after cursor."
   (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
 	  "<mouse-3> <ipe-mouse-next-prev> <previous-close> "
 	  "<mouse-3> <ipe-mouse-change-pair> <mnemonic-[> "
-	  "<mouse-3> <ipe-mouse-insert>"))
+	  "<mouse-3> <ipe-mouse-insert-pair>"))
 
 ;; -------------------------------------------------------------------
 ;;;;; "Delete PAIR" tests.
@@ -934,7 +1207,7 @@ Delete PAIR after cursor."
   "The (quick) |brown !(fox) !(jumps) !(over) !(the) (lazy) dog."
   (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
 	  "<mouse-3> <ipe-mouse-delete> <first> "
-	  "<mouse-3> <ipe-mouse-insert>"))
+	  "<mouse-3> <ipe-mouse-insert-pair>"))
 
 (ipe-test-def-kbd menu-mouse-3-delete-all-pairs ()
   "Test `ipe-edit--delete-all-pairs' using the `ipe' mouse-3 menu."
@@ -954,7 +1227,7 @@ Delete PAIR after cursor."
   (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
 	  "<mouse-3> <ipe-mouse-next-prev> <previous-close> "
 	  "<mouse-3> <ipe-mouse-delete> <last> "
-	  "<mouse-3> <ipe-mouse-insert>"))
+	  "<mouse-3> <ipe-mouse-insert-pair>"))
 
 (provide 'ipe-test-menu)
 

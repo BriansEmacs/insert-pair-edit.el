@@ -10,7 +10,7 @@ Copyright © 2024 Brian Kavanagh
      the section entitled "GNU Free Documentation License".
 INFO-DIR-SECTION Emacs
 START-INFO-DIR-ENTRY
-* ipe: (ipe).	Insert Pair Edit (ipe).
+* ipe: (ipe).   Insert Pair Edit (ipe).
 END-INFO-DIR-ENTRY
 
 
@@ -33,7 +33,7 @@ package.
 * Other ipe-edit-mode Commands:: Other 'ipe-edit-mode' commands.
 * Other Features::               Other 'ipe' / 'ipe-edit-mode' features.
 * Development::                  Documentation for developers.
-* Index::                        Complete index.
+* Indexes::                      Indexes.
 
 
 File: ipe.info,  Node: Overview,  Next: Installation,  Prev: Top,  Up: Top
@@ -770,13 +770,14 @@ the OPEN and CLOSE strings of an 'Insert Pair Edit' (ipe) PAIR within
 the buffer, they can be inserted into the buffer using the command:
 ‘ipe-edit--insert-pair’.
 
- -- Function: ipe-edit--insert-pair
+ -- Function: ipe-edit--insert-pair ()
+
      This command will insert the OPEN and CLOSE strings of an 'Insert
      Pair Edit' (ipe) PAIR into the buffer, exit the ‘ipe-edit-mode’,
      and, restore all key bindings to normal.
 
-   Other "Insert And..."  commands are available.  (*Note Insert And...
-Commands::)
+   Other "Insert And..."  commands are available.  (*Note 'Insert
+And...' Commands::)
 
 4.3.2 Aborting
 --------------
@@ -787,7 +788,8 @@ Commands::)
 represented by the overlays within ‘ipe-edit-mode’, the mode can be
 aborted using the command: ‘ipe-edit--abort’.
 
- -- Function: ipe-edit--abort
+ -- Function: ipe-edit--abort ()
+
      This command will exit the ‘ipe-edit-mode’ and restore all key
      bindings to normal, without inserting the OPEN or CLOSE strings
      into the buffer.
@@ -815,26 +817,31 @@ movement can be changed in ‘ipe-edit-mode’ using the following commands,
 
      <m> <c> (in ‘ipe-edit-mode’)
 
-      -- Function: ipe-edit--movement-by-char
+      -- Function: ipe-edit--movement-by-char ()
+
           Changes the movement made by the ‘ipe-edit-mode’ basic
           movement (*Note Basic Movement::) commands to be "by
           characters".
 
      <m> <w> (in ‘ipe-edit-mode’)
 
-      -- Function: ipe-edit--movement-by-word
+      -- Function: ipe-edit--movement-by-word ()
+
           Changes the movement made by the ‘ipe-edit-mode’ basic
           movement (*Note Basic Movement::) commands to be "by words".
 
      <m> <l> (in ‘ipe-edit-mode’)
-      -- Function: ipe-edit--movement-by-line
+
+      -- Function: ipe-edit--movement-by-line ()
+
           Changes the movement made by the ‘ipe-edit-mode’ basic
           movement (*Note Basic Movement::) commands to be "by lines".
           (*Note Line Movement::)
 
      <m> <x> (in ‘ipe-edit-mode’)
 
-      -- Function: ipe-edit--movement-by-list
+      -- Function: ipe-edit--movement-by-list ()
+
           Changes the movement made by the ‘ipe-edit-mode’ basic
           movement (*Note Basic Movement::) commands to be "by lists".
           (*Note List Movement::)
@@ -849,8 +856,8 @@ The text to be inserted by the OPEN and CLOSE overlays of an 'Insert
 Pair Edit' (ipe) PAIR can be changed on the fly.
 
    <(> (in ‘ipe-edit-mode’)
+ -- Function: ipe-edit--change-pair (replace)
 
- -- Function: ipe-edit--change-pair
      Prompts for a MNEMONIC used to identify a PAIR from the
      ‘customize’-able IPE-PAIRS / IPE-MODE-PAIRS variables, and replaces
      the currently displayed strings within the OPEN and CLOSE overlays
@@ -970,7 +977,8 @@ File: ipe.info,  Node: Updating PAIRs,  Next: Deleting PAIRs,  Up: Other Major C
    The positions of existing PAIRs within a buffer can be _updated_ by
 using the command:
 
- -- Function: ipe-insert-pair-edit-update
+ -- Function: ipe-insert-pair-edit-update (mnemonic)
+
      This command updates the position of the OPEN and CLOSE strings of
      an 'Insert Pair Edit' (ipe) PAIR. The OPEN and CLOSE strings of the
      PAIR are determined by: prompting for, and looking up, a MNEMONIC
@@ -1034,7 +1042,8 @@ File: ipe.info,  Node: Deleting PAIRs,  Next: Replacing PAIRs,  Prev: Updating P
 
    Existing PAIRs within a buffer can be _deleted_ by using the command:
 
- -- Function: ipe-insert-pair-edit-delete
+ -- Function: ipe-insert-pair-edit-delete (mnemonic)
+
      This command deletes the OPEN and CLOSE strings of an 'Insert Pair
      Edit' (ipe) PAIR. The OPEN and CLOSE strings of the PAIR are
      determined by: prompting for, and looking up, a MNEMONIC in the
@@ -1084,7 +1093,8 @@ File: ipe.info,  Node: Replacing PAIRs,  Prev: Deleting PAIRs,  Up: Other Major 
    An existing PAIR within a buffer can be _replaced_ with the OPEN and
 CLOSE string of another PAIR by using the command:
 
- -- Function: ipe-insert-pair-edit-replace
+ -- Function: ipe-insert-pair-edit-replace (mnemonic replacement)
+
      This command replaces the OPEN and CLOSE strings of an 'Insert Pair
      Edit' (ipe) PAIR. The OPEN and CLOSE strings of the PAIR to be
      replaced are determined by: prompting for, and looking up, a
@@ -1217,12 +1227,12 @@ File: ipe.info,  Node: Customization Using the 'Pairs' Menu,  Next: Inline Custo
 6.3 Customization Using the 'Pairs' Menu
 ========================================
 
- - Edit > 
- ...  
-  - Pairs > 
- ...  
-  - Edit PAIR Definitions > 
- ...  
+     - Edit >
+       ...
+       - Pairs >
+         ...
+         - Edit PAIR Definitions >
+           ...
 
    If running in a graphical environment which supports a menu bar, (and
 the *Emacs* ‘menu-bar-mode’ has been enabled) the 'Insert Pair Edit'
@@ -1491,13 +1501,13 @@ the OPEN and CLOSE strings in ‘ipe-edit-mode’ can be customized by:
      (By default, the CLOSE overlay will be displayed using the
      SHOW-PAREN-MATCH face.)
 
-   Or by using the *Emacs* menu option:  
- 
- - Edit > 
- ...  
-  - Pairs > 
- ...  
-  - Options 
+   Or by using the *Emacs* menu option:
+
+     - Edit >
+       ...
+       - Pairs >
+         ...
+         - Options
 
    And selecting ‘'Insert Pair Edit' - Display Options’;
 
@@ -1527,17 +1537,17 @@ key-bindings available within ‘ipe-edit-mode’.
 
 * Menu:
 
-* Insert And... Commands::
+* 'Insert And...' Commands::
 * Edit CONTENTS Commands::
 * Next / Previous Commands::
 * Multiple PAIRs Commands::
 * Escaping Text within a PAIR::
 
 
-File: ipe.info,  Node: Insert And... Commands,  Next: Edit CONTENTS Commands,  Up: Other ipe-edit-mode Commands
+File: ipe.info,  Node: 'Insert And...' Commands,  Next: Edit CONTENTS Commands,  Up: Other ipe-edit-mode Commands
 
-7.1 Insert And... Commands
-==========================
+7.1 'Insert And...' Commands
+============================
 
 When in ‘ipe-edit-mode’, to perform an action on insert of a PAIR (*Note
 Inserting and Aborting::), the following keystrokes / commands can be
@@ -1577,7 +1587,7 @@ used:
      (Command: ‘ipe-edit--ia-kill-text’)
 
 
-File: ipe.info,  Node: Edit CONTENTS Commands,  Next: Next / Previous Commands,  Prev: Insert And... Commands,  Up: Other ipe-edit-mode Commands
+File: ipe.info,  Node: Edit CONTENTS Commands,  Next: Next / Previous Commands,  Prev: 'Insert And...' Commands,  Up: Other ipe-edit-mode Commands
 
 7.2 Edit CONTENTS Commands
 ==========================
@@ -1839,6 +1849,7 @@ ways:
 * Adding Multiple PAIRs Using Existing OPEN / CLOSE::
 * Adding Multiple PAIRs Using PAIR CONTENT::
 * Adding Multiple PAIRs Using the Mouse::
+* Inserting Multiple PAIRs::
 * Removing PAIRs::
 
 
@@ -2115,7 +2126,7 @@ commands.
      The quick brown [fox] jumps over the lazy dog.
 
 
-File: ipe.info,  Node: Adding Multiple PAIRs Using the Mouse,  Next: Removing PAIRs,  Prev: Adding Multiple PAIRs Using PAIR CONTENT,  Up: Multiple PAIRs Commands
+File: ipe.info,  Node: Adding Multiple PAIRs Using the Mouse,  Next: Inserting Multiple PAIRs,  Prev: Adding Multiple PAIRs Using PAIR CONTENT,  Up: Multiple PAIRs Commands
 
 7.4.5 Adding Multiple PAIRs Using the Mouse
 -------------------------------------------
@@ -2155,7 +2166,9 @@ environment.
    Then, updating a PAIR from the:
 
      - Edit >
+       ...
        - Pairs >
+         ...
          - Update PAIR >
            - ( ... )
 
@@ -2179,9 +2192,72 @@ start of the word "over" to the "y" at the end of "lazy" with the
      The (quick) brown (|fox) jumps (over the lazy) dog.
 
 
-File: ipe.info,  Node: Removing PAIRs,  Prev: Adding Multiple PAIRs Using the Mouse,  Up: Multiple PAIRs Commands
+File: ipe.info,  Node: Inserting Multiple PAIRs,  Next: Removing PAIRs,  Prev: Adding Multiple PAIRs Using the Mouse,  Up: Multiple PAIRs Commands
 
-7.4.6 Removing PAIRs
+7.4.6 Inserting Multiple PAIRs
+------------------------------
+
+To insert a PAIR when using ‘ipe-edit-mode’ to edit multiple PAIRs at
+once, the following keystrokes / commands are supplied:
+
+<M-j> (in ‘ipe-edit-mode’)
+     Insert the first 'Insert Pair Edit' (ipe) OPEN and CLOSE overlay.
+     If there are no remaining PAIRs after the first PAIR has been
+     inserted, it will exit ‘ipe-edit-mode’.
+
+     With a prefix ‘ARG’, insert the ‘ARG’'th PAIR.
+
+     (Command: ‘ipe-edit--insert-first-pair’)
+
+<C-j> (in ‘ipe-edit-mode’)
+     Insert the last 'Insert Pair Edit' (ipe) OPEN and CLOSE overlay.
+     If there are no remaining PAIRs after the last PAIR has been
+     inserted, it will exit ‘ipe-edit-mode’.
+
+     With a prefix ‘ARG’, insert the ‘ARG’'th PAIR from the end.
+
+     (Command: ‘ipe-edit--insert-last-pair’)
+
+   For example, assuming that:
+
+   • The ‘ipe-insert-pair-edit’ command has been bound to the suggested
+     <M-(> binding;
+   • The <(> MNEMONIC is bound to the PAIR <(> <)>, and;
+   • The buffer contains the following text:
+
+          |The quick (brown) (fox) (jumps) (over) (the) lazy dog.
+
+     (Where the <|> character represents the current position of POINT.)
+
+   Then, selecting the entire buffer and updating all of the <(> <)>
+PAIRs using the following keystrokes:
+
+     <C-x> <h> <C-u> <M-(>
+
+   Should select five PAIRs (around 'brown', 'fox', 'jumps', 'over' and
+'the'.)
+
+   To just insert the PAIR around 'brown', use the keystroke:
+
+     <M-j>
+
+   To just insert the PAIR around 'the', use the keystroke:
+
+     <C-j>
+
+   To then remove the remaining PAIRs (*Note Removing PAIRs::), use the
+keystroke:
+
+     <DEL>
+
+   This should leave the buffer:
+
+     |The quick (brown) fox jumps over (the) lazy dog.
+
+
+File: ipe.info,  Node: Removing PAIRs,  Prev: Inserting Multiple PAIRs,  Up: Multiple PAIRs Commands
+
+7.4.7 Removing PAIRs
 --------------------
 
 To remove a PAIR when using ‘ipe-edit-mode’ to edit multiple PAIRs at
@@ -2194,14 +2270,14 @@ once, the following keystrokes / commands are supplied:
 
      (Command: ‘ipe-edit--delete-first-pair’)
 
-<C-d> (in ‘ipe-edit-mode’)
+<DEL> (in ‘ipe-edit-mode’)
      Remove all 'Insert Pair Edit' (ipe) OPEN and CLOSE overlays.  As
      there will be no remaining PAIRs after all of the PAIRs have been
      removed, exit ‘ipe-edit-mode’.
 
      (Command: ‘ipe-edit--delete-all-pairs’)
 
-<DEL> (in ‘ipe-edit-mode’)
+<C-d> (in ‘ipe-edit-mode’)
      Remove the last 'Insert Pair Edit' (ipe) OPEN and CLOSE overlay.
      If there are no remaining PAIRs after the last PAIR has been
      removed, it will exit ‘ipe-edit-mode’.
@@ -2213,6 +2289,8 @@ once, the following keystrokes / commands are supplied:
      overlay to the point at which the mouse is clicked.  If there are
      no remaining PAIRs after the last PAIR has been removed, it will
      exit ‘ipe-edit-mode’.
+
+     (Command: ‘ipe-mouse--delete-pair’)
 
    *NOTE*: Unmodified mouse click / drag commands (*Note Mouse
 Movement::) will always remove all but one PAIR.
@@ -2307,6 +2385,7 @@ package.
 * Defining line PAIRs with an INFIX::
 * Auto Insertion::
 * Positioning POINT and MARK::
+* Centering the Display on a PAIR::
 * PAIRs With Empty OPEN / CLOSE::
 * Updating Existing PAIRs::
 
@@ -2845,7 +2924,7 @@ command ‘ipe-insert-pair-edit-update’ using the keystrokes:
    After the PAIR has been inserted.
 
 
-File: ipe.info,  Node: Positioning POINT and MARK,  Next: PAIRs With Empty OPEN / CLOSE,  Prev: Auto Insertion,  Up: Other Features
+File: ipe.info,  Node: Positioning POINT and MARK,  Next: Centering the Display on a PAIR,  Prev: Auto Insertion,  Up: Other Features
 
 8.5 Positioning POINT and MARK
 ==============================
@@ -2853,7 +2932,7 @@ File: ipe.info,  Node: Positioning POINT and MARK,  Next: PAIRs With Empty OPEN 
 The position at which POINT (the *Emacs* cursor) is placed on insert of
 an 'Insert Pair Edit' (ipe) PAIR is controlled by:
 
- -- User Option: ipe--move-point-on-insert
+ -- User Option: ipe-move-point-on-insert
      This option is consulted when inserting (*Note Inserting and
      Aborting::) an 'Insert Pair Edit' (ipe) PAIR into the buffer.
 
@@ -2897,9 +2976,28 @@ controlled by:
 of the PAIR into the buffer 'per-PAIR'.
 
 
-File: ipe.info,  Node: PAIRs With Empty OPEN / CLOSE,  Next: Updating Existing PAIRs,  Prev: Positioning POINT and MARK,  Up: Other Features
+File: ipe.info,  Node: Centering the Display on a PAIR,  Next: PAIRs With Empty OPEN / CLOSE,  Prev: Positioning POINT and MARK,  Up: Other Features
 
-8.6 PAIRs With Empty OPEN / CLOSE
+8.6 Centering the Display on a PAIR
+===================================
+
+If the 'Insert Pair Edit' (ipe) minor mode (‘ipe-edit-mode’) is active
+but a PAIR(s) is not visible within the *Emacs* window, the *Emacs*
+window can be centered on the PAIR using the command:
+
+ -- Function: ipe-edit--recenter-pair (arg)
+
+     This command is used within the 'Insert Pair Edit' (ipe) minor-mode
+     (‘ipe-edit-mode’) to position the current window such that the OPEN
+     and CLOSE overlays of the ‘ARG’'th PAIR are visible.
+
+     If both the OPEN and CLOSE cannot be displayed at once, recenter on
+     the OPEN overlay.
+
+
+File: ipe.info,  Node: PAIRs With Empty OPEN / CLOSE,  Next: Updating Existing PAIRs,  Prev: Centering the Display on a PAIR,  Up: Other Features
+
+8.7 PAIRs With Empty OPEN / CLOSE
 =================================
 
 'Insert Pair Edit' (ipe) PAIRs can be defined with an _empty_ OPEN or
@@ -2931,7 +3029,7 @@ _not_ inserted into the buffer by ‘ipe-edit--insert-pair’.
 
 File: ipe.info,  Node: Updating Existing PAIRs,  Prev: PAIRs With Empty OPEN / CLOSE,  Up: Other Features
 
-8.7 Updating Existing PAIRs
+8.8 Updating Existing PAIRs
 ===========================
 
 In addition to inserting PAIRs, the 'Insert Pair Edit' (ipe) package
@@ -2955,7 +3053,7 @@ when within ‘ipe-edit-mode’.
 
 File: ipe.info,  Node: Update Search Process,  Next: Update PAIR Matching,  Up: Updating Existing PAIRs
 
-8.7.1 Update Search Process
+8.8.1 Update Search Process
 ---------------------------
 
 The PAIRs updated by the 'Insert Pair Edit' (ipe) commands:
@@ -2998,7 +3096,7 @@ _region_.)
 
 File: ipe.info,  Node: Update PAIR Matching,  Next: Updates on a Region,  Prev: Update Search Process,  Up: Updating Existing PAIRs
 
-8.7.2 Update PAIR Matching
+8.8.2 Update PAIR Matching
 --------------------------
 
 The PAIRs selected by the 'Insert Pair Edit' (ipe) commands are
@@ -3038,7 +3136,7 @@ around "brown fox jumps".)
 
 File: ipe.info,  Node: Updates on a Region,  Prev: Update PAIR Matching,  Up: Updating Existing PAIRs
 
-8.7.3 Updates on Region
+8.8.3 Updates on Region
 -----------------------
 
 If the *Emacs* _region_ is active, running any of the 'Insert Pair Edit'
@@ -3081,7 +3179,7 @@ multiple PAIRs to be edited at once.
      The quick brown fox jumps over the lazy dog.@
 
 
-File: ipe.info,  Node: Development,  Next: Index,  Prev: Other Features,  Up: Top
+File: ipe.info,  Node: Development,  Next: Indexes,  Prev: Other Features,  Up: Top
 
 9 Development
 *************
@@ -3126,7 +3224,8 @@ from the ‘ipe-custom.el’ / ‘ipe.el’ libraries.)
    • ‘ipe-custom--pair-list-get’
    • ‘ipe-mode-pairs-add’
 
- -- Function: ipe-custom--pair-list-get DEFN
+ -- Function: ipe-custom--pair-list-get (defn)
+
      Converts a list (‘DEFN’) describing a set of 'Insert Pair Edit'
      (ipe) PAIRs into the format used by the *Emacs* ‘customize’
      widgets.
@@ -3186,7 +3285,8 @@ from the ‘ipe-custom.el’ / ‘ipe.el’ libraries.)
                names of the menus under which the PAIR is displayed
                within the *Emacs* 'Insert Pair Edit' sub-menus.
 
- -- Function: ipe-mode-pairs-add MODE DEFN
+ -- Function: ipe-mode-pairs-add (mode defn)
+
      Adds a binding for the PAIR definition list (‘DEFN’) to the
      IPE-MODE-PAIRS variable for the given ‘MODE’.
 
@@ -3209,9 +3309,9 @@ and add the following *Emacs Lisp*:
      (defcustom
        ipe-xxx-pairs
        (ipe-custom--pair-list-get
-       '(("o" "<open>" "<close>")
-         ("-" "-"      "-"       :movement char)
-         (";" ";"      ";"       :movement line :infix ";")))
+       '((o" "<open>" "<close>")
+         ("-" "-"      "-"       (:movement char))
+         (";" ";"      ";"       (:movement line :infix ";"))))
        "'insert-pair-edit' customizations for 'xxx-mode'."
        :group 'ipe-mode-pairs
        :tag   "'Insert Pair Edit' - xxx-mode PAIRs"
@@ -3237,7 +3337,7 @@ To bind an 'Insert Pair Edit' (ipe) PAIR directly to the key
 representing its MNEMONIC (so that typing the MNEMONIC inserts the
 PAIR), use the function:
 
- -- Function: ipe-insert-pair-edit-cmd
+ -- Function: ipe-insert-pair-edit-cmd (mnemonic)
 
    For example:
 
@@ -3330,13 +3430,18 @@ File: ipe.info,  Node: Adding 'ipe' ERTs (Emacs Regression Tests),  Prev: Defini
 9.4 Adding 'ipe' ERT (Emacs Regression Tests)
 =============================================
 
-Regression tests (Using the *Emacs* ERT (_Emacs Regression Test_))
-package can be defined using the EMACS macro:
+If you have downloaded the 'Insert Pair Edit' (ipe) package as source
+code rather tha a package library, it will include a set of *Emacs* ERT
+(_Emacs Regression Test_)) tests.
+
+   New regression tests can be defined using the *Emacs* macro (found
+within the ‘./tests/ipe-tests.el’ source file within the ‘ipe’ source
+distribution.)
 
  -- Macro: ipe-test-def-kbd NAME PARAM DOC CUSTOM SETUP BUFFER-TEXT
           EXPECTED KEYSTROKES &optional TEARDOWN)
 
-     Customized version of ‘ert-deftest’ for ‘ipe’ unit testing.
+     Customized version of ‘ert-deftest’ for 'ipe' unit testing.
 
      This macro will define an ERT test, which runs a set of keyboard
      commands, KEYSTROKES, against the BUFFER-TEXT within a temporary
@@ -3346,7 +3451,7 @@ package can be defined using the EMACS macro:
      For this test, the ‘ipe-insert-pair-edit’ command will be bound to
      <M-(>.
 
-        • ‘NAME’ The name of the ‘ert’ test.  This will be prefixed with
+        • ‘NAME’ The name of the 'ert' test.  This will be prefixed with
           ’ipe-test-’.
         • ‘PARAM’ Placeholder - for future ERT extensibility.
         • ‘DOC’ Documentation string for the ‘ert-deftest’ definition.
@@ -3396,7 +3501,7 @@ File: ipe.info,  Node: Running 'ipe' ERTs (Emacs Regression Tests),  Up: Adding 
 To run _Emacs Regression Test_s defined by the ‘ipe-test-def-kbd’ macro,
 the following convenience functions are supplied:
 
- -- Function: ipe-test-run
+ -- Function: ipe-test-run (pattern)
 
      An interactive function to run an *ERT* test that has prefix
      ‘ipe-test--’.
@@ -3414,10 +3519,23 @@ the following convenience functions are supplied:
      ‘ipe-test-def’ or ‘ipe-test-def-kbd’ macros.
 
 
-File: ipe.info,  Node: Index,  Prev: Development,  Up: Top
+File: ipe.info,  Node: Indexes,  Prev: Development,  Up: Top
 
-Index
-*****
+Indexes
+*******
+
+* Menu:
+
+* Concept Index::  Concept index.
+* Function Index:: Function index.
+* Keys Index::     Keys index.
+* Variable Index:: Variable index.
+
+
+File: ipe.info,  Node: Concept Index,  Next: Function Index,  Up: Indexes
+
+Concept Index
+=============
 
  [index ]
 * Menu:
@@ -3465,80 +3583,426 @@ Index
                                                                (line  6)
 * Updating PAIRs:                        Updating PAIRs.       (line  6)
 
+
+File: ipe.info,  Node: Function Index,  Next: Keys Index,  Prev: Concept Index,  Up: Indexes
+
+Function Index
+==============
+
+ [index ]
+* Menu:
+
+* ipe-custom--pair-list-get:             Creating 'ipe-mode-pairs' PAIRs Using Emacs Lisp.
+                                                               (line 33)
+* ipe-defn--change-mode-pair-mnemonic:   Inline Customization. (line 32)
+* ipe-defn--change-pair-mnemonic:        Inline Customization. (line 26)
+* ipe-defn--delete-mode-pair:            Inline Customization. (line 44)
+* ipe-defn--delete-pair:                 Inline Customization. (line 38)
+* ipe-defn--edit-mode-pair:              Inline Customization. (line 19)
+* ipe-defn--edit-pair:                   Inline Customization. (line 13)
+* ipe-edit--abort:                       Inserting and Aborting.
+                                                               (line 37)
+* ipe-edit--add-next-contents:           Adding Multiple PAIRs Using PAIR CONTENT.
+                                                               (line 14)
+* ipe-edit--add-next-pair:               Adding Multiple PAIRs Using Existing OPEN / CLOSE.
+                                                               (line 13)
+* ipe-edit--add-previous-contents:       Adding Multiple PAIRs Using PAIR CONTENT.
+                                                               (line 22)
+* ipe-edit--add-previous-pair:           Adding Multiple PAIRs Using Existing OPEN / CLOSE.
+                                                               (line 21)
+* ipe-edit--change-pair:                 Changing PAIRs.       (line 10)
+* ipe-edit--close-backward:              Basic Movement.       (line 48)
+* ipe-edit--close-beg:                   Basic Movement.       (line 44)
+* ipe-edit--close-down:                  Basic Movement.       (line 52)
+* ipe-edit--close-end:                   Basic Movement.       (line 54)
+* ipe-edit--close-forward:               Basic Movement.       (line 50)
+* ipe-edit--close-up:                    Basic Movement.       (line 46)
+* ipe-edit--contents-capitalize:         Edit CONTENTS Commands.
+                                                               (line 46)
+* ipe-edit--contents-copy:               Edit CONTENTS Commands.
+                                                               (line 16)
+* ipe-edit--contents-downcase:           Edit CONTENTS Commands.
+                                                               (line 52)
+* ipe-edit--contents-kill:               Edit CONTENTS Commands.
+                                                               (line 10)
+* ipe-edit--contents-replace:            Edit CONTENTS Commands.
+                                                               (line 28)
+* ipe-edit--contents-trim:               Edit CONTENTS Commands.
+                                                               (line 34)
+* ipe-edit--contents-upcase:             Edit CONTENTS Commands.
+                                                               (line 40)
+* ipe-edit--contents-yank:               Edit CONTENTS Commands.
+                                                               (line 22)
+* ipe-edit--delete-all-pairs:            Removing PAIRs.       (line 16)
+* ipe-edit--delete-first-pair:           Removing PAIRs.       (line  9)
+* ipe-edit--delete-last-pair:            Removing PAIRs.       (line 23)
+* ipe-edit--ia-copy-text:                'Insert And...' Commands.
+                                                               (line 31)
+* ipe-edit--ia-goto-close:               'Insert And...' Commands.
+                                                               (line 17)
+* ipe-edit--ia-goto-open:                'Insert And...' Commands.
+                                                               (line 10)
+* ipe-edit--ia-kill-text:                'Insert And...' Commands.
+                                                               (line 37)
+* ipe-edit--ia-resume:                   'Insert And...' Commands.
+                                                               (line 24)
+* ipe-edit--insert-first-pair:           Inserting Multiple PAIRs.
+                                                               (line  9)
+* ipe-edit--insert-last-pair:            Inserting Multiple PAIRs.
+                                                               (line 18)
+* ipe-edit--insert-pair:                 Inserting and Aborting.
+                                                               (line 19)
+* ipe-edit--movement-by-char:            Movement Units.       (line 23)
+* ipe-edit--movement-by-line:            Movement Units.       (line 38)
+* ipe-edit--movement-by-list:            Movement Units.       (line 46)
+* ipe-edit--movement-by-word:            Movement Units.       (line 31)
+* ipe-edit--open-backward:               Basic Movement.       (line 35)
+* ipe-edit--open-beg:                    Basic Movement.       (line 31)
+* ipe-edit--open-down:                   Basic Movement.       (line 39)
+* ipe-edit--open-end:                    Basic Movement.       (line 41)
+* ipe-edit--open-forward:                Basic Movement.       (line 37)
+* ipe-edit--open-up:                     Basic Movement.       (line 33)
+* ipe-edit--recenter-pair:               Centering the Display on a PAIR.
+                                                               (line 10)
+* ipe-edit--recenter-pair <1>:           Centering the Display on a PAIR.
+                                                               (line 10)
+* ipe-edit--update-next-close:           Next / Previous OPEN / CLOSE.
+                                                               (line 22)
+* ipe-edit--update-next-contents:        Next / Previous CONTENTS.
+                                                               (line 14)
+* ipe-edit--update-next-open:            Next / Previous OPEN / CLOSE.
+                                                               (line 14)
+* ipe-edit--update-next-pair:            Next / Previous PAIRs.
+                                                               (line 13)
+* ipe-edit--update-previous-close:       Next / Previous OPEN / CLOSE.
+                                                               (line 18)
+* ipe-edit--update-previous-contents:    Next / Previous CONTENTS.
+                                                               (line 10)
+* ipe-edit--update-previous-open:        Next / Previous OPEN / CLOSE.
+                                                               (line 10)
+* ipe-edit--update-previous-pair:        Next / Previous PAIRs.
+                                                               (line  9)
+* ipe-edit-mode:                         ipe-edit-mode.        (line  6)
+* ipe-insert-pair-edit:                  Running ipe-insert-pair-edit.
+                                                               (line  6)
+* ipe-insert-pair-edit-cmd:              Binding MNEMONICs to Keys.
+                                                               (line 10)
+* ipe-insert-pair-edit-delete:           Deleting PAIRs.       (line 10)
+* ipe-insert-pair-edit-replace:          Replacing PAIRs.      (line 11)
+* ipe-insert-pair-edit-update:           Updating PAIRs.       (line 11)
+* ipe-mode-pairs-add:                    Creating 'ipe-mode-pairs' PAIRs Using Emacs Lisp.
+                                                               (line 94)
+* ipe-mouse--add-pair:                   Adding Multiple PAIRs Using the Mouse.
+                                                               (line 13)
+* ipe-mouse--add-pair-region:            Adding Multiple PAIRs Using the Mouse.
+                                                               (line 19)
+* ipe-mouse--close:                      Mouse Movement.       (line 16)
+* ipe-mouse--close-backward:             Mouse Movement.       (line 37)
+* ipe-mouse--close-backward-alt:         Mouse Movement.       (line 43)
+* ipe-mouse--close-forward:              Mouse Movement.       (line 31)
+* ipe-mouse--close-forward-alt:          Mouse Movement.       (line 43)
+* ipe-mouse--delete-pair:                Removing PAIRs.       (line 30)
+* ipe-mouse--next-movement:              Mouse Movement.       (line 55)
+* ipe-mouse--open:                       Mouse Movement.       (line  9)
+* ipe-mouse--open-backward:              Mouse Movement.       (line 31)
+* ipe-mouse--open-backward-alt:          Mouse Movement.       (line 43)
+* ipe-mouse--open-forward:               Mouse Movement.       (line 37)
+* ipe-mouse--open-forward-alt:           Mouse Movement.       (line 43)
+* ipe-mouse--previous-movement:          Mouse Movement.       (line 55)
+* ipe-mouse--region:                     Mouse Movement.       (line 23)
+* ipe-test-def-kbd:                      Adding 'ipe' ERTs (Emacs Regression Tests).
+                                                               (line 14)
+* ipe-test-run:                          Running 'ipe' ERTs (Emacs Regression Tests).
+                                                               (line  9)
+* ipe-test-run-all:                      Running 'ipe' ERTs (Emacs Regression Tests).
+                                                               (line 18)
+
+
+File: ipe.info,  Node: Keys Index,  Next: Variable Index,  Prev: Function Index,  Up: Indexes
+
+Keys Index
+==========
+
+ [index ]
+* Menu:
+
+* (:                                     Changing PAIRs.       (line  9)
+* %:                                     Edit CONTENTS Commands.
+                                                               (line 28)
+* a:                                     Basic Movement (Alphabetic).
+                                                               (line 20)
+* A:                                     Basic Movement (Alphabetic).
+                                                               (line 33)
+* b:                                     Basic Movement (Alphabetic).
+                                                               (line 24)
+* B:                                     Basic Movement (Alphabetic).
+                                                               (line 37)
+* C:                                     'Insert And...' Commands.
+                                                               (line 17)
+* C-*:                                   Inline Customization. (line 38)
+* C-%:                                   Inline Customization. (line 26)
+* C-+:                                   Inline Customization. (line 13)
+* C-<:                                   Next / Previous OPEN / CLOSE.
+                                                               (line 10)
+* C->:                                   Next / Previous OPEN / CLOSE.
+                                                               (line 22)
+* C-a:                                   Basic Movement.       (line 31)
+* C-b:                                   Basic Movement.       (line 35)
+* C-d:                                   Removing PAIRs.       (line 23)
+* C-e:                                   Basic Movement.       (line 54)
+* C-f:                                   Basic Movement.       (line 50)
+* C-g:                                   Inserting and Aborting.
+                                                               (line 31)
+* C-j:                                   Inserting Multiple PAIRs.
+                                                               (line 18)
+* C-k:                                   Edit CONTENTS Commands.
+                                                               (line 10)
+* C-l:                                   Centering the Display on a PAIR.
+                                                               (line 10)
+* C-n:                                   Basic Movement.       (line 52)
+* C-p:                                   Basic Movement.       (line 33)
+* C-r:                                   Next / Previous PAIRs.
+                                                               (line  9)
+* C-s:                                   Next / Previous PAIRs.
+                                                               (line 13)
+* C-SPC:                                 Edit CONTENTS Commands.
+                                                               (line 34)
+* C-u C-u C-u M-(:                       Replacing PAIRs.      (line  6)
+* C-u C-u M-(:                           Deleting PAIRs.       (line  6)
+* C-u M-(:                               Updating PAIRs.       (line  6)
+* C-y:                                   Edit CONTENTS Commands.
+                                                               (line 22)
+* DEL:                                   Removing PAIRs.       (line 16)
+* E:                                     Basic Movement (Alphabetic).
+                                                               (line 30)
+* e:                                     Basic Movement (Alphabetic).
+                                                               (line 43)
+* F:                                     Basic Movement (Alphabetic).
+                                                               (line 26)
+* f:                                     Basic Movement (Alphabetic).
+                                                               (line 39)
+* function keys, C-down:                 Basic Movement (Arrows).
+                                                               (line 28)
+* function keys, C-end:                  Basic Movement (Arrows).
+                                                               (line 30)
+* function keys, C-home:                 Basic Movement (Arrows).
+                                                               (line 33)
+* function keys, C-left:                 Basic Movement (Arrows).
+                                                               (line 37)
+* function keys, C-right:                Basic Movement (Arrows).
+                                                               (line 26)
+* function keys, C-up:                   Basic Movement (Arrows).
+                                                               (line 35)
+* function keys, down:                   Basic Movement (Arrows).
+                                                               (line 41)
+* function keys, end:                    Basic Movement (Arrows).
+                                                               (line 43)
+* function keys, home:                   Basic Movement (Arrows).
+                                                               (line 20)
+* function keys, left:                   Basic Movement (Arrows).
+                                                               (line 24)
+* function keys, right:                  Basic Movement (Arrows).
+                                                               (line 39)
+* function keys, up:                     Basic Movement (Arrows).
+                                                               (line 22)
+* K:                                     'Insert And...' Commands.
+                                                               (line 37)
+* m c:                                   Movement Units.       (line 21)
+* m l:                                   Movement Units.       (line 36)
+* m w:                                   Movement Units.       (line 29)
+* m x:                                   Movement Units.       (line 44)
+* M-(:                                   Running ipe-insert-pair-edit.
+                                                               (line  6)
+* M-*:                                   Inline Customization. (line 44)
+* M-%:                                   Inline Customization. (line 32)
+* M-+:                                   Inline Customization. (line 19)
+* M-<:                                   Next / Previous OPEN / CLOSE.
+                                                               (line 18)
+* M->:                                   Next / Previous OPEN / CLOSE.
+                                                               (line 14)
+* M-a:                                   Basic Movement.       (line 44)
+* M-b:                                   Basic Movement.       (line 48)
+* M-c:                                   Edit CONTENTS Commands.
+                                                               (line 46)
+* M-d:                                   Removing PAIRs.       (line  9)
+* M-e:                                   Basic Movement.       (line 41)
+* M-f:                                   Basic Movement.       (line 37)
+* M-j:                                   Inserting Multiple PAIRs.
+                                                               (line  9)
+* M-l:                                   Edit CONTENTS Commands.
+                                                               (line 52)
+* M-n:                                   Basic Movement.       (line 39)
+* M-p:                                   Basic Movement.       (line 46)
+* M-r:                                   Next / Previous CONTENTS.
+                                                               (line 10)
+* M-s:                                   Next / Previous CONTENTS.
+                                                               (line 14)
+* M-u:                                   Edit CONTENTS Commands.
+                                                               (line 40)
+* M-w:                                   Edit CONTENTS Commands.
+                                                               (line 16)
+* mouse, C-drag-mouse-1:                 Adding Multiple PAIRs Using the Mouse.
+                                                               (line 19)
+* mouse, C-mouse-1:                      Adding Multiple PAIRs Using the Mouse.
+                                                               (line 13)
+* mouse, C-mouse-2:                      Removing PAIRs.       (line 30)
+* mouse, C-S-wheel-down:                 Mouse Movement.       (line 43)
+* mouse, C-S-wheel-up:                   Mouse Movement.       (line 43)
+* mouse, C-wheel-down:                   Mouse Movement.       (line 37)
+* mouse, C-wheel-up:                     Mouse Movement.       (line 37)
+* mouse, drag-mouse-1:                   Mouse Movement.       (line 23)
+* mouse, M-wheel-down:                   Mouse Movement.       (line 55)
+* mouse, M-wheel-up:                     Mouse Movement.       (line 55)
+* mouse, mouse-1:                        Mouse Movement.       (line  9)
+* mouse, mouse-2:                        Mouse Movement.       (line 16)
+* mouse, S-wheel-down:                   Mouse Movement.       (line 43)
+* mouse, S-wheel-up:                     Mouse Movement.       (line 43)
+* mouse, wheel-down:                     Mouse Movement.       (line 31)
+* mouse, wheel-up:                       Mouse Movement.       (line 31)
+* N:                                     Basic Movement (Alphabetic).
+                                                               (line 28)
+* n:                                     Basic Movement (Alphabetic).
+                                                               (line 41)
+* O:                                     'Insert And...' Commands.
+                                                               (line 10)
+* p:                                     Basic Movement (Alphabetic).
+                                                               (line 22)
+* P:                                     Basic Movement (Alphabetic).
+                                                               (line 35)
+* r:                                     Adding Multiple PAIRs Using Existing OPEN / CLOSE.
+                                                               (line 21)
+* R:                                     Adding Multiple PAIRs Using PAIR CONTENT.
+                                                               (line 22)
+* RET:                                   Inserting and Aborting.
+                                                               (line 12)
+* s:                                     Adding Multiple PAIRs Using Existing OPEN / CLOSE.
+                                                               (line 13)
+* S:                                     Adding Multiple PAIRs Using PAIR CONTENT.
+                                                               (line 14)
+* U:                                     'Insert And...' Commands.
+                                                               (line 24)
+* Y:                                     'Insert And...' Commands.
+                                                               (line 31)
+
+
+File: ipe.info,  Node: Variable Index,  Prev: Keys Index,  Up: Indexes
+
+Variable Index
+==============
+
+ [index ]
+* Menu:
+
+* ipe-close-highlight:                   Display Customization.
+                                                               (line 20)
+* ipe-empty-close-string:                PAIRs With Empty OPEN / CLOSE.
+                                                               (line 21)
+* ipe-empty-open-string:                 PAIRs With Empty OPEN / CLOSE.
+                                                               (line 18)
+* ipe-empty-pair-highlight:              Display Customization.
+                                                               (line 49)
+* ipe-empty-pair-highlight <1>:          PAIRs With Empty OPEN / CLOSE.
+                                                               (line 26)
+* ipe-escape-highlight:                  Display Customization.
+                                                               (line 41)
+* ipe-menu-support-p:                    Enabling the 'Edit' -> 'Pairs' Menu.
+                                                               (line  6)
+* ipe-mode-pairs:                        Customization.        (line 10)
+* ipe-move-by-movements:                 Defining Custom 'ipe--movement' Functions.
+                                                               (line 11)
+* ipe-move-point-on-insert:              Positioning POINT and MARK.
+                                                               (line  9)
+* ipe-open-highlight:                    Display Customization.
+                                                               (line 11)
+* ipe-pairs:                             Customization.        (line  9)
+* ipe-set-mark-on-insert:                Positioning POINT and MARK.
+                                                               (line 32)
+* ipe-update-forward-first-p:            Updating PAIRs.       (line 62)
+* ipe-update-forward-first-p <1>:        Deleting PAIRs.       (line 46)
+* ipe-update-forward-first-p <2>:        Replacing PAIRs.      (line 56)
+* ipe-update-forward-first-p <3>:        Update Search Process.
+                                                               (line 19)
+
 
 
 Tag Table:
-Node: Top612
-Node: Overview1508
-Node: Expected Usage3427
-Node: Installation5058
-Node: Basic Usage7149
-Node: Running ipe-insert-pair-edit7532
-Node: ipe-edit-mode9763
-Node: Other `ipe-insert-pair-edit-*' Commands10690
-Node: The 'Edit' -> 'Pairs' Menu11842
-Node: Enabling the 'Edit' -> 'Pairs' Menu13289
-Node: Basic Mode Key Bindings13996
-Node: Basic Movement14688
-Node: Basic Movement Options17379
-Node: Basic Movement (Alphabetic)18519
-Node: Basic Movement (Arrows)20071
-Node: Basic Movement (WASD)21864
-Node: Basic Movement (VI)23380
-Node: Basic Movement (Custom)25129
-Node: Inserting and Aborting25883
-Node: Movement Units27212
-Node: Changing PAIRs28836
-Node: Mouse Movement30170
-Node: Other Major Commands32562
-Node: Updating PAIRs33016
-Node: Deleting PAIRs35279
-Node: Replacing PAIRs37055
-Node: Customization39435
-Node: Types of PAIR Definition40096
-Node: Customization Using 'customize'41201
-Node: Customization Using the 'Pairs' Menu42342
-Node: Inline Customization45963
-Node: Inline Customization Prompts47980
-Node: Display Customization52696
-Node: Other ipe-edit-mode Commands54205
-Node: Insert And... Commands54644
-Node: Edit CONTENTS Commands56095
-Node: Next / Previous Commands58062
-Node: Next / Previous PAIRs58368
-Node: Next / Previous CONTENTS59821
-Node: Next / Previous OPEN / CLOSE61585
-Node: Multiple PAIRs Commands63747
-Node: Adding Multiple PAIRs Using the Emacs Region64627
-Node: Adding Multiple PAIRs Using insert-pair-edit66163
-Node: Adding Multiple PAIRs Using Existing OPEN / CLOSE68018
-Node: Adding Multiple PAIRs Using PAIR CONTENT70691
-Node: Adding Multiple PAIRs Using the Mouse73904
-Node: Removing PAIRs76127
-Node: Escaping Text within a PAIR77605
-Node: Other Features79980
-Node: Line Movement80461
-Node: Line Movement - Forward / Backward81468
-Node: Line Movement - Beginning / End83660
-Node: List Movement86138
-Node: List Movement - Forward / Backward86892
-Node: List Movement - Up / Down88718
-Node: List Movement - Beginning / End90768
-Node: Defining line PAIRs with an INFIX92490
-Node: Auto Insertion95879
-Node: Positioning POINT and MARK97197
-Node: PAIRs With Empty OPEN / CLOSE99209
-Node: Updating Existing PAIRs100363
-Node: Update Search Process101049
-Node: Update PAIR Matching102802
-Node: Updates on a Region104102
-Node: Development105554
-Node: Creating 'ipe-mode-pairs' PAIRs Using Emacs Lisp105854
-Node: Binding MNEMONICs to Keys111667
-Node: Defining Custom 'ipe--movement' Functions112619
-Node: Adding 'ipe' ERTs (Emacs Regression Tests)115434
-Node: Running 'ipe' ERTs (Emacs Regression Tests)118027
-Node: Index118967
+Node: Top614
+Node: Overview1503
+Node: Expected Usage3422
+Node: Installation5053
+Node: Basic Usage7144
+Node: Running ipe-insert-pair-edit7527
+Node: ipe-edit-mode9758
+Node: Other `ipe-insert-pair-edit-*' Commands10685
+Node: The 'Edit' -> 'Pairs' Menu11837
+Node: Enabling the 'Edit' -> 'Pairs' Menu13284
+Node: Basic Mode Key Bindings13991
+Node: Basic Movement14683
+Node: Basic Movement Options17374
+Node: Basic Movement (Alphabetic)18514
+Node: Basic Movement (Arrows)20066
+Node: Basic Movement (WASD)21859
+Node: Basic Movement (VI)23375
+Node: Basic Movement (Custom)25124
+Node: Inserting and Aborting25878
+Node: Movement Units27217
+Node: Changing PAIRs28858
+Node: Mouse Movement30202
+Node: Other Major Commands32594
+Node: Updating PAIRs33048
+Node: Deleting PAIRs35323
+Node: Replacing PAIRs37111
+Node: Customization39515
+Node: Types of PAIR Definition40176
+Node: Customization Using 'customize'41281
+Node: Customization Using the 'Pairs' Menu42422
+Node: Inline Customization46074
+Node: Inline Customization Prompts48091
+Node: Display Customization52807
+Node: Other ipe-edit-mode Commands54336
+Node: 'Insert And...' Commands54777
+Node: Edit CONTENTS Commands56234
+Node: Next / Previous Commands58203
+Node: Next / Previous PAIRs58509
+Node: Next / Previous CONTENTS59962
+Node: Next / Previous OPEN / CLOSE61726
+Node: Multiple PAIRs Commands63888
+Node: Adding Multiple PAIRs Using the Emacs Region64797
+Node: Adding Multiple PAIRs Using insert-pair-edit66333
+Node: Adding Multiple PAIRs Using Existing OPEN / CLOSE68188
+Node: Adding Multiple PAIRs Using PAIR CONTENT70861
+Node: Adding Multiple PAIRs Using the Mouse74074
+Node: Inserting Multiple PAIRs76331
+Node: Removing PAIRs78276
+Node: Escaping Text within a PAIR79787
+Node: Other Features82162
+Node: Line Movement82679
+Node: Line Movement - Forward / Backward83686
+Node: Line Movement - Beginning / End85878
+Node: List Movement88356
+Node: List Movement - Forward / Backward89110
+Node: List Movement - Up / Down90936
+Node: List Movement - Beginning / End92986
+Node: Defining line PAIRs with an INFIX94708
+Node: Auto Insertion98097
+Node: Positioning POINT and MARK99415
+Node: Centering the Display on a PAIR101428
+Node: PAIRs With Empty OPEN / CLOSE102206
+Node: Updating Existing PAIRs103365
+Node: Update Search Process104051
+Node: Update PAIR Matching105804
+Node: Updates on a Region107104
+Node: Development108556
+Node: Creating 'ipe-mode-pairs' PAIRs Using Emacs Lisp108858
+Node: Binding MNEMONICs to Keys114680
+Node: Defining Custom 'ipe--movement' Functions115643
+Node: Adding 'ipe' ERTs (Emacs Regression Tests)118458
+Node: Running 'ipe' ERTs (Emacs Regression Tests)121270
+Node: Indexes122220
+Node: Concept Index122446
+Node: Function Index125592
+Node: Keys Index134774
+Node: Variable Index146168
 
 End Tag Table
 

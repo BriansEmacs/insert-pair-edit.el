@@ -33,6 +33,8 @@
 #   version' command.
 # * PACKAGE_URL - The location from which to download build packages
 #   (elint, multiple-cursors).
+# * TEST_NAMES - The infix used to filter the set of ERT (Emacs
+#   Regression Tests) run by `make test'.
 # * VERSION - A number (0-3) specifying how chatty to be when
 #   building. 0 - quiet, 3 - debug.
 #
@@ -45,6 +47,7 @@
 TOP         := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 VERSION     := 1.0.0
 PACKAGE_URL := https://melpa.org/packages/
+TEST_NAMES  := ""
 VERBOSE     := 1
 
 -include ./config.mk
@@ -66,6 +69,7 @@ ENV_CONFIG ?= "(progn\
   (setq ipe-base-dir \"$(TOP)\")\
   (setq ipe-build-pkgs-dir \"$(TOP)/$(BUILD_PKGS_DIR)\")\
   (setq ipe-package-url \"$(PACKAGE_URL)\")\
+  (setq ipe-build-test-names \"$(TEST_NAMES)\")\
   (setq ipe-build-verbose \"$(VERBOSE)\"))"
 
 LOAD_PATH ?= $(TOP)/$(BUILD_PKGS_DIR)

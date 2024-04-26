@@ -102,7 +102,9 @@ work with multiple cursors."
 	 ipe-edit--ia-goto-open
 	 ipe-edit--ia-kill-text
 	 ipe-edit--ia-resume
+	 ipe-edit--insert-first-pair
 	 ipe-edit--insert-pair
+	 ipe-edit--insert-last-pair
 	 ipe-edit--movement-by-char
 	 ipe-edit--movement-by-line
 	 ipe-edit--movement-by-list
@@ -113,6 +115,7 @@ work with multiple cursors."
 	 ipe-edit--open-end
 	 ipe-edit--open-forward
 	 ipe-edit--open-up
+	 ipe-edit--recenter-pair
 	 ipe-edit--toggle-escapes
 	 ipe-edit--update-next-close
 	 ipe-edit--update-next-contents

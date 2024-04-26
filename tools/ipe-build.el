@@ -64,6 +64,7 @@
     "test/ipe-test-list.el"
     "test/ipe-test-matching.el"
     "test/ipe-test-mc.el"
+    "test/ipe-test-menu.el"
     "test/ipe-test-missing.el"
     "test/ipe-test-options.el"
     "test/ipe-test-other.el"
@@ -81,6 +82,7 @@
     ipe-test-defn
     ipe-test-edit
     ipe-test-escape
+    ipe-test-forward-first
     ipe-test-indent
     ipe-test-infix
     ipe-test-insert-and
@@ -95,6 +97,13 @@
     ipe-test-update
     ipe-test-word)
   "List of Emacs Regression Test features.")
+
+(defvar ipe-build-test-names ""
+  "The infix used to filter the tests run by `ipe-build--test'.
+
+This infix is appended to the string \"ipe-test-\" and passed to
+`ert-run-tests-batch-and-exit' to filter the list of `ipe' ERT tests
+run by the `ipe-build--test' function.")
 
 (defvar ipe-build--verbose
   (or (string-to-number ipe-build-verbose)
@@ -223,7 +232,8 @@ code."
   (setq ipe-menu-support-p t)
   (ipe-menu--install)
 
-  (ipe-test-run-all-and-exit (< ipe-build--verbose 2)))
+  (ipe-test-run-all-and-exit ipe-build-test-names
+                             (< ipe-build--verbose 2)))
 
 (defun ipe-build--lint ()
   "Run elint over the `ipe' Emacs Lisp source code.

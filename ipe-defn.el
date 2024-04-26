@@ -370,7 +370,8 @@ must enter a MNEMONICs which already exists within these variables."
 	 (mnemonics (if mode
 			(mapcar #'car (ipe--mode-pairs mode))
 		      (mapcar #'car (ipe--pairs t)))))
-    (completing-read prompt mnemonics nil require-match)))
+    (substring-no-properties
+     (completing-read prompt mnemonics nil require-match))))
 
 (defun ipe-defn--read-movement (prompt default)
   "Prompt the user for an `ipe' :movement.
@@ -427,18 +428,21 @@ defaults when prompting."
 	 (default  (if defaults (car defaults) (list "" "")))
 	 (prompt   "Escape Match Text (Type RET to exit): ")
 	 (initial  (cons (car default) 0))
-	 (match    (read-from-minibuffer prompt initial))
+	 (match    (substring-no-properties
+		    (read-from-minibuffer prompt initial)))
 	 (replace))
 
     (while (> (length match) 0)
       (setq initial  (cons (cadr default) 0)
-	    replace  (read-from-minibuffer "Escape Replacement Text: "
-					   initial)
+	    replace  (substring-no-properties
+		      (read-from-minibuffer "Escape Replacement Text: "
+					    initial))
 	    escapes  (nconc escapes (list (list match replace)))
 	    defaults (cdr defaults)
 	    default  (if defaults (car defaults) (list "" ""))
 	    initial  (cons (car default) 0)
-	    match    (read-from-minibuffer prompt initial)))
+	    match    (substring-no-properties
+		      (read-from-minibuffer prompt initial))))
     escapes))
 
 (defun ipe-defn--read-property (defn prompt orig-defn property values
@@ -473,7 +477,8 @@ PROPERTY, and then sets the property within the PAIR Definition
 			  nil-default)
 			0))
 	 (completion-extra-properties (list :annotation-function annotate))
-	 (value   (completing-read prompt values nil values initial)))
+	 (value   (substring-no-properties
+		   (completing-read prompt values nil values initial))))
 
     (ipe--pair-property-set defn
 			    property
@@ -511,7 +516,8 @@ DEFN."
     ;; Read in an infix.
     (setq default (ipe--pair-infix-string orig-defn)
 	  initial (if default (cons default 0) "")
-	  infix   (read-from-minibuffer "INFIX: " initial))
+	  infix   (substring-no-properties
+		   (read-from-minibuffer "INFIX: " initial)))
 
     (when (> (length infix) 0)
       (ipe--pair-property-set defn :infix infix))
@@ -672,11 +678,10 @@ With prefix ARG, call `ipe-defn--ui-edit-pair'."
 		open-initial (cons open 0)
 		close-initial (cons close 0)))
 
-	(setq open  (read-from-minibuffer "OPEN: "  open-initial)
-	      close (read-from-minibuffer "CLOSE: " close-initial))
-
-	(setq open  (substring-no-properties open)
-	      close (substring-no-properties close))
+	(setq open  (substring-no-properties
+		     (read-from-minibuffer "OPEN: "  open-initial))
+	      close (substring-no-properties
+		     (read-from-minibuffer "CLOSE: " close-initial)))
 
 	;; Check if the user wants to set any Intermediate options.
 	(let ((defn (list mnemonic open close)))
@@ -788,11 +793,10 @@ With prefix ARG, call `ipe-defn--ui-edit-mode-pair'."
 		open-initial (cons open 0)
 		close-initial (cons close 0)))
 
-	(setq open  (read-from-minibuffer "OPEN: "  open-initial)
-	      close (read-from-minibuffer "CLOSE: " close-initial))
-
-	(setq open  (substring-no-properties open)
-	      close (substring-no-properties close))
+	(setq open  (substring-no-properties
+		     (read-from-minibuffer "OPEN: "  open-initial))
+	      close (substring-no-properties
+		     (read-from-minibuffer "CLOSE: " close-initial)))
 
 	;; Check if the user wants to set any Intermediate options.
 	(let ((defn (list mnemonic open close)))
@@ -913,7 +917,8 @@ The PAIR Definition is updated in `ipe-pairs'."
 	   t))
 	 (new-mnemonic
 	  (or (< (length mnemonic) 1)
-	      (read-from-minibuffer "To NEW-MNEMONIC: "))))
+	      (substring-no-properties
+	       (read-from-minibuffer "To NEW-MNEMONIC: ")))))
 
     ;; Check for clashes with existing MNEMONICs.
     (when
@@ -967,7 +972,8 @@ The PAIR Definition is updated in `ipe-mode-pairs'."
 	 mode
 	 t))
        (new-mnemonic
-	(read-from-minibuffer "To NEW-MNEMONIC: ")))
+	(substring-no-properties
+	 (read-from-minibuffer "To NEW-MNEMONIC: "))))
 
     ;; Check for clashes with existing MNEMONICs.
     (when

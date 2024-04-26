@@ -39,6 +39,7 @@
 ;;  [mouse-2]        - Move the `ipe' CLOSE string to mouse click POS.
 ;;  [mouse-3]        - Display the 'Insert Pair Edit' Context Menu.
 ;;  [drag-mouse-1]   - Move both the `ipe' OPEN and CLOSE strings.
+;;  [double-mouse-1] - Surround the current lexical unit with a PAIR.
 ;;
 ;;  [C-mouse-1]      - Add an `ipe' PAIR around mouse click POS.
 ;;  [C-mouse-2]      - Remove `ipe' PAIR closest to mouse click POS.
@@ -74,17 +75,32 @@
 ;;;; Utility Functions.
 ;; -------------------------------------------------------------------
 
-(defun ipe-mouse--mode-check ()
-  "Check `ipe-edit-mode' is active for `ipe-mouse--*' commands."
+(defun ipe-mouse--mode-check (event)
+  "Check `ipe-edit-mode' is active for ipe-mouse--* commands.
 
-  (if ipe-edit-mode
-      (if (ipe--pos-count)
-	  t
-	(ipe-edit-mode -1)
-	nil)
-    (message (concat "This command should only be run from within\
+EVENT is mouse event, describing the WINDOW and BUFFER in which the
+check is to be made."
+
+  (let ((window (posn-window (cadr event))))
+    (with-selected-window window
+      (with-current-buffer (window-buffer window)
+	(if ipe-edit-mode
+	    (if (ipe--pos-count)
+		t
+	      (ipe-edit-mode -1)
+	      nil)
+	  (message (concat "This command should only be run from within\
  `ipe-edit-mode'."))
-    nil))
+	  nil)))))
+
+(defmacro ipe-mouse--with-event (event &rest body)
+  "Wrap BODY so it is run in the window / buffer of a mouse EVENT."
+
+  `(when (and (ipe-mouse--mode-check ,event))
+     (let ((window (posn-window (cadr ,event))))
+       (with-selected-window window
+	 (with-current-buffer (window-buffer window)
+	   ,@body)))))
 
 ;; -------------------------------------------------------------------
 ;;;; 'Click' event handlers.
@@ -98,17 +114,14 @@ This command is used within the Insert Pair Edit (ipe) minor-mode
 specified by a mouse click EVENT."
 
   (interactive "e")
-  (when (and (ipe-mouse--mode-check)
-	     (mouse-event-p event))
-
-    (let ((pos (posn-point (cadr event))))
-      (ipe--pos-list-singular)
-      (ipe--open-init 0 pos 1)
-
-      (when (> (ipe--pos-open 0) (ipe--pos-close 0))
-	(ipe--close-init 0 pos 1))
-
-      (ipe--pair-pos-redisplay))))
+  (ipe-mouse--with-event
+   event
+   (let ((pos (posn-point (cadr event))))
+     (ipe--pos-list-singular)
+     (ipe--open-init 0 pos 1)
+     (when (> (ipe--pos-open 0) (ipe--pos-close 0))
+       (ipe--close-init 0 pos 1))
+     (ipe--pair-pos-redisplay))))
 
 (defun ipe-mouse--close (event)
   "Move the `ipe' CLOSE string to the mouse position given in EVENT.
@@ -118,17 +131,31 @@ This command is used within the Insert Pair Edit (ipe) minor-mode
 specified by a mouse click EVENT."
 
   (interactive "e")
-  (when (and (ipe-mouse--mode-check)
-	     (mouse-event-p event))
+  (ipe-mouse--with-event
+   event
+   (let ((pos (posn-point (cadr event))))
+     (ipe--pos-list-singular)
+     (ipe--close-init 0 pos 1)
+     (when (< (ipe--pos-close 0) (ipe--pos-open 0))
+       (ipe--open-init 0 pos 1))
+     (ipe--pair-pos-redisplay))))
 
-    (let ((pos (posn-point (cadr event))))
-      (ipe--pos-list-singular)
-      (ipe--close-init 0 pos 1)
+(defun ipe-mouse--init (event)
+  "Surround the lexical unit at a mouse click with an `ipe' PAIR.
 
-      (when (< (ipe--pos-close 0) (ipe--pos-open 0))
-	(ipe--open-init 0 pos 1))
+This command is used within the Insert Pair Edit (ipe) minor-mode
+\(command: `ipe-edit-mode') to move the OPEN overlay and CLOSE
+overlay of a PAIR to surround the current lexical unit within an
+`ipe' PAIR.  This is called in response to a mouse EVENT."
 
-      (ipe--pair-pos-redisplay))))
+  (interactive "e")
+  (ipe-mouse--with-event
+   event
+   (ipe--pos-list-singular)
+   (let ((pos (posn-point (cadr event))))
+     (ipe--pair-pos-init 0 pos 1)
+     (ipe--pos-point 0 (ipe--pos-open 0))
+     (ipe--pair-pos-redisplay))))
 
 (defun ipe-mouse--region (event)
   "Move the `ipe' OPEN and CLOSE to beginning and end of a mouse drag.
@@ -139,21 +166,18 @@ overlay of a PAIR to the region specified by the start and finish of
 a mouse drag EVENT."
 
   (interactive "e")
-  (when (and (ipe-mouse--mode-check)
-	     (mouse-event-p event)
-	     (= (length event) 3))
-
-    (ipe--pos-list-singular)
-    (let* ((p1  (posn-point (cadr event)))
-	   (p2  (posn-point (ipe-compat--caddr event)))
-	   (beg (if (and p1 p2 (< p1 p2)) p1 p2))
-	   (end (if (and p1 p2 (< p1 p2)) p2 p1)))
-
-      (when (and beg end)
-	(ipe--open-init 0 (+ beg 1) 1)
-	(ipe--close-init 0 end 1)
-
-	(ipe--pair-pos-redisplay)))))
+  (ipe-mouse--with-event
+   event
+   (when (= (length event) 3)
+     (ipe--pos-list-singular)
+     (let* ((p1  (posn-point (cadr event)))
+	    (p2  (posn-point (ipe-compat--caddr event)))
+	    (beg (if (and p1 p2 (< p1 p2)) p1 p2))
+	    (end (if (and p1 p2 (< p1 p2)) p2 p1)))
+       (when (and beg end)
+	 (ipe--open-init 0 (+ beg 1) 1)
+	 (ipe--close-init 0 end 1)
+	 (ipe--pair-pos-redisplay))))))
 
 (defun ipe-mouse--add-pair (event)
   "Add a new `ipe' PAIR at the mouse position given in EVENT.
@@ -163,14 +187,13 @@ This command is used within the Insert Pair Edit (ipe) minor-mode
 by a mouse click EVENT."
 
   (interactive "e")
-  (when (and (ipe-mouse--mode-check)
-	     (mouse-event-p event))
-
-    (let ((pos (posn-point (cadr event)))
-	  (n   (ipe--pos-count)))
-      (ipe--pair-pos-init n pos 1)
-      (ipe--pos-point n (ipe--pos-open n))
-      (ipe--pair-pos-redisplay))))
+  (ipe-mouse--with-event
+   event
+   (let ((pos (posn-point (cadr event)))
+	 (n   (ipe--pos-count)))
+     (ipe--pair-pos-init n pos 1)
+     (ipe--pos-point n (ipe--pos-open n))
+     (ipe--pair-pos-redisplay))))
 
 (defun ipe-mouse--delete-pair (event)
   "Delete the `ipe' PAIR closest to the mouse position given in EVENT.
@@ -180,17 +203,16 @@ This command is used within the Insert Pair Edit (ipe) minor-mode
 by a mouse click EVENT."
 
   (interactive "e")
-  (when (and (ipe-mouse--mode-check)
-	     (mouse-event-p event))
-
-    (let* ((pos (posn-point (cadr event)))
-	   (n   (ipe--pos-list-nearest pos)))
-      (if (<= (ipe--pos-count) 1)
-	  (progn
-	    (ipe--undo-accept)
-	    (ipe-edit--abort))
-	(ipe--pair-pos-hide n)
-	(ipe-edit--redisplay)))))
+  (ipe-mouse--with-event
+   event
+   (let* ((pos (posn-point (cadr event)))
+	  (n   (ipe--pos-list-nearest pos)))
+     (if (<= (ipe--pos-count) 1)
+	 (progn
+	   (ipe--undo-accept)
+	   (ipe-edit--abort))
+       (ipe--pair-pos-hide n)
+       (ipe-edit--redisplay)))))
 
 (defun ipe-mouse--add-pair-region (event)
   "Add an `ipe' PAIR around the beginning and end of a mouse drag.
@@ -202,189 +224,199 @@ to the region specified by the start and finish of a mouse drag EVENT.
 This function will not remove existing PAIRs."
 
   (interactive "e")
-  (when (and (ipe-mouse--mode-check)
-	     (mouse-event-p event)
-	     (= (length event) 3))
+  (ipe-mouse--with-event
+   event
+   (when (= (length event) 3)
+     (let* ((p1  (posn-point (cadr event)))
+	    (p2  (posn-point (ipe-compat--caddr event)))
+	    (beg (if (and p1 p2 (< p1 p2)) p1 p2))
+	    (end (if (and p1 p2 (< p1 p2)) p2 p1))
+	    (n   (ipe--pos-count)))
+       (when (and beg end)
+	 (ipe--open-init n (+ beg 1) 1)
+	 (ipe--close-init n end 1)
+	 (ipe--pos-property-set n :initial-n n)
+	 (ipe--pos-point n (ipe--pos-open n))
 
-    (let* ((p1  (posn-point (cadr event)))
-	   (p2  (posn-point (ipe-compat--caddr event)))
-	   (beg (if (and p1 p2 (< p1 p2)) p1 p2))
-	   (end (if (and p1 p2 (< p1 p2)) p2 p1))
-	   (n   (ipe--pos-count)))
-
-      (when (and beg end)
-	(ipe--open-init n (+ beg 1) 1)
-	(ipe--close-init n end 1)
-	(ipe--pos-property-set n :initial-n n)
-	(ipe--pos-point n (ipe--pos-open n))
-
-	(ipe--pair-pos-redisplay)))))
+	 (ipe--pair-pos-redisplay))))))
 
 ;; -------------------------------------------------------------------
 ;;;; 'Mouse Wheel' event handlers.
 ;; -------------------------------------------------------------------
 
-(defun ipe-mouse--open-forward ()
+(defun ipe-mouse--open-forward (event)
   "Move the `ipe' OPEN overlay forward.
 
 This command is used within the Insert Pair Edit (ipe) minor-mode
 \(command: `ipe-edit-mode') to move the OPEN overlay of a PAIR
-`forward' in response to a mouse wheel event.
+`forward' in response to a mouse wheel EVENT.
 
 Movement units are determined by the current value of
 `ipe--movement'."
 
-  (interactive)
-  (when (ipe-mouse--mode-check)
-    (if (eq ipe--movement 'line)
-	(ipe-edit--open-down 1)
-      (ipe-edit--open-forward 1))))
+  (interactive "e")
+  (ipe-mouse--with-event
+   event
+   (if (eq ipe--movement 'line)
+       (ipe-edit--open-down 1)
+     (ipe-edit--open-forward 1))))
 
-(defun ipe-mouse--open-forward-alt ()
+(defun ipe-mouse--open-forward-alt (event)
   "Move the `ipe' OPEN overlay forward (alternate movement).
 
 This command is used within the Insert Pair Edit (ipe) minor-mode
 \(command: `ipe-edit-mode') to move the OPEN overlay of a PAIR
-`forward' `by-char' in response to a mouse wheel event."
+`forward' `by-char' in response to a mouse wheel EVENT."
 
-  (interactive)
-  (when (ipe-mouse--mode-check)
-    (if (eq ipe--movement 'line)
-	(ipe-edit--open-forward 1)
-      (let ((ipe--movement 'char))
-	(ipe-edit--open-forward 1)))))
+  (interactive "e")
+  (ipe-mouse--with-event
+   event
+   (if (eq ipe--movement 'line)
+       (ipe-edit--open-forward 1)
+     (let ((ipe--movement 'char))
+       (ipe-edit--open-forward 1)))))
 
-(defun ipe-mouse--open-backward ()
+(defun ipe-mouse--open-backward (event)
   "Move the `ipe' OPEN overlay backward.
 
 This command is used within the Insert Pair Edit (ipe) minor-mode
 \(command: `ipe-edit-mode') to move the OPEN overlay of a PAIR
-`backward' in response to a mouse wheel event.
+`backward' in response to a mouse wheel EVENT.
 
 Movement units are determined by the current value of
 `ipe--movement'."
 
-  (interactive)
-  (when (ipe-mouse--mode-check)
-    (if (eq ipe--movement 'line)
-	(ipe-edit--open-up 1)
-      (ipe-edit--open-backward 1))))
+  (interactive "e")
+  (ipe-mouse--with-event
+   event
+   (if (eq ipe--movement 'line)
+       (ipe-edit--open-up 1)
+     (ipe-edit--open-backward 1))))
 
-(defun ipe-mouse--open-backward-alt ()
+(defun ipe-mouse--open-backward-alt (event)
   "Move the `ipe' OPEN overlay backward (alternate movement).
 
 This command is used within the Insert Pair Edit (ipe) minor-mode
 \(command: `ipe-edit-mode') to move the OPEN overlay of a PAIR
-`backward' `by-char' in response to a mouse wheel event."
+`backward' `by-char' in response to a mouse wheel EVENT."
 
-  (interactive)
-  (when (ipe-mouse--mode-check)
-    (if (eq ipe--movement 'line)
-	(ipe-edit--open-backward 1)
-      (let ((ipe--movement 'char))
-	(ipe-edit--open-backward 1)))))
+  (interactive "e")
+  (ipe-mouse--with-event
+   event
+   (if (eq ipe--movement 'line)
+       (ipe-edit--open-backward 1)
+     (let ((ipe--movement 'char))
+       (ipe-edit--open-backward 1)))))
 
-(defun ipe-mouse--close-forward ()
+(defun ipe-mouse--close-forward (event)
   "Move the `ipe' CLOSE overlay forward.
 
 This command is used within the Insert Pair Edit (ipe) minor-mode
 \(command: `ipe-edit-mode') to move the CLOSE overlay of a PAIR
-`forward' in response to a mouse wheel event.
+`forward' in response to a mouse wheel EVENT.
 
 Movement units are determined by the current value of
 `ipe--movement'."
 
-  (interactive)
-  (when (ipe-mouse--mode-check)
-    (if (eq ipe--movement 'line)
-	(ipe-edit--close-down 1)
-      (ipe-edit--close-forward 1))))
+  (interactive "e")
+  (ipe-mouse--with-event
+   event
+   (if (eq ipe--movement 'line)
+       (ipe-edit--close-down 1)
+     (ipe-edit--close-forward 1))))
 
-(defun ipe-mouse--close-forward-alt ()
+(defun ipe-mouse--close-forward-alt (event)
   "Move the `ipe' CLOSE overlay forward (alternate movement).
 
 This command is used within the Insert Pair Edit (ipe) minor-mode
 \(command: `ipe-edit-mode') to move the CLOSE overlay of a PAIR
-`forward' `by-char' in response to a mouse wheel event."
+`forward' `by-char' in response to a mouse wheel EVENT."
 
-  (interactive)
-  (when (ipe-mouse--mode-check)
-    (if (eq ipe--movement 'line)
-	(ipe-edit--close-forward 1)
-      (let ((ipe--movement 'char))
-	(ipe-edit--close-forward 1)))))
+  (interactive "e")
+  (ipe-mouse--with-event
+   event
+   (if (eq ipe--movement 'line)
+       (ipe-edit--close-forward 1)
+     (let ((ipe--movement 'char))
+       (ipe-edit--close-forward 1)))))
 
-(defun ipe-mouse--close-backward ()
+(defun ipe-mouse--close-backward (event)
   "Move the `ipe' OPEN overlay backward.
 
 This command is used within the Insert Pair Edit (ipe) minor-mode
 \(command: `ipe-edit-mode') to move the CLOSE overlay of a PAIR
-`backward' in response to a mouse wheel event.
+`backward' in response to a mouse wheel EVENT.
 
 Movement units are determined by the current value of
 `ipe--movement'."
 
-  (interactive)
-  (when (ipe-mouse--mode-check)
-    (if (eq ipe--movement 'line)
-	(ipe-edit--close-up 1)
-      (ipe-edit--close-backward 1))))
+  (interactive "e")
+  (ipe-mouse--with-event
+   event
+   (if (eq ipe--movement 'line)
+       (ipe-edit--close-up 1)
+     (ipe-edit--close-backward 1))))
 
-(defun ipe-mouse--close-backward-alt ()
+(defun ipe-mouse--close-backward-alt (event)
   "Move the `ipe' OPEN overlay backward (alternate movement).
 
 This command is used within the Insert Pair Edit (ipe) minor-mode
 \(command: `ipe-edit-mode') to move the CLOSE overlay of a PAIR
-`backward' `by-char' in response to a mouse wheel event."
+`backward' `by-char' in response to a mouse wheel EVENT."
 
-  (interactive)
-  (when (ipe-mouse--mode-check)
-    (if (eq ipe--movement 'line)
-	(ipe-edit--close-backward 1)
-      (let ((ipe--movement 'char))
-	(ipe-edit--close-backward 1)))))
+  (interactive "e")
+  (ipe-mouse--with-event
+   event
+   (if (eq ipe--movement 'line)
+       (ipe-edit--close-backward 1)
+     (let ((ipe--movement 'char))
+       (ipe-edit--close-backward 1)))))
 
-(defun ipe-mouse--next-movement ()
+(defun ipe-mouse--next-movement (event)
   "Set movement made by Insert Pair Edit to the `next' movement.
 
 This command is used within the Insert Pair Edit (ipe) minor-mode
 \(command: `ipe-edit-mode') to update the `ipe--movement' variable to
 the `next' movement symbol within the `car' of the elements within the
-`ipe-move-by-movements' list."
+`ipe-move-by-movements' list.  It is called in response to a mouse
+wheel EVENT."
 
-  (interactive)
-  (when (ipe-mouse--mode-check)
-    (let ((n (ipe--list-element ipe-move-by-movements
-				ipe--movement
-				(lambda (movement x)
-				  (equal movement (car x))))))
-      (setq ipe--movement
-	    (if n
-		(car (nth (min (1- (length ipe-move-by-movements)) (1+ n))
-			  ipe-move-by-movements))
-	      'word))
-      (ipe--pair-pos-movement-reset ipe--movement))))
+  (interactive "e")
+  (ipe-mouse--with-event
+   event
+   (let ((n (ipe--list-element ipe-move-by-movements
+			       ipe--movement
+			       (lambda (movement x)
+				 (equal movement (car x))))))
+     (setq ipe--movement
+	   (if n
+	       (car (nth (min (1- (length ipe-move-by-movements)) (1+ n))
+			 ipe-move-by-movements))
+	     'word))
+     (ipe--pair-pos-movement-reset ipe--movement))))
 
-(defun ipe-mouse--previous-movement ()
+(defun ipe-mouse--previous-movement (event)
   "Set movement made by Insert Pair Edit to the `previous' movement.
 
 This command is used within the Insert Pair Edit (ipe) minor-mode
 \(command: `ipe-edit-mode') to update the `ipe--movement' variable to
 the `previous' movement symbol within the `car' of the elements within
-the `ipe-move-by-movements' list."
+the `ipe-move-by-movements' list.  It is called in response to a mouse
+wheel EVENT."
 
-  (interactive)
-  (when (ipe-mouse--mode-check)
-    (let ((n (ipe--list-element ipe-move-by-movements
-				ipe--movement
-				(lambda (movement x)
-				  (equal movement (car x))))))
-      (setq ipe--movement
-	    (if n
-		(car (nth (max (1- n) 0)
-			  ipe-move-by-movements))
-	      'word))
-      (ipe--pair-pos-movement-reset ipe--movement))))
+  (interactive "e")
+  (ipe-mouse--with-event
+   event
+   (let ((n (ipe--list-element ipe-move-by-movements
+			       ipe--movement
+			       (lambda (movement x)
+				 (equal movement (car x))))))
+     (setq ipe--movement
+	   (if n
+	       (car (nth (max (1- n) 0)
+			 ipe-move-by-movements))
+	     'word))
+     (ipe--pair-pos-movement-reset ipe--movement))))
 
 ;; -------------------------------------------------------------------
 ;;;; Minor Mode Mouse Control.
@@ -399,6 +431,8 @@ the `ipe-move-by-movements' list."
 	      'ipe-mouse--close)
   (define-key ipe-edit-mode-map [drag-mouse-1]
 	      'ipe-mouse--region)
+  (define-key ipe-edit-mode-map [double-mouse-1]
+	      'ipe-mouse--init)
 
   (define-key ipe-edit-mode-map [C-down-mouse-1]
 	      'self-insert-command)
@@ -443,6 +477,7 @@ the `ipe-move-by-movements' list."
 	  '([mouse-1]
 	    [mouse-2]
 	    [drag-mouse-1]
+	    [double-mouse-1]
 	    [C-mouse-1]
 	    [C-down-mouse-1]
 	    [C-mouse-2]
@@ -450,10 +485,10 @@ the `ipe-move-by-movements' list."
 	    [C-drag-mouse-1]
 	    [wheel-up]
 	    [wheel-down]
-	    [S-wheel-up]
-	    [S-wheel-down]
 	    [C-wheel-up]
 	    [C-wheel-down]
+	    [S-wheel-up]
+	    [S-wheel-down]
 	    [C-S-wheel-up]
 	    [C-S-wheel-down]
 	    [M-wheel-up]

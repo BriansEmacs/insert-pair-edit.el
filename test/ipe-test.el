@@ -466,15 +466,19 @@ This interactive function runs all of the tests with `ipe-test-def' or
   (interactive)
   (ert "^ipe-test--.*"))
 
-(defun ipe-test-run-all-and-exit (&optional quiet)
+(defun ipe-test-run-all-and-exit (&optional infix quiet)
   "Run all of the `ert' test cases that start with \"ipe-test--.*\".
 
 This function runs all of the tests with `ipe-test-def' or
-`ipe-test-def-kbd' and then exits.  If QUIET is non-nil, set
-`ert-quiet'."
+`ipe-test-def-kbd' and then exits.
+
+IF INFIX is non-nil, only run the tests which start with
+\"ipe-test--\" INFIX \".*\".
+If QUIET is non-nil, set `ert-quiet'."
 
   (let ((ert-quiet quiet))
-    (ert-run-tests-batch-and-exit "^ipe-test--.*")))
+    (ert-run-tests-batch-and-exit
+     (concat "^ipe-test--" (if infix infix "") ".*"))))
 
 (defun ipe-test-buffer (name)
   "Create a buffer containing the BUFFER-TEXT from an `ipe-test-def'.

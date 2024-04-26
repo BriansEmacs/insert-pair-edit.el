@@ -62,7 +62,6 @@
 ;; (ipe-elide-description       0)
 ;; (ipe-empty-close-string      ")")
 ;; (ipe-empty-open-string       "(")
-;; (ipe-menu-display-in-edit-p  t)
 ;; (ipe-menu-support-p          t)
 ;; (ipe-mouse-support-p         t)
 ;; (ipe-pair-sort               'mnemonic)

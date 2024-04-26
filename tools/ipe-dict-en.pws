@@ -113,12 +113,14 @@ downcase
 dups
 el
 elisp
+elt
 emacs
 emph
 eob
 eobc
 eobp
 eol
+epos
 eq
 esc
 eval
@@ -137,6 +139,7 @@ grey
 hrecenter
 hscroll
 html
+hvisible
 ia
 infixes
 init

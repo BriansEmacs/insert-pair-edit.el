@@ -124,7 +124,7 @@ Selecting a menu item under `Delete PAIR` will delete the _nearest_
 _PAIR_ (of the given type) and remain in the current **Emacs** mode.
 
 ----------------------------------------------------------------------
-## Installation:
+## Installation
 
 1a. Download the `ipe` package from [MELPA](https://melpa.org): 
 

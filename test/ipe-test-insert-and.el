@@ -134,15 +134,17 @@ Using a 'word PAIR."
   "The quick brown fox <start>ju|mps<end> over the lazy dog."
   "M-( ( U")
 
-(ipe-test-def-kbd insert-and-copy-text ()
-  "Test `ipe-insert-pair-edit' \"Insert And... -> Copy Text\".
+;; Headless ERT has problems with Kill Ring <= 24.
+(when (> emacs-major-version 24)
+  (ipe-test-def-kbd insert-and-copy-text ()
+    "Test `ipe-insert-pair-edit' \"Insert And... -> Copy Text\".
 
 Using a 'word PAIR."
-  ipe-test-insert-and-options
-  nil
-  "The quick brown fox ju|mps over the lazy dog."
-  "The quick brown fox <start>jumps<end> over the lazy dog.jumps|"
-  "M-( ( Y M-e C-y")
+    ipe-test-insert-and-options
+    nil
+    "The quick brown fox ju|mps over the lazy dog."
+    "The quick brown fox <start>jumps<end> over the lazy dog.jumps|"
+    "M-( ( Y M-e C-y"))
 
 (ipe-test-def-kbd insert-and-kill-text-1 ()
   "Test `ipe-insert-pair-edit' \"Insert And... -> Kill Text\".
