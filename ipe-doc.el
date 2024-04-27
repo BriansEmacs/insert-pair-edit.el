@@ -1,8 +1,8 @@
 ;;; ipe-doc.el --- Insert Pair Edit - Functions to generate doc gifs -*- lexical-binding: t; -*-
 ;; Copyright (C) 2024 Brian Kavanagh
 
-;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
-;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
+;; Author: Brian Kavanagh <(concat "Brians.Emacs" "@gmail.com")>
+;; Maintainer: Brian Kavanagh <(concat "Brians.Emacs" "@gmail.com")>
 ;; Created: 23 March, 2024
 ;; Version: 1.1
 ;; Package: ipe

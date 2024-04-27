@@ -1,8 +1,8 @@
 ;;; ipe-edit.el --- Insert Pair Edit - editing minor mode -*- lexical-binding: t; -*-
-;; Copyright (C) 2023 Brian Kavanagh
+;; Copyright (C) 2024 Brian Kavanagh
 
-;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
-;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
+;; Author: Brian Kavanagh <(concat "Brians.Emacs" "@gmail.com")>
+;; Maintainer: Brian Kavanagh <(concat "Brians.Emacs" "@gmail.com")>
 ;; Created: 28 June, 2020
 ;; Version: 1.1
 ;; Package: ipe

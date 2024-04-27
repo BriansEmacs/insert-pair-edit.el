@@ -1,8 +1,8 @@
 ;;; ipe-build.el --- Tools called by the `ipe' Makefile
 ;; Copyright (C) 2024 Brian Kavanagh
 
-;; Author: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
-;; Maintainer: Brian Kavanagh (concat "Brians.Emacs" "@" "gmail.com")
+;; Author: Brian Kavanagh <(concat "Brians.Emacs" "@" "gmail.com")>
+;; Maintainer: Brian Kavanagh <(concat "Brians.Emacs" "@" "gmail.com")>
 ;; Created: 20 March, 2024
 ;; Package: ipe
 ;; Keywords: tools
@@ -233,7 +233,7 @@ code."
   (ipe-menu--install)
 
   (ipe-test-run-all-and-exit ipe-build-test-names
-                             (< ipe-build--verbose 2)))
+			     (< ipe-build--verbose 2)))
 
 (defun ipe-build--lint ()
   "Run elint over the `ipe' Emacs Lisp source code.
@@ -370,24 +370,18 @@ files."
   (ipe-build--log 1 "Versioning `ipe' files...")
 
   ;; Update the ';; Version: X.X.XXX' comment.
-  (let ((files ipe-build--elisp-files))
+  (let ((files (append ipe-build--elisp-files
+		       ipe-build--test-elisp-files))
+	;;      (header "Version")
+	;;      (value  version))
+	(header "Maintainer")
+	(value "Brian Kavanagh <(concat \"Brians.Emacs\" \"@gmail.com\")>"))
     (dolist (file files)
       (find-file file)
       (goto-char (point-min))
-      (when (re-search-forward "^;; Version: .*")
-	(replace-match (concat ";; Version: " version))
-	(ipe-build--log 2 "%s Updated to version %s" file version))
-      (basic-save-buffer)
-      (kill-buffer)))
-
-  ;; Update the ';; Version: X.X.XXX' comment.
-  (let ((files ipe-build--test-elisp-files))
-    (dolist (file files)
-      (find-file file)
-      (goto-char (point-min))
-      (when (re-search-forward "^;; Version: .*")
-	(replace-match (concat ";; Version: " version))
-	(ipe-build--log 2 "%s Updated to version %s" file version))
+      (when (re-search-forward (concat "^;; " (regexp-quote header) ":? .*"))
+	(replace-match (concat ";; " header ": " value))
+	(ipe-build--log 2 "%s: Updated: \"%s\" to \"%s\"" file header value))
       (basic-save-buffer)
       (kill-buffer)))
 
