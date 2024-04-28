@@ -2037,9 +2037,9 @@ settings.)
 
 (Command: @code{ipe-edit--ia-goto-close})
 
-@kindex U
+@kindex M
 @findex ipe-edit--ia-resume
-@item @key{U} (in @code{ipe-edit-mode})
+@item @key{M} (in @code{ipe-edit-mode})
 Insert the current @sc{PAIR} at the given location and leave
 @sc{POINT} at its original location (Ignoring the @emph{per-@sc{PAIR}}
 and default @code{ipe-set-mark-on-insert} settings.)
@@ -2061,6 +2061,24 @@ Insert the current @sc{PAIR} and kill the text between the @sc{OPEN}
 and @sc{CLOSE} strings.
 
 (Command: @code{ipe-edit--ia-kill-text})
+
+@kindex u
+@findex ipe-edit--ia-update-forward
+@item @key{u} (in @code{ipe-edit-mode})
+Insert the current @sc{PAIR}, prompt for another MNEMONIC, and then
+attempt to update the next PAIR that matches the PAIR definition
+assocatied with the MNEMONIC.
+
+(Command: @code{ipe-edit--ia-update-forward})
+
+@kindex U
+@findex ipe-edit--ia-update-backward
+@item @key{U} (in @code{ipe-edit-mode})
+Insert the current @sc{PAIR}, prompt for another MNEMONIC, and then
+attempt to update the previous PAIR that matches the PAIR definition
+assocatied with the MNEMONIC.
+
+(Command: @code{ipe-edit--ia-update-backward})
 @end table
 
 @c -------------------------------------------------------------------

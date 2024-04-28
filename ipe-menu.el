@@ -74,7 +74,10 @@ ARGS are the arguments to be passed to COMMAND when it is invoked."
 				   (this-command-keys-vector)))
 	    (event (when (integerp epos)
 		     (elt (this-command-keys-vector) epos))))
-       (if (mouse-event-p event)
+       (if (and (mouse-event-p event)
+		(cadr event)
+		(posn-window (cadr event))
+		(window-buffer (posn-window (cadr event))))
 	   (let ((window (posn-window (cadr event))))
 	     (with-selected-window window
 	       (with-current-buffer (window-buffer window)
@@ -414,6 +417,30 @@ PAIR into the buffer and perform some sort of additional action.
 	    :help "Insert 'Insert Pair Edit' (ipe) OPEN and CLOSE, exit\
  'ipe-edit-mode', and kill the text between OPEN and CLOSE.")
       'copy-text)
+
+    (define-key-after km [sep-2]
+      '(menu-item "--" nil)
+      'kill-text)
+
+    (define-key-after km [update-forward]
+      (list 'menu-item
+	    "Update Forward"
+	    (ipe-menu--mouse-fn 'ipe-edit--ia-update-forward 1)
+	    :keys (ipe-menu--keys 'ipe-edit--ia-update-forward)
+	    :help "Insert 'Insert Pair Edit' (ipe) OPEN and CLOSE,\
+ prompt for another MNEMONIC, and update the next PAIR that matches\
+ MNEMONIC.")
+      'sep-2)
+
+    (define-key-after km [update-backward]
+      (list 'menu-item
+	    "Update Backward"
+	    (ipe-menu--mouse-fn 'ipe-edit--ia-update-backward 1)
+	    :keys (ipe-menu--keys 'ipe-edit--ia-update-backward)
+	    :help "Insert 'Insert Pair Edit' (ipe) OPEN and CLOSE,\
+ prompt for another MNEMONIC, and update the previous PAIR that\
+ matches MNEMONIC.")
+      'update-forward)
 
     ;; Return the keymap.
     km))

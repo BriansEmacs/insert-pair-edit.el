@@ -148,7 +148,17 @@ All 'ipe-edit-mode' key bindings can be edited via:
   `\\[ipe-edit--ia-kill-text]' - Insert OPEN and CLOSE, exit\
  'ipe-edit-mode', and kill the text
 	between the OPEN and CLOSE.
-	(command: `ipe-edit--ia-kill-text')"
+	(command: `ipe-edit--ia-kill-text')
+  `\\[ipe-edit--ia-update-forward]' - Insert OPEN and CLOSE,\
+ prompt for another MNEMONIC, and
+	update the next PAIR that matches the PAIR associated with
+	the MNEMONIC.
+	(command: `ipe-edit--ia-update-forward')
+  `\\[ipe-edit--ia-update-backward]' - Insert OPEN and CLOSE,\
+ prompt for another MNEMONIC, and
+	update the previous PAIR that matches the PAIR associated
+	with the MNEMONIC.
+	(command: `ipe-edit--ia-update-backward')"
   "Help text for `ipe-help'.")
 
 (defconst ipe-help--help-more-3
@@ -159,19 +169,19 @@ All 'ipe-edit-mode' key bindings can be edited via:
 
   \\<ipe-edit-mode-map>`\\[ipe-edit--movement-by-char]' -\
  Change the movement of the OPEN and CLOSE by the
-    `Insert Pair Edit' commands to be 'by char'.
+	`Insert Pair Edit' commands to be 'by char'.
 	(command: `ipe-edit--movement-by-char')
   `\\[ipe-edit--movement-by-word]' -\
  Change the movement of the OPEN and CLOSE by the
-    `Insert Pair Edit' commands to be 'by word'.
+	`Insert Pair Edit' commands to be 'by word'.
 	(command: `ipe-edit--movement-by-word')
   `\\[ipe-edit--movement-by-line]' -\
  Change the movement of the OPEN and CLOSE by the
-    `Insert Pair Edit' commands to be 'by line'.
+	`Insert Pair Edit' commands to be 'by line'.
 	(command: `ipe-edit--movement-by-line')
   `\\[ipe-edit--movement-by-list]' -\
  Change the movement of the OPEN and CLOSE by the
-    `Insert Pair Edit' commands to be 'by list'.
+	`Insert Pair Edit' commands to be 'by list'.
 	(command: `ipe-edit--movement-by-list')"
   "Help text for `ipe-help'.")
 

@@ -256,6 +256,14 @@ Insert Pair Edit minor mode - Insert And... - Action:
  `ipe-edit-mode', and kill the text
 	between the OPEN and CLOSE.
 	(command: `ipe-edit--ia-kill-text')
+  `\\[ipe-edit--ia-update-forward]' - Insert OPEN and CLOSE,\
+ prompt for another MNEMONIC, and
+	update the next PAIR that matches MNEMONIC.
+	(command: `ipe-edit--ia-update-forward')
+  `\\[ipe-edit--ia-update-backward]' - Insert OPEN and CLOSE,\
+ prompt for another MNEMONIC, and
+	update the previous PAIR that matches MNEMONIC.
+	(command: `ipe-edit--ia-update-backward')
 
 Insert Pair Edit minor mode - Change Movement:
 
@@ -649,6 +657,161 @@ This command is used within the Insert Pair Edit (ipe) minor-mode
       (ipe-edit--contents-kill)
       (kill-new text)
       (ipe-edit--insert-pair))))
+
+(defun ipe-edit--ia-update-forward (arg)
+  "Insert the `ipe' OPEN & CLOSE and update another `ipe' PAIR.
+
+This command is used within the Insert Pair Edit (ipe) minor-mode
+\(command: `ipe-edit-mode') to:
+
+- Insert the text within the OPEN and CLOSE overlays of the current
+  `ipe' PAIR into the current buffer (as per `ipe-edit--insert-pair'),
+- Prompt the user for another MNEMONIC,
+- Search forward for the `ARG'th new PAIR identified by MNEMONIC, and;
+- If found, create a new `ipe' PAIR from the found PAIR."
+
+  (interactive "P")
+  (when (ipe-edit--mode-check)
+
+    (let ((old-mnemonic ipe--mnemonic)
+	  (new-mnemonic))
+
+      (dotimes (i (ipe--pos-count))
+	(setq ipe--mnemonic old-mnemonic)
+
+	(ipe--pair-pos-insert (- (ipe--pos-count) i 1))
+	(ipe--set-point       (- (ipe--pos-count) i 1))
+
+	(when (not new-mnemonic)
+	  (setq new-mnemonic (ipe-edit--read-mnemonic "Update PAIR: " t)))
+
+	(setq ipe--mnemonic new-mnemonic)
+
+	(let* ((n         (- (ipe--pos-count) i 1))
+	       (units     (ipe--arg-units arg))
+	       (pair      (ipe--pair))
+	       (open      (ipe--pair-open-string  pair))
+	       (infix     (ipe--pair-infix-string pair))
+	       (escapes   (ipe--pair-escapes      pair))
+	       (close     (ipe--pair-close-string pair))
+	       (len-open  (length (ipe--pos-open-insert n)))
+	       (len-close (length (ipe--pos-close-insert n)))
+	       (pair-pos  (ipe-updt--next-pair (+ (ipe--pos-open n) len-open)
+					       open
+					       infix
+					       close
+					       escapes
+					       (point-max)
+					       units))
+	       (pos-open  (car pair-pos))
+	       (end-close (cdr pair-pos)))
+
+	  ;; Check if we have matched an existing PAIR, and try again.
+	  (when (and pos-open
+		     end-close
+		     (or (= pos-open (ipe--pos-open n))
+			 (= pos-open (ipe--pos-close n))
+			 (= len-close 0)
+			 (= end-close (+ (ipe--pos-close n) len-close))))
+	    (setq pair-pos (ipe-updt--next-pair (+ (ipe--pos-close n)
+						   len-close)
+						open
+						infix
+						close
+						escapes
+						(point-max)
+						units))
+	    (setq pos-open (car pair-pos)
+		  end-close (cdr pair-pos)))
+
+	  (if (and pos-open end-close)
+	      (progn
+		(ipe--pos-open-set  n pos-open)
+		(ipe--pos-close-set n (- end-close len-close)))
+	    (setq ipe--mnemonic old-mnemonic)
+	    (setq pair (ipe--pair))
+	    (setq len-close (length (ipe--pos-close-insert n)))
+	    (message "Could not find PAIR %s" (ipe--mnemonic-describe
+					       new-mnemonic)))
+
+	  (ipe-updt--delete-at-pos pair
+				   n
+				   (ipe--pos-open n)
+				   (+ (ipe--pos-close n) len-close))))
+
+      (ipe-edit--redisplay)
+      (ipe--pos-recenter (1- (ipe--pos-count)) t))))
+
+(defun ipe-edit--ia-update-backward (arg)
+  "Insert the `ipe' OPEN & CLOSE and update another `ipe' PAIR.
+
+This command is used within the Insert Pair Edit (ipe) minor-mode
+\(command: `ipe-edit-mode') to:
+
+- Insert the text within the OPEN and CLOSE overlays of the current
+  `ipe' PAIR into the current buffer (as per `ipe-edit--insert-pair'),
+- Prompt the user for another MNEMONIC,
+- Search backward for the `ARG'th new PAIR identified by MNEMONIC,
+  and;
+- If found, create a new `ipe' PAIR from the found PAIR."
+
+  (interactive "P")
+  (when (ipe-edit--mode-check)
+
+    (let ((old-mnemonic ipe--mnemonic)
+	  (new-mnemonic))
+
+      (dotimes (n (ipe--pos-count))
+	(setq ipe--mnemonic old-mnemonic)
+
+	(ipe--pair-pos-insert n)
+	(ipe--set-point       n)
+
+	(when (not new-mnemonic)
+	  (setq new-mnemonic (ipe-edit--read-mnemonic "Update PAIR: " t)))
+
+	(setq ipe--mnemonic new-mnemonic)
+
+	(let* ((units     (ipe--arg-units arg))
+	       (pair      (ipe--pair))
+	       (open      (ipe--pair-open-string  pair))
+	       (infix     (ipe--pair-infix-string pair))
+	       (escapes   (ipe--pair-escapes      pair))
+	       (close     (ipe--pair-close-string pair))
+	       (len-open  (length (ipe--pos-open-insert n)))
+	       (len-close (length (ipe--pos-close-insert n)))
+	       (pair-pos  (ipe-updt--previous-pair (1- (ipe--pos-open n))
+						   open
+						   infix
+						   close
+						   escapes
+						   (point-min)
+						   (if (or (zerop len-open)
+							   (zerop len-close)
+							   (string= open close))
+						       (ipe--pos-open n)
+						     nil)
+						   units))
+	       (pos-open  (car pair-pos))
+	       (end-close (cdr pair-pos)))
+
+	  (if (and pos-open end-close)
+	      (progn
+		(ipe--pos-open-set  n pos-open)
+		(ipe--pos-close-set n (- end-close len-close)))
+	    (setq ipe--mnemonic old-mnemonic)
+	    (setq pair (ipe--pair))
+	    (setq len-close (length (ipe--pos-close-insert n)))
+	    (message "Could not find PAIR %s" (ipe--mnemonic-describe
+					       new-mnemonic)))
+
+	  (ipe-updt--delete-at-pos pair
+				   n
+				   (ipe--pos-open n)
+				   (+ (ipe--pos-close n) len-close))))
+
+      (ipe-edit--redisplay)
+      (ipe--pos-recenter 0))))
 
 ;; -------------------------------------------------------------------
 ;;;;; 'OPEN Movement' Commands.
@@ -1937,8 +2100,8 @@ recenter on OPEN."
   (when (ipe-edit--mode-check)
     (let ((units (1- (ipe--arg-units arg))))
       (when (and (<= 0 units) (< units (ipe--pos-count)))
-	(if (and (ipe--pos-visible-p      (ipe--pos-open  units))
-		 (not (ipe--pos-visible-p (ipe--pos-close units))))
+	(if (and (ipe--visible-p      (ipe--pos-open  units))
+		 (not (ipe--visible-p (ipe--pos-close units))))
 	    (ipe--pos-recenter units t)
 	  (ipe--pos-recenter units))))))
 
@@ -1992,8 +2155,7 @@ definitions, this command will also remove the overlays for the INFIX
     (ipe--pair-pos-hide n))
   (setq ipe--pair-pos-list nil)
   (ipe--undo-abort)
-  (recenter)
-  (ipe--pos-hrecenter (point))
+  (ipe--recenter (point))
   (ipe-edit-mode -1))
 
 ;; -------------------------------------------------------------------
@@ -2165,74 +2327,76 @@ This function will also be called by `customize' when the
   (ipe-edit--key 3 'ipe-edit--ia-resume)
   (ipe-edit--key 4 'ipe-edit--ia-copy-text)
   (ipe-edit--key 5 'ipe-edit--ia-kill-text)
+  (ipe-edit--key 6 'ipe-edit--ia-update-forward)
+  (ipe-edit--key 7 'ipe-edit--ia-update-backward)
 
   ;; Change PAIR >
-  (ipe-edit--key 6 'ipe-edit--change-pair)
+  (ipe-edit--key 8 'ipe-edit--change-pair)
 
   ;; Check if we have a Change Movement prefix.
-  (let ((change-movement (nth 7 ipe-edit-mode-keys))
+  (let ((change-movement (nth 9 ipe-edit-mode-keys))
 	(map))
     (if (or (not change-movement)
 	    (= (length change-movement) 0))
 	(setq map ipe-edit-mode-map)
-      (ipe-edit--key 7 ipe-edit-mode-movement-map)
+      (ipe-edit--key 9 ipe-edit-mode-movement-map)
       (setq map ipe-edit-mode-movement-map))
 
     ;; Movement >
-    (ipe-edit--key 8 'ipe-edit--movement-by-char map)
-    (ipe-edit--key 9 'ipe-edit--movement-by-word map)
-    (ipe-edit--key 10 'ipe-edit--movement-by-line map)
-    (ipe-edit--key 11 'ipe-edit--movement-by-list map))
+    (ipe-edit--key 10 'ipe-edit--movement-by-char map)
+    (ipe-edit--key 11 'ipe-edit--movement-by-word map)
+    (ipe-edit--key 12 'ipe-edit--movement-by-line map)
+    (ipe-edit--key 13 'ipe-edit--movement-by-list map))
 
   ;; Edit CONTENTS >
-  (ipe-edit--key 12 'ipe-edit--contents-kill)
-  (ipe-edit--key 13 'ipe-edit--contents-copy)
-  (ipe-edit--key 14 'ipe-edit--contents-yank)
-  (ipe-edit--key 15 'ipe-edit--contents-replace)
-  (ipe-edit--key 16 'ipe-edit--contents-trim)
-  (ipe-edit--key 17 'ipe-edit--contents-upcase)
-  (ipe-edit--key 18 'ipe-edit--contents-capitalize)
-  (ipe-edit--key 19 'ipe-edit--contents-downcase)
+  (ipe-edit--key 14 'ipe-edit--contents-kill)
+  (ipe-edit--key 15 'ipe-edit--contents-copy)
+  (ipe-edit--key 16 'ipe-edit--contents-yank)
+  (ipe-edit--key 17 'ipe-edit--contents-replace)
+  (ipe-edit--key 18 'ipe-edit--contents-trim)
+  (ipe-edit--key 19 'ipe-edit--contents-upcase)
+  (ipe-edit--key 20 'ipe-edit--contents-capitalize)
+  (ipe-edit--key 21 'ipe-edit--contents-downcase)
 
   ;; Next / Previous >
-  (ipe-edit--key 20 'ipe-edit--update-next-pair)
-  (ipe-edit--key 21 'ipe-edit--update-next-contents)
-  (ipe-edit--key 22 'ipe-edit--update-next-open)
-  (ipe-edit--key 23 'ipe-edit--update-next-close)
-  (ipe-edit--key 24 'ipe-edit--update-previous-pair)
-  (ipe-edit--key 25 'ipe-edit--update-previous-contents)
-  (ipe-edit--key 26 'ipe-edit--update-previous-open)
-  (ipe-edit--key 27 'ipe-edit--update-previous-close)
+  (ipe-edit--key 22 'ipe-edit--update-next-pair)
+  (ipe-edit--key 23 'ipe-edit--update-next-contents)
+  (ipe-edit--key 24 'ipe-edit--update-next-open)
+  (ipe-edit--key 25 'ipe-edit--update-next-close)
+  (ipe-edit--key 26 'ipe-edit--update-previous-pair)
+  (ipe-edit--key 27 'ipe-edit--update-previous-contents)
+  (ipe-edit--key 28 'ipe-edit--update-previous-open)
+  (ipe-edit--key 29 'ipe-edit--update-previous-close)
 
   ;; Multiple >
-  (ipe-edit--key 28 'ipe-edit--add-pair)
-  (ipe-edit--key 29 'ipe-edit--add-next-pair)
-  (ipe-edit--key 30 'ipe-edit--add-previous-pair)
-  (ipe-edit--key 31 'ipe-edit--add-next-contents)
-  (ipe-edit--key 32 'ipe-edit--add-previous-contents)
-  (ipe-edit--key 33 'ipe-edit--insert-first-pair)
-  (ipe-edit--key 34 'ipe-edit--insert-last-pair)
-  (ipe-edit--key 35 'ipe-edit--delete-first-pair)
-  (ipe-edit--key 36 'ipe-edit--delete-all-pairs)
-  (ipe-edit--key 37 'ipe-edit--delete-last-pair)
-  (ipe-edit--key 38 'ipe-edit--recenter-pair)
+  (ipe-edit--key 30 'ipe-edit--add-pair)
+  (ipe-edit--key 31 'ipe-edit--add-next-pair)
+  (ipe-edit--key 32 'ipe-edit--add-previous-pair)
+  (ipe-edit--key 33 'ipe-edit--add-next-contents)
+  (ipe-edit--key 34 'ipe-edit--add-previous-contents)
+  (ipe-edit--key 35 'ipe-edit--insert-first-pair)
+  (ipe-edit--key 36 'ipe-edit--insert-last-pair)
+  (ipe-edit--key 37 'ipe-edit--delete-first-pair)
+  (ipe-edit--key 38 'ipe-edit--delete-all-pairs)
+  (ipe-edit--key 39 'ipe-edit--delete-last-pair)
+  (ipe-edit--key 40 'ipe-edit--recenter-pair)
 
   ;; Edit PAIR Definitions >
-  (ipe-edit--key 39 'ipe-defn--edit-pair)
-  (ipe-edit--key 40 'ipe-defn--edit-mode-pair)
-  (ipe-edit--key 41 'ipe-edit--edit-current-pair)
-  (ipe-edit--key 42 'ipe-defn--change-pair-mnemonic)
-  (ipe-edit--key 43 'ipe-defn--change-mode-pair-mnemonic)
-  (ipe-edit--key 44 'ipe-defn--delete-pair)
-  (ipe-edit--key 45 'ipe-defn--delete-mode-pair)
+  (ipe-edit--key 41 'ipe-defn--edit-pair)
+  (ipe-edit--key 42 'ipe-defn--edit-mode-pair)
+  (ipe-edit--key 43 'ipe-edit--edit-current-pair)
+  (ipe-edit--key 44 'ipe-defn--change-pair-mnemonic)
+  (ipe-edit--key 45 'ipe-defn--change-mode-pair-mnemonic)
+  (ipe-edit--key 46 'ipe-defn--delete-pair)
+  (ipe-edit--key 47 'ipe-defn--delete-mode-pair)
 
   ;; Other commands.
-  (ipe-edit--key 46 'ipe-edit--toggle-escapes)
+  (ipe-edit--key 48 'ipe-edit--toggle-escapes)
 
-  (ipe-edit--key 47 'ipe-edit--abort)
-  (ipe-edit--key 48 'ipe-options)
-  (ipe-edit--key 49 'ipe-help-info)
-  (ipe-edit--key 50 'ipe-help-edit-mode)
+  (ipe-edit--key 49 'ipe-edit--abort)
+  (ipe-edit--key 50 'ipe-options)
+  (ipe-edit--key 51 'ipe-help-info)
+  (ipe-edit--key 52 'ipe-help-edit-mode)
 
   ;; Default bindings.
   (define-key ipe-edit-mode-map (kbd "C-g")
@@ -2245,23 +2409,23 @@ This function will also be called by `customize' when the
 	      'ipe-edit--insert-pair)
 
   ;; Set up ipe minibuffer bindings.
-  (ipe-edit--key 39 'ipe-defn--edit-pair
+  (ipe-edit--key 41 'ipe-defn--edit-pair
 		 ipe-read--minibuffer-keymap)
-  (ipe-edit--key 40 'ipe-defn--edit-mode-pair
+  (ipe-edit--key 42 'ipe-defn--edit-mode-pair
 		 ipe-read--minibuffer-keymap)
-  (ipe-edit--key 42 'ipe-defn--change-pair-mnemonic
+  (ipe-edit--key 44 'ipe-defn--change-pair-mnemonic
 		 ipe-read--minibuffer-keymap)
-  (ipe-edit--key 43 'ipe-defn--change-mode-pair-mnemonic
+  (ipe-edit--key 45 'ipe-defn--change-mode-pair-mnemonic
 		 ipe-read--minibuffer-keymap)
-  (ipe-edit--key 44 'ipe-defn--delete-pair
+  (ipe-edit--key 46 'ipe-defn--delete-pair
 		 ipe-read--minibuffer-keymap)
-  (ipe-edit--key 45 'ipe-defn--delete-mode-pair
+  (ipe-edit--key 47 'ipe-defn--delete-mode-pair
 		 ipe-read--minibuffer-keymap)
-  (ipe-edit--key 48 'ipe-options
+  (ipe-edit--key 50 'ipe-options
 		 ipe-read--minibuffer-keymap)
-  (ipe-edit--key 49 'ipe-help-info
+  (ipe-edit--key 51 'ipe-help-info
 		 ipe-read--minibuffer-keymap)
-  (ipe-edit--key 50 'ipe-help-prompt
+  (ipe-edit--key 52 'ipe-help-prompt
 		 ipe-read--minibuffer-keymap)
 
   ;; Remove existing basic movement keymappings.
@@ -2485,54 +2649,56 @@ them to the `ipe-edit--custom-movement-keyset' variable."
    (kbd "RET")        ; 0. Insert PAIR
    (kbd "O")          ; 1. Insert And Goto OPEN
    (kbd "C")          ; 2. Insert And Goto CLOSE
-   (kbd "U")          ; 3. Insert And Resume
+   (kbd "M")          ; 3. Insert And Resume
    (kbd "Y")          ; 4. Insert And Copy Text
    (kbd "K")          ; 5. Insert And Kill Text
-   (kbd "(")          ; 6. Change PAIR
-   (kbd "m")          ; 7. Change Movement
-   (kbd "c")          ; 8. Change Movement By Characters
-   (kbd "w")          ; 9. Change Movement By Words
-   (kbd "l")          ; 10. Change Movement By Lines
-   (kbd "x")          ; 11. Change Movement By List
-   (kbd "C-k")        ; 12. Edit CONTENTS Kill
-   (kbd "M-w")        ; 13. Edit CONTENTS Copy
-   (kbd "C-y")        ; 14. Edit CONTENTS Yank
-   (kbd "%")          ; 15. Edit CONTENTS Replace
-   (kbd "C-SPC")      ; 16. Edit CONTENTS Trim
-   (kbd "M-u")        ; 17. Edit CONTENTS Upcase
-   (kbd "M-c")        ; 18. Edit CONTENTS Capitalize
-   (kbd "M-l")        ; 19. Edit CONTENTS Downcase
-   (kbd "C-s")        ; 20. Next PAIR
-   (kbd "M-s")        ; 21. Next CONTENTS
-   (kbd "M->")        ; 22. Next OPEN
-   (kbd "C->")        ; 23. Next CLOSE
-   (kbd "C-r")        ; 24. Previous PAIR
-   (kbd "M-r")        ; 25. Previous CONTENTS
-   (kbd "C-<")        ; 26. Previous OPEN
-   (kbd "M-<")        ; 27. Previous CLOSE
-   (kbd "M-(")        ; 28. Add PAIR (At Point)
-   (kbd "s")          ; 29. Add PAIR (Search Forward)
-   (kbd "r")          ; 30. Add PAIR (Search Backward)
-   (kbd "S")          ; 31. Add CONTENTS (Search Forward)
-   (kbd "R")          ; 32. Add CONTENTS (Search Backward)
-   (kbd "M-j")        ; 33. Insert PAIR (First)
-   (kbd "C-j")        ; 34. Insert PAIR (Last)
-   (kbd "M-d")        ; 35. Delete PAIR (First)
-   (kbd "DEL")        ; 36. Delete PAIR (All)
-   (kbd "C-d")        ; 37. Delete PAIR (Last)
-   (kbd "C-l")        ; 38. Recenter PAIR
-   (kbd "C-+")        ; 39. Add PAIR Definition...
-   (kbd "M-+")        ; 40. Add Mode-Specific PAIR Definition...
-   (kbd "=")          ; 41. Edit Current PAIR Definition...
-   (kbd "C-%")        ; 42. Edit MNEMONIC Definition...
-   (kbd "M-%")        ; 43. Edit Mode-Specific MNEMONIC Definition...
-   (kbd "C-*")        ; 44. Delete PAIR Definition...
-   (kbd "M-*")        ; 45. Delete Mode-Specific PAIR Definition...
-   (kbd "\\")         ; 46. Toggle ESCAPEs
-   (kbd "q")          ; 47. Abort
-   (kbd "C-o")        ; 48. Options
-   (kbd "M-h")        ; 49. Info
-   (kbd "?")          ; 50. Help
+   (kbd "u")          ; 6. Insert And Update Forward
+   (kbd "U")          ; 7. Insert And Update Backward
+   (kbd "(")          ; 8. Change PAIR
+   (kbd "m")          ; 9. Change Movement
+   (kbd "c")          ; 10. Change Movement By Characters
+   (kbd "w")          ; 11. Change Movement By Words
+   (kbd "l")          ; 12. Change Movement By Lines
+   (kbd "x")          ; 13. Change Movement By List
+   (kbd "C-k")        ; 14. Edit CONTENTS Kill
+   (kbd "M-w")        ; 15. Edit CONTENTS Copy
+   (kbd "C-y")        ; 16. Edit CONTENTS Yank
+   (kbd "%")          ; 17. Edit CONTENTS Replace
+   (kbd "C-SPC")      ; 18. Edit CONTENTS Trim
+   (kbd "M-u")        ; 19. Edit CONTENTS Upcase
+   (kbd "M-c")        ; 20. Edit CONTENTS Capitalize
+   (kbd "M-l")        ; 21. Edit CONTENTS Downcase
+   (kbd "C-s")        ; 22. Next PAIR
+   (kbd "M-s")        ; 23. Next CONTENTS
+   (kbd "M->")        ; 24. Next OPEN
+   (kbd "C->")        ; 25. Next CLOSE
+   (kbd "C-r")        ; 26. Previous PAIR
+   (kbd "M-r")        ; 27. Previous CONTENTS
+   (kbd "C-<")        ; 28. Previous OPEN
+   (kbd "M-<")        ; 29. Previous CLOSE
+   (kbd "M-(")        ; 30. Add PAIR (At Point)
+   (kbd "s")          ; 31. Add PAIR (Search Forward)
+   (kbd "r")          ; 32. Add PAIR (Search Backward)
+   (kbd "S")          ; 33. Add CONTENTS (Search Forward)
+   (kbd "R")          ; 34. Add CONTENTS (Search Backward)
+   (kbd "M-j")        ; 35. Insert PAIR (First)
+   (kbd "C-j")        ; 36. Insert PAIR (Last)
+   (kbd "M-d")        ; 37. Delete PAIR (First)
+   (kbd "DEL")        ; 38. Delete PAIR (All)
+   (kbd "C-d")        ; 39. Delete PAIR (Last)
+   (kbd "C-l")        ; 40. Recenter PAIR
+   (kbd "C-+")        ; 41. Add PAIR Definition...
+   (kbd "M-+")        ; 42. Add Mode-Specific PAIR Definition...
+   (kbd "=")          ; 43. Edit Current PAIR Definition...
+   (kbd "C-%")        ; 44. Edit MNEMONIC Definition...
+   (kbd "M-%")        ; 45. Edit Mode-Specific MNEMONIC Definition...
+   (kbd "C-*")        ; 46. Delete PAIR Definition...
+   (kbd "M-*")        ; 47. Delete Mode-Specific PAIR Definition...
+   (kbd "\\")         ; 48. Toggle ESCAPEs
+   (kbd "q")          ; 49. Abort
+   (kbd "C-o")        ; 50. Options
+   (kbd "M-h")        ; 51. Info
+   (kbd "?")          ; 52. Help
    )
   "Default key bindings for `ipe-edit-mode-keys'.")
 
@@ -2557,6 +2723,8 @@ Pair Edit' functions."
     (key-sequence :tag "Insert And Resume                         ")
     (key-sequence :tag "Insert And Copy Text                      ")
     (key-sequence :tag "Insert And Kill Text                      ")
+    (key-sequence :tag "Insert And Update Forward                 ")
+    (key-sequence :tag "Insert And Update Backward                ")
     (key-sequence :tag "Change PAIR                               ")
     (key-sequence :tag "Change Movement                           ")
     (key-sequence :tag "Change Movement By Characters             ")

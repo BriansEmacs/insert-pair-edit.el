@@ -102,6 +102,8 @@ work with multiple cursors."
 	 ipe-edit--ia-goto-open
 	 ipe-edit--ia-kill-text
 	 ipe-edit--ia-resume
+	 ipe-edit--ia-update-backward
+	 ipe-edit--ia-update-forward
 	 ipe-edit--insert-first-pair
 	 ipe-edit--insert-pair
 	 ipe-edit--insert-last-pair

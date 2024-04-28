@@ -372,10 +372,8 @@ files."
   ;; Update the ';; Version: X.X.XXX' comment.
   (let ((files (append ipe-build--elisp-files
 		       ipe-build--test-elisp-files))
-	;;      (header "Version")
-	;;      (value  version))
-	(header "Maintainer")
-	(value "Brian Kavanagh <(concat \"Brians.Emacs\" \"@gmail.com\")>"))
+	(header "Version")
+	(value  version))
     (dolist (file files)
       (find-file file)
       (goto-char (point-min))

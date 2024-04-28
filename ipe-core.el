@@ -1083,6 +1083,85 @@ return nil."
       (when (re-search-forward (regexp-quote string) (ipe--eol pos) t)
 	(match-beginning 0)))))
 
+(defun ipe--hvisible-p (pos)
+  "Return t, if POS is horizontally visible."
+
+  (let* ((window (get-buffer-window))
+	 (w      (window-width window)))
+
+    (if (or truncate-lines
+	    (and truncate-partial-width-windows
+		 (< w truncate-partial-width-windows)))
+	(save-excursion
+	  (goto-char pos)
+	  (if (or (<  (- (current-column) (window-hscroll window)) 0)
+		  (>= (- (current-column) (window-hscroll window)) w))
+	      nil
+	    t))
+      t)))
+
+(defun ipe--hrecenter (pos)
+  "Return a hscroll value that will display POS."
+
+  (let* ((window  (get-buffer-window))
+	 (w       (if window (window-width window) 0))
+	 (page    0))
+
+    (when (and window
+	       (or truncate-lines
+		   (and truncate-partial-width-windows
+			(< w truncate-partial-width-windows))))
+      (save-excursion
+	(goto-char pos)
+	(when
+	    (or (<= (- (1- (current-column)) (window-hscroll window)) 0)
+		(>= (- (1- (current-column)) (window-hscroll window)) w))
+	  (setq page (/ (1- (current-column)) w)))))
+
+    (* page w)))
+
+(defun ipe--visible-p (pos)
+  "Return t, if POS is visible."
+
+  (cond
+   ((or (<  pos     (window-start))
+	(>= (point) (window-end)))
+    nil)
+
+   ((or (>  pos     (window-end))
+	(<  (point) (window-start)))
+    nil)
+
+   ((not (ipe--hvisible-p pos))
+    nil)
+
+   (t t)))
+
+(defun ipe--recenter (pos)
+  "Recenter the window so that POS is visible."
+
+  (let* ((window (get-buffer-window (current-buffer)))
+	 (w      (if window (window-width) 0))
+	 (start)
+	 (hscroll))
+
+    (when (and window
+	       (not (ipe--visible-p pos)))
+
+      (save-excursion
+	(goto-char pos)
+	(recenter)
+	(set-window-hscroll window 0)
+	(setq start   (window-start window))
+	(setq hscroll (ipe--hrecenter pos)))
+
+      (set-window-start window start)
+      (redisplay t)
+      (when (or truncate-lines
+		(and truncate-partial-width-windows
+		     (< w truncate-partial-width-windows)))
+	(set-window-hscroll window hscroll)))))
+
 (defun ipe--property-match-delete (string property)
   "Delete substrings within STRING with text PROPERTY."
 
@@ -2116,78 +2195,14 @@ replaced.)"
 	(insert (substring string len len-string))))
       inserted)))
 
-(defun ipe--pos-hvisible-p (pos)
-  "Return t, if POS is horizontally visible."
-
-  (let* ((window (get-buffer-window))
-	 (w      (window-width window)))
-
-    (if (or truncate-lines
-	    (and truncate-partial-width-windows
-		 (< w truncate-partial-width-windows)))
-	(save-excursion
-	  (goto-char pos)
-	  (if (or (<  (- (current-column) (window-hscroll window)) 0)
-		  (>= (- (current-column) (window-hscroll window)) w))
-	      nil
-	    t))
-      t)))
-
-(defun ipe--pos-hrecenter (pos)
-  "Recenter window horizontally around POS."
-
-  (let* ((window (get-buffer-window))
-	 (w      (window-width window))
-	 (page))
-
-    (when (or truncate-lines
-	      (and truncate-partial-width-windows
-		   (< w truncate-partial-width-windows)))
-      (save-excursion
-	(goto-char pos)
-	(when
-	    (or (<= (- (1- (current-column)) (window-hscroll window)) 0)
-		(>= (- (1- (current-column)) (window-hscroll window)) w))
-	  (setq page (/ (1- (current-column)) w))))
-
-      (when page
-	(set-window-hscroll window (* page w))))))
-
-(defun ipe--pos-visible-p (pos)
-  "Return t, if POS is visible."
-
-  (cond
-   ((or (<  pos     (window-start))
-	(>= (point) (window-end)))
-    nil)
-
-   ((or (>  pos     (window-end))
-	(<  (point) (window-start)))
-    nil)
-
-   ((not (ipe--pos-hvisible-p pos))
-    nil)
-
-   (t t)))
-
 (defun ipe--pos-recenter (n &optional close)
   "Recenter the window so that the `N'th `ipe' PAIR is visible.
 
 If CLOSE is non-nil, ensure that the `N'th CLOSE overlay is visible.
 If CLOSE is nil, ensure that the `N'th OPEN overlay is visible."
 
-  (if close
-      (when (not (ipe--pos-visible-p (ipe--pos-close n)))
-	(save-excursion
-	  (goto-char (ipe--pos-close n))
-	  (recenter))
-	(ipe--pos-hrecenter (ipe--pos-close n)))
-
-    (when (not (ipe--pos-visible-p (ipe--pos-open n)))
-      (save-excursion
-	(goto-char (ipe--pos-open n))
-	(recenter))
-      (ipe--pos-hrecenter (ipe--pos-open n)))))
+  (let ((pos (if close (ipe--pos-close n) (ipe--pos-open n))))
+    (ipe--recenter pos)))
 
 (defun ipe--insert-overlay (overlay pos-point)
   "Insert OVERLAY into the buffer.

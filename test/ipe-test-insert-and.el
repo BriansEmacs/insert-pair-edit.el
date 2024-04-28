@@ -60,7 +60,9 @@
     (ipe-prefix-moves-close-p   t)
     (ipe-edit--movement-keysets '(modifiers))
     (ipe-update-forward-first-p nil)
-    (ipe-pairs                  '(("(" "<start>" "<end>")))
+    (ipe-pairs                  '(("s" "<start>" "<end>")
+                                  ("(" "("       ")")
+                                  ("[" "["       "]")))
     (ipe-mode-pairs             nil))
   "Options used by `ipe-test-def-kbd' for `ipe-test-insert-and'.")
 
@@ -72,7 +74,7 @@ Using a 'word PAIR."
   nil
   "The quick brown fox ju|mps over the lazy dog."
   "The quick brown fox <start>|jumps<end> over the lazy dog."
-  "M-( ( O")
+  "M-( s O")
 
 (ipe-test-def-kbd insert-and-goto-open-2 ()
   "Test `ipe-insert-pair-edit' \"Insert And... -> Goto Open\".
@@ -82,7 +84,7 @@ Using a 'word PAIR and a C-u argument."
   nil
   "The quick brown fox ju|mps over the lazy dog."
   "The quick brown fox |<start>jumps<end> over the lazy dog."
-  "M-( ( C-u O")
+  "M-( s C-u O")
 
 (ipe-test-def-kbd insert-and-goto-open-3 ()
   "Test `ipe-insert-pair-edit' \"Insert And... -> Goto Open\".
@@ -92,7 +94,7 @@ Using a 'word PAIR and a numeric argument."
   nil
   "The quick brown fox ju|mps over the lazy dog."
   "The quick brown fox <st|art>jumps<end> over the lazy dog."
-  "M-( ( C-3 O")
+  "M-( s C-3 O")
 
 (ipe-test-def-kbd insert-and-goto-close-1 ()
   "Test `ipe-insert-pair-edit' \"Insert And... -> Goto Close\".
@@ -102,7 +104,7 @@ Using a 'word PAIR."
   nil
   "The quick brown fox ju|mps over the lazy dog."
   "The quick brown fox <start>jumps<end>| over the lazy dog."
-  "M-( ( C")
+  "M-( s C")
 
 (ipe-test-def-kbd insert-and-goto-close-2 ()
   "Test `ipe-insert-pair-edit' \"Insert And... -> Goto Close\".
@@ -112,7 +114,7 @@ Using a 'word PAIR and a universal-argument."
   nil
   "The quick brown fox ju|mps over the lazy dog."
   "The quick brown fox <start>jumps|<end> over the lazy dog."
-  "M-( ( C-u C")
+  "M-( s C-u C")
 
 (ipe-test-def-kbd insert-and-goto-close-3 ()
   "Test `ipe-insert-pair-edit' \"Insert And... -> Goto Close\".
@@ -122,7 +124,7 @@ Using a 'word PAIR and a numeric argument."
   nil
   "The quick brown fox ju|mps over the lazy dog."
   "The quick brown fox <start>jumps<en|d> over the lazy dog."
-  "M-( ( C-3 C")
+  "M-( s C-3 C")
 
 (ipe-test-def-kbd insert-and-resume ()
   "Test `ipe-insert-pair-edit' \"Insert And... -> Resume\".
@@ -132,7 +134,7 @@ Using a 'word PAIR."
   nil
   "The quick brown fox ju|mps over the lazy dog."
   "The quick brown fox <start>ju|mps<end> over the lazy dog."
-  "M-( ( U")
+  "M-( s M")
 
 ;; Headless ERT has problems with Kill Ring <= 24.
 (when (> emacs-major-version 24)
@@ -144,7 +146,7 @@ Using a 'word PAIR."
     nil
     "The quick brown fox ju|mps over the lazy dog."
     "The quick brown fox <start>jumps<end> over the lazy dog.jumps|"
-    "M-( ( Y M-e C-y"))
+    "M-( s Y M-e C-y"))
 
 (ipe-test-def-kbd insert-and-kill-text-1 ()
   "Test `ipe-insert-pair-edit' \"Insert And... -> Kill Text\".
@@ -154,7 +156,7 @@ Using a 'word PAIR."
   nil
   "The quick brown fox ju|mps over the lazy dog."
   "The quick brown fox <start>|<end> over the lazy dog."
-  "M-( ( K")
+  "M-( s K")
 
 (ipe-test-def-kbd insert-and-kill-text-2 ()
   "Test `ipe-insert-pair-edit' \"Insert And... -> Kill Text\".
@@ -164,7 +166,7 @@ Using a 'word PAIR at start-of-line."
   nil
   "|The quick brown fox jumps over the lazy dog."
   "<start>|<end> quick brown fox jumps over the lazy dog."
-  "M-( ( K")
+  "M-( s K")
 
 (ipe-test-def-kbd insert-and-kill-text-3 ()
   "Test `ipe-insert-pair-edit' \"Insert And... -> Kill Text\".
@@ -174,7 +176,7 @@ Using a 'word PAIR at end-of-line."
   nil
   "The quick brown fox jumps over the lazy dog|"
   "The quick brown fox jumps over the lazy <start><end>|"
-  "M-( ( K")
+  "M-( s K")
 
 (ipe-test-def-kbd insert-and-kill-text-4 ()
   "Test `ipe-insert-pair-edit' \"Insert And... -> Kill Text\".
@@ -184,7 +186,143 @@ Using a 'line PAIR."
   nil
   "The quick brown fox ju|mps over the lazy dog."
   "<start>|<end>"
-  "M-( ( m l K")
+  "M-( s m l K")
+
+(ipe-test-def-kbd insert-and-update-forward-1 ()
+  "Test `ipe-insert-pair-edit' \"Insert And... -> Update Forward\"."
+  ipe-test-insert-and-options
+  nil
+  "(The) [quick] (brown) [fox] (ju|mps) [over] (the) [lazy] (dog)."
+  "(The) [quick] (brown) [fox] (ju|mps) (over) (the) [lazy] (dog)."
+  "C-u M-( ( u [ ( ( RET")
+
+(ipe-test-def-kbd insert-and-update-forward-2 ()
+  "Test `ipe-insert-pair-edit' \"Insert And... -> Update Forward\".
+
+Using a numeric prefix."
+  ipe-test-insert-and-options
+  nil
+  "(The) [quick] (brown) [fox] (ju|mps) [over] (the) [lazy] (dog)."
+  "(The) [quick] (brown) [fox] (ju|mps) [over] (the) (lazy) (dog)."
+  "C-u M-( ( 2 u [ ( ( RET")
+
+(ipe-test-def-kbd insert-and-update-forward-3 ()
+  "Test `ipe-insert-pair-edit' \"Insert And... -> Update Forward\".
+
+Using a numeric prefix. No update PAIR available."
+  ipe-test-insert-and-options
+  nil
+  "(The) [quick] (brown) [fox] (ju|mps) [over] (the) [lazy] (dog)."
+  "(The) [quick] (brown) [fox] (ju|mps) [over] (the) [lazy] (dog)."
+  "C-u M-( ( 3 u [ ( ( RET")
+
+(ipe-test-def-kbd insert-and-update-forward-4 ()
+  "Test `ipe-insert-pair-edit' \"Insert And... -> Update Forward\".
+
+Different sized OPEN and CLOSE."
+  ipe-test-insert-and-options
+  nil
+  "The quick <start>brown<end> fox (ju|mps) <start>over<end> the lazy dog."
+  "The quick <start>brown<end> fox (ju|mps) (over) the lazy dog."
+  "C-u M-( ( u s ( ( RET")
+
+(ipe-test-def-kbd insert-and-update-forward-5 ()
+  "Test `ipe-insert-pair-edit' \"Insert And... -> Update Forward\".
+
+Different sized OPEN and CLOSE."
+  ipe-test-insert-and-options
+  nil
+  "The quick [brown] fox (ju|mps) [over] the lazy dog."
+  "The quick [brown] fox (ju|mps) <start>over<end> the lazy dog."
+  "C-u M-( ( u [ ( s RET")
+
+(ipe-test-def-kbd insert-and-update-forward-6 ()
+  "Test `ipe-insert-pair-edit' \"Insert And... -> Update Forward\".
+
+Different sized OPEN and CLOSE. No update PAIR available."
+  ipe-test-insert-and-options
+  nil
+  "The quick brown fox <start>ju|mps<end> over the lazy dog."
+  "The quick brown fox <start>ju|mps<end> over the lazy dog."
+  "C-u M-( s u s RET")
+
+(ipe-test-def-kbd insert-and-update-forward-7 ()
+  "Test `ipe-insert-pair-edit' \"Insert And... -> Update Forward\".
+
+Same OPEN and CLOSE."
+  ipe-test-insert-and-options
+  nil
+  "The quick <start>brown<end> fox <start>ju|mps<end> over <start>the<end> lazy dog."
+  "The quick <start>brown<end> fox <start>ju|mps<end> over (the) lazy dog."
+  "C-u M-( s u s ( ( RET")
+
+(ipe-test-def-kbd insert-and-update-backward-1 ()
+  "Test `ipe-insert-pair-edit' \"Insert And... -> Update Backward\"."
+  ipe-test-insert-and-options
+  nil
+  "(The) [quick] (brown) [fox] (ju|mps) [over] (the) [lazy] (dog)."
+  "(The) [quick] (brown) (fox) (ju|mps) [over] (the) [lazy] (dog)."
+  "C-u M-( ( U [ ( ( RET")
+
+(ipe-test-def-kbd insert-and-update-backward-2 ()
+  "Test `ipe-insert-pair-edit' \"Insert And... -> Update Backward\".
+
+Using a numeric prefix."
+  ipe-test-insert-and-options
+  nil
+  "(The) [quick] (brown) [fox] (ju|mps) [over] (the) [lazy] (dog)."
+  "(The) (quick) (brown) [fox] (ju|mps) [over] (the) [lazy] (dog)."
+  "C-u M-( ( 2 U [ ( ( RET")
+
+(ipe-test-def-kbd insert-and-update-backward-3 ()
+  "Test `ipe-insert-pair-edit' \"Insert And... -> Update Backward\".
+
+Using a numeric prefix. No update PAIR available."
+  ipe-test-insert-and-options
+  nil
+  "(The) [quick] (brown) [fox] (ju|mps) [over] (the) [lazy] (dog)."
+  "(The) [quick] (brown) [fox] (ju|mps) [over] (the) [lazy] (dog)."
+  "C-u M-( ( 3 U [ ( ( RET")
+
+(ipe-test-def-kbd insert-and-update-backward-4 ()
+  "Test `ipe-insert-pair-edit' \"Insert And... -> Update Backward\".
+
+Different sized OPEN and CLOSE."
+  ipe-test-insert-and-options
+  nil
+  "The quick <start>brown<end> fox (ju|mps) <start>over<end> the lazy dog."
+  "The quick (brown) fox (ju|mps) <start>over<end> the lazy dog."
+  "C-u M-( ( U s ( ( RET")
+
+(ipe-test-def-kbd insert-and-update-backward-5 ()
+  "Test `ipe-insert-pair-edit' \"Insert And... -> Update Backward\".
+
+Different sized OPEN and CLOSE."
+  ipe-test-insert-and-options
+  nil
+  "The quick [brown] fox (ju|mps) [over] the lazy dog."
+  "The quick <start>brown<end> fox (ju|mps) [over] the lazy dog."
+  "C-u M-( ( U [ ( s RET")
+
+(ipe-test-def-kbd insert-and-update-backward-6 ()
+  "Test `ipe-insert-pair-edit' \"Insert And... -> Update Backward\".
+
+Different sized OPEN and CLOSE. No update PAIR available."
+  ipe-test-insert-and-options
+  nil
+  "The quick brown fox <start>ju|mps<end> over the lazy dog."
+  "The quick brown fox <start>ju|mps<end> over the lazy dog."
+  "C-u M-( s U s RET")
+
+(ipe-test-def-kbd insert-and-update-backward-7 ()
+  "Test `ipe-insert-pair-edit' \"Insert And... -> Update Backward\".
+
+Same OPEN and CLOSE."
+  ipe-test-insert-and-options
+  nil
+  "The quick <start>brown<end> fox <start>ju|mps<end> over <start>the<end> lazy dog."
+  "The quick (brown) fox <start>ju|mps<end> over <start>the<end> lazy dog."
+  "C-u M-( s U s ( ( RET")
 
 (provide 'ipe-test-insert-and)
 

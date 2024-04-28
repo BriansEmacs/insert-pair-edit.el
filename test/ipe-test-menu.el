@@ -201,6 +201,28 @@ Delete PAIR after cursor."
   (concat "<menu-bar> <edit> <ipe> <insert-pair> <mnemonic-(> "
 	  "<menu-bar> <ipe> <insert-and> <kill-text>"))
 
+(ipe-test-def-kbd menu-ia-update-forward ()
+  "Test `ipe-edit--ia-update-forward' using the `ipe' mouse-3 menu."
+  ipe-test-menu-options
+  nil
+  "The quick [brown] fox (|jumps) over [the] lazy dog."
+  "The quick [brown] fox (|jumps) over (the) lazy dog."
+  (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
+	  "<menu-bar> <ipe> <insert-and> <update-forward> [ "
+	  "<menu-bar> <ipe> <change-pair> <mnemonic-(> "
+	  "<menu-bar> <ipe> <insert-pair>"))
+
+(ipe-test-def-kbd menu-ia-update-backward ()
+  "Test `ipe-edit--ia-update-backward' using the `ipe' mouse-3 menu."
+  ipe-test-menu-options
+  nil
+  "The quick [brown] fox (|jumps) over [the] lazy dog."
+  "The quick (brown) fox (|jumps) over [the] lazy dog."
+  (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
+	  "<menu-bar> <ipe> <insert-and> <update-backward> [ "
+	  "<menu-bar> <ipe> <change-pair> <mnemonic-(> "
+	  "<menu-bar> <ipe> <insert-pair>"))
+
 ;; -------------------------------------------------------------------
 ;;;;; "OPEN <movement>" tests.
 ;; -------------------------------------------------------------------
@@ -991,6 +1013,28 @@ Multiple PAIRs."
     "The quick brown fox (|) over the lazy dog."
     (concat "<menu-bar> <edit> <ipe> <insert-pair> <mnemonic-(> "
 	    "<mouse-3> <ipe-mouse-ia> <kill-text>")))
+
+(ipe-test-def-kbd menu-mouse-3-ia-update-forward ()
+  "Test `ipe-edit--ia-update-forward' using the `ipe' mouse-3 menu."
+  ipe-test-menu-options
+  nil
+  "The quick [brown] fox (|jumps) over [the] lazy dog."
+  "The quick [brown] fox (|jumps) over (the) lazy dog."
+  (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
+	  "<mouse-3> <ipe-mouse-ia> <update-forward> [ "
+	  "<mouse-3> <ipe-mouse-change-pair> <mnemonic-(> "
+	  "<mouse-3> <ipe-mouse-insert-pair>"))
+
+(ipe-test-def-kbd menu-mouse-3-ia-update-backward ()
+  "Test `ipe-edit--ia-update-backward' using the `ipe' mouse-3 menu."
+  ipe-test-menu-options
+  nil
+  "The quick [brown] fox (|jumps) over [the] lazy dog."
+  "The quick (brown) fox (|jumps) over [the] lazy dog."
+  (concat "<menu-bar> <edit> <ipe> <update-pair> <mnemonic-(> "
+	  "<mouse-3> <ipe-mouse-ia> <update-backward> [ "
+	  "<mouse-3> <ipe-mouse-change-pair> <mnemonic-(> "
+	  "<mouse-3> <ipe-mouse-insert-pair>"))
 
 ;; -------------------------------------------------------------------
 ;;;;; "Change PAIR >" tests.
