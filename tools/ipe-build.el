@@ -1,8 +1,8 @@
 ;;; ipe-build.el --- Tools called by the `ipe' Makefile
 ;; Copyright (C) 2024 Brian Kavanagh
 
-;; Author: Brian Kavanagh <(concat "Brians.Emacs" "@" "gmail.com")>
-;; Maintainer: Brian Kavanagh <(concat "Brians.Emacs" "@" "gmail.com")>
+;; Author: Brian Kavanagh <brians.emacs@gmail.com>
+;; Maintainer: Brian Kavanagh <brians.emacs@gmail.com>
 ;; Created: 20 March, 2024
 ;; Package: ipe
 ;; Keywords: tools
