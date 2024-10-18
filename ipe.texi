@@ -72,16 +72,16 @@ This documentation describes the 'Insert Pair Edit' (ipe)
 @end ifnottex
 
 @menu
-* Overview::                     An overview of the 'Insert Pair Edit' (ipe) package.
-* Installation::                 How to install the 'Insert Pair Edit' (ipe) package.
-* Basic Usage::                  The `ipe-insert-pair-edit' command.
-* Basic Mode Key Bindings::      Basic `ipe-edit-mode' key bindings.
-* Other Major Commands::         Other major `ipe-insert-pair-edit-*' commands. 
-* Customization::                The `ipe' customization group.
-* Other ipe-edit-mode Commands:: Other `ipe-edit-mode' commands.
-* Other Features::               Other `ipe' / `ipe-edit-mode' features.
-* Development::                  Documentation for developers.
-* Indexes::                      Indexes.
+* Overview::                 An overview of the 'Insert Pair Edit' (ipe) package.
+* Installation::             How to install the 'Insert Pair Edit' (ipe) package.
+* Usage::                    The `ipe-insert-pair-edit' command.
+* Core Edit Mode Bindings::  Core `ipe-edit-mode' key bindings.
+* Other Major Commands::     Other major `ipe-insert-pair-edit-*' commands. 
+* Customization::            The `ipe' customization group.
+* Other Edit Mode Bindings:: Other `ipe-edit-mode' key bindings.
+* Other Features::           Other `ipe' / `ipe-edit-mode' features.
+* Development::              Documentation for developers.
+* Indexes::                  Indexes.
 @end menu
 
 @c -------------------------------------------------------------------
@@ -334,10 +334,10 @@ Customize the @code{ipe} package according to your
 preferences. (@xref{Customization})
 
 @c -------------------------------------------------------------------
-@node Basic Usage
+@node Usage
 @c -------------------------------------------------------------------
-@chapter Basic Usage
-@cindex Basic Usage
+@chapter Usage
+@cindex Usage
 
 The functionality supplied by the @code{ipe} package can be
 accessed in two main ways: using the @code{ipe-insert-pair-edit}
@@ -418,7 +418,7 @@ The quick brown (|fox) jumps over the lazy dog.
 @end example
 
 (Where the @key{(} @key{)} strings are overlays that can be moved by
-the @code{ipe-edit-mode} key-bindings (@xref{Basic Movement}))
+the @code{ipe-edit-mode} key-bindings (@xref{Core Movement}))
 
 The initial position of the @sc{OPEN} and @sc{CLOSE} overlays will be
 determined by the @emph{lexical unit} associated with the @sc{PAIR}
@@ -442,7 +442,7 @@ further adjusted.
 
 @findex ipe-edit-mode
 The @code{ipe-edit-mode} will set up a set of simple key bindings
-(@xref{Basic Mode Key Bindings}) to move the @sc{OPEN} and @sc{CLOSE}
+(@xref{Core Edit Mode Bindings }) to move the @sc{OPEN} and @sc{CLOSE}
 overlays of the @sc{PAIR} selected by one of the
 @code{ipe-insert-pair-edit} commands.  Movement is via a selected
 @emph{lexical unit}, either:
@@ -501,7 +501,7 @@ PAIR}. (@xref{Replacing PAIRs})
 @end table
 
 It is also possible to simply bind these _other_ commands to
-different keystrokes, if the User feels so inclinded.
+different keystrokes, if the User feels so inclined.
 
 @c -------------------------------------------------------------------
 @node The 'Edit' -> 'Pairs' Menu
@@ -586,18 +586,18 @@ the @code{(require 'ipe)} statement):
 @end itemize
 
 @c -------------------------------------------------------------------
-@node Basic Mode Key Bindings
+@node Core Edit Mode Bindings 
 @c -------------------------------------------------------------------
-@chapter Basic Mode Key Bindings
-@cindex Basic Mode Key Bindings
+@chapter Core Edit Mode Bindings 
+@cindex Core Edit Mode Bindings 
 
-The following sections describe the basic key bindings (and associated
+The following sections describe the core key bindings (and associated
 commands) that are active when the @code{ipe-edit-mode} is
 activated. 
 
 @menu
-* Basic Movement::          Keys to move OPEN and CLOSE overlays.
-* Basic Movement Options::  Alternate movement keys.
+* Core Movement::          Keys to move OPEN and CLOSE overlays.
+* Core Movement Options::  Alternate movement keys.
 * Inserting and Aborting::  Keys to exit @code{ipe-edit-mode}.
 * Movement Units::          Keys to change OPEN and CLOSE movement.
 * Changing PAIRs::          Keys to change OPEN and CLOSE strings.
@@ -605,10 +605,10 @@ activated.
 @end menu
 
 @c -------------------------------------------------------------------
-@node Basic Movement
+@node Core Movement
 @c -------------------------------------------------------------------
-@section Basic Movement
-@cindex Basic Movement 
+@section Core Movement
+@cindex Core Movement 
 
 Once @code{ipe-edit-mode} is activated, the @sc{OPEN} and
 @sc{CLOSE} overlays of a @sc{PAIR} can be moved about the buffer.  By
@@ -617,7 +617,7 @@ key-bindings. @emph{Six} that control the direction of movement of the
 @sc{OPEN} overlay, and @emph{six} that control the direction of
 movement of the @sc{CLOSE} overlay.
 
-These basic movement key bindings can be configured using the
+These core movement key bindings can be configured using the
 customization option, @option{ipe-edit-movement-keyset}, which can be
 used to control which of a set of @emph{pre-canned} key bindings is
 activated when @code{ipe-edit-mode} is active, or, can be used to
@@ -627,7 +627,7 @@ By default, @option{ipe-edit-movement-keyset} is set to activate the
 following key bindings, which are similar to those normally used for
 standard @strong{Emacs} character and word movement.
 
-@cindex Basic Movement (Modifiers)
+@cindex Core Movement (Modifiers)
 
 @example
             <C-p>                            <M-p>
@@ -703,9 +703,9 @@ commands will move the @sc{OPEN} and @sc{CLOSE} overlays forward and
 backward ``by words'', and, up and down ``by lines''.
 
 @c -------------------------------------------------------------------
-@node Basic Movement Options
+@node Core Movement Options
 @c -------------------------------------------------------------------
-@section Basic Movement Options
+@section Core Movement Options
 
 The set of @emph{movement} key bindings that are active within
 @code{ipe-edit-mode}, can be changed using the customizable option
@@ -729,22 +729,22 @@ and arrows keys, or, the User can simply define their own preferred
 movement key bindings and use those instead.)
 
 @menu
-* Basic Movement (Alphabetic)::
-* Basic Movement (Arrows)::
-* Basic Movement (WASD)::
-* Basic Movement (VI)::
-* Basic Movement (Custom)::
+* Core Movement (Alphabetic)::
+* Core Movement (Arrows)::
+* Core Movement (WASD)::
+* Core Movement (VI)::
+* Core Movement (Custom)::
 @end menu
 
 @c -------------------------------------------------------------------
-@node Basic Movement (Alphabetic)
+@node Core Movement (Alphabetic)
 @c -------------------------------------------------------------------
 @subsection Alphabetic
-@cindex Basic Movement (Alphabetic)
+@cindex Core Movement (Alphabetic)
 
 If the @option{ipe-edit-movement-keyset} option includes the
 @emph{Alphabetic} flag, then, when in @code{ipe-edit-mode}, the
-basic movement of the @sc{OPEN} and @sc{CLOSE} overlays is controlled
+core movement of the @sc{OPEN} and @sc{CLOSE} overlays is controlled
 by the same set of key bindings as the standard @strong{Emacs}
 character movement keys, but without the keyboard modifiers.
 
@@ -799,13 +799,13 @@ Move @sc{CLOSE} to the 'end'       (Command: @code{ipe-edit--close-end})
 @end table
 
 @c -------------------------------------------------------------------
-@node Basic Movement (Arrows)
+@node Core Movement (Arrows)
 @c -------------------------------------------------------------------
 @subsection Arrows
-@cindex Basic Movement (Arrows)
+@cindex Core Movement (Arrows)
 
 If the @option{ipe-edit-movement-keyset} option includes the
-@emph{Arrows} flag, then, when in @code{ipe-edit-mode}, the basic
+@emph{Arrows} flag, then, when in @code{ipe-edit-mode}, the core
 movement of the @sc{OPEN} and @sc{CLOSE} overlays is controlled by the
 arrows keys (@key{up}, @key{left}, @key{right}, @key{down}), the
 @key{home} and @key{end} keys, and the @key{CTRL} modifier.
@@ -861,13 +861,13 @@ Move @sc{CLOSE} to the 'end'       (Command: @code{ipe-edit--close-end})
 @end table
 
 @c -------------------------------------------------------------------
-@node Basic Movement (WASD)
+@node Core Movement (WASD)
 @c -------------------------------------------------------------------
 @subsection WASD
-@cindex Basic Movement (WASD)
+@cindex Core Movement (WASD)
 
 If the @option{ipe-edit-movement-keyset} option includes the
-@emph{WASD} flag, then, when in @code{ipe-edit-mode}, the basic
+@emph{WASD} flag, then, when in @code{ipe-edit-mode}, the core
 movement of the @sc{OPEN} and @sc{CLOSE} overlays is controlled by the
 (@key{q}, @key{w}, @key{a}, @key{s}, @key{d}, @key{e}) keys and their
 uppercase counterparts.
@@ -911,14 +911,14 @@ Move @sc{CLOSE} to the 'end'       (Command: @code{ipe-edit--close-end})
 @end table
 
 @c -------------------------------------------------------------------
-@node Basic Movement (VI)
+@node Core Movement (VI)
 @c -------------------------------------------------------------------
 @subsection VI
-@cindex Basic Movement (VI)
+@cindex Core Movement (VI)
 
 If the @option{ipe-edit-movement-keyset} option includes the @emph{VI}
-flag, then, when in @code{ipe-edit-mode}, the basic movement of the
-@sc{OPEN} and @sc{CLOSE} overlays is controlled by the VI basic
+flag, then, when in @code{ipe-edit-mode}, the core movement of the
+@sc{OPEN} and @sc{CLOSE} overlays is controlled by the VI core
 character movement keys (@key{k}, @key{h}, @key{l}, @key{j}) and their
 uppercase counterparts, plus the VI start and end of line keys
 (@key{0}, @key{$}), and the VI word movement keys (@key{B} and
@@ -965,10 +965,10 @@ Move @sc{CLOSE} to the 'end'       (Command: @code{ipe-edit--close-end})
 @end table
 
 @c -------------------------------------------------------------------
-@node Basic Movement (Custom)
+@node Core Movement (Custom)
 @c -------------------------------------------------------------------
 @subsection Custom Movement Keyset
-@cindex Basic Movement (Custom)
+@cindex Core Movement (Custom)
 
 A ``user defined'' set of 'Insert Pair Edit' (ipe)
 @code{ipe-edit-mode} movement key bindings can be set using the
@@ -1072,8 +1072,8 @@ default.)
 
 @defun ipe-edit--movement-by-char ()
 
-Changes the movement made by the @code{ipe-edit-mode} basic
-movement (@xref{Basic Movement}) commands to be ``by characters''.
+Changes the movement made by the @code{ipe-edit-mode} core
+movement (@xref{Core Movement}) commands to be ``by characters''.
 @end defun
 
 @item
@@ -1082,8 +1082,8 @@ movement (@xref{Basic Movement}) commands to be ``by characters''.
 
 @defun ipe-edit--movement-by-word ()
 
-Changes the movement made by the @code{ipe-edit-mode} basic
-movement (@xref{Basic Movement}) commands to be ``by words''.
+Changes the movement made by the @code{ipe-edit-mode} core
+movement (@xref{Core Movement}) commands to be ``by words''.
 @end defun
 
 @item
@@ -1092,8 +1092,8 @@ movement (@xref{Basic Movement}) commands to be ``by words''.
 
 @defun ipe-edit--movement-by-line ()
 
-Changes the movement made by the @code{ipe-edit-mode} basic
-movement (@xref{Basic Movement}) commands to be ``by lines''.
+Changes the movement made by the @code{ipe-edit-mode} core
+movement (@xref{Core Movement}) commands to be ``by lines''.
 (@xref{Line Movement})
 @end defun
 
@@ -1103,8 +1103,8 @@ movement (@xref{Basic Movement}) commands to be ``by lines''.
 
 @defun ipe-edit--movement-by-list ()
 
-Changes the movement made by the @code{ipe-edit-mode} basic
-movement (@xref{Basic Movement}) commands to be ``by lists''.
+Changes the movement made by the @code{ipe-edit-mode} core
+movement (@xref{Core Movement}) commands to be ``by lists''.
 (@xref{List Movement})
 @end defun
 @end itemize
@@ -1120,6 +1120,7 @@ The text to be inserted by the @sc{OPEN} and @sc{CLOSE} overlays of an
 
 @kindex (
 @key{(} (in @code{ipe-edit-mode})
+
 @defun ipe-edit--change-pair (replace)
 
 Prompts for a @sc{MNEMONIC} used to identify a @sc{PAIR} from the
@@ -1308,7 +1309,7 @@ the current buffer for a @sc{PAIR} which matches the @sc{OPEN} and
 @sc{CLOSE} strings for the given @sc{MNEMONIC}.  It will replace the
 @sc{OPEN} and @sc{CLOSE} strings with overlays, which can then be
 moved using the standard 'Insert Pair Edit' (ipe) commands
-(@xref{Basic Movement}).
+(@xref{Core Movement}).
 
 This command can be also be invoked by invoking the
 `universal-argument' (Generally bound to @key{C-u}), before a call to
@@ -1396,6 +1397,8 @@ up, a @sc{MNEMONIC} in the @code{customize}-able @var{ipe-pairs} /
 @var{ipe-mode-pairs} variables.
 @end defun
 
+(@xref{Delete Customization})
+
 Calling the @code{ipe-insert-pair-edit-delete} command will search
 the current buffer for a @sc{PAIR} which matches the @sc{OPEN} and
 @sc{CLOSE} strings corresponding the given @sc{MNEMONIC}.  If a
@@ -1479,8 +1482,8 @@ current buffer for a @sc{PAIR} which matches the @sc{OPEN} and
 strings with overlays containing the new @sc{OPEN} and @sc{CLOSE}
 strings for the @sc{PAIR} identified by the second @sc{REPLACEMENT}
 @sc{MNEMONIC}.  These new @sc{OPEN} and @sc{CLOSE} strings can then be
-moved using the standard 'Insert Pair Edit' (ipe) basic movement
-(@xref{Basic Movement}) commands.
+moved using the standard 'Insert Pair Edit' (ipe) core movement
+(@xref{Core Movement}) commands.
 
 This command can be also be invoked by invoking the
 @code{universal-argument} (Generally bound to @key{C-u}), three
@@ -1843,7 +1846,7 @@ will prompt the User to enter a list of @sc{ESCAPE} / @sc{REPLACEMENT}
 strings for the @sc{PAIR} to be associated with
 @sc{MNEMONIC}. (@xref{Escaping Text within a PAIR}.) This may be left
 blank if no @code{ESCAPEs} are desired for the @sc{PAIR} to be
-associated associated with @sc{MNEMONIC}.
+associated with @sc{MNEMONIC}.
 
 @item Escape Match Text:
 If the @code{Include Escapes?} is set to @code{y}, the @code{Escape
@@ -1909,7 +1912,7 @@ At this prompt, enter a string indicating the location of the newly
 defined @sc{PAIR} within the various 'Insert Pair Edit' (ipe)
 @code{Pairs -> Edit} sub-menus.  Setting this option will cause the
 @sc{PAIR} definition to appear within sub-menus under the 'Insert Pair
-Edit' sub-menus.  (Futher sub-menus can be defined by using a ``/''
+Edit' sub-menus.  (Further sub-menus can be defined by using a ``/''
 character as a separator within this menu string.)  If left blank, the
 @sc{PAIR} will appear at the root of the 'Insert Pair Edit' (ipe)
 sub-menus along with the other @emph{Global} @sc{PAIRs}.
@@ -1988,16 +1991,25 @@ overlays.
 @sc{OPEN} / @sc{CLOSE} string positions.
 
 (@xref{PAIRs With Empty OPEN / CLOSE})
+
+@item
+@vindex ipe-delete-highlight
+@var{ipe-delete-highlight} - The face used to highlight the @sc{PAIR}
+to be deleted when @var{ipe-delete-action} is set to either
+@code{'highlight} , @code{'fade} or @code{'prompt}. 
+
+(@xref{Delete Customization})
+
 @end itemize
 
 @c -------------------------------------------------------------------
-@node Other ipe-edit-mode Commands
+@node Other Edit Mode Bindings
 @c -------------------------------------------------------------------
-@chapter Other ipe-edit-mode Commands
-@cindex Other ipe-edit-mode Commands
+@chapter Other Edit Mode Bindings
+@cindex Other Edit Mode Bindings
 
-The following sections describe some of the other commands /
-key-bindings available within @code{ipe-edit-mode}.
+The following sections describe some of the other key-bindings
+/ commands available within @code{ipe-edit-mode}.
 
 @menu
 * 'Insert And...' Commands::
@@ -2067,7 +2079,7 @@ and @sc{CLOSE} strings.
 @item @key{u} (in @code{ipe-edit-mode})
 Insert the current @sc{PAIR}, prompt for another MNEMONIC, and then
 attempt to update the next PAIR that matches the PAIR definition
-assocatied with the MNEMONIC.
+associated with the MNEMONIC.
 
 (Command: @code{ipe-edit--ia-update-forward})
 
@@ -2076,7 +2088,7 @@ assocatied with the MNEMONIC.
 @item @key{U} (in @code{ipe-edit-mode})
 Insert the current @sc{PAIR}, prompt for another MNEMONIC, and then
 attempt to update the previous PAIR that matches the PAIR definition
-assocatied with the MNEMONIC.
+associated with the MNEMONIC.
 
 (Command: @code{ipe-edit--ia-update-backward})
 @end table
@@ -2421,8 +2433,8 @@ over''.
 @section Multiple PAIRs Commands
 
 When in @code{ipe-edit-mode}, it is possible to edit multiple
-@sc{PAIR}s at once.  All basic @code{ipe-edit-mode} movement
-commands (@xref{Basic Movement}) will operate on all active
+@sc{PAIR}s at once.  All core @code{ipe-edit-mode} movement
+commands (@xref{Core Movement}) will operate on all active
 @sc{PAIR}s, and all commands which edit the @sc{CONTENTS} of a
 @sc{PAIR} (@xref{Edit CONTENTS Commands}), will also operate
 on the @sc{CONTENTS} all active @sc{PAIR}s.
@@ -3163,6 +3175,7 @@ package.
 * Centering the Display on a PAIR::
 * PAIRs With Empty OPEN / CLOSE::
 * Updating Existing PAIRs::
+* Delete Customization::
 @end menu
 
 @c -------------------------------------------------------------------
@@ -3177,7 +3190,7 @@ the current movement lexical unit @emph{on-the-fly} within
 @code{ipe-edit-mode} to ``by lines'' using the
 @code{ipe-edit--movement-by-line} command. (@xref{Movement Units}))
 
-The behaviour of the basic movement (@xref{Basic Movement}) commands
+The behaviour of the core movement (@xref{Core Movement}) commands
 is modified for @sc{PAIR}s with a ``by lines'' movement type.
 
 The @emph{up} and @emph{down} commands:
@@ -3191,7 +3204,7 @@ The @emph{up} and @emph{down} commands:
 
 operate as per other movement modes (``by characters'', ``by words''.)
 
-However, the other basic movement commands are re-bound to have
+However, the other core movement commands are re-bound to have
 different behaviour:
 
 @menu
@@ -3204,7 +3217,7 @@ different behaviour:
 @c -------------------------------------------------------------------
 @subsection Line Movement - Forward / Backward
 
-The Forward / Backward basic movement (@xref{Basic Movement}) of
+The Forward / Backward core movement (@xref{Core Movement}) of
 'Insert Pair Edit' (ipe) @sc{PAIRs} with an @emph{Initial Movement} of
 ``by lines'' is modified from the standard pattern used by the ``by
 characters'' / ``by words'' movements. 
@@ -3302,7 +3315,7 @@ The quick brown fox jumps over the lazy dog.
 @c -------------------------------------------------------------------
 @subsection Line Movement - Beginning / End
 
-The Beginning / End basic movement (@xref{Basic Movement}) of
+The Beginning / End core movement (@xref{Core Movement}) of
 'Insert Pair Edit' (ipe) @sc{PAIRs} with an @emph{Initial Movement} of
 ``by lines'' is modified from the standard pattern used by the ``by
 characters'' / ``by words'' movements.
@@ -3418,7 +3431,7 @@ change the current movement lexical unit @emph{on-the-fly} within
 @code{ipe-edit-mode} to ``by lists'' using the
 @code{ipe-edit--movement-by-list} command. (@xref{Movement Units}))
 
-The behaviour of the basic movement (@xref{Basic Movement}) commands
+The behaviour of the core movement (@xref{Core Movement}) commands
 is modified for @sc{PAIR}s with a ``by lists'' movement type.
 
 @menu
@@ -3432,7 +3445,7 @@ is modified for @sc{PAIR}s with a ``by lists'' movement type.
 @c -------------------------------------------------------------------
 @subsection List Movement - Forward / Backward
 
-The Forward / Backward basic movement (@xref{Basic Movement}) of
+The Forward / Backward core movement (@xref{Core Movement}) of
 'Insert Pair Edit' (ipe) @sc{PAIRs} with an @emph{Initial Movement} of
 ``by lists'' is modified from the standard pattern used by the ``by
 characters'' / ``by words'' movements.
@@ -3517,7 +3530,7 @@ Which will result in the buffer:
 @c -------------------------------------------------------------------
 @subsection List Movement - Up / Down
 
-The Up / Down basic movement (@xref{Basic Movement}) of 'Insert Pair
+The Up / Down core movement (@xref{Core Movement}) of 'Insert Pair
 Edit' (ipe) @sc{PAIRs} with an @emph{Initial Movement} of ``by lists''
 is modified from the standard pattern used by the ``by characters'' /
 ``by words'' movements.
@@ -3617,7 +3630,7 @@ Which will result in the buffer:
 @c -------------------------------------------------------------------
 @subsection List Movement - Beginning / End
 
-The Beginning / End basic movement (@xref{Basic Movement}) of 'Insert
+The Beginning / End movement (@xref{Core Movement}) of 'Insert
 Pair Edit' (ipe) @sc{PAIRs} with an @emph{Initial Movement} of ``by
 lists'' is modified from the standard pattern used by the ``by
 characters'' / ``by words'' movements.
@@ -3878,6 +3891,7 @@ The position at which @sc{POINT} (the @strong{Emacs} cursor) is placed
 on insert of an 'Insert Pair Edit' (ipe) @sc{PAIR} is controlled by:
 
 @defopt ipe-move-point-on-insert
+
 This option is consulted when inserting (@xref{Inserting and
 Aborting}) an 'Insert Pair Edit' (ipe) @sc{PAIR} into the buffer.
 
@@ -3906,6 +3920,7 @@ The position at which the @strong{Emacs} @sc{MARK} is placed on insert
 of a @sc{PAIR} controlled by:
 
 @defopt ipe-set-mark-on-insert
+
 This option is consulted when inserting (@xref{Inserting and
 Aborting}) an 'Insert Pair Edit' (ipe) @sc{PAIR} into the buffer.
 
@@ -3964,7 +3979,7 @@ recenter on the @sc{OPEN} overlay.
 The position of an @emph{empty} @sc{OPEN} or @sc{CLOSE} string will
 still be maintained within @code{ipe-edit-mode}, and can be moved
 about the buffer using the @code{ipe-edit-mode} movement keys
-(@xref{Basic Movement}.)  Empty @sc{OPEN} and @sc{CLOSE} strings can
+(@xref{Core Movement}.)  Empty @sc{OPEN} and @sc{CLOSE} strings can
 be used to delimit operations which act upon the @sc{CONTENTS} of a
 @sc{PAIR} (@xref{Edit CONTENTS Commands}.)
 
@@ -4188,6 +4203,115 @@ Which will result in the buffer:
 The quick (brown) fox jumps (over) the lazy dog.
 |The quick brown fox jumps over the lazy dog.
 The quick brown fox jumps over the lazy dog.@@
+@end example
+
+@c -------------------------------------------------------------------
+@node Delete Customization
+@c -------------------------------------------------------------------
+@section Delete Customization
+
+The processing performed by the 'Insert Pair Edit' (ipe) @emph{delete} 
+commands:
+
+@itemize @bullet
+@item
+@code{ipe-insert-pair-edit-delete}
+@item
+@key{C-u} @key{C-u} @code{ipe-insert-pair-edit}
+@item
+@emph{Pairs > Delete PAIR} Menu Item
+@end itemize
+
+Can be @emph{customized} by the:
+
+@itemize @w{}
+@item
+@vindex ipe-delete-action
+@var{ipe-delete-action}
+@item
+@vindex ipe-delete-highlight
+@var{ipe-delete-highlight}
+@item
+@vindex ipe-delete-highlight-wait
+@var{ipe-delete-highlight-wait}
+@end itemize
+
+Variables.
+
+@defopt ipe-delete-action
+
+This option can be set to either: 
+
+@itemize @bullet
+@item
+'delete
+@item
+'highlight
+@item
+'fade
+@item
+'prompt
+@end itemize
+
+When @var{ipe-delete-action} is set to @code{'delete}, calling an
+'Insert Pair Edit' (ipe) @emph{delete} command will simply remove a 
+@sc{PAIR} from the buffer.
+
+When @var{ipe-delete-action} is set to @code{'highlight}, calling an
+'Insert Pair Edit' (ipe) @emph{delete} command will center the buffer
+window around the @sc{PAIR} to be deleted, highlight the @sc{PAIR} to
+be deleted with the @var{ipe-delete-highlight} face for
+@var{ipe-delete-highlight-wait} seconds, then remove the @sc{PAIR} 
+from the buffer. 
+
+When @var{ipe-delete-action} is set to @code{'fade}, calling an
+'Insert Pair Edit' (ipe) @emph{delete} command will center the buffer
+window around the @sc{PAIR} to be deleted, highlight the @sc{PAIR} to
+be deleted with the @var{ipe-delete-highlight} face, and fade the
+@var{ipe-delete-highlight} face for @var{ipe-delete-highlight-wait}
+seconds, then remove the @sc{PAIR} from the buffer. 
+
+When @var{ipe-delete-action} is set to @code{'prompt}, calling an
+'Insert Pair Edit' (ipe) @emph{delete} command will center the buffer
+window around the @sc{PAIR} to be deleted, highlight the @sc{PAIR} to
+be deleted with the @var{ipe-delete-highlight} face, and then prompt
+the user via the minibuffer as to whether or not they want to delete
+the @sc{PAIR}.
+@end defopt
+
+This variable can be @code{customize}'d by running the command:
+
+@example
+@key{M-x} customize-variable @key{RET} ipe-delete-action @key{RET}
+@end example
+
+@defopt ipe-delete-highlight
+
+The face used to highlight the @sc{PAIR} to be deleted when
+@var{ipe-delete-action} is set to either @code{'highlight} ,
+@code{'fade} or@code{'prompt}. 
+
+(By default, text to be deleted will be displayed using the
+@var{warning} face.)
+@end defopt
+
+This variable can be @code{customize}'d by running the command:
+
+@example
+@key{M-x} customize-face @key{RET} ipe-delete-highlight @key{RET}
+@end example
+
+@defopt ipe-delete-highlight-wait
+
+The time (in seconds) to highlight the @sc{PAIR} to be deleted when
+@var{ipe-delete-action} is set to either @code{'highlight} or
+@code{'fade}.
+@end defopt
+
+This variable can be @code{customize}'d by running the command:
+
+@example
+@key{M-x} customize-variable @key{RET} ipe-delete-highlight-wait @key{RET}
 @end example
 
 @c -------------------------------------------------------------------
@@ -4498,7 +4622,7 @@ movement mode.
 @section Adding 'ipe' ERT (Emacs Regression Tests)
 
 If you have downloaded the 'Insert Pair Edit' (ipe) package as source
-code rather tha a package library, it will include a set of
+code rather than a package library, it will include a set of
 @strong{Emacs} @sc{ERT} (@emph{Emacs Regression Test})) tests.
 
 New regression tests can be defined using the @strong{Emacs} macro

@@ -30,6 +30,7 @@
     "ipe-doc.el"
     "ipe-defn.el"
     "ipe-edit.el"
+    "ipe-fade.el"
     "ipe-help.el"
     "ipe-line.el"
     "ipe-list.el"

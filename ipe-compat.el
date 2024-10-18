@@ -100,7 +100,21 @@ bool-vector, or a string.
     (apply #'nconc (mapcar func sequence))))
 
 ;; -------------------------------------------------------------------
+;;;; Emacs < 27
+;; -------------------------------------------------------------------
 
+(if (functionp #'xor)
+    (defalias 'ipe-compat--xor #'xor)
+  (defun ipe-compat--xor (cond1 cond2)
+    "Insert Pair Edit (ipe) compatibility function.
+
+Return the boolean exclusive-or of COND1 and COND2.
+
+(Introduced Emacs 27)"
+    (or (and cond1 (not cond2))
+	(and (not cond1) cond2))))
+
+;; -------------------------------------------------------------------
 (provide 'ipe-compat)
 
 ;;; ipe-compat.el ends here

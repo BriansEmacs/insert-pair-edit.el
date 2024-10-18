@@ -42,17 +42,15 @@
 
   (interactive)
 
-  (let* ((logo-buffer  (get-buffer-create "**ipe-logo**"))
+  (let* ((logo-buffer  (get-buffer-create
+			"**ipe-logo**"))
 	 (logo         "Insert Pair Edit (ipe)")
 	 (cursor-color (face-attribute 'cursor :background))
-	 (delay 0.5)
-	 (time  2.0))
+	 (delay        0.5)
+	 (time         2.0))
 
+    ;; Set up some (ipe) configuration.
     (switch-to-buffer logo-buffer)
-    (buffer-face-set 'ipe--logo-face)
-    (blink-cursor-mode 0)
-    (set-cursor-color "grey10")
-
     (setq-local ipe-pairs '(("(" "(" ")")
 			    ("[" "[" "]")
 			    ("{" "{" "}")
@@ -60,37 +58,54 @@
 			    ("'" "'" "'")))
     (setq-local ipe-mode-pairs nil)
 
+    ;; Set up the demo buffer.
+    (blink-cursor-mode 0)
+    (set-cursor-color "grey10")
     (delete-region (point-min) (point-max))
-
+    (buffer-face-set 'ipe--logo-face)
     (insert "\n\n\n\n")
     (insert logo)
-
     (center-paragraph)
     (goto-char (point-max))
 
-    (dolist (command
-	     (list
-	      '(ipe-insert-pair-edit-update "(")
-	      '(ipe-edit--close-backward nil)
-	      '(ipe-edit--close-backward nil)
-	      '(ipe-edit--close-backward nil)
-	      '(ipe-edit--change-pair "[")
-	      '(ipe-edit--close-forward nil)
-	      '(ipe-edit--close-forward nil)
-	      '(ipe-edit--close-forward nil)
-	      '(ipe-edit--close-backward nil)
-	      '(ipe-edit--open-forward nil)
-	      '(ipe-edit--close-backward nil)
-	      '(ipe-edit--change-pair "{")
-	      '(ipe-edit--change-pair "\"")
-	      '(ipe-edit--change-pair "'")
-	      '(ipe-edit--change-pair "(")
-	      '(ipe-edit--contents-upcase)
-	      '(ipe-edit--contents-downcase)
-	      '(ipe-edit--contents-capitalize)
-	      '(ipe-edit--open-forward nil)
-	      '(ipe-edit--open-forward nil)
-	      '(ipe-edit--abort)))
+    ;; Run some demonstration (ipe) commands.
+    (dolist
+	(command
+	 (list
+	  ;; Update the '(' / ')' PAIR around ipe.
+	  '(ipe-insert-pair-edit-update "(")
+
+	  ;; Move it backward.
+	  '(ipe-edit--close-backward nil)
+	  '(ipe-edit--close-backward nil)
+	  '(ipe-edit--close-backward nil)
+
+	  ;; Change it to a '[' / ']' PAIR.
+	  '(ipe-edit--change-pair "[")
+
+	  ;; Do some more movement.
+	  '(ipe-edit--close-forward nil)
+	  '(ipe-edit--close-forward nil)
+	  '(ipe-edit--close-forward nil)
+	  '(ipe-edit--close-backward nil)
+	  '(ipe-edit--open-forward nil)
+	  '(ipe-edit--close-backward nil)
+
+	  ;; Cycle through some changes.
+	  '(ipe-edit--change-pair "{")
+	  '(ipe-edit--change-pair "\"")
+	  '(ipe-edit--change-pair "'")
+	  '(ipe-edit--change-pair "(")
+
+	  ;; Cycle through some CONTENT changes.
+	  '(ipe-edit--contents-upcase)
+	  '(ipe-edit--contents-downcase)
+	  '(ipe-edit--contents-capitalize)
+
+	  ;; Restore us to the original text.
+	  '(ipe-edit--open-forward nil)
+	  '(ipe-edit--open-forward nil)
+	  '(ipe-edit--abort)))
 
       (run-at-time (setq time (+ time delay))
 		   0
@@ -111,13 +126,14 @@ within the demo."
 
   (interactive)
 
-  (let* ((demo-buffer  (get-buffer-create "**ipe-change-pair-demo**"))
+  (let* ((demo-buffer  (get-buffer-create
+			"**ipe-change-pair-demo**"))
 	 (cursor-color (face-attribute 'cursor :background))
 	 (delay        (or speed 0.6))
 	 (time         3.0))
 
+    ;; Set up some (ipe) configuration.
     (switch-to-buffer demo-buffer)
-
     (setq-local ipe-pairs
 		'(("b" "<b>"      "</b>")
 		  ("s" "<strong>" "</strong>")
@@ -126,19 +142,18 @@ within the demo."
 		  ("B" "<big>"    "</big>")
 		  ("l" "<span style=\"font-size: 120%\">" "</span>")))
 
+    ;; Set up the demo buffer.
     (blink-cursor-mode 0)
     (set-cursor-color "grey30")
-
     (delete-region (point-min) (point-max))
-
     (insert
      "\n"
      "    The <b>quick</b> brown <i>fox</i> jumps <big>over</big> the\
  lazy dog.\n"
      "\n")
-
     (goto-char (+ (point-min) 1))
 
+    ;; Run some demonstration (ipe) commands.
     (dolist (command
 	     (list
 	      ;; Change the <b></b> tag to <strong></strong>.
@@ -198,43 +213,41 @@ within the demo."
 	 (delay        (or speed 0.6))
 	 (time         3.0))
 
+    ;; Set up some (ipe) configuration.
     (switch-to-buffer demo-buffer)
-
     (setq-local ipe-pairs '(("/" "/*" "*/")))
 
+    ;; Set up the demo buffer.
     (blink-cursor-mode 0)
     (set-cursor-color "grey30")
-
     (delete-region (point-min) (point-max))
-
     (insert
      "\n"
      "    The quick brown fox /*jumps*/ over the lazy dog.\n"
      "\n")
-
     (goto-char (+ (point-min) 1))
 
+    ;; Run some demonstration (ipe) commands.
     (dolist (command
 	     (list
 	      ;; Edit the '/*' '*/' PAIR.
 	      '(ipe-insert-pair-edit-update "/")
-	      '(ipe-edit--open-backward nil)
-	      '(ipe-edit--close-forward nil)
-	      '(ipe-edit--open-backward nil)
-	      '(ipe-edit--close-forward nil)
 
 	      ;; Change the movement to 'char.
 	      '(ipe-edit--movement-by-char)
 	      '(ipe-edit--open-forward nil)
 	      '(ipe-edit--open-forward nil)
 	      '(ipe-edit--open-forward nil)
-	      '(ipe-edit--open-forward nil)
-	      '(ipe-edit--open-forward nil)
-	      '(ipe-edit--open-forward nil)
 	      '(ipe-edit--close-backward nil)
 	      '(ipe-edit--close-backward nil)
 	      '(ipe-edit--close-backward nil)
-	      '(ipe-edit--close-backward nil)
+
+	      ;; Change the movement to 'word.
+	      '(ipe-edit--movement-by-word)
+	      '(ipe-edit--open-backward nil)
+	      '(ipe-edit--close-forward nil)
+	      '(ipe-edit--open-backward nil)
+	      '(ipe-edit--close-forward nil)
 
 	      ;; Change the movement to 'line.
 	      '(ipe-edit--movement-by-line)
@@ -250,6 +263,17 @@ within the demo."
 	      '(ipe-edit--close-forward nil)
 	      '(ipe-edit--open-end nil)
 	      '(ipe-edit--close-beg nil)
+
+	      ;; Change back to 'words.
+	      '(ipe-edit--movement-by-word)
+	      '(ipe-edit--open-forward nil)
+	      '(ipe-edit--open-forward nil)
+	      '(ipe-edit--open-forward nil)
+	      '(ipe-edit--open-forward nil)
+	      '(ipe-edit--close-backward nil)
+	      '(ipe-edit--close-backward nil)
+	      '(ipe-edit--close-backward nil)
+	      '(ipe-edit--close-backward nil)
 
 	      '(ipe-edit--abort)))
 
@@ -278,24 +302,23 @@ within the demo."
 	 (delay        (or speed 0.6))
 	 (time         3.0))
 
+    ;; Set up some (ipe) configuration.
     (switch-to-buffer demo-buffer)
-
     (setq-local ipe-pairs
 		'(("(" "(" ")"))
 		ipe-update-forward-first-p t)
 
+    ;; Set up the demo buffer.
     (blink-cursor-mode 0)
     (set-cursor-color "grey30")
-
     (delete-region (point-min) (point-max))
-
     (insert
      "\n"
      "    The quick (brown) fox (jumps) over (the) lazy dog.\n"
      "\n")
-
     (goto-char (+ (point-min) 1))
 
+    ;; Run some demonstration (ipe) commands.
     (dolist (command
 	     (list
 	      ;; Edit the '(' ')' PAIR.
@@ -356,21 +379,21 @@ within the demo."
 
   (interactive)
 
-  (let* ((demo-buffer  (get-buffer-create "**ipe-other-pairs-demo**"))
+  (let* ((demo-buffer  (get-buffer-create
+			"**ipe-other-pairs-demo**"))
 	 (cursor-color (face-attribute 'cursor :background))
 	 (delay        (or speed 0.6))
 	 (time         3.0))
 
+    ;; Set up some (ipe) configuration.
     (switch-to-buffer demo-buffer)
-
     (setq-local ipe-pairs
 		'(("e" "@emph{" "}" (:movement char))))
 
+    ;; Set up the demo buffer.
     (blink-cursor-mode 0)
     (set-cursor-color "grey30")
-
     (delete-region (point-min) (point-max))
-
     (insert
      "\n"
      "    The @emph{quick} brown @emph{fox} jumps @emph{over} the\
@@ -378,9 +401,9 @@ within the demo."
      "    The quick brown fox jumps over the lazy dog.\n"
      "    The quick brown fox jumps over the lazy dog.\n"
      "\n")
-
     (goto-char (+ (point-min) 1))
 
+    ;; Run some demonstration (ipe) commands.
     (dolist (command
 	     (list
 	      ;; Edit the '@emph{' '}' PAIR.
@@ -444,19 +467,18 @@ within the demo."
 	 (delay        (or speed 0.6))
 	 (time         3.0))
 
+    ;; Set up some (ipe) configuration.
     (switch-to-buffer demo-buffer)
-
     (setq-local ipe-pairs
 		'(("b" "<b>"      "</b>")
 		  ("s" "<strong>" "</strong>)")
 		  ("i" "<i>"      "</i>")
 		  ("e" "<em>"     "</em>)")))
 
+    ;; Set up the demo buffer.
     (blink-cursor-mode 0)
     (set-cursor-color "grey30")
-
     (delete-region (point-min) (point-max))
-
     (insert
      "\n"
      "    The <i>quick</i> brown fox jumps <i>over</i> the lazy\
@@ -466,9 +488,9 @@ within the demo."
      "    The <b>quick</b> brown fox jumps <i>over</i> the lazy\
  dog.\n"
      "\n")
-
     (goto-char (point-min))
 
+    ;; Run some demonstration (ipe) commands.
     (dolist (command
 	     (list
 	      ;; Edit all of the <i> / </i> PAIRs.
@@ -526,42 +548,43 @@ within the demo."
 
   (interactive)
 
-  (let* ((demo-buffer  (get-buffer-create "**ipe-escape-demo**"))
+  (let* ((demo-buffer  (get-buffer-create
+			"**ipe-escape-demo**"))
 	 (cursor-color (face-attribute 'cursor :background))
 	 (delay        (or speed 0.6))
 	 (time         3.0))
 
+    ;; Set up some (ipe) configuration.
     (switch-to-buffer demo-buffer)
-
     (setq-local ipe-pairs
 		'(("\"" "\""      "\""
 		   (
 		    :escapes (("\"" "\\\"")
 			      ("\\" "\\\\"))))
-		  ("<" "<!-- " " -->"
+		  ("<" "<!--  " "  -->"
 		   (
 		    :movement line
-		    :infix    " -- "
+		    :infix    "  -- "
 		    :escapes  (("<" "&lt;")
 			       (">" "&gt;")
 			       ("&" "&amp;"))))))
+    (setq-local ipe--escapes-show-p t)
 
+    ;; Set up the demo buffer.
     (blink-cursor-mode 0)
     (set-cursor-color "grey30")
-
     (delete-region (point-min) (point-max))
-
     (insert
      "\n"
      "    The \"quick\" brown \"fox \\\"jumps\\\" over\" the lazy\
  dog.\n"
      "\n"
      "    <!-- The quick & brown fox <jumps> over the lazy dog.\
- -->.\n"
+ -->\n"
      "\n")
-
     (goto-char (+ (point-min) 1))
 
+    ;; Run some demonstration (ipe) commands.
     (dolist (command
 	     (list
 	      ;; Insert a " / " PAIR.
@@ -572,26 +595,31 @@ within the demo."
 	      '(ipe-edit--close-forward nil)
 	      '(ipe-edit--close-forward nil)
 	      '(ipe-edit--close-forward nil)
+	      '(ipe-edit--toggle-escapes 0)
+	      '(ipe-edit--toggle-escapes 1)
+	      '(ipe-edit--insert-pair)
 
-	      '(ipe-edit--open-forward nil)
-	      '(ipe-edit--open-forward nil)
-	      '(ipe-edit--open-forward nil)
-	      '(ipe-edit--open-forward nil)
-	      '(ipe-edit--open-forward nil)
-	      '(ipe-edit--open-forward nil)
-	      '(ipe-edit--abort)
-
-	      '(forward-line)
+	      ;; Update the <!-- / --> PAIR.
+	      '(forward-line 1)
 	      '(ipe-insert-pair-edit nil "<")
 	      '(ipe-edit--close-down nil)
 	      '(ipe-edit--close-end nil)
-	      '(ipe-edit--open-down nil)
-	      '(ipe-edit--open-down nil)
+	      '(ipe-edit--toggle-escapes 0)
+	      '(ipe-edit--toggle-escapes 1)
+	      '(ipe-edit--ia-goto-close nil)
 
-	      '(ipe-edit--open-up nil)
-	      '(ipe-edit--close-up nil)
-	      '(ipe-edit--close-up nil)
-	      '(ipe-edit--abort)))
+	      ;; Update the " / " PAIR.
+	      '(ipe-insert-pair-edit-update "\"")
+	      '(ipe-edit--open-forward nil)
+	      '(ipe-edit--open-forward nil)
+	      '(ipe-edit--open-forward nil)
+	      '(ipe-edit--open-forward nil)
+	      '(ipe-edit--open-forward nil)
+	      '(ipe-edit--open-forward nil)
+	      '(ipe-edit--delete-all-pairs)
+
+	      ;; Update the <!-- / --> PAIR.
+	      '(ipe-insert-pair-edit-update "<")))
 
       (run-at-time (setq time (+ time delay))
 		   0
@@ -612,13 +640,14 @@ within the demo."
 
   (interactive)
 
-  (let* ((demo-buffer  (get-buffer-create "**ipe-markdown-demo**"))
+  (let* ((demo-buffer  (get-buffer-create
+			"**ipe-markdown-demo**"))
 	 (cursor-color (face-attribute 'cursor :background))
 	 (delay        (or speed 0.4))
 	 (time         2.0))
 
+    ;; Set up some (ipe) configuration.
     (switch-to-buffer demo-buffer)
-
     (setq-local ipe-pairs
 		'(("(" "(" ")")
 		  ("'" "'" "'")
@@ -632,12 +661,11 @@ within the demo."
 		  ("x" " - [ ] " ""    (:movement line :infix " - [ ] "))
 		  ("f" "```"     "```" (:movement line))))
 
-    (ipe--safecall 'markdown-mode)
+    ;; Set up the demo buffer.
     (blink-cursor-mode 0)
     (set-cursor-color "grey30")
-
+    (ipe--safecall 'markdown-mode)
     (delete-region (point-min) (point-max))
-
     (insert
      "Insert Pair Edit ipe - markdown mode\n"
      "\n"
@@ -661,9 +689,9 @@ within the demo."
      "The quick brown\n"
      "fox jumps over\n"
      "the lazy dog.\n")
-
     (goto-char (point-min))
 
+    ;; Run some demonstration (ipe) commands.
     (dolist (command
 	     (list
 	      ;; Edit the title line.

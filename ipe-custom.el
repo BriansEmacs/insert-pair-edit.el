@@ -907,6 +907,19 @@ the menus."
 	     (functionp #'ipe-menu--install))
     (ipe-menu--install)))
 
+(defun ipe-custom--delete-highlight-wait (sym defn)
+  "`customize' :set function for `ipe-delete-highlight-wait'.
+
+SYM is the symbol begin set.
+DEFN the value returned by the `ipe-delete-highlight-wait' widget.
+
+This function ensures that the wait is a positive float."
+
+  (if (or (not (numberp defn))
+	  (< defn 0))
+      (set sym 0.0)
+    (set sym (float defn))))
+
 ;; -------------------------------------------------------------------
 ;;;; Widget definitions.
 ;; -------------------------------------------------------------------

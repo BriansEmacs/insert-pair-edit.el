@@ -60,25 +60,25 @@ either be inserted `<RET>` (`ipe-edit--insert-pair`), or discarded
 The **Insert Pair Edit (ipe)** minor mode also supplies additional
 commands to:
 
-* Change the _PAIR_ to be inserted on-the-fly.
-![Insert Pair Edit - change-pair](doc/ipe-change-pair.gif)
-
 * Change the 'lexical units' used by the movement commands.
 ![Insert Pair Edit - lexical-units](doc/ipe-lexical-units.gif)
+
+* Change the _PAIR_ to be inserted on-the-fly.
+![Insert Pair Edit - change-pair](doc/ipe-change-pair.gif)
 
 * Operate on the _CONTENTS_ of the _PAIR_ (i.e. the text between the
   _OPEN_ and _CLOSE_ overlays.)  Text can be copied, deleted, replaced
   and case converted.
 ![Insert Pair Edit - change-contents](doc/ipe-change-contents.gif)
 
+* Escape characters between the _OPEN_ and _CLOSE_ strings.
+![Insert Pair Edit - escapes](doc/ipe-escapes.gif)
+
 * Search for (and _edit_) other _PAIRs_.
 ![Insert Pair Edit - other-pairs](doc/ipe-other-pairs.gif)
 
 * Operate on multiple _PAIRs_ at once.
 ![Insert Pair Edit - multiple-pairs](doc/ipe-multiple-pairs.gif)
-
-* Escape characters between the _OPEN_ and _CLOSE_ strings.
-![Insert Pair Edit - escapes](doc/ipe-escapes.gif)
 
 Customizations for the mode can be found under the `ipe` group.
 

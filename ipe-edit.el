@@ -2123,15 +2123,21 @@ With prefix ARG, call either `ipe-defn--ui-edit-pair' or
 ;;;;; 'Other' Commands.
 ;; -------------------------------------------------------------------
 
-(defun ipe-edit--toggle-escapes ()
+(defun ipe-edit--toggle-escapes (arg)
   "Toggle the replacement of ESCAPES within `ipe' PAIRs.
 
 This command is used within the Insert Pair Edit (ipe) minor-mode
 \(command: `ipe-edit-mode') to toggle the display of ESCAPES overlays
-between `ipe' OPEN and CLOSE overlays."
+between `ipe' OPEN and CLOSE overlays.
 
-  (interactive)
-  (setq ipe--escapes-show-p (not ipe--escapes-show-p))
+By default it will toggle the display of ESCAPES between on and off.
+With prefix ARG, it will toggle the display of ESCAPES on if ARG is
+> 0, otherwise it will toggle them off."
+
+  (interactive "P")
+  (setq ipe--escapes-show-p (if arg
+				(and (numberp arg) (> arg 0))
+			      (not ipe--escapes-show-p)))
   (message (concat "Insert Pair Edit ESCAPE processing is now "
 		   (if ipe--escapes-show-p "On" "Off")))
   (ipe-edit--redisplay))

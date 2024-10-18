@@ -174,6 +174,7 @@ string, or nil, if no OPEN string is found."
 
 Return either the start of the previous line containing INFIX, or
 nil if no line starting with INFIX was found."
+
   (save-excursion
     (goto-char (+ pos (length infix)))
     (re-search-backward (concat "^ *" (regexp-quote infix))
@@ -607,8 +608,9 @@ POS if no line starting with INFIX was found after POS."
 - BOUND is the limit of the search, if nil, search to the end of
   the accessible portion of the buffer.
 
-Return either the start of the next line containing INFIX, or,
+Return either the end of the last line containing INFIX after POS, or,
 POS if no line starting with INFIX was found."
+
   (if (zerop (length infix))
       pos
 
@@ -621,7 +623,7 @@ POS if no line starting with INFIX was found."
 	;; While the current line contains an INFIX.
 	(while (and infix-pos
 		    (or (not bound)
-			(<= (point) bound))
+			(< (point) bound))
 		    (not (eobp)))
 
 	  (setq infix-end (if bound
@@ -650,7 +652,7 @@ account:
 - ESCAPES is a list of `ipe' escapes, (MATCH REPLACE), each
   representing a single ESCAPE.
 - BOUND is the limit of the search.  If nil, search to the end of the
-  accessible portion of the the buffer.
+  accessible portion of the buffer.
 - COUNT, if non-nil, is a number representing how many CLOSE strings
   forward to search.
 
@@ -891,7 +893,7 @@ If no PAIR is found, return nil."
 This will search a region (BEG END) for the whitespace before and
 after the OPEN and CLOSE strings of an `ipe' PAIR.
 
-- PAIR is is used to look up the OPEN and CLOSE strings.
+- PAIR is used to look up the OPEN and CLOSE strings.
 - BEG and END are expected to represent the positions of the start of
   the OPEN and the end of the CLOSE strings within the current buffer.
 

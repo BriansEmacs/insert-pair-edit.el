@@ -292,6 +292,49 @@ If one of the following values, MARK will be set to:
 	  (const :tag "The beginning of the CLOSE string." close-beg)
 	  (const :tag "The end of the CLOSE string."       close-end)))
 
+(defcustom ipe-delete-action 'highlight
+  "The action to take on deletion of an `ipe' PAIR.
+
+This variable is consulted when deleting
+\(`ipe-insert-pair-edit-delete') an Insert Pair Edit (ipe) PAIR from
+the buffer.
+
+- `'delete' - Deletes the `ipe' PAIR without further user interaction.
+- `'highlight' - Highlights the `ipe' PAIR OPEN and CLOSE strings with
+  the `ipe-delete-highlight' face for `ipe-delete-highlight-wait'
+  seconds before deletion.
+- `'fade' - Highlights the `ipe' PAIR OPEN and CLOSE strings with
+  the `ipe-delete-highlight' face and fades `ipe-delete-highlight' for
+  `ipe-delete-highlight-wait' seconds before deletion.
+- `'prompt' - Highlights the `ipe' PAIR OPEN and CLOSE strings with
+  the `ipe-delete-highlight' face and prompts the user for
+  confirmation of the deletion."
+  :group 'ipe-advanced
+  :link  '(function-link ipe-insert-pair-edit-delete)
+  :tag   "Insert Pair Edit - Action on delete."
+  :type
+  '(radio :value delete
+	  (const :tag "Delete without further user interaction."
+		 delete)
+	  (const :tag "Highlight PAIR and then delete."
+		 highlight)
+	  (const :tag "Highlight PAIR, fade and then delete."
+		 fade)
+	  (const :tag "Highlight PAIR and prompt for confirmation."
+		 prompt)))
+
+(defcustom ipe-delete-highlight-wait 1.5
+  "The time to wait when deleting an Insert Pair Edit (ipe) PAIR.
+
+This variable specifies the time (in seconds) to wait before deleting
+a PAIR when the `ipe-delete-action' is either `'highlight' or
+`'fade'."
+  :group 'ipe-advanced
+  :link  '(function-link 'ipe-insert-pair-edit-delete)
+  :tag   "Insert Pair Edit - Wait time for delete actions."
+  :set   'ipe-custom--delete-highlight-wait
+  :type  '(float))
+
 (defcustom ipe-mouse-support-p t
   "Whether to include mouse support in `ipe-edit-mode' minor-mode.
 
@@ -609,6 +652,20 @@ Edit `ipe-edit-mode' minor mode.
   :tag   "Insert Pair Edit (Faces) - ESCAPE face."
   :link  '(function-link ipe-insert-pair-edit)
   :link  '(function-link ipe-edit-mode))
+
+(defface ipe-delete-highlight
+  '((t (:inherit       warning
+		       :inverse-video t)))
+  "The face that highlights Insert Pair Edit PAIRs on deletion.
+
+This face highlights the OPEN and CLOSE strings to be deleted by
+`ipe-insert-pair-edit-delete' when `ipe-delete-action' is set to
+`'highlight', `'fade' or `'prompt'.
+
+\(See command: `ipe-insert-pair-edit-delete')"
+  :group 'ipe-display
+  :tag   "Insert Pair Edit (Faces) - DELETE face."
+  :link  '(function-link ipe-insert-pair-edit-delete))
 
 (defface ipe-empty-pair-highlight
   '((t (:inherit warning)))
@@ -1074,7 +1131,7 @@ If POS is nil, return the `end-of-line' of the line containing POINT."
 (defun ipe--to-eol-contains-p (pos string)
   "Return t if the text between POS and EOL contain STRING.
 
-If text between POS and and the `end-of-line' does not contain STRING,
+If text between POS and the `end-of-line' does not contain STRING,
 return nil."
 
   (unless (zerop (length string))
@@ -2480,6 +2537,15 @@ overlay will not display an `'after-string'."
 			       (ipe--indent-string open indent)
 			       no-after-p))))
 
+(defun ipe--open-set-face (n face)
+  "Set the FACE for the `N'th Insert Pair Edit OPEN string."
+
+  (let* ((overlay   (ipe--open-overlay n))
+	 (display   (overlay-get overlay 'display))
+	 (string    (substring-no-properties display))
+	 (redisplay (propertize string 'face face)))
+    (overlay-put overlay 'display redisplay)))
+
 (defun ipe--open-move (units action)
   "Move the Insert Pair Edit (ipe) OPEN position.
 
@@ -2642,6 +2708,15 @@ and do not display an `'after-string' as part of the CLOSE overlay."
 			     (ipe--indent-string close indent t)
 			     no-after-p)))
 
+(defun ipe--close-set-face (n face)
+  "Set the FACE for the `N'th Insert Pair Edit CLOSE string."
+
+  (let* ((overlay   (ipe--close-overlay n))
+	 (display   (overlay-get overlay 'display))
+	 (string    (substring-no-properties display))
+	 (redisplay (propertize string 'face face)))
+    (overlay-put overlay 'display redisplay)))
+
 (defun ipe--close-move (units action)
   "Move the Insert Pair Edit (ipe) CLOSE position.
 
@@ -2759,6 +2834,16 @@ Remove all of the overlays (`ipe--infix-overlays') that display the
 	(overlay-put infix-overlay 'display "")
 	(delete-overlay infix-overlay)))
     (setcar (nthcdr n ipe--infix-overlays) nil)))
+
+(defun ipe--infixes-set-face (n face)
+  "Set the FACE for the `N'th Insert Pair Edit INFIX overlays."
+
+  (when (nth n ipe--infix-overlays)
+    (dolist (infix-overlay (nth n ipe--infix-overlays))
+      (let* ((display   (overlay-get infix-overlay 'display))
+	     (string    (substring-no-properties display))
+	     (redisplay (propertize string 'face face)))
+	(overlay-put infix-overlay 'display redisplay)))))
 
 (defun ipe--infixes-update (n)
   "Update the `N'th Insert Pair Edit (ipe) INFIX strings.
@@ -2996,6 +3081,16 @@ Create ESCAPE overlays (`ipe--escape-overlays') between the `N'th
 		 (setq i (1+ i)))))))
 	 escapes)))))
 
+(defun ipe--escapes-set-face (n face)
+  "Set the FACE for the `N'th Insert Pair Edit ESCAPE strings."
+
+  (when (nth n ipe--escape-overlays)
+    (dolist (escape-overlay (nth n ipe--escape-overlays))
+      (let* ((display   (overlay-get escape-overlay 'display))
+	     (string    (substring-no-properties display))
+	     (redisplay (propertize string 'face face)))
+	(overlay-put escape-overlay 'display redisplay)))))
+
 (defun ipe--escapes-insert (n)
   "Insert the `N'th Insert Pair Edit (ipe) ESCAPE strings.
 
@@ -3109,7 +3204,7 @@ positional properties:
 - :point-open - A numeric value, indicating that POINT was originally
   *within* the OPEN string at the given position.
 - :point-close - A numeric value, indicating that POINT was
-  originally *within* the CLOSE st string at the given position."
+  originally *within* the CLOSE string at the given position."
 
   (let* ((len-open    (length (ipe--pos-open-insert n)))
 	 (len-close   (length (ipe--pos-close-insert n)))
@@ -3380,6 +3475,14 @@ Remove the overlays (`ipe--open-overlays' / `ipe--close-overlays' /
 
   (setq ipe--pair-pos-list (ipe--list-remove ipe--pair-pos-list n)))
 
+(defun ipe--pair-pos-set-face (n face)
+  "Set the FACE for `N' Insert Pair Edit (ipe) PAIR."
+
+  (ipe--open-set-face n face)
+  (ipe--infixes-set-face n face)
+  (ipe--escapes-set-face n face)
+  (ipe--close-set-face n face))
+
 (defun ipe--pair-pos-redisplay ()
   "Redisplay the Insert Pair Edit (ipe) OPEN and CLOSE overlays.
 
@@ -3564,11 +3667,19 @@ This will also output a notification describing the new movement to
 the echo area for the user."
 
   (when (not (equal ipe--movement movement))
-    (setq ipe--movement movement)
 
+    ;; Reset using the old movement function.
     (let ((move-by (ipe--move-by-function))
 	  (pair    (ipe--pair)))
+      (dotimes (n (ipe--pos-count))
+	(funcall move-by pair n 'open  'reset 0 0 0)
+	(funcall move-by pair n 'close 'reset 0 0 0)))
 
+    (setq ipe--movement movement)
+
+    ;; Reset using the new movement function.
+    (let ((move-by (ipe--move-by-function))
+	  (pair    (ipe--pair)))
       (dotimes (n (ipe--pos-count))
 	(funcall move-by pair n 'open  'reset 0 0 0)
 	(funcall move-by pair n 'close 'reset 0 0 0)))

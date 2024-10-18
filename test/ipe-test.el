@@ -42,15 +42,26 @@
 ;;
 ;;    `ipe-test-run'
 ;;    `ipe-test-run-all'
+;;    `ipe-test-buffer'
 ;;
 ;; Which are 'convenience functions' used to run `ert' against `ipe'
-;; specific ERT test cases.
+;; specific ERT test cases, and, two `ert-results-mode' specific
+;; functions:
+;;
+;;    `ipe-test--ert-test-buffer'
+;;    `ipe-test--occur-failed'
+;;
+;; Which are added to the `ert-results-mode-map'.
 
 ;; -------------------------------------------------------------------
 ;;; Code:
 
 (require 'ert)
 (require 'ipe)
+
+;; -------------------------------------------------------------------
+;;;; Constants
+;; -------------------------------------------------------------------
 
 (defconst ipe-test--point-indicator "|"
   "The position of POINT within \"ipe-test--.*\" tests.
@@ -72,11 +83,12 @@ This string is inserted within the input / expected output string
 passed to the \"ipe-test--.*\" `ert' tests to indicate the position of
 a `multiple-cursors' fake-cursor.")
 
-;;  "The keystrokes for the currently running \"ipe-test--.*\".
+;; -------------------------------------------------------------------
+;;;; Variables
+;; -------------------------------------------------------------------
+
 (defvar-local ipe-test--keystrokes nil
   "The keystrokes for the currently running \"ipe-test--.*\".")
-
-(setq ipe-test--keystrokes nil)
 
 (defvar ipe-test--buffer-text nil
   "The buffer text for the currently running \"ipe-test--.*\".")
@@ -144,6 +156,7 @@ Additionally:
 
 (defun ipe-test--show-point ()
   "Insert `ipe-test--point-indicator' at POINT."
+
   (insert ipe-test--point-indicator)
   (when (functionp 'mc/execute-command-for-all-fake-cursors)
     (funcall 'mc/execute-command-for-all-fake-cursors
@@ -151,11 +164,13 @@ Additionally:
 
 (defun ipe-test--show-mc ()
   "Insert `ipe-test--mc-point-indicator' at POINT."
+
   (interactive)
   (insert ipe-test--mc-point-indicator))
 
 (defun ipe-test--count-string-lines (string)
   "Count the number of lines within STRING."
+
   (let ((pos   -1)
 	(lines 1))
     (while (setq pos (string-match "[\n\C-m]" string (+ 1 pos)))
@@ -164,6 +179,7 @@ Additionally:
 
 (defun ipe-test--get-string-line (string line)
   "Return the text at LINE from STRING."
+
   (let ((pos   -1)
 	(lines 1))
     (while (and (> line lines)
@@ -182,7 +198,23 @@ mismatch between the BUFFER-EXPECTED and BUFFER-ACTUAL strings within
 an `ipe-ert-test'.  If the BUFFER-EXPECTED and BUFFER-ACTUAL strings
 differ, this will output an explanation of the form:
 
-	Text differs at line: LINE
+    When typing:
+
+        <KEYSTROKES>
+
+    In buffer:
+
+        <ORIG-BUFFER-CONTENTS>
+
+    We expect:
+
+        <BUFFER-EXPECTED>
+
+    But got:
+
+        <BUFFER-ACTUAL>
+
+	Text differs at Line: <LINE> Position: <POSITION>.
 
     Expected: <expected LINE produced by test>
     Actual:   <actual LINE produced by test>
@@ -267,7 +299,6 @@ first character difference between the two lines."
 		"\t\tActual:   '" actual-line "'\n"
 		"\t\t-----------" (make-string same-line ?-) "^\n")))))
 
-;; Equal with custom 'ert-explainer property.
 (defun ipe-test--ert-equal (actual expected)
   "Rename of `equal' to allow \='ert-explainer binding.
 
@@ -277,6 +308,7 @@ perform a `should' test with a custom \='ert-explainer.
 
 It provides a description of the differences between the ACTUAL result
 and the EXPECTED result."
+
   (equal-including-properties actual expected))
 
 ;; Add the 'ert-explainer to the custom 'equal.
@@ -450,6 +482,7 @@ and `ipe-test-def-kbd' macros."
 Prompt for the name of an `ipe-test-def' or `ipe-test-def-kbd'
 test to be run, and run it.  The input PATTERN is a regular expression
 that will match the NAMEs of the tests to be run."
+
   (interactive (list (completing-read "IPE Test: "
 				      (ipe-test--names)
 				      nil
@@ -463,6 +496,7 @@ that will match the NAMEs of the tests to be run."
 
 This interactive function runs all of the tests with `ipe-test-def' or
 `ipe-test-def-kbd'."
+
   (interactive)
   (ert "^ipe-test--.*"))
 
@@ -530,6 +564,10 @@ added to each position indicated."
     (when (stringp keystrokes)
       (message (replace-regexp-in-string "%" "%%" keystrokes)))))
 
+;; -------------------------------------------------------------------
+;;;; `ert-results-mode' Functions
+;; -------------------------------------------------------------------
+
 (defun ipe-test--ert-test-buffer (test-name)
   "Display, in another window, the BUFFER-TEXT for ipe-test TEST-NAME.
 
@@ -544,7 +582,7 @@ ERT results buffer."
 	   (symbol-name test-name))))
     (ipe-test-buffer ipe-test-name)))
 
-(defun ipe-test--occur-failed ()
+(defun ipe-test--ert-occur-failed ()
   "Run `occur' to search for failed test strings within *ert*."
 
   (interactive)
@@ -554,11 +592,12 @@ ERT results buffer."
     (message "This command should only be run from within\
  `ert-results-mode'.")))
 
+;; Add the ipe-test--ert-* functions to the `ert-results-mode-map'.
 (progn
   (define-key ert-results-mode-map (kbd "e")
 	      'ipe-test--ert-test-buffer)
   (define-key ert-results-mode-map (kbd "f")
-	      'ipe-test--occur-failed))
+	      'ipe-test--ert-occur-failed))
 
 (provide 'ipe-test)
 

@@ -53,6 +53,7 @@
     (ipe-prefix-moves-close-p   t)
     (ipe-edit--movement-keysets '(modifiers))
     (ipe-update-forward-first-p nil)
+    (ipe-delete-action          'delete)
     (ipe-pairs
      '(("(" "(" ")")
        ("<" "<" ">")
@@ -196,6 +197,50 @@ Using a 'line PAIR and a 'word PAIR."
     "The quick brown fox jumps over the lazy dog."
     "The quick brown fox jumps over the lazy dog.)")
   "M-( / C-n C-n RET C-u C-u C-u M-( / ( RET")
+
+(ipe-test-def-kbd other-change-movement-prefix-1 ()
+  "Test changing to `ipe-edit--movement-by-char'.
+
+From a 'line PAIR with a prefix / postfix string."
+  ipe-test-other-options
+  nil
+  '("    ["
+    "        |The quick brown fox jumps over the lazy dog."
+    "    ]")
+  '("|The quick brown fox jumps over the lazy dog.")
+  "C-u M-( [ m c C-d")
+
+(ipe-test-def-kbd other-change-movement-prefix-2 ()
+  "Test changing to `ipe-edit--movement-by-word'.
+
+From a 'line PAIR with a prefix / postfix string."
+  ipe-test-other-options
+  nil
+  '("    ["
+    "        |The quick brown fox jumps over the lazy dog."
+    "    ]")
+  '("|The quick brown fox jumps over the lazy dog.")
+  "C-u M-( [ m w C-d")
+
+(ipe-test-def-kbd other-change-movement-prefix-3 ()
+  "Test changing to `ipe-edit--movement-by-line'.
+
+From a 'word PAIR."
+  ipe-test-other-options
+  nil
+  "|The quick brown fox {jumps} over the lazy dog."
+  "|{The quick brown fox jumps over the lazy dog.}"
+  "C-u M-( { m l RET")
+
+(ipe-test-def-kbd other-change-movement-prefix-4 ()
+  "Test changing to `ipe-edit--movement-by-line'.
+
+From a 'char PAIR."
+  ipe-test-other-options
+  nil
+  "|The quick brown `'fox jumps over the lazy dog."
+  "|`The quick brown fox jumps over the lazy dog.'"
+  "C-u M-( ` m l RET")
 
 (when (>= emacs-major-version 26)
   (ipe-test-def-kbd other-undo-1 ()

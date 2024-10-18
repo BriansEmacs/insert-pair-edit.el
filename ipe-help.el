@@ -364,7 +364,13 @@ PAIRs are highlighted using:
 - OPEN   - is highlighted with: (face: `ipe-open-highlight')
 - CLOSE  - is highlighted with: (face: `ipe-close-highlight')
 - INFIX  - is highlighted with: (face: `ipe-infix-highlight')
-- ESCAPE - is highlighted with: (face: `ipe-escape-highlight')"
+- ESCAPE - is highlighted with: (face: `ipe-escape-highlight')
+
+If the `ipe-delete-action' is set to (`highlight', `fade' or
+`prompt', PAIRs to be deleted are highlighted using:
+
+  (face: `ipe-delete-highlight')"
+
   "Help text for `ipe-help'.")
 
 (defun ipe-help ()

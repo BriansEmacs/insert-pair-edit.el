@@ -51,6 +51,7 @@ PRE
 PRED
 Pre
 RET
+RRRRGGGGBBBB
 Redisplay
 SPC
 SYM
@@ -73,6 +74,7 @@ ation
 ations
 autoloads
 behaviour
+bg
 bobp
 bol
 bool
@@ -126,6 +128,7 @@ esc
 eval
 facep
 featurep
+fg
 fn
 func
 funcall
@@ -197,6 +200,7 @@ programe
 programmatically
 propertize
 redisplay
+rgb
 safecall
 sep
 setcar

@@ -57,6 +57,7 @@
     (ipe-prefix-moves-close-p   t)
     (ipe-edit--movement-keysets '(modifiers))
     (ipe-update-forward-first-p nil)
+    (ipe-delete-action          'delete)
     (ipe-pairs
      '(("(" "(" ")")
        ("<" "<" ">")

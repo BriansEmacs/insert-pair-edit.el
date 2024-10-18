@@ -82,11 +82,11 @@
 ;;
 ;; You may also want to:
 ;;
-;;   Enable the `ipe' "Pairs" and "Insert Pair Edit" Menus:
+;; - Enable the `ipe' "Pairs" and "Insert Pair Edit" Menus:
 ;;
 ;;     (customize-save-variable 'ipe-menu-support-p t)
 ;;
-;;   Add shortcut keybindings for the 'other' Major `ipe' commands:
+;; - Add shortcut keybindings for the 'other' Major `ipe' commands:
 ;;
 ;;   e.g.
 ;;
@@ -94,7 +94,7 @@
 ;;     (global-set-key (kbd "H-(") 'ipe-insert-pair-edit-delete)
 ;;     (global-set-key (kbd "s-(") 'ipe-insert-pair-edit-replace)
 ;;
-;;   Load the "example" modal PAIR mappings:
+;; - Load the "example" modal PAIR mappings:
 ;;
 ;;     (require 'ipe-html-mode)
 ;;     (require 'ipe-markdown-mode)
@@ -109,6 +109,7 @@
 (require 'ipe-edit)
 (require 'ipe-mouse)
 (require 'ipe-menu)
+(require 'ipe-fade)
 
 (defgroup ipe nil
   "Insert Pair Edit customizations.
@@ -148,10 +149,40 @@ Once selected, this command will:
 
   (interactive (list (ipe-edit--read-mnemonic "Delete PAIR: ")))
 
-  (save-excursion
+  (let ((set-pair-p (not (equal ipe-delete-action 'delete))))
     (if ipe-edit-mode
 	(ipe-edit--delete-first-pair nil)
-      (ipe-updt--delete-find-pairs mnemonic))))
+      (ipe-updt--delete-find-pairs mnemonic set-pair-p)
+      (when (and set-pair-p
+		 (> (ipe--pos-count) 0))
+	(setq ipe--mnemonic mnemonic)
+	(ipe--pair-pos-redisplay)
+	(dotimes (n (ipe--pos-count))
+	  (ipe--pair-pos-set-face n 'ipe-delete-highlight))
+	(ipe-edit-mode t)
+	(ipe--pos-recenter 0)
+
+	(cond ((equal ipe-delete-action 'highlight)
+	       (run-at-time ipe-delete-highlight-wait
+			    nil
+			    'ipe-edit--delete-all-pairs))
+
+	      ((equal ipe-delete-action 'fade)
+	       (ipe-fade 'ipe-delete-highlight
+			 'default
+			 ipe-delete-highlight-wait
+			 15
+			 (lambda ()
+			   (ipe-edit--delete-all-pairs))))
+
+	      ((equal ipe-delete-action 'prompt)
+	       (if (ipe-defn--y-or-n-p
+		    (format "Delete %s PAIR%s? "
+			    (ipe--mnemonic-describe ipe--mnemonic)
+			    (if (> (ipe--pos-count) 1)
+				"s" "")))
+		   (ipe-edit--delete-all-pairs)
+		 (ipe-edit--redisplay))))))))
 
 (defun ipe-insert-pair-edit-replace (mnemonic replace)
   "Replace the OPEN and CLOSE strings of an Insert Pair Edit PAIR.
