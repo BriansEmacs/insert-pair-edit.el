@@ -907,10 +907,10 @@ the menus."
 	     (functionp #'ipe-menu--install))
     (ipe-menu--install)))
 
-(defun ipe-custom--delete-highlight-wait (sym defn)
+(defun ipe-custom--delete-highlight-wait-set (sym defn)
   "`customize' :set function for `ipe-delete-highlight-wait'.
 
-SYM is the symbol begin set.
+SYM is the symbol being set.
 DEFN the value returned by the `ipe-delete-highlight-wait' widget.
 
 This function ensures that the wait is a positive float."
@@ -919,6 +919,187 @@ This function ensures that the wait is a positive float."
 	  (< defn 0))
       (set sym 0.0)
     (set sym (float defn))))
+
+;; -------------------------------------------------------------------
+;;;; Key Binding Getters / Setters
+;; -------------------------------------------------------------------
+
+;; Helper Predicates
+
+(defun ipe-custom--ipe-key-ignore-p (keyseq)
+  "Return t if KEYSEQ should be ignored."
+
+  (and (vectorp keyseq)
+       (> (length keyseq) 0)
+       (eq (aref keyseq 0) 'ignore)))
+
+(defun ipe-custom--ipe-key-ascii-p (keyseq)
+  "Return t if KEYSEQ begins with an ASCII character."
+
+  (and (vectorp keyseq)
+       (> (length keyseq) 0)
+       (numberp (aref keyseq 0))
+       (>= (aref keyseq 0) 32)
+       (<= (aref keyseq 0) 128)))
+
+;; Getters
+
+(defun ipe-custom--ipe-key-get (fn)
+  "`customize' :get helper function for the`ipe-*-key-binding' widget.
+
+FN is the name of the `ipe-edit-insert-pair*' function for which to
+search for a `key-binding'.
+
+This function will return either:
+
+- A vector representing the current key sequence to which the given FN
+  is bound, or;
+- A list of vectors representing the current set of global key
+  sequences to which the given FN is bound."
+
+  (let* ((where   (where-is-internal fn))
+	 (keyseqs (if (and (listp where) (> (length where) 0))
+		      where
+		    (list [ignore])))
+	 (filter  (ipe--list-filter keyseqs
+				    'ipe-custom--ipe-key-ignore-p)))
+    (if (= (length filter) 0)
+	[ignore]
+      (if (= (length filter) 1)
+	  (car filter)
+	filter))))
+
+(defun ipe-custom--ipe-insert-key-get (_sym)
+  "`customize' :get function for `ipe-insert-key-binding' widget.
+
+_SYM is the name of the `ipe-insert-key-binding' symbol.
+
+This function will return either:
+
+- A vector representing the current key sequence to which the
+  `ipe-insert-pair-edit' is bound, or;
+- A list of vectors representing the current set of global key
+  sequences to which `ipe-insert-pair-edit' is bound."
+
+  (ipe-custom--ipe-key-get 'ipe-insert-pair-edit))
+
+(defun ipe-custom--ipe-update-key-get (_sym)
+  "`customize' :get function for `ipe-update-key-binding' widget.
+
+_SYM is the name of the `ipe-update-key-binding' symbol.
+
+This function will return either:
+
+- A vector representing the current key sequence to which the
+  `ipe-insert-pair-edit-update' is bound, or;
+- A list of vectors representing the current set of global key
+  sequences to which `ipe-insert-pair-edit-update' is bound."
+
+  (ipe-custom--ipe-key-get 'ipe-insert-pair-edit-update))
+
+(defun ipe-custom--ipe-delete-key-get (_sym)
+  "`customize' :get function for `ipe-delete-key-binding' widget.
+
+_SYM is the name of the `ipe-delete-key-binding' symbol.
+
+This function will return either:
+
+- A vector representing the current key sequence to which the
+  `ipe-insert-pair-edit-delete' is bound, or;
+- A list of vectors representing the current set of global key
+  sequences to which `ipe-insert-pair-edit-delete' is bound."
+
+  (ipe-custom--ipe-key-get 'ipe-insert-pair-edit-delete))
+
+;; Setters
+
+(defun ipe-custom--ipe-key-unset (fn)
+  "Unbind FN from any global key-bindings."
+
+  (let ((keyseqs (ipe-custom--ipe-key-get fn)))
+    (if (listp keyseqs)
+	(dolist (keyseq keyseqs)
+	  (global-unset-key keyseq))
+      (when (and (vectorp keyseqs) (> (length keyseqs) 0))
+	(global-unset-key keyseqs)))))
+
+(defun ipe-custom--ipe-key-set (sym defn fn)
+  "`customize' :set function for `ipe-*-key-binding' widgets.
+
+SYM is the symbol being set.
+DEFN is the value returned by the `ipe-*-key-binding' widget.
+FN is the function to which the key is to be bound.
+
+This function adds global-key bindings for the given FN based upon the
+contents of DEFN.
+
+For sanity, it will not bind a key-sequence that starts with just a
+\(unmodified) ASCII character, (as this may be confusing)."
+
+  (ipe-custom--ipe-key-unset fn)
+
+  (if defn
+      (if (and defn (listp defn))
+	  (let ((keyseqs nil))
+	    (dolist (i defn)
+	      (when (and i
+			 (vectorp i)
+			 (> (length i) 0)
+			 (not (eq (aref i 0) 'ignore)))
+		(if (ipe-custom--ipe-key-ascii-p i)
+		    (message
+		     "Not binding `%s to key-sequence \"%s\" (no leading modifier.)"
+		     fn
+		     (key-description i))
+		  (global-set-key i fn)
+		  (setq keyseqs (append keyseqs (list i))))))
+	    (set sym keyseqs))
+	(if (and defn
+		 (vectorp defn)
+		 (> (length defn) 0)
+		 (not (eq (aref defn 0) 'ignore)))
+	    (progn
+	      (if (ipe-custom--ipe-key-ascii-p defn)
+		  (message
+		   "Not binding `%s to key-sequence \"%s\" (no leading modifier.)"
+		   fn
+		   (key-description defn))
+		(global-set-key defn fn)
+		(set sym defn)))
+	  (set sym [ignore])))
+    (set sym [ignore])))
+
+(defun ipe-custom--ipe-insert-key-set (sym defn)
+  "`customize' :set function for `ipe-insert-key-binding' widget.
+
+SYM is the symbol being set.
+DEFN is the value returned by the `ipe-insert-key-binding' widget.
+
+This function adds global-key bindings for `ipe-insert-pair-edit'."
+
+  (ipe-custom--ipe-key-set sym defn 'ipe-insert-pair-edit))
+
+(defun ipe-custom--ipe-update-key-set (sym defn)
+  "`customize' :set function for `ipe-update-key-binding' widget.
+
+SYM is the symbol being set.
+DEFN is the value returned by the `ipe-update-key-binding' widget.
+
+This function adds global-key bindings for
+`ipe-insert-pair-edit-update'."
+
+  (ipe-custom--ipe-key-set sym defn 'ipe-insert-pair-edit-update))
+
+(defun ipe-custom--ipe-delete-key-set (sym defn)
+  "`customize' :set function for `ipe-delete-key-binding' widget.
+
+SYM is the symbol being set.
+DEFN is the value returned by the `ipe-delete-key-binding' widget.
+
+This function adds global-key bindings for
+`ipe-insert-pair-edit-delete'."
+
+  (ipe-custom--ipe-key-set sym defn 'ipe-insert-pair-edit-delete))
 
 ;; -------------------------------------------------------------------
 ;;;; Widget definitions.
@@ -1327,6 +1508,12 @@ Pre-defined :set / :get functions for this widget:
 ;;;; Customize-like functions.
 ;; -------------------------------------------------------------------
 
+(defvar ipe-custom--edit-pair-defn-return nil
+  "Widget used by `ipe-custom--edit-pair-defn' function.
+
+This widget will contain the final value of the edited PAIR
+definition.")
+
 (defun ipe-custom--edit-pair-defn (mode defn callback)
   "Edit the `ipe' PAIR definition DEFN.
 
@@ -1362,9 +1549,9 @@ definition (DEFN) will be passed to CALLBACK:
  PAIR Definition\n\n")
 	(widget-insert (concat "Mode: " (symbol-name mode) "\n\n")))
 
-      (make-local-variable 'custom-pair)
+      (make-local-variable 'ipe-custom--edit-pair-defn-return)
 
-      (setq custom-pair
+      (setq ipe-custom--edit-pair-defn-return
 	    (widget-create 'ipe-custom-pair
 			   :button-face 'custom-button
 			   :format "%v\n"
@@ -1384,7 +1571,8 @@ definition (DEFN) will be passed to CALLBACK:
       (setq on-save
 	    (lambda (_widget _event)
 	      (funcall check-save
-		       (ipe-custom--pair-set (widget-value custom-pair))
+		       (ipe-custom--pair-set
+			(widget-value ipe-custom--edit-pair-defn-return))
 		       defn)))
 
       (widget-create 'push-button

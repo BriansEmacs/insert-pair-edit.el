@@ -46,8 +46,8 @@
 ------------------------------------
 
 This package defines commands that allow for the interactive,
-mode-dependent, insertion and movement of the opening (OPEN) and
-closing (CLOSE) strings of a PAIR.
+insertion, update and deletion of `customize'-able, mode-dependent
+PAIRs via the use of overlays.
 
 PAIRs can be inserted, updated, deleted, and replaced by:
 
@@ -60,8 +60,8 @@ PAIRs can be inserted, updated, deleted, and replaced by:
   `\\[ipe-insert-pair-edit-replace]' -\
  (command: `ipe-insert-pair-edit-replace')
 
-Which prompt for, and then insert, update, delete or replace, PAIRs
-from the:
+These commands prompt for, and then insert, update, delete or replace,
+PAIRs from the:
 
   `ipe-pairs'
   `ipe-mode-pairs'
@@ -71,7 +71,14 @@ from the:
 Once inserted, `ipe-edit-mode' minor mode is activated, and the
 OPEN and CLOSE strings of the PAIR can be moved interactively and
 independently around the buffer using overlays before being
-inserted into position.")
+inserted into position.
+
+Key-bindings for Insert Pair Edit (ipe) commands can be `customize'd
+via the command:
+
+  \\[customize-group] ipe-keys
+
+")
 
 (defconst ipe-help--help-more-1
   "The 'Insert Pair Edit' (ipe) Package - Additional Commands #1

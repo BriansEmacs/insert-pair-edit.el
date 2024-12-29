@@ -93,7 +93,7 @@ Edit (ipe) package."
   :link '(function-link ipe-edit-mode))
 
 (defgroup ipe-mode-pairs nil
-  "Insert Pair Edit - Mode-Specific Customizations.
+  "Insert Pair Edit - Mode specific customizations.
 
 This group defines `customize'-ations for the Mode-Specific PAIRs for
 the Insert Pair Edit (ipe) package."
@@ -196,7 +196,7 @@ Where:
 
 \(See command: `ipe-edit-mode')"
   :group 'ipe-mode-pairs
-  :tag   "Insert Pair Edit - Mode-specific PAIRs."
+  :tag   "Insert Pair Edit - Mode Specific PAIRs"
   :link  '(function-link ipe-insert-pair-edit)
   :link  '(function-link ipe-edit-mode)
   :get   'ipe-custom-mode-pairs-get
@@ -223,8 +223,8 @@ i.e. For a fictitious `xxx-mode':
     :group \\='ipe-mode-pairs
     :tag   \"Insert Pair Edit - xxx-mode PAIRs.\"
     :link  \\='(function-link ipe-insert-pair-edit)
-    :set   \\='ipe-custom-pair-list-set
     :get   \\='ipe-custom-pair-list-get
+    :set   \\='ipe-custom-pair-list-set
     :type  \\='(ipe-custom-pair-list
     :tag   \"PAIRs used by `ipe-insert-pair-edit' in `xxx-mode'.\"))"
 
@@ -332,7 +332,7 @@ a PAIR when the `ipe-delete-action' is either `'highlight' or
   :group 'ipe-advanced
   :link  '(function-link 'ipe-insert-pair-edit-delete)
   :tag   "Insert Pair Edit - Wait time for delete actions."
-  :set   'ipe-custom--delete-highlight-wait
+  :set   'ipe-custom--delete-highlight-wait-set
   :type  '(float))
 
 (defcustom ipe-mouse-support-p t

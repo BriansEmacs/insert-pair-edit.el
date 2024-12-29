@@ -67,8 +67,10 @@ WASD
 Whitespace
 accessor
 alist
+aref
 arg
 args
+ascii
 assq
 ation
 ations
@@ -93,6 +95,7 @@ concat
 cond
 consp
 const
+customize'd
 customizable
 customizations
 debbugging
@@ -133,6 +136,7 @@ fn
 func
 funcall
 functionp
+getters
 gif
 gifs
 github
@@ -155,6 +159,8 @@ kbd
 keymap
 keymappings
 keymaps
+keyseq
+keyseqs
 keyset
 keysets
 len
@@ -225,6 +231,7 @@ upcase
 updt
 url
 utf
+vectorp
 wasd
 whitespace
 wid

@@ -304,9 +304,8 @@ within the demo."
 
     ;; Set up some (ipe) configuration.
     (switch-to-buffer demo-buffer)
-    (setq-local ipe-pairs
-		'(("(" "(" ")"))
-		ipe-update-forward-first-p t)
+    (setq-local ipe-pairs '(("(" "(" ")")))
+    (setq-local ipe-update-forward-first-p t)
 
     ;; Set up the demo buffer.
     (blink-cursor-mode 0)

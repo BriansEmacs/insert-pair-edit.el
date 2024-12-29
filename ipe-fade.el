@@ -62,7 +62,8 @@ non-nil.)"
 				nil
 				t))
 	 (rgb   (if (or (not color)
-			(equal color 'unspecified))
+			(equal color 'unspecified)
+			(not (color-values color)))
 		    '(0 0 0)
 		  (color-values color))))
     (if invert
@@ -131,8 +132,6 @@ TO-FACE.
 
 If DONE is non-nil, it is assumed to be a function which will be run
 \(with no arguments) once the FADE is complete."
-
-  (interactive)
 
   (let* ((orig-fg     (face-attribute from-face :foreground nil t))
 	 (orig-bg     (face-attribute from-face :background nil t))

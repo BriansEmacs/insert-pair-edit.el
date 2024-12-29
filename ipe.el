@@ -30,11 +30,15 @@
 ;; -------------------------------------------------------------------
 ;;; Commentary:
 ;;
-;; This package defines a command, `ipe-insert-pair-edit', which
-;; offers a more feature rich alternative to the standard 'M-(' Emacs
-;; keybinding, `insert-parentheses'.  The `ipe-insert-pair-edit'
-;; command allows for the interactive insertion, update and deletion
-;; of `customize'-able PAIRs via the use of overlays.
+;; This package defines commands which offer a more feature rich
+;; alternative to the standard 'M-(' Emacs keybinding,
+;; `insert-parentheses'.  These commands allow for the interactive
+;; insertion, update and deletion of `customize'-able, mode-dependent
+;; PAIRs via the use of overlays.
+;;
+;; Suggested Keybinding:
+;;
+;;    (global-set-key (kbd "M-(") 'ipe-insert-pair-edit)
 ;;
 ;; Executing the `ipe-insert-pair-edit' command will first prompt the
 ;; user to enter a `customize'-able MNEMONIC (See: `ipe-pairs' /
@@ -47,9 +51,9 @@
 ;; mode is activated.
 ;;
 ;; The "Insert Pair Edit (ipe)" minor mode supplies a large set of
-;; commands to interactively and independently move the overlays
+;; commands to: interactively and independently move the overlays
 ;; representing the OPEN and CLOSE strings for the inserted PAIR about
-;; the buffer, and to either insert (`ipe-edit--insert-pair'), or
+;; the buffer, and; either insert (`ipe-edit--insert-pair'), or
 ;; discard (`ipe-edit--abort') them once they have been correctly
 ;; positioned.
 ;;
@@ -121,6 +125,104 @@ package."
   :link '(emacs-commentary-link "ipe.el")
   :link '(function-link ipe-insert-pair-edit)
   :link '(function-link ipe-edit-mode))
+
+(defgroup ipe-keys nil
+  "Insert Pair Edit - Key binding customizations.
+
+This group defines `customize'-ations for the Insert Pair Edit (ipe)
+key-bindings."
+  :group 'ipe
+  :tag  "Insert Pair Edit - Key Bindings"
+  :link '(emacs-commentary-link "ipe.el")
+  :link '(function-link ipe-insert-pair-edit)
+  :link '(function-link ipe-edit-mode))
+
+(defcustom ipe-insert-key-binding [ignore]
+  "Key binding for the `ipe-insert-pair-edit' command.
+
+A string (or list of strings) representing an Emacs key-sequence
+\(i.e. \"M-(\") that is used to invoke the `ipe-insert-pair-edit'
+command.
+
+This string (or list of strings) will be parsed by the `kbd' function.
+
+----------------------------------------------------------------------
+
+The internal format of this variable will be either:
+
+- a vector of integers representing the key events used to invoke
+  `ipe-insert-pair-edit', or;
+- a list of vectors of integers each representing a different sequence
+  of key events used to invoke `ipe-insert-pair-edit'."
+  :group 'ipe
+  :tag   "Insert Pair Edit - `ipe-insert-pair-edit' key binding."
+  :link  '(function-link ipe-insert-pair-edit)
+  :link  '(emacs-commentary-link "ipe.el")
+  :link  '(custom-group-link ipe-keys)
+  :get   'ipe-custom--ipe-insert-key-get
+  :set   'ipe-custom--ipe-insert-key-set
+  :type  '(choice :tag "Single / Multiple"
+		  (repeat :tag "Multiple Keymappings"
+			  (key-sequence :tag "Key Sequence "))
+		  (key-sequence :tag "Key Sequence ")))
+
+(defcustom ipe-update-key-binding [ignore]
+  "Key binding for the `ipe-insert-pair-edit-update' command.
+
+A string (or list of strings) representing an Emacs key-sequence
+\(i.e. \"A-(\") that is used to invoke the
+`ipe-insert-pair-edit-update' command.
+
+This string (or list of strings) will be parsed by the `kbd' function.
+
+----------------------------------------------------------------------
+
+The internal format of this variable will be either:
+
+- a vector of integers representing the key events used to invoke
+  `ipe-insert-pair-edit-update', or;
+- a list of vectors of integers each representing a different sequence
+  of key events used to invoke `ipe-insert-pair-edit-update'."
+  :group 'ipe-keys
+  :tag   "Insert Pair Edit - `ipe-insert-pair-edit-update' key\
+ binding."
+  :link  '(function-link ipe-insert-pair-edit)
+  :link  '(emacs-commentary-link "ipe.el")
+  :get   'ipe-custom--ipe-update-key-get
+  :set   'ipe-custom--ipe-update-key-set
+  :type  '(choice :tag "Single / Multiple"
+		  (repeat :tag "Multiple Keymappings"
+			  (key-sequence :tag "Key Sequence "))
+		  (key-sequence :tag "Key Sequence ")))
+
+(defcustom ipe-delete-key-binding [ignore]
+  "Key binding for the `ipe-insert-pair-edit-delete' command.
+
+A string (or list of strings) representing an Emacs key-sequence
+\(i.e. \"H-(\") that is used to invoke the
+`ipe-insert-pair-edit-delete' command.
+
+This string (or list of strings) will be parsed by the `kbd' function.
+
+----------------------------------------------------------------------
+
+This internal format of this variable will be either:
+
+- a vector of integers representing the key events used to invoke
+  `ipe-insert-pair-edit-delete', or;
+- a list of vectors of integers each representing a different sequence
+  of key events used to invoke `ipe-insert-pair-edit-delete'."
+  :group 'ipe-keys
+  :tag   "Insert Pair Edit - `ipe-insert-pair-edit-delete' key\
+ binding."
+  :link  '(function-link ipe-insert-pair-edit)
+  :link  '(emacs-commentary-link "ipe.el")
+  :get   'ipe-custom--ipe-delete-key-get
+  :set   'ipe-custom--ipe-delete-key-set
+  :type  '(choice :tag "Single / Multiple"
+		  (repeat :tag "Multiple Keymappings"
+			  (key-sequence :tag "Key Sequence "))
+		  (key-sequence :tag "Key Sequence ")))
 
 (defun ipe-options ()
   "Call `customize-group' for `ipe'.

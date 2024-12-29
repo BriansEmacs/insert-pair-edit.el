@@ -372,7 +372,7 @@ PAIR into the buffer and perform some sort of additional action.
     (define-key-after km [goto-open]
       (list 'menu-item
 	    "Goto OPEN"
-	    (ipe-menu--mouse-fn 'ipe-edit--ia-goto-open 1)
+	    (ipe-menu--mouse-fn 'ipe-edit--ia-goto-open nil)
 	    :keys (ipe-menu--keys 'ipe-edit--ia-goto-open)
 	    :help "Insert 'Insert Pair Edit' (ipe) OPEN and CLOSE, exit\
  'ipe-edit-mode', and goto the end of OPEN."))
@@ -380,7 +380,7 @@ PAIR into the buffer and perform some sort of additional action.
     (define-key-after km [goto-close]
       (list 'menu-item
 	    "Goto CLOSE"
-	    (ipe-menu--mouse-fn 'ipe-edit--ia-goto-close 1)
+	    (ipe-menu--mouse-fn 'ipe-edit--ia-goto-close nil)
 	    :keys (ipe-menu--keys 'ipe-edit--ia-goto-close)
 	    :help "Insert 'Insert Pair Edit' (ipe) OPEN and CLOSE, exit\
  'ipe-edit-mode', and goto the end of CLOSE.")

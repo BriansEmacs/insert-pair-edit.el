@@ -121,7 +121,7 @@ value of this variable is set on change of the `customize'-able
   "Internal variable backing `ipe-edit-movement-keysets'.
 
 If `ipe-edit--movement-keysets' contains `'custom', this variable
-should be a list of 12 key bindings.  These 12 keybindings map to:
+should be a list of 12 key bindings.  These 12 key-bindings map to:
 
 - Move OPEN Beginning  (command: `ipe-edit--open-beg')
 - Move OPEN Up         (command: `ipe-edit--open-up')
@@ -2294,8 +2294,8 @@ This function is called on start-up of the Insert Pair Edit (ipe)
 minor-mode (command: `ipe-edit-mode') to define the keymap bindings
 for the minor mode.
 
-This function configures both the standard keybindings, and, derives
-the keybindings for the for basic movement commands from the
+This function configures both the standard key-bindings, and, derives
+the key-bindings for the for basic movement commands from the
 `ipe-edit--movement-keysets' / `ipe-edit--custom-movement-keyset'
 variables.
 
@@ -2711,11 +2711,15 @@ them to the `ipe-edit--custom-movement-keyset' variable."
 (defcustom ipe-edit-mode-keys ipe-edit--mode-keys-default
   "Key bindings for interactive functions within `ipe-edit-mode'.
 
-This list contains the key bindings for the interactive functions
-available within `ipe-edit-mode'.  These key bindings are activated
-when the `ipe-edit-mode' minor mode is activated by one of the 'Insert
-Pair Edit' functions."
-  :group 'ipe-advanced
+This list (of 53 strings) contains the key bindings for the
+interactive functions available within `ipe-edit-mode'.  These key
+bindings are enabled when the `ipe-edit-mode' minor mode is activated
+by one of the 'Insert Pair Edit' functions.
+
+Each entry in this list is a string which will be parsed by the `kbd'
+function to return the sequence of keys that will be used within
+`ipe-edit-mode' to invoke a `ipe-edit-mode' function."
+  :group 'ipe-keys
   :tag   "Insert Pair Edit - `ipe-edit-mode' key bindings."
   :link  '(function-link ipe-insert-pair-edit)
   :link  '(emacs-commentary-link "ipe-edit.el")
@@ -2786,52 +2790,52 @@ overlays.
 
 The following 'Predefined Key Sets' are supplied:
 
-- Modifier Keys (`'modifiers')
+- Modifier Keys (`modifiers')
 
-   `Ctrl+a' - OPEN  beginning, `Ctrl+e'  - CLOSE end,
-   `Ctrl+p' - OPEN  up,        `Ctrl+n'  - CLOSE down,
-   `Ctrl+b' - OPEN  backward,  `Ctrl+f'  - CLOSE forward,
-   `Meta+a' - CLOSE beginning, `Meta+e'  - OPEN  end,
-   `Meta+p' - CLOSE up,        `Meta+n'  - OPEN  down,
-   `Meta+b' - CLOSE backward,  `Meta+f'  - OPEN  forward.
+   <Ctrl+a> - OPEN  beginning, <Ctrl+e>  - CLOSE end,
+   <Ctrl+p> - OPEN  up,        <Ctrl+n>  - CLOSE down,
+   <Ctrl+b> - OPEN  backward,  <Ctrl+f>  - CLOSE forward,
+   <Meta+a> - CLOSE beginning, <Meta+e>  - OPEN  end,
+   <Meta+p> - CLOSE up,        <Meta+n>  - OPEN  down,
+   <Meta+b> - CLOSE backward,  <Meta+f>  - OPEN  forward.
 
-- Alphabetic ('`alpha')
+- Alphabetic (`alpha')
 
-   `a'     - OPEN  beginning, `e'       - CLOSE end,
-   `p'     - OPEN  up,        `n'       - CLOSE down,
-   `b'     - OPEN  backward,  `f'       - CLOSE forward,
-   `A'     - CLOSE beginning, `E'       - OPEN  end,
-   `P'     - CLOSE up,        `N'       - OPEN  down,
-   `B'     - CLOSE backward,  `F'       - OPEN  forward.
+   <a>      - OPEN  beginning, <e>       - CLOSE end,
+   <p>      - OPEN  up,        <n>       - CLOSE down,
+   <b>      - OPEN  backward,  <f>       - CLOSE forward,
+   <A>      - CLOSE beginning, <E>       - OPEN  end,
+   <P>      - CLOSE up,        <N>       - OPEN  down,
+   <B>      - CLOSE backward,  <F>       - OPEN  forward.
 
-- Arrows (`'arrow')
+- Arrows (`arrow')
 
-   `home'   - OPEN  beginning, `end'     - CLOSE end,
-   `up'     - OPEN  up,        `down'    - CLOSE down,
-   `left'   - OPEN  backward,  `right'   - CLOSE forward,
-   `C-home' - CLOSE beginning, `C-end'   - OPEN  end,
-   `C-up'   - CLOSE up,        `C-down'  - OPEN  down,
-   `C-left' - CLOSE backward,  `C-right' - OPEN  forward.
+   <home>   - OPEN  beginning, <end>     - CLOSE end,
+   <up>     - OPEN  up,        <down>    - CLOSE down,
+   <left>   - OPEN  backward,  <right>   - CLOSE forward,
+   <C-home> - CLOSE beginning, <C-end>   - OPEN  end,
+   <C-up>   - CLOSE up,        <C-down>  - OPEN  down,
+   <C-left> - CLOSE backward,  <C-right> - OPEN  forward.
 
-- WASD (`'wasd')
+- WASD (`wasd')
 
-   `q'     - OPEN  beginning, `e'       - CLOSE end,
-   `w'     - OPEN  up,        `s'       - CLOSE down,
-   `a'     - OPEN  backward.  `d'       - CLOSE forward,
-   `Q'     - CLOSE beginning, `E'       - OPEN  end,
-   `W'     - CLOSE up,        `S'       - OPEN  down,
-   `A'     - CLOSE backward,  `D'       - OPEN  forward.
+   <q>      - OPEN  beginning, <e>       - CLOSE end,
+   <w>      - OPEN  up,        <s>       - CLOSE down,
+   <a>      - OPEN  backward,  <d>       - CLOSE forward,
+   <Q>      - CLOSE beginning, <E>       - OPEN  end,
+   <W>      - CLOSE up,        <S>       - OPEN  down,
+   <A>      - CLOSE backward,  <D>       - OPEN  forward.
 
-- VI (`'vi')
+- VI (`vi')
 
-   `0'     - OPEN  beginning, `$'       - CLOSE end,
-   `k'     - OPEN  up,        `j'       - CLOSE down,
-   `h'     - OPEN  backward,  `l'       - CLOSE forward,
-   `B'     - CLOSE beginning, `W'       - OPEN  end,
-   `K'     - CLOSE up,        `J'       - OPEN  down,
-   `H'     - CLOSE backward,  `L'       - OPEN  forward.
+   <0>     - OPEN  beginning, <$>        - CLOSE end,
+   <k>     - OPEN  up,        <j>        - CLOSE down,
+   <h>     - OPEN  backward,  <l>        - CLOSE forward,
+   <B>     - CLOSE beginning, <W>        - OPEN  end,
+   <K>     - CLOSE up,        <J>        - OPEN  down,
+   <H>     - CLOSE backward,  <L>        - OPEN  forward.
 
-Or a Custom Key Set can be defined, with user defined mappings for
+Or a Custom Key Set can be defined with user defined mappings for
 each of the movement commands:
 
    OPEN  beginning, OPEN end,
@@ -2842,20 +2846,20 @@ each of the movement commands:
    CLOSE backward,  CLOSE forward.
 
 Custom Key Set bindings will be loaded after the standard
-`ipe-edit-mode' minor-mode keybindings, and as such, may override
-existing keybindings for other `ipe-edit-mode' commands.
+`ipe-edit-mode' minor-mode key-bindings, and as such, may override
+existing key-bindings for other `ipe-edit-mode' commands.
 
 ----------------------------------------------------------------------
 
-The underlying format of this variable is either:
+The internal format of this variable is either:
 
 - A 5-tuple containing five position dependent boolean flags:
 
-  1 - If non-nil, turn on `'Modifiers'
-  2 - If non-nil, turn on `'Alphabetic'
-  3 - If non-nil, turn on `'Arrow'
-  4 - If non-nil, turn on `'WASD'
-  5 - If non-nil, turn on `'VI'
+  1 - If non-nil, turn on Modifiers
+  2 - If non-nil, turn on Alphabetic
+  3 - If non-nil, turn on Arrow
+  4 - If non-nil, turn on WASD
+  5 - If non-nil, turn on VI
 
 or
 
@@ -2877,8 +2881,8 @@ or
 
 This variable is expected to be set by
   `ipe-edit--movement-keysets-set'."
-  :group 'ipe
-  :tag   "Insert Pair Edit - Movement keys"
+  :group 'ipe-keys
+  :tag   "Insert Pair Edit - `ipe-edit-mode' movement keysets."
   :link  '(function-link ipe-insert-pair-edit)
   :link  '(emacs-commentary-link "ipe-edit.el")
   :type  '(choice

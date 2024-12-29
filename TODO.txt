@@ -8,13 +8,8 @@
 ;; - Fix face highlighting for toggled open + infix.
 ;;
 ;; FEATURES
-;; - Question Delete PAIR.
-;; - Highlight Delete PAIR.
 ;; - Add 'Movement Toggle' function to switch bindings for OPEN /
 ;;   CLOSE.
-;;
-;; STYLE
-;; - Address TODO's.
 ;;
 ;; STRETCH
 ;; - Add update regular expressions.
